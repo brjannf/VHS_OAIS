@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ByteSize" Version="2.1.1" />
+    <PackageReference Include="MySql.Data" Version="8.0.32" />
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.17" />
+    <PackageReference Include="System.Data.Odbc" Version="7.0.0" />
+    <PackageReference Include="System.Management" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\cClassVHS\cClassVHS.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="dsDrif.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsDrif.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="dsFiles.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsFiles.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="frmDrif.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="dsDrif.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsDrif.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="dsFiles.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsFiles.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Report1.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Report2.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsFiles" targetNamespace="http://tempuri.org/dsFiles.xsd" xmlns:mstns="http://tempuri.org/dsFiles.xsd" xmlns="http://tempuri.org/dsFiles.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Dsn=MYSQL forSSRS" IsAppSettingsProperty="false" Modifier="Assembly" Name="ConnectionString" Provider="System.Data.Odbc" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTableTableAdapter" GeneratorDataComponentClassName="DataTableTableAdapter" Name="DataTable" UserDataComponentName="DataTableTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionString" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT * FROM `dt_files`</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="id" DataSetColumn="id" />
+              <Mapping SourceColumn="nafn" DataSetColumn="nafn" />
+              <Mapping SourceColumn="oldNafn" DataSetColumn="oldNafn" />
+              <Mapping SourceColumn="slod" DataSetColumn="slod" />
+              <Mapping SourceColumn="adgerd" DataSetColumn="adgerd" />
+              <Mapping SourceColumn="laust" DataSetColumn="laust" />
+              <Mapping SourceColumn="drifID" DataSetColumn="drifID" />
+              <Mapping SourceColumn="DATE" DataSetColumn="DATE" />
+              <Mapping SourceColumn="villa" DataSetColumn="villa" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsFiles" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="dsFiles" msprop:Generator_DataSetName="dsFiles">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable" msprop:Generator_RowEvHandlerName="DataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="DataTableRowDeleted" msprop:Generator_RowDeletingName="DataTableRowDeleting" msprop:Generator_RowEvArgName="DataTableRowChangeEvent" msprop:Generator_TablePropName="DataTable" msprop:Generator_RowChangedName="DataTableRowChanged" msprop:Generator_RowChangingName="DataTableRowChanging" msprop:Generator_TableClassName="DataTableDataTable" msprop:Generator_RowClassName="DataTableRow" msprop:Generator_TableVarName="tableDataTable" msprop:Generator_UserTableName="DataTable">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_UserColumnName="id" type="xs:long" minOccurs="0" />
+              <xs:element name="nafn" msprop:Generator_ColumnPropNameInRow="nafn" msprop:Generator_ColumnPropNameInTable="nafnColumn" msprop:Generator_ColumnVarNameInTable="columnnafn" msprop:Generator_UserColumnName="nafn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="400" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="oldNafn" msprop:Generator_ColumnPropNameInRow="oldNafn" msprop:Generator_ColumnPropNameInTable="oldNafnColumn" msprop:Generator_ColumnVarNameInTable="columnoldNafn" msprop:Generator_UserColumnName="oldNafn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="400" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="slod" msprop:Generator_ColumnPropNameInRow="slod" msprop:Generator_ColumnPropNameInTable="slodColumn" msprop:Generator_ColumnVarNameInTable="columnslod" msprop:Generator_UserColumnName="slod">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="adgerd" msprop:Generator_ColumnPropNameInRow="adgerd" msprop:Generator_ColumnPropNameInTable="adgerdColumn" msprop:Generator_ColumnVarNameInTable="columnadgerd" msprop:Generator_UserColumnName="adgerd">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="400" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="laust" msprop:Generator_ColumnPropNameInRow="laust" msprop:Generator_ColumnPropNameInTable="laustColumn" msprop:Generator_ColumnVarNameInTable="columnlaust" msprop:Generator_UserColumnName="laust" type="xs:decimal" />
+              <xs:element name="drifID" msprop:Generator_ColumnPropNameInRow="drifID" msprop:Generator_ColumnPropNameInTable="drifIDColumn" msprop:Generator_ColumnVarNameInTable="columndrifID" msprop:Generator_UserColumnName="drifID" type="xs:long" />
+              <xs:element name="DATE" msprop:Generator_ColumnPropNameInRow="DATE" msprop:Generator_ColumnPropNameInTable="DATEColumn" msprop:Generator_ColumnVarNameInTable="columnDATE" msprop:Generator_UserColumnName="DATE" type="xs:dateTime" />
+              <xs:element name="villa" msprop:Generator_ColumnPropNameInRow="villa" msprop:Generator_ColumnPropNameInTable="villaColumn" msprop:Generator_ColumnVarNameInTable="columnvilla" msprop:Generator_UserColumnName="villa" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2000" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1">
+      <xs:selector xpath=".//mstns:DataTable" />
+      <xs:field xpath="mstns:id" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>
