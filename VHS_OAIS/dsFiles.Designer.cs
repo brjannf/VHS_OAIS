@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace VHS_OAIS {
+namespace VHS_FSW {
     
     
     /// <summary>
@@ -848,7 +848,7 @@ namespace VHS_OAIS {
         }
     }
 }
-namespace VHS_OAIS.dsFilesTableAdapters {
+namespace VHS_FSW.dsFilesTableAdapters {
     
     
     /// <summary>
