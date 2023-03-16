@@ -35,6 +35,7 @@ namespace OAIS_ADMIN
                 m_tacMain.Dock = DockStyle.Fill;
                 this.Text = "Velkominn " + virkurNotandi.nafn;
                 m_uscInnsetning.virkurnotandi = virkurNotandi;
+                this.WindowState = FormWindowState.Maximized;
                
             }
             else
