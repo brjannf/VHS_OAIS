@@ -51,7 +51,7 @@ namespace OAIS_ADMIN
         {
             m_tboAuðkenni_5_1_1.Text = vörslustofnun.auðkenni_5_1_1;
             m_tboOpinbert_heiti_5_1_2.Text = vörslustofnun.opinbert_heiti_5_1_2;
-            m_tboErlendHeiti_5_1_2.Text =  vörslustofnun.erlent_heiti_5_1_3;
+            m_tboErlendHeiti_5_1_3.Text =  vörslustofnun.erlent_heiti_5_1_3;
             m_tboAnnaðHeiti_5_1_4.Text = vörslustofnun.annað_heiti_5_1_4;
             m_tboTegund_5_1_5.Text = vörslustofnun.tegund_5_1_5_;
             m_tboAðsetur_5_2_1.Text = vörslustofnun.aðsetur_5_2_1;
@@ -123,7 +123,7 @@ namespace OAIS_ADMIN
         {
            // vörslustofnun.auðkenni_5_1_1 =  m_tboAuðkenni_5_1_1.Text;
             vörslustofnun.opinbert_heiti_5_1_2 = m_tboOpinbert_heiti_5_1_2.Text;
-            vörslustofnun.erlent_heiti_5_1_3 = m_tboErlendHeiti_5_1_2.Text;
+            vörslustofnun.erlent_heiti_5_1_3 = m_tboErlendHeiti_5_1_3.Text;
             vörslustofnun.annað_heiti_5_1_4 = m_tboAnnaðHeiti_5_1_4.Text;
             vörslustofnun.tegund_5_1_5_ = m_tboTegund_5_1_5.Text;
             vörslustofnun.aðsetur_5_2_1 = m_tboAðsetur_5_2_1.Text;
@@ -155,6 +155,8 @@ namespace OAIS_ADMIN
             vörslustofnun.hver_breytti = virkurnotandi.nafn;
 
             vörslustofnun.vista();
+            vörslustofnun.getVörslustofnun(vörslustofnun.auðkenni_5_1_1);
+            fyllaVörslustofnun();
             MessageBox.Show("Búið að vista breytingar");
             
         }

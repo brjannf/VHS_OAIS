@@ -285,6 +285,7 @@ namespace OAIS_ADMIN
                     }
                     skjalamyndari.auðkenni_vörslustofnunar_5_4_2 = vörslustofnun.auðkenni_5_1_1;
                     skjalamyndari.vista();
+                    skjalamyndari.getSkjalamyndara(skjalamyndari.id);
                     m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
                     m_grbISAAR.BackColor = Color.LightGreen;
                     break;
@@ -294,8 +295,11 @@ namespace OAIS_ADMIN
                     break;
 
                 case "Fullskrá":
-                    frmSkjalamyndariSkra frmSkjal = new frmSkjalamyndariSkra(skjalamyndari);
-                    frmSkjal.ShowDialog();  
+                    frmSkjalamyndariSkra frmSkjal = new frmSkjalamyndariSkra(skjalamyndari, virkurnotandi);
+                    frmSkjal.ShowDialog();
+                    skjalamyndari.getSkjalamyndara(skjalamyndari.id);
+                    m_comISAAR_gerð.SelectedValue = skjalamyndari.gerð_5_1_1;
+                    m_comISAAR_nafn.Text = skjalamyndari.opinbert_heiti_5_1_2;
                     break;
             }
 
@@ -388,6 +392,8 @@ namespace OAIS_ADMIN
                 case "Fullskrá":
                     frmVörslustofnun frmVarsla = new frmVörslustofnun(vörslustofnun, virkurnotandi);
                     frmVarsla.ShowDialog();
+                    vörslustofnun.getVörslustofnun(vörslustofnun.auðkenni_5_1_1);
+                    m_tboISDIAH_obinbert_heiti.Text = vörslustofnun.opinbert_heiti_5_1_2;
                     break;
             }
         }

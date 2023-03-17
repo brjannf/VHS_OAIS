@@ -39,7 +39,7 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.m_tboErlendHeiti_5_1_2 = new System.Windows.Forms.TextBox();
+            this.m_tboErlendHeiti_5_1_3 = new System.Windows.Forms.TextBox();
             this.m_tboAnnaðHeiti_5_1_4 = new System.Windows.Forms.TextBox();
             this.m_tboTegund_5_1_5 = new System.Windows.Forms.TextBox();
             this.m_tpl_2 = new System.Windows.Forms.TableLayoutPanel();
@@ -142,7 +142,7 @@
             this.m_tlp_1.Controls.Add(this.label19, 1, 5);
             this.m_tlp_1.Controls.Add(this.label17, 1, 0);
             this.m_tlp_1.Controls.Add(this.label18, 1, 3);
-            this.m_tlp_1.Controls.Add(this.m_tboErlendHeiti_5_1_2, 2, 3);
+            this.m_tlp_1.Controls.Add(this.m_tboErlendHeiti_5_1_3, 2, 3);
             this.m_tlp_1.Controls.Add(this.m_tboAnnaðHeiti_5_1_4, 2, 4);
             this.m_tlp_1.Controls.Add(this.m_tboTegund_5_1_5, 2, 5);
             this.m_tlp_1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
@@ -256,13 +256,13 @@
             this.label18.TabIndex = 16;
             this.label18.Text = "5.1.3 Erlend heiti";
             // 
-            // m_tboErlendHeiti_5_1_2
+            // m_tboErlendHeiti_5_1_3
             // 
-            this.m_tboErlendHeiti_5_1_2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboErlendHeiti_5_1_2.Location = new System.Drawing.Point(222, 87);
-            this.m_tboErlendHeiti_5_1_2.Name = "m_tboErlendHeiti_5_1_2";
-            this.m_tboErlendHeiti_5_1_2.Size = new System.Drawing.Size(912, 23);
-            this.m_tboErlendHeiti_5_1_2.TabIndex = 32;
+            this.m_tboErlendHeiti_5_1_3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_tboErlendHeiti_5_1_3.Location = new System.Drawing.Point(222, 87);
+            this.m_tboErlendHeiti_5_1_3.Name = "m_tboErlendHeiti_5_1_3";
+            this.m_tboErlendHeiti_5_1_3.Size = new System.Drawing.Size(912, 23);
+            this.m_tboErlendHeiti_5_1_3.TabIndex = 32;
             // 
             // m_tboAnnaðHeiti_5_1_4
             // 
@@ -403,6 +403,7 @@
             // 
             // m_tpl_3
             // 
+            this.m_tpl_3.AutoSize = true;
             this.m_tpl_3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.m_tpl_3.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.m_tpl_3.ColumnCount = 3;
@@ -867,12 +868,12 @@
             // 
             // m_tpl_6
             // 
+            this.m_tpl_6.AutoSize = true;
             this.m_tpl_6.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.m_tpl_6.ColumnCount = 3;
             this.m_tpl_6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.m_tpl_6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 196F));
             this.m_tpl_6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 517F));
-            this.m_tpl_6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.m_tpl_6.Controls.Add(this.label54, 0, 1);
             this.m_tpl_6.Controls.Add(this.m_btn_5_6, 0, 0);
             this.m_tpl_6.Controls.Add(this.label56, 1, 1);
@@ -895,7 +896,7 @@
             this.m_tpl_6.Controls.Add(this.label70, 1, 9);
             this.m_tpl_6.Controls.Add(this.m_tboAthugasemdir_5_6_9, 2, 9);
             this.m_tpl_6.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.m_tpl_6.Location = new System.Drawing.Point(67, 1042);
+            this.m_tpl_6.Location = new System.Drawing.Point(67, 1044);
             this.m_tpl_6.Name = "m_tpl_6";
             this.m_tpl_6.RowCount = 10;
             this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -905,10 +906,10 @@
             this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
-            this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.m_tpl_6.Size = new System.Drawing.Size(1134, 310);
+            this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.m_tpl_6.Size = new System.Drawing.Size(1134, 336);
             this.m_tpl_6.TabIndex = 35;
             // 
             // label54
@@ -1047,11 +1048,13 @@
             // m_tboDagsetningar_6_6_6
             // 
             this.m_tboDagsetningar_6_6_6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_tboDagsetningar_6_6_6.Enabled = false;
             this.m_tboDagsetningar_6_6_6.Location = new System.Drawing.Point(222, 180);
             this.m_tboDagsetningar_6_6_6.Multiline = true;
             this.m_tboDagsetningar_6_6_6.Name = "m_tboDagsetningar_6_6_6";
             this.m_tboDagsetningar_6_6_6.Size = new System.Drawing.Size(908, 24);
             this.m_tboDagsetningar_6_6_6.TabIndex = 38;
+            this.m_tboDagsetningar_6_6_6.TextChanged += new System.EventHandler(this.m_tboLandfræði_5_3_2_TextChanged);
             // 
             // label68
             // 
@@ -1074,7 +1077,7 @@
             // m_tboHeimildir_5_6_8
             // 
             this.m_tboHeimildir_5_6_8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboHeimildir_5_6_8.Location = new System.Drawing.Point(222, 246);
+            this.m_tboHeimildir_5_6_8.Location = new System.Drawing.Point(222, 242);
             this.m_tboHeimildir_5_6_8.Name = "m_tboHeimildir_5_6_8";
             this.m_tboHeimildir_5_6_8.Size = new System.Drawing.Size(908, 23);
             this.m_tboHeimildir_5_6_8.TabIndex = 42;
@@ -1083,7 +1086,7 @@
             // 
             this.label69.AutoSize = true;
             this.label69.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label69.Location = new System.Drawing.Point(25, 243);
+            this.label69.Location = new System.Drawing.Point(25, 239);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(83, 15);
             this.label69.TabIndex = 41;
@@ -1093,7 +1096,7 @@
             // 
             this.label70.AutoSize = true;
             this.label70.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label70.Location = new System.Drawing.Point(25, 273);
+            this.label70.Location = new System.Drawing.Point(25, 270);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(109, 15);
             this.label70.TabIndex = 43;
@@ -1102,10 +1105,12 @@
             // m_tboAthugasemdir_5_6_9
             // 
             this.m_tboAthugasemdir_5_6_9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboAthugasemdir_5_6_9.Location = new System.Drawing.Point(222, 276);
+            this.m_tboAthugasemdir_5_6_9.Location = new System.Drawing.Point(222, 273);
+            this.m_tboAthugasemdir_5_6_9.Multiline = true;
             this.m_tboAthugasemdir_5_6_9.Name = "m_tboAthugasemdir_5_6_9";
-            this.m_tboAthugasemdir_5_6_9.Size = new System.Drawing.Size(908, 23);
+            this.m_tboAthugasemdir_5_6_9.Size = new System.Drawing.Size(908, 59);
             this.m_tboAthugasemdir_5_6_9.TabIndex = 44;
+            this.m_tboAthugasemdir_5_6_9.TextChanged += new System.EventHandler(this.m_tboLandfræði_5_3_2_TextChanged);
             // 
             // m_btnVista
             // 
@@ -1130,7 +1135,7 @@
             this.Controls.Add(this.m_tpl_2);
             this.Controls.Add(this.m_tlp_1);
             this.Name = "uscVörlsustofnun";
-            this.Size = new System.Drawing.Size(1321, 1279);
+            this.Size = new System.Drawing.Size(1159, 1209);
             this.m_tlp_1.ResumeLayout(false);
             this.m_tlp_1.PerformLayout();
             this.m_tpl_2.ResumeLayout(false);
@@ -1163,7 +1168,7 @@
         private RadioButton m_rdbLokaAfhendingNei_5;
         private RadioButton m_rdbLokaAfhendingJA_5;
         private Label label18;
-        private TextBox m_tboErlendHeiti_5_1_2;
+        private TextBox m_tboErlendHeiti_5_1_3;
         private TextBox m_tboAnnaðHeiti_5_1_4;
         private TextBox m_tboTegund_5_1_5;
         private TableLayoutPanel m_tpl_2;

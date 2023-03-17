@@ -455,6 +455,7 @@
             // 
             // m_tboISDIAH_auðkenni
             // 
+            this.m_tboISDIAH_auðkenni.Enabled = false;
             this.m_tboISDIAH_auðkenni.Location = new System.Drawing.Point(147, 43);
             this.m_tboISDIAH_auðkenni.Name = "m_tboISDIAH_auðkenni";
             this.m_tboISDIAH_auðkenni.Size = new System.Drawing.Size(293, 23);

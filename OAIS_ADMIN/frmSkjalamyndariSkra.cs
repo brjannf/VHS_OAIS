@@ -18,9 +18,15 @@ namespace OAIS_ADMIN
             InitializeComponent();
         }
 
-        public frmSkjalamyndariSkra(cSkjalamyndari skjalamyndari)
+        public frmSkjalamyndariSkra(cSkjalamyndari skjalamyndari, cNotandi virkur)
         {
             InitializeComponent();
+            InitializeComponent();
+            this.Text = skjalamyndari.opinbert_heiti_5_1_2;
+            uscSkjalamyndari skjalM = new uscSkjalamyndari(skjalamyndari, virkur);
+            this.Controls.Add(skjalM);
+            skjalM.Dock = DockStyle.Fill;
+            this.WindowState = FormWindowState.Maximized;
         }
     }
 }
