@@ -52,7 +52,7 @@
             this.m_lblISAAR_gerð = new System.Windows.Forms.Label();
             this.m_comISAAR_nafn = new System.Windows.Forms.ComboBox();
             this.m_lblISAAR_nafn_5_1_2 = new System.Windows.Forms.Label();
-            this.m_grbIsadG = new System.Windows.Forms.GroupBox();
+            this.m_grbISASG = new System.Windows.Forms.GroupBox();
             this.m_tboISADG_AFHNR = new System.Windows.Forms.TextBox();
             this.m_lblISADG_AFHNR = new System.Windows.Forms.Label();
             this.m_tboISADG_timabil = new System.Windows.Forms.TextBox();
@@ -86,7 +86,7 @@
             this.m_pnlSIP.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.m_grbISAAR.SuspendLayout();
-            this.m_grbIsadG.SuspendLayout();
+            this.m_grbISASG.SuspendLayout();
             this.m_grbISADG_innihald.SuspendLayout();
             this.m_grbISDIAH.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -260,7 +260,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.10574F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 84.89426F));
             this.tableLayoutPanel1.Controls.Add(this.m_grbISAAR, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.m_grbIsadG, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.m_grbISASG, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.m_grbISDIAH, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -282,6 +282,7 @@
             this.m_grbISAAR.Controls.Add(this.m_comISAAR_nafn);
             this.m_grbISAAR.Controls.Add(this.m_lblISAAR_nafn_5_1_2);
             this.m_grbISAAR.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbISAAR.Enabled = false;
             this.m_grbISAAR.Location = new System.Drawing.Point(112, 286);
             this.m_grbISAAR.Name = "m_grbISAAR";
             this.m_grbISAAR.Size = new System.Drawing.Size(609, 190);
@@ -352,27 +353,28 @@
             this.m_lblISAAR_nafn_5_1_2.TabIndex = 0;
             this.m_lblISAAR_nafn_5_1_2.Text = "Opinbert heiti 5.1.2.";
             // 
-            // m_grbIsadG
+            // m_grbISASG
             // 
-            this.m_grbIsadG.Controls.Add(this.m_tboISADG_AFHNR);
-            this.m_grbIsadG.Controls.Add(this.m_lblISADG_AFHNR);
-            this.m_grbIsadG.Controls.Add(this.m_tboISADG_timabil);
-            this.m_grbIsadG.Controls.Add(this.label1);
-            this.m_grbIsadG.Controls.Add(this.m_btnSkraningStaðfesta);
-            this.m_grbIsadG.Controls.Add(this.m_comISADG_aðgengi);
-            this.m_grbIsadG.Controls.Add(this.m_lblISADG_aðgengi);
-            this.m_grbIsadG.Controls.Add(this.m_grbISADG_innihald);
-            this.m_grbIsadG.Controls.Add(this.m_tboISADG_titill);
-            this.m_grbIsadG.Controls.Add(this.m_lblISAAR_titill);
-            this.m_grbIsadG.Controls.Add(this.m_tboISADG_auðkenni);
-            this.m_grbIsadG.Controls.Add(this.m_lblISADG_Auðkenni);
-            this.m_grbIsadG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_grbIsadG.Location = new System.Drawing.Point(112, 482);
-            this.m_grbIsadG.Name = "m_grbIsadG";
-            this.m_grbIsadG.Size = new System.Drawing.Size(609, 366);
-            this.m_grbIsadG.TabIndex = 0;
-            this.m_grbIsadG.TabStop = false;
-            this.m_grbIsadG.Text = "3. Skjalaskrá";
+            this.m_grbISASG.Controls.Add(this.m_tboISADG_AFHNR);
+            this.m_grbISASG.Controls.Add(this.m_lblISADG_AFHNR);
+            this.m_grbISASG.Controls.Add(this.m_tboISADG_timabil);
+            this.m_grbISASG.Controls.Add(this.label1);
+            this.m_grbISASG.Controls.Add(this.m_btnSkraningStaðfesta);
+            this.m_grbISASG.Controls.Add(this.m_comISADG_aðgengi);
+            this.m_grbISASG.Controls.Add(this.m_lblISADG_aðgengi);
+            this.m_grbISASG.Controls.Add(this.m_grbISADG_innihald);
+            this.m_grbISASG.Controls.Add(this.m_tboISADG_titill);
+            this.m_grbISASG.Controls.Add(this.m_lblISAAR_titill);
+            this.m_grbISASG.Controls.Add(this.m_tboISADG_auðkenni);
+            this.m_grbISASG.Controls.Add(this.m_lblISADG_Auðkenni);
+            this.m_grbISASG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbISASG.Enabled = false;
+            this.m_grbISASG.Location = new System.Drawing.Point(112, 482);
+            this.m_grbISASG.Name = "m_grbISASG";
+            this.m_grbISASG.Size = new System.Drawing.Size(609, 366);
+            this.m_grbISASG.TabIndex = 0;
+            this.m_grbISASG.TabStop = false;
+            this.m_grbISASG.Text = "3. Skjalaskrá";
             // 
             // m_tboISADG_AFHNR
             // 
@@ -501,6 +503,7 @@
             this.m_grbISDIAH.Controls.Add(this.m_tboISDIAH_auðkenni);
             this.m_grbISDIAH.Controls.Add(this.m_lblISDIAH_auðkenni);
             this.m_grbISDIAH.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbISDIAH.Enabled = false;
             this.m_grbISDIAH.Location = new System.Drawing.Point(112, 3);
             this.m_grbISDIAH.Name = "m_grbISDIAH";
             this.m_grbISDIAH.Size = new System.Drawing.Size(609, 277);
@@ -587,8 +590,8 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.m_grbISAAR.ResumeLayout(false);
             this.m_grbISAAR.PerformLayout();
-            this.m_grbIsadG.ResumeLayout(false);
-            this.m_grbIsadG.PerformLayout();
+            this.m_grbISASG.ResumeLayout(false);
+            this.m_grbISASG.PerformLayout();
             this.m_grbISADG_innihald.ResumeLayout(false);
             this.m_grbISADG_innihald.PerformLayout();
             this.m_grbISDIAH.ResumeLayout(false);
@@ -603,7 +606,7 @@
         private SplitContainer splitContainer1;
         private Panel m_pnlSIP;
         private TableLayoutPanel tableLayoutPanel1;
-        private GroupBox m_grbIsadG;
+        private GroupBox m_grbISASG;
         private TextBox m_tboISADG_auðkenni;
         private Label m_lblISADG_Auðkenni;
         private GroupBox m_grbISAAR;

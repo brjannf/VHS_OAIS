@@ -21,6 +21,10 @@ namespace OAIS_ADMIN
         public cVorslustofnun vörslustofnun = new cVorslustofnun();
         public cSkjalamyndari skjalamyndari = new cSkjalamyndari();
         public cSkjalaskra skrá = new cSkjalaskra();
+        bool m_bISDIAH = false;
+        bool m_bISAAR = false;
+        bool m_bISADG = false;
+        bool m_bMD5 = false;  
         public uscInnSetning()
         {
             InitializeComponent();
@@ -48,18 +52,23 @@ namespace OAIS_ADMIN
                     string strVarsla = strSplit[strSplit.Length - 1];
 
 
-                    fyllaVörslustofnn(strVarsla);
                     fyllaSkjalamyndara(strArchiveIndex, strVarsla);
+                    m_grbISDIAH.Enabled = true;
                     fyllaSkjalaSkra(strArchiveIndex, strVarsla);
-                    bool erTilbuid = bMD5Test(strFileIndex, strVarsla);
-                    if (erTilbuid)
+                    m_grbISASG.Enabled = true;
+                    fyllaVörslustofnn(strVarsla);
+                    m_grbISAAR.Enabled = true;
+                    m_bMD5 = bMD5Test(strFileIndex, strVarsla);
+                    
+                    if (m_bMD5)
                     {
                         m_grbTekksuma.BackColor = Color.LightGreen;
-                        if(m_btnSkjalamyndariStadfesta.Text == "Fullkrá" && m_btnSkjalamyndariStadfesta.Text == "Fullkrá"  && m_btnVörslustofnunStaðfesta.Text == "Fullkrá")
+                        if (m_bISDIAH && m_bISAAR && m_bISADG && m_bMD5)
                         {
                             m_btnFlytjaSIP.Enabled = true;
+                            m_grbFlytjaSIP.BackColor = Color.LightYellow;
                         }
-                      
+
                     }
                 }
                 else
@@ -82,12 +91,22 @@ namespace OAIS_ADMIN
                 string[] strSplit = dropped[0].ToString().Split('\\');
                 string strVarsla = strSplit[strSplit.Length-1];
                 fyllaSkjalamyndara(strArchiveIndex, strVarsla);
+                m_grbISDIAH.Enabled = true;
                 fyllaSkjalaSkra(strArchiveIndex, strVarsla);
+                m_grbISASG.Enabled = true;
                 fyllaVörslustofnn(strVarsla);
-                bool erTilbuid = bMD5Test(strFileIndex, strVarsla);
-                if(erTilbuid)
+                m_grbISAAR.Enabled = true;
+
+                m_bMD5 = bMD5Test(strFileIndex, strVarsla);
+                if (m_bMD5)
                 {
-                    m_btnFlytjaSIP.Enabled = true;
+                    m_grbTekksuma.BackColor = Color.LightGreen;
+                    if (m_bISDIAH && m_bISAAR && m_bISADG && m_bMD5)
+                    {
+                        m_btnFlytjaSIP.Enabled = true;
+                        m_grbFlytjaSIP.BackColor = Color.LightYellow;
+                    }
+
                 }
             }
             else
@@ -101,9 +120,9 @@ namespace OAIS_ADMIN
         {
             bool bRet = true;
             m_dgvMD5Villur.Visible = false;
-            
+            m_grbTekksuma.BackColor = Color.LightYellow;
             m_dgvMD5Villur.DataSource = null; //þyrfti að taka rowið út ekki nulla út sourcinu
-            m_grbTekksuma.BackColor = SystemColors.Control;
+          //  m_grbTekksuma.BackColor = SystemColors.Control;
             DataSet ds = new DataSet();
             ds.ReadXml(strFileName);
             string strRoot = string.Empty;
@@ -201,7 +220,9 @@ namespace OAIS_ADMIN
             }
             else
             {
+                
                 string[] strSplit = strVarsla.Split(".");
+                //bæta við lengt stakks 2 == 7
                 string strAFhAR = strSplit[strSplit.Length-2].Substring(0, 4);
                 string strAFHNR = strSplit[strSplit.Length - 2].Substring(4, 3);
                 skrá.afhendingar_tilfærslur_3_2_4  = strAFhAR + " / " + strAFHNR;
@@ -334,7 +355,7 @@ namespace OAIS_ADMIN
                     m_grbISAAR.BackColor = Color.LightGreen;
                     fyllaSkjalamyndaraLista();
                     m_comISAAR_nafn.SelectedValue = skjalamyndari.auðkenni_5_1_6;
-                    m_btnSkraningStaðfesta.Enabled = false; 
+                    m_btnSkraningStaðfesta.Enabled = true; 
                     break;
                 case "Staðfesta":
                     if(skjalamyndari.ID != 0)
@@ -342,6 +363,7 @@ namespace OAIS_ADMIN
                         m_grbISAAR.BackColor = Color.LightGreen;
                         m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
                         m_btnSkraningStaðfesta.Enabled = true;
+                        m_bISAAR = true;
                     }
                    
                     break;
@@ -352,6 +374,7 @@ namespace OAIS_ADMIN
                     skjalamyndari.getSkjalamyndara(skjalamyndari.ID);
                     m_comISAAR_gerð.SelectedValue = skjalamyndari.gerð_5_1_1;
                     m_comISAAR_nafn.Text = skjalamyndari.opinbert_heiti_5_1_2;
+                    m_bISAAR = true;
                     break;
             }
 
@@ -382,14 +405,16 @@ namespace OAIS_ADMIN
                         return;
                     }
                     skrá.skjalamyndari = skjalamyndari.ID;
+                    skrá.vörslustofnun = vörslustofnun.auðkenni_5_1_1;
                     skrá.vista();
                     skrá.getSkraning(skrá.auðkenni_3_1_1);
                     m_btnSkraningStaðfesta.Text = "Fullskrá";
-                    m_grbIsadG.BackColor = Color.LightGreen;
+                    m_grbISASG.BackColor = Color.LightGreen;
                     break;
                 case "Staðfesta":
-                    m_grbIsadG.BackColor = Color.LightGreen;
+                    m_grbISASG.BackColor = Color.LightGreen;
                     m_btnSkraningStaðfesta.Text = "Fullskrá";
+                    m_bISADG = true;
                     break;
 
                 case "Fullskrá":
@@ -399,10 +424,11 @@ namespace OAIS_ADMIN
                     m_comISADG_aðgengi.SelectedItem = skrá.skilyrði_aðgengi_3_4_1;
                     m_tboISADG_titill.Text = skrá.titill_3_1_2;
                     m_tboISADG_innihald.Text = skrá.yfirlit_innihald_3_3_1;
+                    m_bISADG = true;
                     break;
             }
 
-            if (vörslustofnun.ID != 0 && skjalamyndari.ID != 0 && skrá.ID != 0 && m_dgvMD5Villur.DataSource == null)
+            if (m_bISDIAH && m_bISAAR && m_bISADG && m_bMD5)
             {
                 m_btnFlytjaSIP.Enabled = true;
                 m_grbFlytjaSIP.BackColor = Color.LightYellow;
@@ -443,6 +469,7 @@ namespace OAIS_ADMIN
                     m_btnVörslustofnunStaðfesta.Text = "Fullskrá";
                     m_grbISDIAH.BackColor = Color.LightGreen;
                     m_btnSkjalamyndariStadfesta.Enabled = true;
+                    m_bISDIAH = true;
                     break;
                 case "Staðfesta":
                     if(vörslustofnun.ID != 0)
@@ -450,6 +477,7 @@ namespace OAIS_ADMIN
                         m_grbISDIAH.BackColor = Color.LightGreen;
                         m_btnVörslustofnunStaðfesta.Text = "Fullskrá";
                         m_btnSkjalamyndariStadfesta.Enabled = true;
+                        m_bISDIAH = true;
                     }
                  
                     break;
@@ -459,6 +487,7 @@ namespace OAIS_ADMIN
                     frmVarsla.ShowDialog();
                     vörslustofnun.getVörslustofnun(vörslustofnun.auðkenni_5_1_1);
                     m_tboISDIAH_obinbert_heiti.Text = vörslustofnun.opinbert_heiti_5_1_2;
+                    m_bISADG = true;
                     break;
             }
         }
