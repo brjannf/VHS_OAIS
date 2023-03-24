@@ -55,7 +55,13 @@ namespace OAIS_ADMIN
         }
         private void fyllaSkjalamyndara()
         {
-           m_comGerd_5_1_1.SelectedValue = skjalamyndari.gerð_5_1_1;
+            m_lblSkrad.Text = "Skráð: " + skjalamyndari.dags_skráð + " -" + skjalamyndari.hver_skráði;
+            if (skjalamyndari.hver_breytti != string.Empty)
+            {
+                m_lblBreytt.Visible = true;
+                m_lblBreytt.Text = "Síðast breytt: " + skjalamyndari.dags_breytt + " - " + skjalamyndari.hver_breytti;
+            }
+            m_comGerd_5_1_1.SelectedValue = skjalamyndari.gerð_5_1_1;
            m_tboOpinbert_heiti_5_1_2.Text = skjalamyndari.opinbert_heiti_5_1_2;
            m_tboErlendHeiti_5_1_3.Text = skjalamyndari.erlent_heiti_5_1_3;
            m_tboAnnaðHeitiAdkagad_5_1_4.Text = skjalamyndari.annað_heiti_aðlagað_5_1_4;

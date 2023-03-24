@@ -49,6 +49,12 @@ namespace OAIS_ADMIN
 
         private void fyllaVörslustofnun()
         {
+            m_lblSkrad.Text = "Skráð: " + vörslustofnun.dags_skráð + " -" + vörslustofnun.hver_skráði;
+            if (vörslustofnun.hver_breytti != string.Empty)
+            {
+                m_lblBreytt.Visible = true;
+                m_lblBreytt.Text = "Síðast breytt: " + vörslustofnun.dags_breytt + " - " + vörslustofnun.hver_breytti;
+            }
             m_tboAuðkenni_5_1_1.Text = vörslustofnun.auðkenni_5_1_1;
             m_tboOpinbert_heiti_5_1_2.Text = vörslustofnun.opinbert_heiti_5_1_2;
             m_tboErlendHeiti_5_1_3.Text =  vörslustofnun.erlent_heiti_5_1_3;
@@ -173,6 +179,11 @@ namespace OAIS_ADMIN
             // set height (height of one line * number of lines + spacing)
             box.Height = 20 * numLines + padding + border; // box.Height * numLines + padding + border;
             stillaToflur();
+        }
+
+        private void uscVörlsustofnun_Load(object sender, EventArgs e)
+        {
+
         }
     }
    

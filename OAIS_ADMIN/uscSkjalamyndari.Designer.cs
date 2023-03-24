@@ -90,6 +90,8 @@
             this.m_tboHeimildir_5_4_8 = new System.Windows.Forms.TextBox();
             this.m_comSkraningStada_5_4_4 = new System.Windows.Forms.ComboBox();
             this.m_comSkranStig_5_4_5 = new System.Windows.Forms.ComboBox();
+            this.m_lblBreytt = new System.Windows.Forms.Label();
+            this.m_lblSkrad = new System.Windows.Forms.Label();
             this.m_tlp_1.SuspendLayout();
             this.m_tpl_2.SuspendLayout();
             this.m_tpl_3.SuspendLayout();
@@ -278,6 +280,7 @@
             // 
             // m_comGerd_5_1_1
             // 
+            this.m_comGerd_5_1_1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_comGerd_5_1_1.FormattingEnabled = true;
             this.m_comGerd_5_1_1.Location = new System.Drawing.Point(222, 25);
             this.m_comGerd_5_1_1.Name = "m_comGerd_5_1_1";
@@ -795,6 +798,7 @@
             // m_comSkraningStada_5_4_4
             // 
             this.m_comSkraningStada_5_4_4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_comSkraningStada_5_4_4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_comSkraningStada_5_4_4.FormattingEnabled = true;
             this.m_comSkraningStada_5_4_4.Location = new System.Drawing.Point(222, 107);
             this.m_comSkraningStada_5_4_4.Name = "m_comSkraningStada_5_4_4";
@@ -804,16 +808,38 @@
             // m_comSkranStig_5_4_5
             // 
             this.m_comSkranStig_5_4_5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_comSkranStig_5_4_5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_comSkranStig_5_4_5.FormattingEnabled = true;
             this.m_comSkranStig_5_4_5.Location = new System.Drawing.Point(222, 137);
             this.m_comSkranStig_5_4_5.Name = "m_comSkranStig_5_4_5";
             this.m_comSkranStig_5_4_5.Size = new System.Drawing.Size(916, 23);
             this.m_comSkranStig_5_4_5.TabIndex = 42;
             // 
+            // m_lblBreytt
+            // 
+            this.m_lblBreytt.AutoSize = true;
+            this.m_lblBreytt.Location = new System.Drawing.Point(213, 41);
+            this.m_lblBreytt.Name = "m_lblBreytt";
+            this.m_lblBreytt.Size = new System.Drawing.Size(44, 15);
+            this.m_lblBreytt.TabIndex = 48;
+            this.m_lblBreytt.Text = "label41";
+            this.m_lblBreytt.Visible = false;
+            // 
+            // m_lblSkrad
+            // 
+            this.m_lblSkrad.AutoSize = true;
+            this.m_lblSkrad.Location = new System.Drawing.Point(213, 20);
+            this.m_lblSkrad.Name = "m_lblSkrad";
+            this.m_lblSkrad.Size = new System.Drawing.Size(44, 15);
+            this.m_lblSkrad.TabIndex = 47;
+            this.m_lblSkrad.Text = "label38";
+            // 
             // uscSkjalamyndari
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_lblBreytt);
+            this.Controls.Add(this.m_lblSkrad);
             this.Controls.Add(this.m_tpl_4);
             this.Controls.Add(this.m_tpl_3);
             this.Controls.Add(this.m_tpl_2);
@@ -898,5 +924,7 @@
         private ComboBox m_comSkranStig_5_4_5;
         private TextBox m_tboLog_5_2_6;
         private ComboBox m_comGerd_5_1_1;
+        private Label m_lblBreytt;
+        private Label m_lblSkrad;
     }
 }

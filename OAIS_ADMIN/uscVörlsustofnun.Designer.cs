@@ -115,6 +115,8 @@
             this.label70 = new System.Windows.Forms.Label();
             this.m_tboAthugasemdir_5_6_9 = new System.Windows.Forms.TextBox();
             this.m_btnVista = new System.Windows.Forms.Button();
+            this.m_lblBreytt = new System.Windows.Forms.Label();
+            this.m_lblSkrad = new System.Windows.Forms.Label();
             this.m_tlp_1.SuspendLayout();
             this.m_tpl_2.SuspendLayout();
             this.m_tpl_3.SuspendLayout();
@@ -1020,6 +1022,7 @@
             // m_comSrkáningarStaaða_5_6_4
             // 
             this.m_comSrkáningarStaaða_5_6_4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_comSrkáningarStaaða_5_6_4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_comSrkáningarStaaða_5_6_4.FormattingEnabled = true;
             this.m_comSrkáningarStaaða_5_6_4.Location = new System.Drawing.Point(222, 118);
             this.m_comSrkáningarStaaða_5_6_4.Name = "m_comSrkáningarStaaða_5_6_4";
@@ -1029,6 +1032,7 @@
             // m_comSkrangingrStig_5_6_5
             // 
             this.m_comSkrangingrStig_5_6_5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_comSkrangingrStig_5_6_5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_comSkrangingrStig_5_6_5.FormattingEnabled = true;
             this.m_comSkrangingrStig_5_6_5.Location = new System.Drawing.Point(222, 149);
             this.m_comSkrangingrStig_5_6_5.Name = "m_comSkrangingrStig_5_6_5";
@@ -1122,11 +1126,32 @@
             this.m_btnVista.UseVisualStyleBackColor = true;
             this.m_btnVista.Click += new System.EventHandler(this.m_btnVista_Click);
             // 
+            // m_lblBreytt
+            // 
+            this.m_lblBreytt.AutoSize = true;
+            this.m_lblBreytt.Location = new System.Drawing.Point(269, 53);
+            this.m_lblBreytt.Name = "m_lblBreytt";
+            this.m_lblBreytt.Size = new System.Drawing.Size(44, 15);
+            this.m_lblBreytt.TabIndex = 50;
+            this.m_lblBreytt.Text = "label41";
+            this.m_lblBreytt.Visible = false;
+            // 
+            // m_lblSkrad
+            // 
+            this.m_lblSkrad.AutoSize = true;
+            this.m_lblSkrad.Location = new System.Drawing.Point(269, 32);
+            this.m_lblSkrad.Name = "m_lblSkrad";
+            this.m_lblSkrad.Size = new System.Drawing.Size(44, 15);
+            this.m_lblSkrad.TabIndex = 49;
+            this.m_lblSkrad.Text = "label38";
+            // 
             // uscVörlsustofnun
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.Controls.Add(this.m_lblBreytt);
+            this.Controls.Add(this.m_lblSkrad);
             this.Controls.Add(this.m_btnVista);
             this.Controls.Add(this.m_tpl_6);
             this.Controls.Add(this.m_tpl_5);
@@ -1135,7 +1160,8 @@
             this.Controls.Add(this.m_tpl_2);
             this.Controls.Add(this.m_tlp_1);
             this.Name = "uscVörlsustofnun";
-            this.Size = new System.Drawing.Size(1159, 1209);
+            this.Size = new System.Drawing.Size(1285, 1469);
+            this.Load += new System.EventHandler(this.uscVörlsustofnun_Load);
             this.m_tlp_1.ResumeLayout(false);
             this.m_tlp_1.PerformLayout();
             this.m_tpl_2.ResumeLayout(false);
@@ -1244,5 +1270,7 @@
         private Label label70;
         private TextBox m_tboAthugasemdir_5_6_9;
         private Button m_btnVista;
+        private Label m_lblBreytt;
+        private Label m_lblSkrad;
     }
 }

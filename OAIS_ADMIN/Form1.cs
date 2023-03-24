@@ -31,8 +31,8 @@ namespace OAIS_ADMIN
             virkurNotandi.sækjaNotanda(strNotandi, strLykilorð);
             if (virkurNotandi.nafn != null)
             {
-                m_tacMain.BringToFront();
-                m_tacMain.Dock = DockStyle.Fill;
+                m_tapUmsjon.BringToFront();
+                m_tapUmsjon.Dock = DockStyle.Fill;
                 this.Text = "Velkominn " + virkurNotandi.nafn;
                 m_uscInnsetning.virkurnotandi = virkurNotandi;
                 this.WindowState = FormWindowState.Maximized;

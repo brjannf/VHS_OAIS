@@ -93,6 +93,48 @@ namespace cClassOAIS
 
             return dt;
         }
+
+        public void hreinsaHlut()
+        {
+
+            this.ID = 0;
+            this.auðkenni_5_1_1 = string.Empty;
+            this.opinbert_heiti_5_1_2 = string.Empty;
+            this.opinbert_heiti_5_1_2 = string.Empty;
+            this.erlent_heiti_5_1_3 = string.Empty;
+            this.annað_heiti_5_1_4 = string.Empty;
+            this.tegund_5_1_5_ = string.Empty;
+            this.aðsetur_5_2_1 = string.Empty;
+            this.samskiptaleiðir_5_2_2 = string.Empty;
+            this.samskiptaaðilar_5_2_3 = string.Empty;
+            this.saga_stofnunar_5_3_1 = string.Empty;
+            this.landfræðilegt_samhengi_5_3_2 = string.Empty;
+            this.stjórnsýsluheimildir_5_3_3 = string.Empty;
+            this.stjórnsýsluleg_staða_5_3_4 = string.Empty;
+            this.varðveislustefna_5_3_5 = string.Empty;
+            this.byggingar_5_3_6 = string.Empty;
+            this.skjalaforði_5_3_7 = string.Empty;
+            this.útgáfur_5_3_8 = string.Empty;
+            this.opnunartímar_5_4_1 = string.Empty;
+            this.aðgangsforsendur_5_4_2 = string.Empty;
+            this.aðgengi_5_4_3 = string.Empty;
+            this.rannsóknarþjónusta_5_5_1 = string.Empty;
+            this.afritunarþjónusta_5_5_2 = string.Empty;
+            this.almenningssvæði_5_5_3 = string.Empty;
+            this.lýsandi_auðkenni_5_6_1 = string.Empty;
+            this.einkennandi_heiti_5_6_2 = string.Empty;
+            this.reglur_staðlar_5_6_3 = string.Empty;
+            this.skráningarstaða_5_6_4 = string.Empty;
+            this.skráningarstig_5_6_5 = string.Empty;
+            this.dagsetningar_5_6_6 = string.Empty;
+            this.tungumál_letur_5_6_7 = string.Empty;
+            this.heimildir_5_6_8 = string.Empty;
+            this.athugasemdir_5_6_9 = string.Empty;
+            this.hver_skráði = string.Empty;
+            this.dags_skráð = string.Empty;
+            this.hver_breytti = string.Empty;
+            this.dags_breytt = string.Empty;
+        }   
         public  void getVörslustofnun(string strAuðkenni)
         {
             string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_isdiah_vörslustofnanir` d where 5_1_1_auðkenni = '{0}';", strAuðkenni);

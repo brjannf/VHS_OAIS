@@ -87,14 +87,32 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@3_6_1_athugasemdir", this.athugasemdir_3_6_1);
             command.Parameters.AddWithValue("@3_7_1_athugasemdir_skjalavarðar", this.athugasemdir_skjalavarðar_3_7_1);
             command.Parameters.AddWithValue("@3_7_2_reglur_venjur", this.reglur_venjur_3_7_2);
-            command.Parameters.AddWithValue("@3_7_3_dagsetningar", this.dagsetningar_3_7_3);
+           // command.Parameters.AddWithValue("@3_7_3_dagsetningar", this.dagsetningar_3_7_3);
             command.Parameters.AddWithValue("@hver_skráði", this.hver_skráði);
             command.Parameters.AddWithValue("@dags_skráð", this.dags_skráð);
             command.Parameters.AddWithValue("@hver_breytti", this.hver_breytti);
             command.Parameters.AddWithValue("@dags_breytt", this.dags_breytt);
 
 
-            command.CommandText = "INSERT INTO `dt_isadg_skráningar` SET  `vörslustofnun`=@vörslustofnun, `skjalamyndari`=@skjalamyndari, `tilheyrir_skráningu`=@tilheyrir_skráningu, `3_1_1_auðkenni`=@3_1_1_auðkenni, `3_1_2_titill`=@3_1_2_titill, `3_1_3_tímabil`=@3_1_3_tímabill, `3_1_4_upplýsingastig`=@3_1_4_upplýsingastig, `3_1_5_magn_lýsing`=@3_1_5_magn_lýsing, `3_2_1_heiti_skjalamyndara`=@3_2_1_heiti_skjalamyndara, `3_2_2_saga_skjalamyndara`=@3_2_2_saga_skjalamyndara, `3_2_3_saga_skjalanna`=@3_2_3_saga_skjalanna, `3_2_4_afhendingar_tilfærslur`=@3_2_4_afhendingar_tilfærslur, `3_3_1_yfirlit_innihald`=@3_3_1_yfirlit_innihald, `3_3_2_tímaáætlanir`=@3_3_2_tímaáætlanir, `3_3_3_fyrirsjáanlegar_viðbætur`=@3_3_3_fyrirsjáanlegar_viðbætur, `3_3_4_innri_skipan`=@3_3_4_innri_skipan, `3_4_1_skilyrði_aðgengi`=@3_4_1_skilyrði_aðgengi, `3_4_2_skilyrði_endurprentun`=@3_4_2_skilyrði_endurprentun, `3_4_3_tungumál`=@3_4_3_tungumál, `3_4_4_ytri_einkenni`=@3_4_4_ytri_einkenni, `3_4_5_hjálpargögn`=@3_4_5_hjálpargögn, `3_5_1_tilvist_frumrita`=@3_5_1_tilvist_frumrita, `3_5_2_tilvist_afrita`=@3_5_2_tilvist_afrita, `3_5_3_skyld_skjöl`=@3_5_3_skyld_skjöl, `3_5_4_útgáfuupplýsingar`=@3_5_4_útgáfuupplýsingar, `3_6_1_athugasemdir`=@3_6_1_athugasemdir, `3_7_1_athugasemdir_skjalavarðar`=@3_7_1_athugasemdir_skjalavarðar, `3_7_2_reglur_venjur`=@3_7_2_reglur_venjur, `3_7_3_dagsetningar`=@3_7_3_dagsetningar, `hver_skráði`=@hver_skráði, `dags_skráð`=NOW()";
+            if (this.ID != 0)
+            {
+                string strNewDate = string.Format("Breytt: {0} af {1}", DateTime.Now, this.hver_breytti);
+                string strDagsetningar = this.dagsetningar_3_7_3 + Environment.NewLine + strNewDate;
+                command.Parameters.AddWithValue("@3_7_3_dagsetningar", strDagsetningar);
+            }
+            else
+            {
+                string strNewDate = string.Format("Skráð: {0} af {1}", DateTime.Now, this.hver_skráði);
+                command.Parameters.AddWithValue("@3_7_3_dagsetningar", strNewDate);
+            }
+            if(ID == 0) 
+            {
+                command.CommandText = "INSERT INTO `dt_isadg_skráningar` SET  `vörslustofnun`=@vörslustofnun, `skjalamyndari`=@skjalamyndari, `tilheyrir_skráningu`=@tilheyrir_skráningu, `3_1_1_auðkenni`=@3_1_1_auðkenni, `3_1_2_titill`=@3_1_2_titill, `3_1_3_tímabil`=@3_1_3_tímabil, `3_1_4_upplýsingastig`=@3_1_4_upplýsingastig, `3_1_5_magn_lýsing`=@3_1_5_magn_lýsing, `3_2_1_heiti_skjalamyndara`=@3_2_1_heiti_skjalamyndara, `3_2_2_saga_skjalamyndara`=@3_2_2_saga_skjalamyndara, `3_2_3_saga_skjalanna`=@3_2_3_saga_skjalanna, `3_2_4_afhendingar_tilfærslur`=@3_2_4_afhendingar_tilfærslur, `3_3_1_yfirlit_innihald`=@3_3_1_yfirlit_innihald, `3_3_2_tímaáætlanir`=@3_3_2_tímaáætlanir, `3_3_3_fyrirsjáanlegar_viðbætur`=@3_3_3_fyrirsjáanlegar_viðbætur, `3_3_4_innri_skipan`=@3_3_4_innri_skipan, `3_4_1_skilyrði_aðgengi`=@3_4_1_skilyrði_aðgengi, `3_4_2_skilyrði_endurprentun`=@3_4_2_skilyrði_endurprentun, `3_4_3_tungumál`=@3_4_3_tungumál, `3_4_4_ytri_einkenni`=@3_4_4_ytri_einkenni, `3_4_5_hjálpargögn`=@3_4_5_hjálpargögn, `3_5_1_tilvist_frumrita`=@3_5_1_tilvist_frumrita, `3_5_2_tilvist_afrita`=@3_5_2_tilvist_afrita, `3_5_3_skyld_skjöl`=@3_5_3_skyld_skjöl, `3_5_4_útgáfuupplýsingar`=@3_5_4_útgáfuupplýsingar, `3_6_1_athugasemdir`=@3_6_1_athugasemdir, `3_7_1_athugasemdir_skjalavarðar`=@3_7_1_athugasemdir_skjalavarðar, `3_7_2_reglur_venjur`=@3_7_2_reglur_venjur, `3_7_3_dagsetningar`=@3_7_3_dagsetningar, `hver_skráði`=@hver_skráði, `dags_skráð`=NOW()";
+            }
+            else
+            {
+                command.CommandText = "UPDATE `dt_isadg_skráningar` SET  `vörslustofnun`=@vörslustofnun, `skjalamyndari`=@skjalamyndari, `tilheyrir_skráningu`=@tilheyrir_skráningu, `3_1_1_auðkenni`=@3_1_1_auðkenni, `3_1_2_titill`=@3_1_2_titill, `3_1_3_tímabil`=@3_1_3_tímabil, `3_1_4_upplýsingastig`=@3_1_4_upplýsingastig, `3_1_5_magn_lýsing`=@3_1_5_magn_lýsing, `3_2_1_heiti_skjalamyndara`=@3_2_1_heiti_skjalamyndara, `3_2_2_saga_skjalamyndara`=@3_2_2_saga_skjalamyndara, `3_2_3_saga_skjalanna`=@3_2_3_saga_skjalanna, `3_2_4_afhendingar_tilfærslur`=@3_2_4_afhendingar_tilfærslur, `3_3_1_yfirlit_innihald`=@3_3_1_yfirlit_innihald, `3_3_2_tímaáætlanir`=@3_3_2_tímaáætlanir, `3_3_3_fyrirsjáanlegar_viðbætur`=@3_3_3_fyrirsjáanlegar_viðbætur, `3_3_4_innri_skipan`=@3_3_4_innri_skipan, `3_4_1_skilyrði_aðgengi`=@3_4_1_skilyrði_aðgengi, `3_4_2_skilyrði_endurprentun`=@3_4_2_skilyrði_endurprentun, `3_4_3_tungumál`=@3_4_3_tungumál, `3_4_4_ytri_einkenni`=@3_4_4_ytri_einkenni, `3_4_5_hjálpargögn`=@3_4_5_hjálpargögn, `3_5_1_tilvist_frumrita`=@3_5_1_tilvist_frumrita, `3_5_2_tilvist_afrita`=@3_5_2_tilvist_afrita, `3_5_3_skyld_skjöl`=@3_5_3_skyld_skjöl, `3_5_4_útgáfuupplýsingar`=@3_5_4_útgáfuupplýsingar, `3_6_1_athugasemdir`=@3_6_1_athugasemdir, `3_7_1_athugasemdir_skjalavarðar`=@3_7_1_athugasemdir_skjalavarðar, `3_7_2_reglur_venjur`=@3_7_2_reglur_venjur, `3_7_3_dagsetningar`=@3_7_3_dagsetningar, `hver_breytti`=@hver_breytti, `dags_breytt`=NOW() WHERE `ID`=@ID;";
+            }
             command.ExecuteNonQuery();
             conn.Dispose();
             command.Dispose();
@@ -102,6 +120,44 @@ namespace cClassOAIS
 
         }
 
+        public void hreinsaHlut()
+        {
+            this.ID = 0;
+            this.vörslustofnun = string.Empty;
+            this.skjalamyndari = 0;
+            this.tilheyrir_skráningu = 0;
+            this.ritskoðun = string.Empty;
+            this.auðkenni_3_1_1 = string.Empty;
+            this.titill_3_1_2 = string.Empty;
+            this.tímabil_3_1_3 = string.Empty;
+            this.upplýsingastig_3_1_4 = string.Empty;
+            this.magn_lýsing_3_1_5 = string.Empty;
+            this.heiti_skjalamyndara_3_2_1 = string.Empty;
+            this.saga_skjalamyndara_3_2_2 = string.Empty;
+            this.saga_skjalanna_3_2_3 = string.Empty;
+            this.afhendingar_tilfærslur_3_2_4 = string.Empty;
+            this.yfirlit_innihald_3_3_1 = string.Empty;
+            this.tímaáætlanir_3_3_2 = string.Empty;
+            this.fyrirsjáanlegar_viðbætur_3_3_3 = string.Empty;
+            this.innri_skipan_3_3_4 = string.Empty;
+            this.skilyrði_aðgengi_3_4_1 = string.Empty;
+            this.skilyrði_endurprentun_3_4_2 = string.Empty;
+            this.tungumál_3_4_3 = string.Empty;
+            this.ytri_einkenni_3_4_4 = string.Empty;
+            this.hjálpargögn_3_4_5 = string.Empty;
+            this.tilvist_frumrita_3_5_1 = string.Empty;
+            this.tilvist_afrita_3_5_2 = string.Empty;
+            this.skyld_skjöl_3_5_3 = string.Empty;
+            this.útgáfuupplýsingar_3_5_4 = string.Empty;
+            this.athugasemdir_3_6_1 = string.Empty;
+            this.athugasemdir_skjalavarðar_3_7_1 = string.Empty;
+            this.reglur_venjur_3_7_2 = string.Empty;
+            this.dagsetningar_3_7_3 = string.Empty;
+            this.hver_skráði = string.Empty;
+            this.dags_skráð = string.Empty;
+            this.hver_breytti = string.Empty;
+            this.dags_breytt = string.Empty;
+        }
         public void getSkraning(string strAuðkenni)
         {
             string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_isadg_skráningar` d where 3_1_1_auðkenni = '{0}'; ", strAuðkenni);
@@ -151,6 +207,29 @@ namespace cClassOAIS
 
                 }
             }
+        }
+
+        public DataTable getUpplysingastigENUM()
+        {
+            string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as stig FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isadg_skráningar'AND COLUMN_NAME='3_1_4_upplýsingastig';");
+            var strengur = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
+            DataTable dt = new DataTable();
+            dt.Columns.Add("gerd");
+            string[] strSplit = strengur.ToString().Split(',');
+            foreach (string str in strSplit)
+            {
+                DataRow r = dt.NewRow();
+                string strGerð = str.Replace("(", "");
+                strGerð = strGerð.Replace(")", "");
+                strGerð = strGerð.Replace("\'", "");
+                r["gerd"] = strGerð;
+                dt.Rows.Add(r);
+                dt.AcceptChanges();
+
+            }
+
+            return dt;
         }
     }
 

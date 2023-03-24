@@ -17,9 +17,14 @@ namespace OAIS_ADMIN
         {
             InitializeComponent();
         }
-        public frmSkráning(cSkjalaskra skrá)
+        public frmSkráning(cSkjalaskra skrá, cNotandi virkur)
         {
             InitializeComponent();
+            this.Text = "Afhendingarútgáfa - " + skrá.titill_3_1_2 + " " + skrá.auðkenni_3_1_1;
+            uscSkraningar skjalM = new uscSkraningar(skrá, virkur);
+            this.Controls.Add(skjalM);
+            skjalM.Dock = DockStyle.Fill;
+            this.WindowState = FormWindowState.Maximized;
 
         }
 

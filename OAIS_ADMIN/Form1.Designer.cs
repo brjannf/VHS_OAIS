@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.m_tacMain = new System.Windows.Forms.TabControl();
+            this.m_tapUmsjon = new System.Windows.Forms.TabControl();
             this.m_tapInnsetning = new System.Windows.Forms.TabPage();
             this.m_uscInnsetning = new OAIS_ADMIN.uscInnSetning();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.m_tapGeymsluMiðlar = new System.Windows.Forms.TabPage();
+            this.m_tapGagnaUmsjon = new System.Windows.Forms.TabPage();
+            this.m_tapMiðlun = new System.Windows.Forms.TabPage();
             this.m_pnlNotandi = new System.Windows.Forms.Panel();
             this.m_lblVillaInnSkraning = new System.Windows.Forms.Label();
             this.m_btnInnskra = new System.Windows.Forms.Button();
@@ -39,20 +41,24 @@
             this.m_tboLykilOrd = new System.Windows.Forms.TextBox();
             this.m_lblNotendaNafn = new System.Windows.Forms.Label();
             this.m_tboNoterndaNafn = new System.Windows.Forms.TextBox();
-            this.m_tacMain.SuspendLayout();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.m_tapUmsjon.SuspendLayout();
             this.m_tapInnsetning.SuspendLayout();
             this.m_pnlNotandi.SuspendLayout();
             this.SuspendLayout();
             // 
-            // m_tacMain
+            // m_tapUmsjon
             // 
-            this.m_tacMain.Controls.Add(this.m_tapInnsetning);
-            this.m_tacMain.Controls.Add(this.tabPage1);
-            this.m_tacMain.Location = new System.Drawing.Point(12, 136);
-            this.m_tacMain.Name = "m_tacMain";
-            this.m_tacMain.SelectedIndex = 0;
-            this.m_tacMain.Size = new System.Drawing.Size(562, 461);
-            this.m_tacMain.TabIndex = 1;
+            this.m_tapUmsjon.Controls.Add(this.m_tapInnsetning);
+            this.m_tapUmsjon.Controls.Add(this.m_tapGeymsluMiðlar);
+            this.m_tapUmsjon.Controls.Add(this.m_tapGagnaUmsjon);
+            this.m_tapUmsjon.Controls.Add(this.m_tapMiðlun);
+            this.m_tapUmsjon.Controls.Add(this.tabPage4);
+            this.m_tapUmsjon.Location = new System.Drawing.Point(12, 136);
+            this.m_tapUmsjon.Name = "m_tapUmsjon";
+            this.m_tapUmsjon.SelectedIndex = 0;
+            this.m_tapUmsjon.Size = new System.Drawing.Size(782, 461);
+            this.m_tapUmsjon.TabIndex = 1;
             // 
             // m_tapInnsetning
             // 
@@ -60,9 +66,9 @@
             this.m_tapInnsetning.Location = new System.Drawing.Point(4, 24);
             this.m_tapInnsetning.Name = "m_tapInnsetning";
             this.m_tapInnsetning.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapInnsetning.Size = new System.Drawing.Size(554, 433);
+            this.m_tapInnsetning.Size = new System.Drawing.Size(774, 433);
             this.m_tapInnsetning.TabIndex = 1;
-            this.m_tapInnsetning.Text = "Innsetning";
+            this.m_tapInnsetning.Text = "Innsetning (Ingest entity)";
             this.m_tapInnsetning.UseVisualStyleBackColor = true;
             // 
             // m_uscInnsetning
@@ -70,18 +76,38 @@
             this.m_uscInnsetning.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_uscInnsetning.Location = new System.Drawing.Point(3, 3);
             this.m_uscInnsetning.Name = "m_uscInnsetning";
-            this.m_uscInnsetning.Size = new System.Drawing.Size(548, 427);
+            this.m_uscInnsetning.Size = new System.Drawing.Size(768, 427);
             this.m_uscInnsetning.TabIndex = 0;
             // 
-            // tabPage1
+            // m_tapGeymsluMiðlar
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(554, 433);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Geymslumiðlar";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.m_tapGeymsluMiðlar.Location = new System.Drawing.Point(4, 24);
+            this.m_tapGeymsluMiðlar.Name = "m_tapGeymsluMiðlar";
+            this.m_tapGeymsluMiðlar.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapGeymsluMiðlar.Size = new System.Drawing.Size(774, 433);
+            this.m_tapGeymsluMiðlar.TabIndex = 0;
+            this.m_tapGeymsluMiðlar.Text = "Geymslumiðlar (Archival storage)";
+            this.m_tapGeymsluMiðlar.UseVisualStyleBackColor = true;
+            // 
+            // m_tapGagnaUmsjon
+            // 
+            this.m_tapGagnaUmsjon.Location = new System.Drawing.Point(4, 24);
+            this.m_tapGagnaUmsjon.Name = "m_tapGagnaUmsjon";
+            this.m_tapGagnaUmsjon.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapGagnaUmsjon.Size = new System.Drawing.Size(774, 433);
+            this.m_tapGagnaUmsjon.TabIndex = 2;
+            this.m_tapGagnaUmsjon.Text = "Gagnaumsjón (Data management)";
+            this.m_tapGagnaUmsjon.UseVisualStyleBackColor = true;
+            // 
+            // m_tapMiðlun
+            // 
+            this.m_tapMiðlun.Location = new System.Drawing.Point(4, 24);
+            this.m_tapMiðlun.Name = "m_tapMiðlun";
+            this.m_tapMiðlun.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapMiðlun.Size = new System.Drawing.Size(774, 433);
+            this.m_tapMiðlun.TabIndex = 3;
+            this.m_tapMiðlun.Text = "Miðlun (Access)";
+            this.m_tapMiðlun.UseVisualStyleBackColor = true;
             // 
             // m_pnlNotandi
             // 
@@ -91,7 +117,7 @@
             this.m_pnlNotandi.Controls.Add(this.m_tboLykilOrd);
             this.m_pnlNotandi.Controls.Add(this.m_lblNotendaNafn);
             this.m_pnlNotandi.Controls.Add(this.m_tboNoterndaNafn);
-            this.m_pnlNotandi.Location = new System.Drawing.Point(615, 160);
+            this.m_pnlNotandi.Location = new System.Drawing.Point(824, 252);
             this.m_pnlNotandi.Name = "m_pnlNotandi";
             this.m_pnlNotandi.Size = new System.Drawing.Size(471, 437);
             this.m_pnlNotandi.TabIndex = 2;
@@ -153,16 +179,26 @@
             this.m_tboNoterndaNafn.TabIndex = 5;
             this.m_tboNoterndaNafn.KeyUp += new System.Windows.Forms.KeyEventHandler(this.m_tboNoterndaNafn_KeyUp);
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(774, 433);
+            this.tabPage4.TabIndex = 4;
+            this.tabPage4.Text = "Umsjón";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1128, 701);
             this.Controls.Add(this.m_pnlNotandi);
-            this.Controls.Add(this.m_tacMain);
+            this.Controls.Add(this.m_tapUmsjon);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.m_tacMain.ResumeLayout(false);
+            this.m_tapUmsjon.ResumeLayout(false);
             this.m_tapInnsetning.ResumeLayout(false);
             this.m_pnlNotandi.ResumeLayout(false);
             this.m_pnlNotandi.PerformLayout();
@@ -171,9 +207,9 @@
         }
 
         #endregion
-        private TabControl m_tacMain;
+        private TabControl m_tapUmsjon;
         private TabPage m_tapInnsetning;
-        private TabPage tabPage1;
+        private TabPage m_tapGeymsluMiðlar;
         private Panel m_pnlNotandi;
         private Button m_btnInnskra;
         private Label m_lblLykilOrd;
@@ -182,5 +218,8 @@
         private TextBox m_tboNoterndaNafn;
         private Label m_lblVillaInnSkraning;
         private uscInnSetning m_uscInnsetning;
+        private TabPage m_tapGagnaUmsjon;
+        private TabPage m_tapMiðlun;
+        private TabPage tabPage4;
     }
 }

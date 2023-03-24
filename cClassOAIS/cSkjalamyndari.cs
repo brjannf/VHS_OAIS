@@ -15,7 +15,7 @@ namespace cClassOAIS
 
 
         #region GET/SET
-        public int id { get;set; }
+        public int ID { get;set; }
         public string  opinbert_auðkenni { get; set; } 
         public string gerð_5_1_1 { get; set; }
         public string opinbert_heiti_5_1_2 { get;  set; }
@@ -46,6 +46,38 @@ namespace cClassOAIS
         public string dags_breytt { get;  set; } 
         #endregion
 
+        public void hreinsaHlut()
+        {
+            this.ID = 0;
+            this.opinbert_auðkenni = string.Empty;
+            this.gerð_5_1_1 = string.Empty;
+            this.opinbert_heiti_5_1_2 = string.Empty;
+            this.erlent_heiti_5_1_3 = string.Empty;
+            this.annað_heiti_aðlagað_5_1_4 = string.Empty;
+            this.annað_heiti_5_1_5 = string.Empty;
+            this.auðkenni_5_1_6 = string.Empty;
+            this.tímabil_5_2_1 = string.Empty;
+            this.saga_5_2_2 = string.Empty;
+            this.staðsetning_5_2_3 = string.Empty;
+            this.lagaleg_staða_5_2_4 = string.Empty;
+            this.hlutverk_5_2_5 = string.Empty;
+            this.tilheyrandi_lög_5_2_6 = string.Empty;
+            this.innri_stjórnun_5_2_7 = string.Empty;
+            this.almennt_samhengi_5_2_8 = string.Empty;
+            this.auðkenni_lands_5_4_1 = string.Empty;
+            this.auðkenni_vörslustofnunar_5_4_2 = string.Empty;
+            this.reglur_staðlar_5_4_3 = string.Empty;
+            this.skráningarstaða_5_4_4 = string.Empty;
+            this.skráningarstig_5_4_5 = string.Empty;
+            this.dagsetningar_5_4_6 = string.Empty;
+            this.tungumál_5_4_7 = string.Empty;
+            this.heimildir_5_4_8 = string.Empty;
+            this.athugasemdir_5_4_9 = string.Empty;
+            this.hver_skráði = string.Empty;
+            this.dags_skráð = string.Empty;
+            this.hver_breytti = string.Empty;
+            this.dags_breytt = string.Empty;
+        }
         public void vista()
         {
 
@@ -84,7 +116,7 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@dags_breytt", this.dags_breytt);
 
 
-            if (this.id != 0)
+            if (this.ID != 0)
             {
                 string strNewDate = string.Format("Breytt: {0} af {1}", DateTime.Now, this.hver_breytti);
                 string strDagsetningar = this.dagsetningar_5_4_6 + Environment.NewLine + strNewDate;
@@ -96,13 +128,13 @@ namespace cClassOAIS
                 command.Parameters.AddWithValue("@5_4_6_dagsetningar", strNewDate);
             }
 
-            if(this.id == 0)
+            if(this.ID == 0)
             {
                 command.CommandText = "INSERT INTO `dt_isaar_skjalamyndarar` SET  `opinbert_auðkenni`=@opinbert_auðkenni,  `5_1_1_gerð`=@5_1_1_gerð, `5_1_2_opinbert_heiti`=@5_1_2_opinbert_heiti, `5_1_3_erlent_heiti`=@5_1_3_erlent_heiti, `5_1_4_annað_heiti_aðlagað`=@5_1_4_annað_heiti_aðlagað,`5_1_5_annað_heiti`=@5_1_5_annað_heiti,`5_1_6_auðkenni`=@5_1_6_auðkenni,`5_2_1_tímabil`=@5_2_1_tímabil,`5_2_2_saga`=@5_2_2_saga,`5_2_3_staðsetning`=@5_2_3_staðsetning,`5_2_4_lagaleg_staða`=@5_2_4_lagaleg_staða,`5_2_5_hlutverk`=@5_2_5_hlutverk,`5_2_6_tilheyrandi_lög`=@5_2_6_tilheyrandi_lög,`5_2_7_innri_stjórnun`=@5_2_7_innri_stjórnun,`5_2_8_almennt_samhengi`=@5_2_8_almennt_samhengi,`5_4_1_auðkenni_lands`=@5_4_1_auðkenni_lands,`5_4_2_auðkenni_vörslustofnunar`=@5_4_2_auðkenni_vörslustofnunar,`5_4_3_reglur_staðlar`=@5_4_3_reglur_staðlar,`5_4_4_skráningarstaða`=@5_4_4_skráningarstaða,`5_4_5_skráningarstig`=@5_4_5_skráningarstig,`5_4_6_dagsetningar`=@5_4_6_dagsetningar,`5_4_7_tungumál`=@5_4_7_tungumál,`5_4_8_heimildir`=@5_4_8_heimildir,`5_4_9_athugasemdir`=@5_4_9_athugasemdir,`hver_skráði`=@hver_skráði, dags_skráð=Now()";
             }
             else
             {
-                command.CommandText = "UPDATE `dt_isaar_skjalamyndarar` SET  `opinbert_auðkenni`=@opinbert_auðkenni,  `5_1_1_gerð`=@5_1_1_gerð, `5_1_2_opinbert_heiti`=@5_1_2_opinbert_heiti, `5_1_3_erlent_heiti`=@5_1_3_erlent_heiti, `5_1_4_annað_heiti_aðlagað`=@5_1_4_annað_heiti_aðlagað,`5_1_5_annað_heiti`=@5_1_5_annað_heiti,`5_1_6_auðkenni`=@5_1_6_auðkenni,`5_2_1_tímabil`=@5_2_1_tímabil,`5_2_2_saga`=@5_2_2_saga,`5_2_3_staðsetning`=@5_2_3_staðsetning,`5_2_4_lagaleg_staða`=@5_2_4_lagaleg_staða,`5_2_5_hlutverk`=@5_2_5_hlutverk,`5_2_6_tilheyrandi_lög`=@5_2_6_tilheyrandi_lög,`5_2_7_innri_stjórnun`=@5_2_7_innri_stjórnun,`5_2_8_almennt_samhengi`=@5_2_8_almennt_samhengi,`5_4_1_auðkenni_lands`=@5_4_1_auðkenni_lands,`5_4_2_auðkenni_vörslustofnunar`=@5_4_2_auðkenni_vörslustofnunar,`5_4_3_reglur_staðlar`=@5_4_3_reglur_staðlar,`5_4_4_skráningarstaða`=@5_4_4_skráningarstaða,`5_4_5_skráningarstig`=@5_4_5_skráningarstig,`5_4_6_dagsetningar`=@5_4_6_dagsetningar,`5_4_7_tungumál`=@5_4_7_tungumál,`5_4_8_heimildir`=@5_4_8_heimildir,`5_4_9_athugasemdir`=@5_4_9_athugasemdir,`hver_breytti`=@hver_breytti, dags_breytt=Now() WHERE id=" + this.id + ";"; 
+                command.CommandText = "UPDATE `dt_isaar_skjalamyndarar` SET  `opinbert_auðkenni`=@opinbert_auðkenni,  `5_1_1_gerð`=@5_1_1_gerð, `5_1_2_opinbert_heiti`=@5_1_2_opinbert_heiti, `5_1_3_erlent_heiti`=@5_1_3_erlent_heiti, `5_1_4_annað_heiti_aðlagað`=@5_1_4_annað_heiti_aðlagað,`5_1_5_annað_heiti`=@5_1_5_annað_heiti,`5_1_6_auðkenni`=@5_1_6_auðkenni,`5_2_1_tímabil`=@5_2_1_tímabil,`5_2_2_saga`=@5_2_2_saga,`5_2_3_staðsetning`=@5_2_3_staðsetning,`5_2_4_lagaleg_staða`=@5_2_4_lagaleg_staða,`5_2_5_hlutverk`=@5_2_5_hlutverk,`5_2_6_tilheyrandi_lög`=@5_2_6_tilheyrandi_lög,`5_2_7_innri_stjórnun`=@5_2_7_innri_stjórnun,`5_2_8_almennt_samhengi`=@5_2_8_almennt_samhengi,`5_4_1_auðkenni_lands`=@5_4_1_auðkenni_lands,`5_4_2_auðkenni_vörslustofnunar`=@5_4_2_auðkenni_vörslustofnunar,`5_4_3_reglur_staðlar`=@5_4_3_reglur_staðlar,`5_4_4_skráningarstaða`=@5_4_4_skráningarstaða,`5_4_5_skráningarstig`=@5_4_5_skráningarstig,`5_4_6_dagsetningar`=@5_4_6_dagsetningar,`5_4_7_tungumál`=@5_4_7_tungumál,`5_4_8_heimildir`=@5_4_8_heimildir,`5_4_9_athugasemdir`=@5_4_9_athugasemdir,`hver_breytti`=@hver_breytti, dags_breytt=Now() WHERE id=" + this.ID + ";"; 
             }
 
             command.ExecuteNonQuery();
@@ -155,6 +187,13 @@ namespace cClassOAIS
             return dt;
         }
 
+        public DataTable getSkjalamyndaralista()
+        {
+            string strSQL = "SELECT d.`5_1_2_opinbert_heiti`, d.`5_1_6_auðkenni` FROM db_oais_admin.dt_isaar_skjalamyndarar d order by 5_1_2_opinbert_heiti;";
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
         public DataTable getENUMSkraningStig()
         {
             string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE, 5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'db_oais_admin' AND TABLE_NAME = 'dt_isaar_skjalamyndarar'AND COLUMN_NAME = '5_4_5_skráningarstig'; ");
@@ -187,7 +226,7 @@ namespace cClassOAIS
             {
                 foreach(DataRow r in dt.Rows)
                 {
-                   this.id = Convert.ToInt32(r["id"]);
+                   this.ID = Convert.ToInt32(r["id"]);
                    this.opinbert_auðkenni = r["opinbert_auðkenni"].ToString();
                    this.gerð_5_1_1= r["5_1_1_gerð"].ToString();
                    this.opinbert_heiti_5_1_2 = r["5_1_2_opinbert_heiti"].ToString();
@@ -234,7 +273,7 @@ namespace cClassOAIS
             {
                 foreach (DataRow r in dt.Rows)
                 {
-                    this.id = Convert.ToInt32(r["id"]);
+                    this.ID = Convert.ToInt32(r["id"]);
                     this.opinbert_auðkenni = r["opinbert_auðkenni"].ToString();
                     this.gerð_5_1_1 = r["5_1_1_gerð"].ToString();
                     this.opinbert_heiti_5_1_2 = r["5_1_2_opinbert_heiti"].ToString();

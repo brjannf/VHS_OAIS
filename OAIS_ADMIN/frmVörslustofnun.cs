@@ -22,7 +22,7 @@ namespace OAIS_ADMIN
         public frmVörslustofnun(cVorslustofnun varsla, cNotandi virkur)
         {
             InitializeComponent();
-            this.Text = varsla.opinbert_heiti_5_1_2;
+            this.Text = "Vörslustofnun - " + varsla.opinbert_heiti_5_1_2;
             uscVörlsustofnun vörslustofnun = new uscVörlsustofnun(varsla, virkur);
             this.Controls.Add(vörslustofnun);
             vörslustofnun.Dock= DockStyle.Fill;
