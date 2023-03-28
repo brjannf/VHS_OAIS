@@ -1,16 +1,20 @@
 ﻿using cClassOAIS;
 using Google.Protobuf.WellKnownTypes;
 using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Math.EC.Multiplier;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 
 namespace OAIS_ADMIN
@@ -21,10 +25,13 @@ namespace OAIS_ADMIN
         public cVorslustofnun vörslustofnun = new cVorslustofnun();
         public cSkjalamyndari skjalamyndari = new cSkjalamyndari();
         public cSkjalaskra skrá = new cSkjalaskra();
+        public cMD5 m_MD5 = new cMD5();
         bool m_bISDIAH = false;
         bool m_bISAAR = false;
         bool m_bISADG = false;
-        bool m_bMD5 = false;  
+        bool m_bMD5 = false; 
+        string m_strSlodVarsla = string.Empty;
+        string m_strRotVarsla =string.Empty;
         public uscInnSetning()
         {
             InitializeComponent();
@@ -46,11 +53,12 @@ namespace OAIS_ADMIN
             {
                 string strFileIndex = folderBrowserDialog1.SelectedPath + "\\Indices\\fileIndex.xml";
                 string strArchiveIndex = folderBrowserDialog1.SelectedPath + "\\Indices\\archiveIndex.xml";
+                m_strSlodVarsla = folderBrowserDialog1.SelectedPath;
                 if (File.Exists(strFileIndex))
                 {
                     string[] strSplit = folderBrowserDialog1.SelectedPath.Split('\\');
                     string strVarsla = strSplit[strSplit.Length - 1];
-
+                    m_strRotVarsla = strVarsla;
 
                     fyllaSkjalamyndara(strArchiveIndex, strVarsla);
                     m_grbISDIAH.Enabled = true;
@@ -86,10 +94,13 @@ namespace OAIS_ADMIN
 
             string strFileIndex = dropped[0].ToString() + "\\Indices\\fileIndex.xml";
             string strArchiveIndex = dropped[0].ToString() + "\\Indices\\archiveIndex.xml";
+            m_strSlodVarsla = dropped[0].ToString();
+
             if (File.Exists(strFileIndex)) 
             {
                 string[] strSplit = dropped[0].ToString().Split('\\');
                 string strVarsla = strSplit[strSplit.Length-1];
+                m_strRotVarsla = strVarsla;
                 fyllaSkjalamyndara(strArchiveIndex, strVarsla);
                 m_grbISDIAH.Enabled = true;
                 fyllaSkjalaSkra(strArchiveIndex, strVarsla);
@@ -484,7 +495,7 @@ namespace OAIS_ADMIN
 
                 case "Fullskrá":
                     frmVörslustofnun frmVarsla = new frmVörslustofnun(vörslustofnun, virkurnotandi);
-                    frmVarsla.ShowDialog();
+                    frmVarsla.Show();
                     vörslustofnun.getVörslustofnun(vörslustofnun.auðkenni_5_1_1);
                     m_tboISDIAH_obinbert_heiti.Text = vörslustofnun.opinbert_heiti_5_1_2;
                     m_bISADG = true;
@@ -504,6 +515,153 @@ namespace OAIS_ADMIN
             {
                 skrá.skilyrði_aðgengi_3_4_1 = m_comISADG_aðgengi.SelectedItem.ToString();
             }
+        }
+
+        private void m_btnFlytjaSIP_Click(object sender, EventArgs e)
+        {
+            //1. flytja gögn yfir á geymslusvæði (harðkóðða til að byrja með rótarmöppu vantar umsjón fyrir miðla)
+            string strRot = "D:\\AIP\\";
+            string strRotVarsla = strRot + vörslustofnun.auðkenni_5_1_1;
+            if (!Directory.Exists(strRotVarsla))
+            {
+                Directory.CreateDirectory(strRotVarsla);
+            }
+            string strRotSkjalamyndari = strRotVarsla + "\\" + skjalamyndari.auðkenni_5_1_6;
+            if(!Directory.Exists(strRotSkjalamyndari))
+            {
+                Directory.CreateDirectory(strRotSkjalamyndari);
+            }
+            string strRotAIP = strRotSkjalamyndari + "\\" + m_strRotVarsla;
+
+
+            m_prbAVID.Maximum = Directory.GetDirectories(m_strSlodVarsla).Length;
+            m_prbAVID.Step = 1;
+            m_prbAVID.Value = 0;
+            DirectoryInfo difo = new DirectoryInfo(m_strSlodVarsla);
+            string strSlodFRUM = string.Empty;
+            foreach (var dir in difo.Parent.GetDirectories())
+            {
+                DirectoryInfo dido = new DirectoryInfo(dir.FullName);
+                string strHeitiVarsla = m_strRotVarsla.Replace("AVID", "FRUM");
+
+                
+                if(dido.Name.StartsWith(strHeitiVarsla))
+                {
+                    //til frumeintak - þarf að flytja það líka. 
+                    strSlodFRUM = dido.FullName;
+                }
+
+            }
+
+            flytjaVorslutgafu(m_strSlodVarsla, strRotAIP);
+
+            if (strSlodFRUM != string.Empty)
+            {
+                strRotAIP = strRotSkjalamyndari + "\\" + m_strRotVarsla.Replace("AVID", "FRUM");
+                flytjaVorslutgafu(strSlodFRUM, strRotAIP);
+            }
+
+            m_grbFlytjaSIP.BackColor = Color.LightGreen;
+            m_grbSkyrsla.BackColor = Color.LightYellow;
+            m_btnFlytjaSIP.Enabled = false;
+            m_btnKvittun.Enabled = true; 
+            MessageBox.Show("Búið");
+
+            //2. færa metadata fileindex og docindex inn í grunn ásamt contextdoctenglum
+            //
+        }
+
+        private void flytjaVorslutgafu(string strOrg, string strDest)
+        {
+         
+            foreach (var directory in Directory.GetDirectories(strOrg))
+            {
+                DirectoryInfo difo = new DirectoryInfo(directory);
+                if (difo.FullName.Contains("AVID"))
+                {
+                    m_lblFilesAPI.Text = directory.ToString();
+                }
+                if (difo.FullName.Contains("FRUM"))
+                {
+                    m_lblFileFRUM.Text = directory.ToString();
+                }
+
+                Application.DoEvents();
+               
+                if (difo.Parent.FullName == m_strSlodVarsla && difo.Parent.Name.StartsWith("AVID"))
+                {
+                    m_prbAVID.PerformStep();
+                    m_lblStatusAPI.Text = string.Format("{0} {1}/{2}",difo.Name, m_prbAVID.Value,m_prbAVID.Maximum);
+                    Application.DoEvents();
+                }
+                if (difo.Parent.FullName == m_strSlodVarsla.Replace("AVID", "FRUM") && difo.Parent.Name.StartsWith("FRUM"))
+                {
+                    m_prbFRUM.PerformStep();
+                    m_lblStatusFRUM.Text = string.Format("{0} {1}/{2}", difo.Name, m_prbAVID.Value, m_prbAVID.Maximum);
+                    Application.DoEvents();
+                }
+
+                //Get the path of the new directory
+                var newDirectory = Path.Combine(strDest, Path.GetFileName(directory));
+                //Create the directory if it doesn't already exist
+              //  if (difo.FullName.Contains("AVID")) //þarf að finna út hvurning ég sleppi að búa til m0ppur sem eru ekki notaðar
+                {
+                    Directory.CreateDirectory(newDirectory);
+                }
+                //if (difo.FullName.Contains("FRUM"))
+                //{
+                //    if (newDirectory.EndsWith("VINNUSKJÖL") || newDirectory.EndsWith("Documents"))
+                //    {
+                //        Directory.CreateDirectory(newDirectory);
+                //    }
+                //}
+
+                //Recursively clone the directory
+                flytjaVorslutgafu(directory, newDirectory);
+            }
+            FileInfo fifo = new FileInfo(strOrg);
+            if (fifo.FullName.Contains("AVID"))
+            {
+                foreach (var file in Directory.GetFiles(strOrg))
+                {
+
+                    File.Copy(file, Path.Combine(strDest, Path.GetFileName(file)), true);
+
+                    m_MD5.AIP = m_strRotVarsla;
+                    m_MD5.slod = strDest;
+                    m_MD5.file = Path.GetFileName(file);
+                    m_MD5.MD5 = md5(Path.Combine(strDest, Path.GetFileName(file)));
+                    m_MD5.vista();
+
+                }
+            }
+            if (fifo.FullName.Contains("FRUM"))
+            {
+                //færi bara möppuna DOCUMENT og VINNUSKJÖL
+                foreach (var file in Directory.GetFiles(strOrg))
+                {
+                    if (fifo.FullName.Contains("VINNUSKJÖL") || fifo.FullName.Contains("Documents"))
+                    {
+                        File.Copy(file, Path.Combine(strDest, Path.GetFileName(file)), true);
+
+                        m_MD5.AIP = m_strRotVarsla;
+                        m_MD5.slod = strDest;
+                        m_MD5.file = Path.GetFileName(file); //þyrfti að ná orginal nafninu TODO gera leit í xml fyrri þetta.
+                        //DataSet ds = new DataSet();
+                        //ds.ReadXml(m_strSlodVarsla+ "\\Tables\\table1\\table1.xml");
+
+                        m_MD5.MD5 = md5(Path.Combine(strDest, Path.GetFileName(file)));
+                        m_MD5.vista();
+                    }
+                }
+                //if()
+            }
+
+        }
+
+        private void m_btnKvittun_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

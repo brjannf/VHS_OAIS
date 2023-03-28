@@ -33,6 +33,12 @@
             this.m_grbSkyrsla = new System.Windows.Forms.GroupBox();
             this.m_btnKvittun = new System.Windows.Forms.Button();
             this.m_grbFlytjaSIP = new System.Windows.Forms.GroupBox();
+            this.m_lblStatusFRUM = new System.Windows.Forms.Label();
+            this.m_lblFileFRUM = new System.Windows.Forms.Label();
+            this.m_prbFRUM = new System.Windows.Forms.ProgressBar();
+            this.m_lblStatusAPI = new System.Windows.Forms.Label();
+            this.m_lblFilesAPI = new System.Windows.Forms.Label();
+            this.m_prbAVID = new System.Windows.Forms.ProgressBar();
             this.m_btnFlytjaSIP = new System.Windows.Forms.Button();
             this.m_grbTekksuma = new System.Windows.Forms.GroupBox();
             this.m_dgvMD5Villur = new System.Windows.Forms.DataGridView();
@@ -110,15 +116,16 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer1.Size = new System.Drawing.Size(1369, 855);
-            this.splitContainer1.SplitterDistance = 637;
+            this.splitContainer1.SplitterDistance = 738;
             this.splitContainer1.TabIndex = 0;
             // 
             // m_grbSkyrsla
             // 
             this.m_grbSkyrsla.Controls.Add(this.m_btnKvittun);
-            this.m_grbSkyrsla.Location = new System.Drawing.Point(3, 452);
+            this.m_grbSkyrsla.Dock = System.Windows.Forms.DockStyle.Top;
+            this.m_grbSkyrsla.Location = new System.Drawing.Point(0, 528);
             this.m_grbSkyrsla.Name = "m_grbSkyrsla";
-            this.m_grbSkyrsla.Size = new System.Drawing.Size(632, 100);
+            this.m_grbSkyrsla.Size = new System.Drawing.Size(734, 100);
             this.m_grbSkyrsla.TabIndex = 5;
             this.m_grbSkyrsla.TabStop = false;
             this.m_grbSkyrsla.Text = "C. búa til kvittun";
@@ -126,33 +133,91 @@
             // m_btnKvittun
             // 
             this.m_btnKvittun.Enabled = false;
-            this.m_btnKvittun.Location = new System.Drawing.Point(479, 67);
+            this.m_btnKvittun.Location = new System.Drawing.Point(579, 71);
             this.m_btnKvittun.Name = "m_btnKvittun";
             this.m_btnKvittun.Size = new System.Drawing.Size(130, 23);
             this.m_btnKvittun.TabIndex = 1;
             this.m_btnKvittun.Text = "Búa til kvittun";
             this.m_btnKvittun.UseVisualStyleBackColor = true;
+            this.m_btnKvittun.Click += new System.EventHandler(this.m_btnKvittun_Click);
             // 
             // m_grbFlytjaSIP
             // 
+            this.m_grbFlytjaSIP.Controls.Add(this.m_lblStatusFRUM);
+            this.m_grbFlytjaSIP.Controls.Add(this.m_lblFileFRUM);
+            this.m_grbFlytjaSIP.Controls.Add(this.m_prbFRUM);
+            this.m_grbFlytjaSIP.Controls.Add(this.m_lblStatusAPI);
+            this.m_grbFlytjaSIP.Controls.Add(this.m_lblFilesAPI);
+            this.m_grbFlytjaSIP.Controls.Add(this.m_prbAVID);
             this.m_grbFlytjaSIP.Controls.Add(this.m_btnFlytjaSIP);
             this.m_grbFlytjaSIP.Dock = System.Windows.Forms.DockStyle.Top;
             this.m_grbFlytjaSIP.Location = new System.Drawing.Point(0, 346);
             this.m_grbFlytjaSIP.Name = "m_grbFlytjaSIP";
-            this.m_grbFlytjaSIP.Size = new System.Drawing.Size(633, 100);
+            this.m_grbFlytjaSIP.Size = new System.Drawing.Size(734, 182);
             this.m_grbFlytjaSIP.TabIndex = 4;
             this.m_grbFlytjaSIP.TabStop = false;
             this.m_grbFlytjaSIP.Text = "B Flytaja SIP búa til AIP";
             // 
+            // m_lblStatusFRUM
+            // 
+            this.m_lblStatusFRUM.AutoSize = true;
+            this.m_lblStatusFRUM.Location = new System.Drawing.Point(537, 115);
+            this.m_lblStatusFRUM.Name = "m_lblStatusFRUM";
+            this.m_lblStatusFRUM.Size = new System.Drawing.Size(38, 15);
+            this.m_lblStatusFRUM.TabIndex = 6;
+            this.m_lblStatusFRUM.Text = "label2";
+            // 
+            // m_lblFileFRUM
+            // 
+            this.m_lblFileFRUM.AutoSize = true;
+            this.m_lblFileFRUM.Location = new System.Drawing.Point(15, 143);
+            this.m_lblFileFRUM.Name = "m_lblFileFRUM";
+            this.m_lblFileFRUM.Size = new System.Drawing.Size(38, 15);
+            this.m_lblFileFRUM.TabIndex = 5;
+            this.m_lblFileFRUM.Text = "label2";
+            // 
+            // m_prbFRUM
+            // 
+            this.m_prbFRUM.Location = new System.Drawing.Point(15, 107);
+            this.m_prbFRUM.Name = "m_prbFRUM";
+            this.m_prbFRUM.Size = new System.Drawing.Size(492, 23);
+            this.m_prbFRUM.TabIndex = 4;
+            // 
+            // m_lblStatusAPI
+            // 
+            this.m_lblStatusAPI.AutoSize = true;
+            this.m_lblStatusAPI.Location = new System.Drawing.Point(538, 38);
+            this.m_lblStatusAPI.Name = "m_lblStatusAPI";
+            this.m_lblStatusAPI.Size = new System.Drawing.Size(38, 15);
+            this.m_lblStatusAPI.TabIndex = 3;
+            this.m_lblStatusAPI.Text = "label2";
+            // 
+            // m_lblFilesAPI
+            // 
+            this.m_lblFilesAPI.AutoSize = true;
+            this.m_lblFilesAPI.Location = new System.Drawing.Point(16, 66);
+            this.m_lblFilesAPI.Name = "m_lblFilesAPI";
+            this.m_lblFilesAPI.Size = new System.Drawing.Size(38, 15);
+            this.m_lblFilesAPI.TabIndex = 2;
+            this.m_lblFilesAPI.Text = "label2";
+            // 
+            // m_prbAVID
+            // 
+            this.m_prbAVID.Location = new System.Drawing.Point(16, 30);
+            this.m_prbAVID.Name = "m_prbAVID";
+            this.m_prbAVID.Size = new System.Drawing.Size(492, 23);
+            this.m_prbAVID.TabIndex = 1;
+            // 
             // m_btnFlytjaSIP
             // 
             this.m_btnFlytjaSIP.Enabled = false;
-            this.m_btnFlytjaSIP.Location = new System.Drawing.Point(482, 66);
+            this.m_btnFlytjaSIP.Location = new System.Drawing.Point(598, 136);
             this.m_btnFlytjaSIP.Name = "m_btnFlytjaSIP";
             this.m_btnFlytjaSIP.Size = new System.Drawing.Size(130, 23);
             this.m_btnFlytjaSIP.TabIndex = 0;
             this.m_btnFlytjaSIP.Text = "Gera að AIP";
             this.m_btnFlytjaSIP.UseVisualStyleBackColor = true;
+            this.m_btnFlytjaSIP.Click += new System.EventHandler(this.m_btnFlytjaSIP_Click);
             // 
             // m_grbTekksuma
             // 
@@ -162,7 +227,7 @@
             this.m_grbTekksuma.Dock = System.Windows.Forms.DockStyle.Top;
             this.m_grbTekksuma.Location = new System.Drawing.Point(0, 198);
             this.m_grbTekksuma.Name = "m_grbTekksuma";
-            this.m_grbTekksuma.Size = new System.Drawing.Size(633, 148);
+            this.m_grbTekksuma.Size = new System.Drawing.Size(734, 148);
             this.m_grbTekksuma.TabIndex = 3;
             this.m_grbTekksuma.TabStop = false;
             this.m_grbTekksuma.Text = "A. Gátsummupróf";
@@ -182,7 +247,7 @@
             this.m_dgvMD5Villur.ReadOnly = true;
             this.m_dgvMD5Villur.RowHeadersVisible = false;
             this.m_dgvMD5Villur.RowTemplate.Height = 25;
-            this.m_dgvMD5Villur.Size = new System.Drawing.Size(627, 66);
+            this.m_dgvMD5Villur.Size = new System.Drawing.Size(728, 66);
             this.m_dgvMD5Villur.TabIndex = 3;
             this.m_dgvMD5Villur.Visible = false;
             // 
@@ -238,7 +303,7 @@
             this.m_pnlSIP.Dock = System.Windows.Forms.DockStyle.Top;
             this.m_pnlSIP.Location = new System.Drawing.Point(0, 0);
             this.m_pnlSIP.Name = "m_pnlSIP";
-            this.m_pnlSIP.Size = new System.Drawing.Size(633, 198);
+            this.m_pnlSIP.Size = new System.Drawing.Size(734, 198);
             this.m_pnlSIP.TabIndex = 0;
             this.m_pnlSIP.DragEnter += new System.Windows.Forms.DragEventHandler(this.m_pnlSIP_DragEnter);
             // 
@@ -269,7 +334,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.12139F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 43.58382F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(724, 851);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(623, 851);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // m_grbISAAR
@@ -283,9 +348,9 @@
             this.m_grbISAAR.Controls.Add(this.m_lblISAAR_nafn_5_1_2);
             this.m_grbISAAR.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbISAAR.Enabled = false;
-            this.m_grbISAAR.Location = new System.Drawing.Point(112, 286);
+            this.m_grbISAAR.Location = new System.Drawing.Point(97, 286);
             this.m_grbISAAR.Name = "m_grbISAAR";
-            this.m_grbISAAR.Size = new System.Drawing.Size(609, 190);
+            this.m_grbISAAR.Size = new System.Drawing.Size(523, 190);
             this.m_grbISAAR.TabIndex = 2;
             this.m_grbISAAR.TabStop = false;
             this.m_grbISAAR.Text = "2. Skjalamyndari";
@@ -369,9 +434,9 @@
             this.m_grbISASG.Controls.Add(this.m_lblISADG_Auðkenni);
             this.m_grbISASG.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbISASG.Enabled = false;
-            this.m_grbISASG.Location = new System.Drawing.Point(112, 482);
+            this.m_grbISASG.Location = new System.Drawing.Point(97, 482);
             this.m_grbISASG.Name = "m_grbISASG";
-            this.m_grbISASG.Size = new System.Drawing.Size(609, 366);
+            this.m_grbISASG.Size = new System.Drawing.Size(523, 366);
             this.m_grbISASG.TabIndex = 0;
             this.m_grbISASG.TabStop = false;
             this.m_grbISASG.Text = "3. Skjalaskrá";
@@ -504,9 +569,9 @@
             this.m_grbISDIAH.Controls.Add(this.m_lblISDIAH_auðkenni);
             this.m_grbISDIAH.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbISDIAH.Enabled = false;
-            this.m_grbISDIAH.Location = new System.Drawing.Point(112, 3);
+            this.m_grbISDIAH.Location = new System.Drawing.Point(97, 3);
             this.m_grbISDIAH.Name = "m_grbISDIAH";
-            this.m_grbISDIAH.Size = new System.Drawing.Size(609, 277);
+            this.m_grbISDIAH.Size = new System.Drawing.Size(523, 277);
             this.m_grbISDIAH.TabIndex = 1;
             this.m_grbISDIAH.TabStop = false;
             this.m_grbISDIAH.Text = "1. Vörslustofnun";
@@ -582,6 +647,7 @@
             this.splitContainer1.ResumeLayout(false);
             this.m_grbSkyrsla.ResumeLayout(false);
             this.m_grbFlytjaSIP.ResumeLayout(false);
+            this.m_grbFlytjaSIP.PerformLayout();
             this.m_grbTekksuma.ResumeLayout(false);
             this.m_grbTekksuma.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvMD5Villur)).EndInit();
@@ -649,5 +715,11 @@
         private Button m_btnKvittun;
         private TextBox m_tboISADG_AFHNR;
         private Label m_lblISADG_AFHNR;
+        private ProgressBar m_prbAVID;
+        private Label m_lblFilesAPI;
+        private Label m_lblStatusAPI;
+        private Label m_lblStatusFRUM;
+        private Label m_lblFileFRUM;
+        private ProgressBar m_prbFRUM;
     }
 }
