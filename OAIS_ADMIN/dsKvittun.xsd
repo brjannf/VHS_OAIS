@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Dsn=mySQL uni;uid=root;server=localhost;database=db_oais_admin;port=3306;charset=utf8mb4" IsAppSettingsProperty="false" Modifier="Assembly" Name="db_oais_adminConnectionString" Provider="System.Data.Odbc" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTableTableAdapter" GeneratorDataComponentClassName="DataTableTableAdapter" Name="DataTable" UserDataComponentName="DataTableTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="db_oais_adminConnectionString" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT * FROM `dt_vörsluutgafur`</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="id" DataSetColumn="id" />
+              <Mapping SourceColumn="vorsluutgafa" DataSetColumn="vorsluutgafa" />
+              <Mapping SourceColumn="utgafa_titill" DataSetColumn="utgafa_titill" />
+              <Mapping SourceColumn="vorslustofnun" DataSetColumn="vorslustofnun" />
+              <Mapping SourceColumn="varsla_heiti" DataSetColumn="varsla_heiti" />
+              <Mapping SourceColumn="skjalamyndari" DataSetColumn="skjalamyndari" />
+              <Mapping SourceColumn="skjalm_heiti" DataSetColumn="skjalm_heiti" />
+              <Mapping SourceColumn="staerd" DataSetColumn="staerd" />
+              <Mapping SourceColumn="slod" DataSetColumn="slod" />
+              <Mapping SourceColumn="innihald" DataSetColumn="innihald" />
+              <Mapping SourceColumn="timabil" DataSetColumn="timabil" />
+              <Mapping SourceColumn="afharnr" DataSetColumn="afharnr" />
+              <Mapping SourceColumn="MD5" DataSetColumn="MD5" />
+              <Mapping SourceColumn="hver_skradi" DataSetColumn="hver_skradi" />
+              <Mapping SourceColumn="dags_skrad" DataSetColumn="dags_skrad" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="DataSet1" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable" msprop:Generator_RowEvHandlerName="DataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="DataTableRowDeleted" msprop:Generator_RowDeletingName="DataTableRowDeleting" msprop:Generator_RowEvArgName="DataTableRowChangeEvent" msprop:Generator_TablePropName="DataTable" msprop:Generator_RowChangedName="DataTableRowChanged" msprop:Generator_RowChangingName="DataTableRowChanging" msprop:Generator_TableClassName="DataTableDataTable" msprop:Generator_RowClassName="DataTableRow" msprop:Generator_TableVarName="tableDataTable" msprop:Generator_UserTableName="DataTable">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_UserColumnName="id" type="xs:long" minOccurs="0" />
+              <xs:element name="vorsluutgafa" msprop:Generator_ColumnPropNameInRow="vorsluutgafa" msprop:Generator_ColumnPropNameInTable="vorsluutgafaColumn" msprop:Generator_ColumnVarNameInTable="columnvorsluutgafa" msprop:Generator_UserColumnName="vorsluutgafa">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="180" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="utgafa_titill" msprop:Generator_ColumnPropNameInRow="utgafa_titill" msprop:Generator_ColumnPropNameInTable="utgafa_titillColumn" msprop:Generator_ColumnVarNameInTable="columnutgafa_titill" msprop:Generator_UserColumnName="utgafa_titill">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="800" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="vorslustofnun" msprop:Generator_ColumnPropNameInRow="vorslustofnun" msprop:Generator_ColumnPropNameInTable="vorslustofnunColumn" msprop:Generator_ColumnVarNameInTable="columnvorslustofnun" msprop:Generator_UserColumnName="vorslustofnun">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="180" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="varsla_heiti" msprop:Generator_ColumnPropNameInRow="varsla_heiti" msprop:Generator_ColumnPropNameInTable="varsla_heitiColumn" msprop:Generator_ColumnVarNameInTable="columnvarsla_heiti" msprop:Generator_UserColumnName="varsla_heiti">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="800" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="skjalamyndari" msprop:Generator_ColumnPropNameInRow="skjalamyndari" msprop:Generator_ColumnPropNameInTable="skjalamyndariColumn" msprop:Generator_ColumnVarNameInTable="columnskjalamyndari" msprop:Generator_UserColumnName="skjalamyndari">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="180" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="skjalm_heiti" msprop:Generator_ColumnPropNameInRow="skjalm_heiti" msprop:Generator_ColumnPropNameInTable="skjalm_heitiColumn" msprop:Generator_ColumnVarNameInTable="columnskjalm_heiti" msprop:Generator_UserColumnName="skjalm_heiti">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="800" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="staerd" msprop:Generator_ColumnPropNameInRow="staerd" msprop:Generator_ColumnPropNameInTable="staerdColumn" msprop:Generator_ColumnVarNameInTable="columnstaerd" msprop:Generator_UserColumnName="staerd" type="xs:decimal" />
+              <xs:element name="slod" msprop:Generator_ColumnPropNameInRow="slod" msprop:Generator_ColumnPropNameInTable="slodColumn" msprop:Generator_ColumnVarNameInTable="columnslod" msprop:Generator_UserColumnName="slod">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="innihald" msprop:Generator_ColumnPropNameInRow="innihald" msprop:Generator_ColumnPropNameInTable="innihaldColumn" msprop:Generator_ColumnVarNameInTable="columninnihald" msprop:Generator_UserColumnName="innihald">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2000" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="timabil" msprop:Generator_ColumnPropNameInRow="timabil" msprop:Generator_ColumnPropNameInTable="timabilColumn" msprop:Generator_ColumnVarNameInTable="columntimabil" msprop:Generator_UserColumnName="timabil">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="180" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="afharnr" msprop:Generator_ColumnPropNameInRow="afharnr" msprop:Generator_ColumnPropNameInTable="afharnrColumn" msprop:Generator_ColumnVarNameInTable="columnafharnr" msprop:Generator_UserColumnName="afharnr">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="180" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MD5" msprop:Generator_ColumnPropNameInRow="MD5" msprop:Generator_ColumnPropNameInTable="MD5Column" msprop:Generator_ColumnVarNameInTable="columnMD5" msprop:Generator_UserColumnName="MD5">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="hver_skradi" msprop:Generator_ColumnPropNameInRow="hver_skradi" msprop:Generator_ColumnPropNameInTable="hver_skradiColumn" msprop:Generator_ColumnVarNameInTable="columnhver_skradi" msprop:Generator_UserColumnName="hver_skradi">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="180" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="dags_skrad" msprop:Generator_ColumnPropNameInRow="dags_skrad" msprop:Generator_ColumnPropNameInTable="dags_skradColumn" msprop:Generator_ColumnVarNameInTable="columndags_skrad" msprop:Generator_UserColumnName="dags_skrad" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1">
+      <xs:selector xpath=".//mstns:DataTable" />
+      <xs:field xpath="mstns:id" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

@@ -30,15 +30,19 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.m_grbAðgerðir = new System.Windows.Forms.GroupBox();
+            this.m_btnFjarlaegja = new System.Windows.Forms.Button();
             this.m_grbSkyrsla = new System.Windows.Forms.GroupBox();
             this.m_btnKvittun = new System.Windows.Forms.Button();
             this.m_grbFlytjaSIP = new System.Windows.Forms.GroupBox();
+            this.m_grbFRUM = new System.Windows.Forms.GroupBox();
             this.m_lblStatusFRUM = new System.Windows.Forms.Label();
-            this.m_lblFileFRUM = new System.Windows.Forms.Label();
             this.m_prbFRUM = new System.Windows.Forms.ProgressBar();
+            this.m_lblFileFRUM = new System.Windows.Forms.Label();
+            this.m_grbAvid = new System.Windows.Forms.GroupBox();
+            this.m_prbAVID = new System.Windows.Forms.ProgressBar();
             this.m_lblStatusAPI = new System.Windows.Forms.Label();
             this.m_lblFilesAPI = new System.Windows.Forms.Label();
-            this.m_prbAVID = new System.Windows.Forms.ProgressBar();
             this.m_btnFlytjaSIP = new System.Windows.Forms.Button();
             this.m_grbTekksuma = new System.Windows.Forms.GroupBox();
             this.m_dgvMD5Villur = new System.Windows.Forms.DataGridView();
@@ -85,8 +89,11 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.m_grbAðgerðir.SuspendLayout();
             this.m_grbSkyrsla.SuspendLayout();
             this.m_grbFlytjaSIP.SuspendLayout();
+            this.m_grbFRUM.SuspendLayout();
+            this.m_grbAvid.SuspendLayout();
             this.m_grbTekksuma.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvMD5Villur)).BeginInit();
             this.m_pnlSIP.SuspendLayout();
@@ -107,6 +114,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.m_grbAðgerðir);
             this.splitContainer1.Panel1.Controls.Add(this.m_grbSkyrsla);
             this.splitContainer1.Panel1.Controls.Add(this.m_grbFlytjaSIP);
             this.splitContainer1.Panel1.Controls.Add(this.m_grbTekksuma);
@@ -119,11 +127,32 @@
             this.splitContainer1.SplitterDistance = 738;
             this.splitContainer1.TabIndex = 0;
             // 
+            // m_grbAðgerðir
+            // 
+            this.m_grbAðgerðir.Controls.Add(this.m_btnFjarlaegja);
+            this.m_grbAðgerðir.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbAðgerðir.Location = new System.Drawing.Point(0, 728);
+            this.m_grbAðgerðir.Name = "m_grbAðgerðir";
+            this.m_grbAðgerðir.Size = new System.Drawing.Size(734, 123);
+            this.m_grbAðgerðir.TabIndex = 6;
+            this.m_grbAðgerðir.TabStop = false;
+            this.m_grbAðgerðir.Text = "Aðgerðir";
+            // 
+            // m_btnFjarlaegja
+            // 
+            this.m_btnFjarlaegja.Location = new System.Drawing.Point(492, 47);
+            this.m_btnFjarlaegja.Name = "m_btnFjarlaegja";
+            this.m_btnFjarlaegja.Size = new System.Drawing.Size(203, 23);
+            this.m_btnFjarlaegja.TabIndex = 0;
+            this.m_btnFjarlaegja.Text = "Fjarlægja vörsluútgáfu úr kerfinu";
+            this.m_btnFjarlaegja.UseVisualStyleBackColor = true;
+            this.m_btnFjarlaegja.Click += new System.EventHandler(this.m_btnFjarlaegja_Click);
+            // 
             // m_grbSkyrsla
             // 
             this.m_grbSkyrsla.Controls.Add(this.m_btnKvittun);
             this.m_grbSkyrsla.Dock = System.Windows.Forms.DockStyle.Top;
-            this.m_grbSkyrsla.Location = new System.Drawing.Point(0, 528);
+            this.m_grbSkyrsla.Location = new System.Drawing.Point(0, 628);
             this.m_grbSkyrsla.Name = "m_grbSkyrsla";
             this.m_grbSkyrsla.Size = new System.Drawing.Size(734, 100);
             this.m_grbSkyrsla.TabIndex = 5;
@@ -132,8 +161,11 @@
             // 
             // m_btnKvittun
             // 
+            this.m_btnKvittun.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.m_btnKvittun.Enabled = false;
-            this.m_btnKvittun.Location = new System.Drawing.Point(579, 71);
+            this.m_btnKvittun.Location = new System.Drawing.Point(241, 39);
             this.m_btnKvittun.Name = "m_btnKvittun";
             this.m_btnKvittun.Size = new System.Drawing.Size(130, 23);
             this.m_btnKvittun.TabIndex = 1;
@@ -143,50 +175,81 @@
             // 
             // m_grbFlytjaSIP
             // 
-            this.m_grbFlytjaSIP.Controls.Add(this.m_lblStatusFRUM);
-            this.m_grbFlytjaSIP.Controls.Add(this.m_lblFileFRUM);
-            this.m_grbFlytjaSIP.Controls.Add(this.m_prbFRUM);
-            this.m_grbFlytjaSIP.Controls.Add(this.m_lblStatusAPI);
-            this.m_grbFlytjaSIP.Controls.Add(this.m_lblFilesAPI);
-            this.m_grbFlytjaSIP.Controls.Add(this.m_prbAVID);
+            this.m_grbFlytjaSIP.Controls.Add(this.m_grbFRUM);
+            this.m_grbFlytjaSIP.Controls.Add(this.m_grbAvid);
             this.m_grbFlytjaSIP.Controls.Add(this.m_btnFlytjaSIP);
             this.m_grbFlytjaSIP.Dock = System.Windows.Forms.DockStyle.Top;
             this.m_grbFlytjaSIP.Location = new System.Drawing.Point(0, 346);
             this.m_grbFlytjaSIP.Name = "m_grbFlytjaSIP";
-            this.m_grbFlytjaSIP.Size = new System.Drawing.Size(734, 182);
+            this.m_grbFlytjaSIP.Size = new System.Drawing.Size(734, 282);
             this.m_grbFlytjaSIP.TabIndex = 4;
             this.m_grbFlytjaSIP.TabStop = false;
             this.m_grbFlytjaSIP.Text = "B Flytaja SIP búa til AIP";
             // 
+            // m_grbFRUM
+            // 
+            this.m_grbFRUM.Controls.Add(this.m_lblStatusFRUM);
+            this.m_grbFRUM.Controls.Add(this.m_prbFRUM);
+            this.m_grbFRUM.Controls.Add(this.m_lblFileFRUM);
+            this.m_grbFRUM.Dock = System.Windows.Forms.DockStyle.Top;
+            this.m_grbFRUM.Location = new System.Drawing.Point(3, 119);
+            this.m_grbFRUM.Name = "m_grbFRUM";
+            this.m_grbFRUM.Size = new System.Drawing.Size(728, 115);
+            this.m_grbFRUM.TabIndex = 8;
+            this.m_grbFRUM.TabStop = false;
+            this.m_grbFRUM.Text = "FRUM";
+            this.m_grbFRUM.Visible = false;
+            // 
             // m_lblStatusFRUM
             // 
             this.m_lblStatusFRUM.AutoSize = true;
-            this.m_lblStatusFRUM.Location = new System.Drawing.Point(537, 115);
+            this.m_lblStatusFRUM.Location = new System.Drawing.Point(642, 42);
             this.m_lblStatusFRUM.Name = "m_lblStatusFRUM";
             this.m_lblStatusFRUM.Size = new System.Drawing.Size(38, 15);
             this.m_lblStatusFRUM.TabIndex = 6;
             this.m_lblStatusFRUM.Text = "label2";
             // 
+            // m_prbFRUM
+            // 
+            this.m_prbFRUM.Location = new System.Drawing.Point(25, 42);
+            this.m_prbFRUM.Name = "m_prbFRUM";
+            this.m_prbFRUM.Size = new System.Drawing.Size(524, 23);
+            this.m_prbFRUM.TabIndex = 4;
+            // 
             // m_lblFileFRUM
             // 
             this.m_lblFileFRUM.AutoSize = true;
-            this.m_lblFileFRUM.Location = new System.Drawing.Point(15, 143);
+            this.m_lblFileFRUM.Location = new System.Drawing.Point(25, 77);
             this.m_lblFileFRUM.Name = "m_lblFileFRUM";
             this.m_lblFileFRUM.Size = new System.Drawing.Size(38, 15);
             this.m_lblFileFRUM.TabIndex = 5;
             this.m_lblFileFRUM.Text = "label2";
             // 
-            // m_prbFRUM
+            // m_grbAvid
             // 
-            this.m_prbFRUM.Location = new System.Drawing.Point(15, 107);
-            this.m_prbFRUM.Name = "m_prbFRUM";
-            this.m_prbFRUM.Size = new System.Drawing.Size(492, 23);
-            this.m_prbFRUM.TabIndex = 4;
+            this.m_grbAvid.Controls.Add(this.m_prbAVID);
+            this.m_grbAvid.Controls.Add(this.m_lblStatusAPI);
+            this.m_grbAvid.Controls.Add(this.m_lblFilesAPI);
+            this.m_grbAvid.Dock = System.Windows.Forms.DockStyle.Top;
+            this.m_grbAvid.Location = new System.Drawing.Point(3, 19);
+            this.m_grbAvid.Name = "m_grbAvid";
+            this.m_grbAvid.Size = new System.Drawing.Size(728, 100);
+            this.m_grbAvid.TabIndex = 7;
+            this.m_grbAvid.TabStop = false;
+            this.m_grbAvid.Text = "AVID";
+            this.m_grbAvid.Visible = false;
+            // 
+            // m_prbAVID
+            // 
+            this.m_prbAVID.Location = new System.Drawing.Point(25, 36);
+            this.m_prbAVID.Name = "m_prbAVID";
+            this.m_prbAVID.Size = new System.Drawing.Size(524, 23);
+            this.m_prbAVID.TabIndex = 1;
             // 
             // m_lblStatusAPI
             // 
             this.m_lblStatusAPI.AutoSize = true;
-            this.m_lblStatusAPI.Location = new System.Drawing.Point(538, 38);
+            this.m_lblStatusAPI.Location = new System.Drawing.Point(642, 48);
             this.m_lblStatusAPI.Name = "m_lblStatusAPI";
             this.m_lblStatusAPI.Size = new System.Drawing.Size(38, 15);
             this.m_lblStatusAPI.TabIndex = 3;
@@ -195,23 +258,17 @@
             // m_lblFilesAPI
             // 
             this.m_lblFilesAPI.AutoSize = true;
-            this.m_lblFilesAPI.Location = new System.Drawing.Point(16, 66);
+            this.m_lblFilesAPI.Location = new System.Drawing.Point(25, 72);
             this.m_lblFilesAPI.Name = "m_lblFilesAPI";
             this.m_lblFilesAPI.Size = new System.Drawing.Size(38, 15);
             this.m_lblFilesAPI.TabIndex = 2;
             this.m_lblFilesAPI.Text = "label2";
             // 
-            // m_prbAVID
-            // 
-            this.m_prbAVID.Location = new System.Drawing.Point(16, 30);
-            this.m_prbAVID.Name = "m_prbAVID";
-            this.m_prbAVID.Size = new System.Drawing.Size(492, 23);
-            this.m_prbAVID.TabIndex = 1;
-            // 
             // m_btnFlytjaSIP
             // 
+            this.m_btnFlytjaSIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.m_btnFlytjaSIP.Enabled = false;
-            this.m_btnFlytjaSIP.Location = new System.Drawing.Point(598, 136);
+            this.m_btnFlytjaSIP.Location = new System.Drawing.Point(598, 240);
             this.m_btnFlytjaSIP.Name = "m_btnFlytjaSIP";
             this.m_btnFlytjaSIP.Size = new System.Drawing.Size(130, 23);
             this.m_btnFlytjaSIP.TabIndex = 0;
@@ -285,6 +342,7 @@
             this.m_lblTekkSuma.Size = new System.Drawing.Size(38, 15);
             this.m_lblTekkSuma.TabIndex = 2;
             this.m_lblTekkSuma.Text = "label4";
+            this.m_lblTekkSuma.Visible = false;
             // 
             // m_pgbTekksuma
             // 
@@ -292,6 +350,7 @@
             this.m_pgbTekksuma.Name = "m_pgbTekksuma";
             this.m_pgbTekksuma.Size = new System.Drawing.Size(493, 23);
             this.m_pgbTekksuma.TabIndex = 1;
+            this.m_pgbTekksuma.Visible = false;
             // 
             // m_pnlSIP
             // 
@@ -645,9 +704,13 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.m_grbAðgerðir.ResumeLayout(false);
             this.m_grbSkyrsla.ResumeLayout(false);
             this.m_grbFlytjaSIP.ResumeLayout(false);
-            this.m_grbFlytjaSIP.PerformLayout();
+            this.m_grbFRUM.ResumeLayout(false);
+            this.m_grbFRUM.PerformLayout();
+            this.m_grbAvid.ResumeLayout(false);
+            this.m_grbAvid.PerformLayout();
             this.m_grbTekksuma.ResumeLayout(false);
             this.m_grbTekksuma.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvMD5Villur)).EndInit();
@@ -721,5 +784,9 @@
         private Label m_lblStatusFRUM;
         private Label m_lblFileFRUM;
         private ProgressBar m_prbFRUM;
+        private GroupBox m_grbAvid;
+        private GroupBox m_grbFRUM;
+        private GroupBox m_grbAðgerðir;
+        private Button m_btnFjarlaegja;
     }
 }

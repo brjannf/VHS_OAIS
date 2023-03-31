@@ -1,4 +1,5 @@
 ﻿using cClassOAIS;
+using cClassVHS;
 using Google.Protobuf.WellKnownTypes;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Engines;
@@ -25,6 +26,7 @@ namespace OAIS_ADMIN
         public cVorslustofnun vörslustofnun = new cVorslustofnun();
         public cSkjalamyndari skjalamyndari = new cSkjalamyndari();
         public cSkjalaskra skrá = new cSkjalaskra();
+        string m_strDrif = string.Empty;
         public cMD5 m_MD5 = new cMD5();
         bool m_bISDIAH = false;
         bool m_bISAAR = false;
@@ -32,10 +34,15 @@ namespace OAIS_ADMIN
         bool m_bMD5 = false; 
         string m_strSlodVarsla = string.Empty;
         string m_strRotVarsla =string.Empty;
+        private string strDrive = string.Empty;
+        long m_lStaerd = 0;
+        long m_lStaerdFrum = 0;
         public uscInnSetning()
         {
             InitializeComponent();
             fyllaSkjalamyndaraLista();
+            cVHS_drives drives = new cVHS_drives();
+            m_strDrif = drives.driveVirkkComputers();
         }
 
         private void fyllaSkjalamyndaraLista()
@@ -59,6 +66,36 @@ namespace OAIS_ADMIN
                     string[] strSplit = folderBrowserDialog1.SelectedPath.Split('\\');
                     string strVarsla = strSplit[strSplit.Length - 1];
                     m_strRotVarsla = strVarsla;
+                    m_grbAvid.Text = strVarsla;
+                    //tékka hvort afhendinginn hefur verið skráð inn áður
+
+                    if( skrá.getKvittun(strVarsla).Rows.Count != 0)
+                    {
+                        MessageBox.Show("Þessi vörsluútgáfa er þegar kominn inn í kerfið, hvað gerir maður þá?");
+                        m_btnKvittun.Enabled = true;
+                        m_grbSkyrsla.BackColor = Color.LightYellow;
+                        m_grbFlytjaSIP.BackColor = Color.LightGreen;
+                        m_grbTekksuma.BackColor = Color.LightGreen;
+                        fyllaSkjalamyndara(strArchiveIndex, strVarsla);
+                        m_grbISAAR.BackColor = Color.LightGreen;
+                        m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
+                        m_btnSkjalamyndariStadfesta.Enabled = true;
+                        m_grbISAAR.Enabled = true;
+                      
+                        fyllaSkjalaSkra(strArchiveIndex, strVarsla);
+                        m_grbISASG.Enabled = true;
+                        m_grbISASG.BackColor = Color.LightGreen;
+                        m_btnSkraningStaðfesta.Enabled = true;
+                        m_btnSkraningStaðfesta.Text = "Fullskrá";
+                        fyllaVörslustofnn(strVarsla);
+                        m_grbISDIAH.Enabled = true;
+                        m_grbISDIAH.BackColor = Color.LightGreen;
+                        m_btnVörslustofnunStaðfesta.Enabled =true;
+                        m_btnVörslustofnunStaðfesta.Text = "Fullskrá";
+
+
+                        return;
+                    }
 
                     fyllaSkjalamyndara(strArchiveIndex, strVarsla);
                     m_grbISDIAH.Enabled = true;
@@ -67,7 +104,9 @@ namespace OAIS_ADMIN
                     fyllaVörslustofnn(strVarsla);
                     m_grbISAAR.Enabled = true;
                     m_bMD5 = bMD5Test(strFileIndex, strVarsla);
-                    
+                   // m_btnFlytjaSIP.Enabled = true; //kommenta út svo
+
+
                     if (m_bMD5)
                     {
                         m_grbTekksuma.BackColor = Color.LightGreen;
@@ -100,6 +139,39 @@ namespace OAIS_ADMIN
             {
                 string[] strSplit = dropped[0].ToString().Split('\\');
                 string strVarsla = strSplit[strSplit.Length-1];
+                m_strRotVarsla = strVarsla;
+                m_grbAvid.Text = strVarsla;
+                //tékka hvort afhendinginn hefur verið skráð inn áður
+
+                if (skrá.getKvittun(strVarsla).Rows.Count != 0)
+                {
+                    MessageBox.Show("Þessi vörsluútgáfa er þegar kominn inn í kerfið, hvað gerir maður þá?");
+                    m_btnKvittun.Enabled = true;
+                    m_grbSkyrsla.BackColor = Color.LightYellow;
+                    m_grbFlytjaSIP.BackColor = Color.LightGreen;
+                    m_grbTekksuma.BackColor = Color.LightGreen;
+                    fyllaSkjalamyndara(strArchiveIndex, strVarsla);
+                    m_grbISAAR.BackColor = Color.LightGreen;
+                    m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
+                    m_btnSkjalamyndariStadfesta.Enabled = true;
+                    m_grbISAAR.Enabled = true;
+
+                    fyllaSkjalaSkra(strArchiveIndex, strVarsla);
+                    m_grbISASG.Enabled = true;
+                    m_grbISASG.BackColor = Color.LightGreen;
+                    m_btnSkraningStaðfesta.Enabled = true;
+                    m_btnSkraningStaðfesta.Text = "Fullskrá";
+                    fyllaVörslustofnn(strVarsla);
+                    m_grbISDIAH.Enabled = true;
+                    m_grbISDIAH.BackColor = Color.LightGreen;
+                    m_btnVörslustofnunStaðfesta.Enabled = true;
+                    m_btnVörslustofnunStaðfesta.Text = "Fullskrá";
+
+
+                    return;
+                }
+
+
                 m_strRotVarsla = strVarsla;
                 fyllaSkjalamyndara(strArchiveIndex, strVarsla);
                 m_grbISDIAH.Enabled = true;
@@ -185,6 +257,8 @@ namespace OAIS_ADMIN
 
                 m_pgbTekksuma.PerformStep();
                 m_lblTekkSuma.Text = string.Format("{0}/{1}", m_pgbTekksuma.Value, m_pgbTekksuma.Maximum);
+                m_pgbTekksuma.Visible = true;
+                m_lblTekkSuma.Visible = true;
                 Application.DoEvents();
             }
 
@@ -227,6 +301,7 @@ namespace OAIS_ADMIN
                 m_comISADG_aðgengi.SelectedItem = skrá.skilyrði_aðgengi_3_4_1;
                 m_tboISADG_AFHNR.Text = skrá.afhendingar_tilfærslur_3_2_4;
 
+                m_grbISASG.BackColor = Color.LightYellow;
                 m_btnSkraningStaðfesta.Text = "Staðfesta";
             }
             else
@@ -278,6 +353,7 @@ namespace OAIS_ADMIN
               
                 m_tboISDIAH_auðkenni.Text = vörslustofnun.auðkenni_5_1_1;
                 m_tboISDIAH_obinbert_heiti.Text = vörslustofnun.opinbert_heiti_5_1_2;
+                m_grbISDIAH.BackColor = Color.LightYellow;
                 m_btnVörslustofnunStaðfesta.Text = "Staðfesta";
             }
             else
@@ -333,6 +409,7 @@ namespace OAIS_ADMIN
             if(skjalamyndari.ID != 0)
             {
                 m_btnSkjalamyndariStadfesta.Text = "Staðfesta";
+                m_grbISAAR.BackColor = Color.LightYellow;
             }
             else
             {
@@ -366,7 +443,8 @@ namespace OAIS_ADMIN
                     m_grbISAAR.BackColor = Color.LightGreen;
                     fyllaSkjalamyndaraLista();
                     m_comISAAR_nafn.SelectedValue = skjalamyndari.auðkenni_5_1_6;
-                    m_btnSkraningStaðfesta.Enabled = true; 
+                    m_btnSkraningStaðfesta.Enabled = true;
+                    m_bISAAR = true;
                     break;
                 case "Staðfesta":
                     if(skjalamyndari.ID != 0)
@@ -421,6 +499,7 @@ namespace OAIS_ADMIN
                     skrá.getSkraning(skrá.auðkenni_3_1_1);
                     m_btnSkraningStaðfesta.Text = "Fullskrá";
                     m_grbISASG.BackColor = Color.LightGreen;
+                    m_bISADG = true;
                     break;
                 case "Staðfesta":
                     m_grbISASG.BackColor = Color.LightGreen;
@@ -520,7 +599,8 @@ namespace OAIS_ADMIN
         private void m_btnFlytjaSIP_Click(object sender, EventArgs e)
         {
             //1. flytja gögn yfir á geymslusvæði (harðkóðða til að byrja með rótarmöppu vantar umsjón fyrir miðla)
-            string strRot = "D:\\AIP\\";
+            m_grbAvid.Visible = true;
+            string strRot = m_strDrif + "\\";
             string strRotVarsla = strRot + vörslustofnun.auðkenni_5_1_1;
             if (!Directory.Exists(strRotVarsla))
             {
@@ -549,10 +629,15 @@ namespace OAIS_ADMIN
                 {
                     //til frumeintak - þarf að flytja það líka. 
                     strSlodFRUM = dido.FullName;
+                    m_grbFRUM.Visible= true;
+                    m_grbFRUM.Text = skrá.auðkenni_3_1_1.Replace("AVID", "FRUM");
                 }
 
             }
 
+            m_prbFRUM.Maximum = 2;
+            m_prbFRUM.Step = 1;
+            m_prbFRUM.Value = 0;
             flytjaVorslutgafu(m_strSlodVarsla, strRotAIP);
 
             if (strSlodFRUM != string.Empty)
@@ -560,17 +645,74 @@ namespace OAIS_ADMIN
                 strRotAIP = strRotSkjalamyndari + "\\" + m_strRotVarsla.Replace("AVID", "FRUM");
                 flytjaVorslutgafu(strSlodFRUM, strRotAIP);
             }
-
+           
+            cVorsluutgafur varsla = new cVorsluutgafur();
+            varsla.vorsluutgafa = skrá.auðkenni_3_1_1;
+            varsla.utgafa_titill = skrá.titill_3_1_2;
+            varsla.vorslustofnun = vörslustofnun.auðkenni_5_1_1;
+            varsla.varsla_heiti = vörslustofnun.opinbert_heiti_5_1_2;
+            varsla.skjalamyndari = skjalamyndari.auðkenni_5_1_6;
+            varsla.skjalm_heiti = skjalamyndari.opinbert_heiti_5_1_2;
+            varsla.staerd = m_lStaerd;
+            varsla.slod = "D:\\AIP\\" + vörslustofnun.auðkenni_5_1_1 + "\\" + skjalamyndari.auðkenni_5_1_6 +"\\" + skrá.auðkenni_3_1_1;
+            varsla.innihald = skrá.yfirlit_innihald_3_3_1;
+            varsla.timabil = skrá.tímabil_3_1_3;
+            varsla.afharnr = skrá.afhendingar_tilfærslur_3_2_4;
+            varsla.MD5 = CreateMd5ForFolder(varsla.slod).ToUpper();
+            varsla.hver_skradi = virkurnotandi.nafn;
+            varsla.vista();
+            if(strSlodFRUM != string.Empty)
+            {
+                varsla.vorsluutgafa = skrá.auðkenni_3_1_1.Replace("AVID", "FRUM");
+                varsla.utgafa_titill = skrá.titill_3_1_2;
+                varsla.vorslustofnun = vörslustofnun.auðkenni_5_1_1;
+                varsla.varsla_heiti = vörslustofnun.opinbert_heiti_5_1_2;
+                varsla.skjalamyndari = skjalamyndari.auðkenni_5_1_6;
+                varsla.skjalm_heiti = skjalamyndari.opinbert_heiti_5_1_2;
+                varsla.staerd = m_lStaerdFrum;
+                varsla.slod = "D:\\AIP\\" + vörslustofnun.auðkenni_5_1_1 + "\\" + skjalamyndari.auðkenni_5_1_6 + "\\" + varsla.vorsluutgafa;
+                varsla.innihald = skrá.yfirlit_innihald_3_3_1;
+                varsla.timabil = skrá.tímabil_3_1_3;
+                varsla.afharnr = skrá.afhendingar_tilfærslur_3_2_4;
+                varsla.MD5 = CreateMd5ForFolder(varsla.slod).ToUpper();
+                varsla.hver_skradi = virkurnotandi.nafn;
+                varsla.vista();
+            }
             m_grbFlytjaSIP.BackColor = Color.LightGreen;
             m_grbSkyrsla.BackColor = Color.LightYellow;
             m_btnFlytjaSIP.Enabled = false;
             m_btnKvittun.Enabled = true; 
             MessageBox.Show("Búið");
 
-            //2. færa metadata fileindex og docindex inn í grunn ásamt contextdoctenglum
-            //
+            
         }
+        public static string CreateMd5ForFolder(string path)
+        {
+            // assuming you want to include nested folders
+            var files = Directory.GetFiles(path, "*", SearchOption.AllDirectories)
+                                 .OrderBy(p => p).ToList();
 
+            MD5 md5 = MD5.Create();
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                string file = files[i];
+
+                // hash path
+                string relativePath = file.Substring(path.Length + 1);
+                byte[] pathBytes = Encoding.UTF8.GetBytes(relativePath.ToLower());
+                md5.TransformBlock(pathBytes, 0, pathBytes.Length, pathBytes, 0);
+
+                // hash contents
+                byte[] contentBytes = File.ReadAllBytes(file);
+                if (i == files.Count - 1)
+                    md5.TransformFinalBlock(contentBytes, 0, contentBytes.Length);
+                else
+                    md5.TransformBlock(contentBytes, 0, contentBytes.Length, contentBytes, 0);
+            }
+
+            return BitConverter.ToString(md5.Hash).Replace("-", "").ToLower();
+        }
         private void flytjaVorslutgafu(string strOrg, string strDest)
         {
          
@@ -596,28 +738,41 @@ namespace OAIS_ADMIN
                 }
                 if (difo.Parent.FullName == m_strSlodVarsla.Replace("AVID", "FRUM") && difo.Parent.Name.StartsWith("FRUM"))
                 {
-                    m_prbFRUM.PerformStep();
-                    m_lblStatusFRUM.Text = string.Format("{0} {1}/{2}", difo.Name, m_prbAVID.Value, m_prbAVID.Maximum);
-                    Application.DoEvents();
+                    if(difo.FullName.Contains("Documents") || difo.FullName.Contains("VINNUSKJÖL"))
+                    {
+                        m_prbFRUM.PerformStep();
+                        m_lblStatusFRUM.Text = string.Format("{0} {1}/{2}", difo.Name, m_prbFRUM.Value, m_prbFRUM.Maximum);
+                        Application.DoEvents();
+
+                    }
+                   
                 }
 
                 //Get the path of the new directory
                 var newDirectory = Path.Combine(strDest, Path.GetFileName(directory));
                 //Create the directory if it doesn't already exist
-              //  if (difo.FullName.Contains("AVID")) //þarf að finna út hvurning ég sleppi að búa til m0ppur sem eru ekki notaðar
+                if (difo.FullName.Contains("AVID")) //þarf að finna út hvurning ég sleppi að búa til m0ppur sem eru ekki notaðar
                 {
                     Directory.CreateDirectory(newDirectory);
                 }
-                //if (difo.FullName.Contains("FRUM"))
-                //{
-                //    if (newDirectory.EndsWith("VINNUSKJÖL") || newDirectory.EndsWith("Documents"))
-                //    {
-                //        Directory.CreateDirectory(newDirectory);
-                //    }
-                //}
+                if (difo.FullName.Contains("FRUM"))
+                {
+                    if (newDirectory.Contains("Documents") || newDirectory.Contains("VINNUSKJÖL"))
+                    {
+                        Directory.CreateDirectory(newDirectory);
+                    }
+                    
+                }
+                    //if (difo.FullName.Contains("FRUM"))
+                    //{
+                    //    if (newDirectory.EndsWith("VINNUSKJÖL") || newDirectory.EndsWith("Documents"))
+                    //    {
+                    //        Directory.CreateDirectory(newDirectory);
+                    //    }
+                    //}
 
-                //Recursively clone the directory
-                flytjaVorslutgafu(directory, newDirectory);
+                    //Recursively clone the directory
+                    flytjaVorslutgafu(directory, newDirectory);
             }
             FileInfo fifo = new FileInfo(strOrg);
             if (fifo.FullName.Contains("AVID"))
@@ -626,7 +781,8 @@ namespace OAIS_ADMIN
                 {
 
                     File.Copy(file, Path.Combine(strDest, Path.GetFileName(file)), true);
-
+                    FileInfo folo = new FileInfo(file);
+                    m_lStaerd += folo.Length; 
                     m_MD5.AIP = m_strRotVarsla;
                     m_MD5.slod = strDest;
                     m_MD5.file = Path.GetFileName(file);
@@ -647,9 +803,10 @@ namespace OAIS_ADMIN
                         m_MD5.AIP = m_strRotVarsla;
                         m_MD5.slod = strDest;
                         m_MD5.file = Path.GetFileName(file); //þyrfti að ná orginal nafninu TODO gera leit í xml fyrri þetta.
-                        //DataSet ds = new DataSet();
-                        //ds.ReadXml(m_strSlodVarsla+ "\\Tables\\table1\\table1.xml");
-
+                                                             //DataSet ds = new DataSet();
+                                                             //ds.ReadXml(m_strSlodVarsla+ "\\Tables\\table1\\table1.xml");
+                        FileInfo folo = new FileInfo(file);
+                        m_lStaerdFrum   += folo.Length;
                         m_MD5.MD5 = md5(Path.Combine(strDest, Path.GetFileName(file)));
                         m_MD5.vista();
                     }
@@ -661,7 +818,14 @@ namespace OAIS_ADMIN
 
         private void m_btnKvittun_Click(object sender, EventArgs e)
         {
+            frmKvittun frmkvitt = new frmKvittun(m_strRotVarsla);
+            frmkvitt.ShowDialog();
+            m_grbSkyrsla.BackColor = Color.LightGreen;
+        }
 
+        private void m_btnFjarlaegja_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Eftir að útfæra");
         }
     }
 }

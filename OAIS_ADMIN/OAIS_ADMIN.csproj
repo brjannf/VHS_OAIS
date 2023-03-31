@@ -9,7 +9,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.17" />
+    <PackageReference Include="System.Data.Odbc" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\cClassOAIS\cClassOAIS.csproj" />
+    <ProjectReference Include="..\cClassVHS\cClassVHS.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="dsKvittun.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsKvittun.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="dsKvittun.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsKvittun.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Report1.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

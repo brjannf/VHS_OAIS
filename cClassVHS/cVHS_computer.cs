@@ -52,6 +52,14 @@ namespace cClassVHS
             getComputers();
         }
 
+        public DataTable getAllComputers()
+        {
+            string strSQL = string.Format("SELECT * FROM dt_computer d;");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
         private void getComputers()
         {
             this.Name = Environment.MachineName;
@@ -89,10 +97,7 @@ namespace cClassVHS
             Drives = DriveInfo.GetDrives();
 
         }
-        public DataSet dot()
-        {
-            return new DataSet();
-        }
+      
         public void saveComputer()
         {
             MySqlConnection conn = new MySqlConnection(m_strTenging);

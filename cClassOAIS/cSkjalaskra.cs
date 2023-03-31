@@ -112,6 +112,8 @@ namespace cClassOAIS
             else
             {
                 command.CommandText = "UPDATE `dt_isadg_skráningar` SET  `vörslustofnun`=@vörslustofnun, `skjalamyndari`=@skjalamyndari, `tilheyrir_skráningu`=@tilheyrir_skráningu, `3_1_1_auðkenni`=@3_1_1_auðkenni, `3_1_2_titill`=@3_1_2_titill, `3_1_3_tímabil`=@3_1_3_tímabil, `3_1_4_upplýsingastig`=@3_1_4_upplýsingastig, `3_1_5_magn_lýsing`=@3_1_5_magn_lýsing, `3_2_1_heiti_skjalamyndara`=@3_2_1_heiti_skjalamyndara, `3_2_2_saga_skjalamyndara`=@3_2_2_saga_skjalamyndara, `3_2_3_saga_skjalanna`=@3_2_3_saga_skjalanna, `3_2_4_afhendingar_tilfærslur`=@3_2_4_afhendingar_tilfærslur, `3_3_1_yfirlit_innihald`=@3_3_1_yfirlit_innihald, `3_3_2_tímaáætlanir`=@3_3_2_tímaáætlanir, `3_3_3_fyrirsjáanlegar_viðbætur`=@3_3_3_fyrirsjáanlegar_viðbætur, `3_3_4_innri_skipan`=@3_3_4_innri_skipan, `3_4_1_skilyrði_aðgengi`=@3_4_1_skilyrði_aðgengi, `3_4_2_skilyrði_endurprentun`=@3_4_2_skilyrði_endurprentun, `3_4_3_tungumál`=@3_4_3_tungumál, `3_4_4_ytri_einkenni`=@3_4_4_ytri_einkenni, `3_4_5_hjálpargögn`=@3_4_5_hjálpargögn, `3_5_1_tilvist_frumrita`=@3_5_1_tilvist_frumrita, `3_5_2_tilvist_afrita`=@3_5_2_tilvist_afrita, `3_5_3_skyld_skjöl`=@3_5_3_skyld_skjöl, `3_5_4_útgáfuupplýsingar`=@3_5_4_útgáfuupplýsingar, `3_6_1_athugasemdir`=@3_6_1_athugasemdir, `3_7_1_athugasemdir_skjalavarðar`=@3_7_1_athugasemdir_skjalavarðar, `3_7_2_reglur_venjur`=@3_7_2_reglur_venjur, `3_7_3_dagsetningar`=@3_7_3_dagsetningar, `hver_breytti`=@hver_breytti, `dags_breytt`=NOW() WHERE `ID`=@ID;";
+                command.ExecuteNonQuery();
+                command.CommandText = "UPDATE `dt_vörsluutgafur` set `innihald` = @3_3_1_yfirlit_innihald where `vorsluutgafa`=@3_1_1_auðkenni;";
             }
             command.ExecuteNonQuery();
             conn.Dispose();
@@ -209,6 +211,22 @@ namespace cClassOAIS
             }
         }
 
+
+        public DataTable getKvittun(string strAuðkenni) 
+        {
+            string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where vorsluutgafa = '{0}';", strAuðkenni);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getVörsluútgáfur()
+        {
+            string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
         public DataTable getUpplysingastigENUM()
         {
             string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as stig FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isadg_skráningar'AND COLUMN_NAME='3_1_4_upplýsingastig';");

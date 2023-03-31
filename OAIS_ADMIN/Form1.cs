@@ -31,10 +31,12 @@ namespace OAIS_ADMIN
             virkurNotandi.sækjaNotanda(strNotandi, strLykilorð);
             if (virkurNotandi.nafn != null)
             {
-                m_tapUmsjon.BringToFront();
-                m_tapUmsjon.Dock = DockStyle.Fill;
+                m_tacMain.BringToFront();
+                m_tacMain.Dock = DockStyle.Fill;
                 this.Text = "Velkominn " + virkurNotandi.nafn;
                 m_uscInnsetning.virkurnotandi = virkurNotandi;
+                uscGagnaUmsjon1.virkurnotandi = virkurNotandi;
+                uscGeymsluMidlar1.virkurnotandi = virkurNotandi;
                 this.WindowState = FormWindowState.Maximized;
                
             }
@@ -53,5 +55,13 @@ namespace OAIS_ADMIN
             }
             
         }
+
+        private void m_tapUmsjon_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(m_tacMain.SelectedTab == m_tapGagnaUmsjon)
+            {
+                uscGagnaUmsjon1.endurHressa();
+            }
+       }
     }
 }
