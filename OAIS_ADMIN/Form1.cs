@@ -12,8 +12,8 @@ namespace OAIS_ADMIN
             InitializeComponent();
             m_pnlNotandi.BringToFront();
             m_pnlNotandi.Dock = DockStyle.Fill;
-          
-            
+            this.Text = "MHR";
+
         }
 
       
@@ -37,6 +37,21 @@ namespace OAIS_ADMIN
                 m_uscInnsetning.virkurnotandi = virkurNotandi;
                 uscGagnaUmsjon1.virkurnotandi = virkurNotandi;
                 uscGeymsluMidlar1.virkurnotandi = virkurNotandi;
+                uscUmsjon1.virkurnotandi = virkurNotandi;
+                virkurNotandi.skraInnskra(virkurNotandi.kennitala);
+                if (virkurNotandi.hlutverk != "Umsjónarmaður")
+                {
+                    m_tacMain.TabPages.Remove(m_tapUmsjon);
+                }
+                else
+                {
+                    if(!m_tacMain.Contains(m_tapUmsjon))
+                    {
+                        m_tacMain.TabPages.Add(m_tapUmsjon);
+                    }
+                     
+                }
+                m_tacMain.SelectedTab = m_tapInnsetning;
                 this.WindowState = FormWindowState.Maximized;
                
             }
@@ -63,5 +78,14 @@ namespace OAIS_ADMIN
                 uscGagnaUmsjon1.endurHressa();
             }
        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            m_pnlNotandi.BringToFront();
+            virkurNotandi.hreinsaHlut();
+            m_tboLykilOrd.Text = string.Empty;
+            m_tboNoterndaNafn.Text = string.Empty;
+            this.Text = "MHR";
+        }
     }
 }

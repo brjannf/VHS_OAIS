@@ -34,8 +34,10 @@
             this.m_tapGagnaUmsjon = new System.Windows.Forms.TabPage();
             this.uscGagnaUmsjon1 = new OAIS_ADMIN.uscGagnaUmsjon();
             this.m_tapGeymsluMiðlar = new System.Windows.Forms.TabPage();
+            this.uscGeymsluMidlar1 = new OAIS_ADMIN.uscGeymsluMidlar();
             this.m_tapMiðlun = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.m_tapUmsjon = new System.Windows.Forms.TabPage();
+            this.uscUmsjon1 = new OAIS_ADMIN.uscUmsjon();
             this.m_pnlNotandi = new System.Windows.Forms.Panel();
             this.m_lblVillaInnSkraning = new System.Windows.Forms.Label();
             this.m_btnInnskra = new System.Windows.Forms.Button();
@@ -43,12 +45,15 @@
             this.m_tboLykilOrd = new System.Windows.Forms.TextBox();
             this.m_lblNotendaNafn = new System.Windows.Forms.Label();
             this.m_tboNoterndaNafn = new System.Windows.Forms.TextBox();
-            this.uscGeymsluMidlar1 = new OAIS_ADMIN.uscGeymsluMidlar();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.m_tacMain.SuspendLayout();
             this.m_tapInnsetning.SuspendLayout();
             this.m_tapGagnaUmsjon.SuspendLayout();
             this.m_tapGeymsluMiðlar.SuspendLayout();
+            this.m_tapUmsjon.SuspendLayout();
             this.m_pnlNotandi.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_tacMain
@@ -57,11 +62,11 @@
             this.m_tacMain.Controls.Add(this.m_tapGagnaUmsjon);
             this.m_tacMain.Controls.Add(this.m_tapGeymsluMiðlar);
             this.m_tacMain.Controls.Add(this.m_tapMiðlun);
-            this.m_tacMain.Controls.Add(this.tabPage4);
+            this.m_tacMain.Controls.Add(this.m_tapUmsjon);
             this.m_tacMain.Location = new System.Drawing.Point(12, 63);
             this.m_tacMain.Name = "m_tacMain";
             this.m_tacMain.SelectedIndex = 0;
-            this.m_tacMain.Size = new System.Drawing.Size(782, 461);
+            this.m_tacMain.Size = new System.Drawing.Size(775, 473);
             this.m_tacMain.TabIndex = 1;
             this.m_tacMain.SelectedIndexChanged += new System.EventHandler(this.m_tapUmsjon_SelectedIndexChanged);
             // 
@@ -114,6 +119,14 @@
             this.m_tapGeymsluMiðlar.Text = "Geymslumiðlar (Archival storage)";
             this.m_tapGeymsluMiðlar.UseVisualStyleBackColor = true;
             // 
+            // uscGeymsluMidlar1
+            // 
+            this.uscGeymsluMidlar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uscGeymsluMidlar1.Location = new System.Drawing.Point(3, 3);
+            this.uscGeymsluMidlar1.Name = "uscGeymsluMidlar1";
+            this.uscGeymsluMidlar1.Size = new System.Drawing.Size(768, 427);
+            this.uscGeymsluMidlar1.TabIndex = 0;
+            // 
             // m_tapMiðlun
             // 
             this.m_tapMiðlun.Location = new System.Drawing.Point(4, 24);
@@ -124,15 +137,24 @@
             this.m_tapMiðlun.Text = "Miðlun (Access)";
             this.m_tapMiðlun.UseVisualStyleBackColor = true;
             // 
-            // tabPage4
+            // m_tapUmsjon
             // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(774, 433);
-            this.tabPage4.TabIndex = 4;
-            this.tabPage4.Text = "Umsjón";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.m_tapUmsjon.Controls.Add(this.uscUmsjon1);
+            this.m_tapUmsjon.Location = new System.Drawing.Point(4, 24);
+            this.m_tapUmsjon.Name = "m_tapUmsjon";
+            this.m_tapUmsjon.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapUmsjon.Size = new System.Drawing.Size(767, 445);
+            this.m_tapUmsjon.TabIndex = 4;
+            this.m_tapUmsjon.Text = "Umsjón";
+            this.m_tapUmsjon.UseVisualStyleBackColor = true;
+            // 
+            // uscUmsjon1
+            // 
+            this.uscUmsjon1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uscUmsjon1.Location = new System.Drawing.Point(3, 3);
+            this.uscUmsjon1.Name = "uscUmsjon1";
+            this.uscUmsjon1.Size = new System.Drawing.Size(761, 439);
+            this.uscUmsjon1.TabIndex = 0;
             // 
             // m_pnlNotandi
             // 
@@ -204,13 +226,23 @@
             this.m_tboNoterndaNafn.TabIndex = 5;
             this.m_tboNoterndaNafn.KeyUp += new System.Windows.Forms.KeyEventHandler(this.m_tboNoterndaNafn_KeyUp);
             // 
-            // uscGeymsluMidlar1
+            // menuStrip1
             // 
-            this.uscGeymsluMidlar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uscGeymsluMidlar1.Location = new System.Drawing.Point(3, 3);
-            this.uscGeymsluMidlar1.Name = "uscGeymsluMidlar1";
-            this.uscGeymsluMidlar1.Size = new System.Drawing.Size(768, 427);
-            this.uscGeymsluMidlar1.TabIndex = 0;
+            this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.menuStrip1.Location = new System.Drawing.Point(1070, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(58, 701);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(45, 19);
+            this.toolStripMenuItem1.Text = "Útskrá";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // Form1
             // 
@@ -219,15 +251,21 @@
             this.ClientSize = new System.Drawing.Size(1128, 701);
             this.Controls.Add(this.m_pnlNotandi);
             this.Controls.Add(this.m_tacMain);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.m_tacMain.ResumeLayout(false);
             this.m_tapInnsetning.ResumeLayout(false);
             this.m_tapGagnaUmsjon.ResumeLayout(false);
             this.m_tapGeymsluMiðlar.ResumeLayout(false);
+            this.m_tapUmsjon.ResumeLayout(false);
             this.m_pnlNotandi.ResumeLayout(false);
             this.m_pnlNotandi.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -245,8 +283,11 @@
         private uscInnSetning m_uscInnsetning;
         private TabPage m_tapGagnaUmsjon;
         private TabPage m_tapMiðlun;
-        private TabPage tabPage4;
+        private TabPage m_tapUmsjon;
         private uscGagnaUmsjon uscGagnaUmsjon1;
         private uscGeymsluMidlar uscGeymsluMidlar1;
+        private uscUmsjon uscUmsjon1;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem toolStripMenuItem1;
     }
 }

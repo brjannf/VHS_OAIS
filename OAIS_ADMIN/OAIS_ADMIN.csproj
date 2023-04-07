@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MySqlBackup.NET" Version="2.3.8" />
     <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.17" />
     <PackageReference Include="System.Data.Odbc" Version="7.0.0" />
   </ItemGroup>

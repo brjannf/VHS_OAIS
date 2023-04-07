@@ -50,7 +50,7 @@ namespace OAIS_ADMIN
             DataTable dt = skjalamyndari.getSkjalamyndaralista();
             m_comISAAR_nafn.DataSource = dt;
             m_comISAAR_nafn.DisplayMember = "5_1_2_opinbert_heiti";
-            m_comISAAR_nafn.ValueMember = "5_1_6_auðkenni";
+            m_comISAAR_nafn.ValueMember = "id";
         }
         private void m_lblDragDrop_Click(object sender, EventArgs e)
         {
@@ -76,9 +76,14 @@ namespace OAIS_ADMIN
                         m_grbSkyrsla.BackColor = Color.LightYellow;
                         m_grbFlytjaSIP.BackColor = Color.LightGreen;
                         m_grbTekksuma.BackColor = Color.LightGreen;
+                      //  m_grbISAAR.BackColor = Color.LightGreen;
+                       // m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
                         fyllaSkjalamyndara(strArchiveIndex, strVarsla);
-                        m_grbISAAR.BackColor = Color.LightGreen;
-                        m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
+                        if(skjalamyndari.ID != 0)
+                        {
+                            m_grbISAAR.BackColor = Color.LightGreen;
+                            m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
+                        }
                         m_btnSkjalamyndariStadfesta.Enabled = true;
                         m_grbISAAR.Enabled = true;
                       
@@ -414,6 +419,7 @@ namespace OAIS_ADMIN
             else
             {
                 m_btnSkjalamyndariStadfesta.Text = "Vista";
+                //m_grbISAAR.BackColor = Color.LightYellow;
             }
         }
 
@@ -826,6 +832,23 @@ namespace OAIS_ADMIN
         private void m_btnFjarlaegja_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Eftir að útfæra");
+        }
+
+        private void m_comISAAR_nafn_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(m_comISAAR_nafn.Focused)
+            {
+                int ID = Convert.ToInt32(m_comISAAR_nafn.SelectedValue);
+                skjalamyndari.hreinsaHlut();
+                skjalamyndari.getSkjalamyndara(ID);
+
+                m_tboISAAR_auðkenni.Text = skjalamyndari.auðkenni_5_1_6;
+                m_comISAAR_gerð.SelectedValue = skjalamyndari.gerð_5_1_1;
+                m_grbISAAR.BackColor = Color.LightYellow;
+                m_btnSkjalamyndariStadfesta.Text = "Staðfesta";
+                
+                
+            }
         }
     }
 }

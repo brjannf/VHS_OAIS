@@ -147,9 +147,9 @@ namespace OAIS_ADMIN
             {
                 if (senderGrid.Columns["colEditSkjalamyndari"].Index == e.ColumnIndex)
                 {
-                    string strHeiti = senderGrid.Rows[e.RowIndex].Cells["colSkjalmHeiti"].Value.ToString();
+                    string strHeiti = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
                     cSkjalamyndari skjalm = new cSkjalamyndari();
-                    skjalm.getSkjalamyndara(strHeiti);
+                    skjalm.getSkjalamyndaraByAuðkenni(strHeiti);
                     frmSkjalamyndariSkra frmSkjalm = new frmSkjalamyndariSkra(skjalm, virkurnotandi);
                     frmSkjalm.ShowDialog();
                 }
@@ -173,8 +173,6 @@ namespace OAIS_ADMIN
                 if (senderGrid.Columns["colOpna"].Index == e.ColumnIndex)
                 {
                     string strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
-
-
                     var p = new Process();
                     p.StartInfo = new ProcessStartInfo(strSlod)
                     {

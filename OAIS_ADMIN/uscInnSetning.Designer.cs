@@ -467,6 +467,7 @@
             this.m_comISAAR_nafn.Name = "m_comISAAR_nafn";
             this.m_comISAAR_nafn.Size = new System.Drawing.Size(293, 23);
             this.m_comISAAR_nafn.TabIndex = 1;
+            this.m_comISAAR_nafn.SelectedIndexChanged += new System.EventHandler(this.m_comISAAR_nafn_SelectedIndexChanged);
             // 
             // m_lblISAAR_nafn_5_1_2
             // 
@@ -589,7 +590,7 @@
             // 
             this.m_tboISADG_titill.Location = new System.Drawing.Point(159, 122);
             this.m_tboISADG_titill.Name = "m_tboISADG_titill";
-            this.m_tboISADG_titill.Size = new System.Drawing.Size(388, 23);
+            this.m_tboISADG_titill.Size = new System.Drawing.Size(202, 23);
             this.m_tboISADG_titill.TabIndex = 3;
             // 
             // m_lblISAAR_titill
@@ -597,9 +598,9 @@
             this.m_lblISAAR_titill.AutoSize = true;
             this.m_lblISAAR_titill.Location = new System.Drawing.Point(23, 125);
             this.m_lblISAAR_titill.Name = "m_lblISAAR_titill";
-            this.m_lblISAAR_titill.Size = new System.Drawing.Size(59, 15);
+            this.m_lblISAAR_titill.Size = new System.Drawing.Size(122, 15);
             this.m_lblISAAR_titill.TabIndex = 2;
-            this.m_lblISAAR_titill.Text = "Titill 3.1.2.";
+            this.m_lblISAAR_titill.Text = "Afhendingaár/nr 3.2.4";
             // 
             // m_tboISADG_auðkenni
             // 

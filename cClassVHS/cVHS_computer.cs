@@ -54,7 +54,7 @@ namespace cClassVHS
 
         public DataTable getAllComputers()
         {
-            string strSQL = string.Format("SELECT * FROM dt_computer d;");
+            string strSQL = string.Format("SELECT * FROM dt_computer d order by date desc;");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

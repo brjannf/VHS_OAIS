@@ -153,6 +153,14 @@ namespace cClassVHS
             return dt;
         }
 
+        public DataTable driveComputersAllt(int comID)
+        {
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_drives d where comID = {0};", comID);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
         public DataTable driveOvirkComputers()
         {
             string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_drives d where virk = 0;");

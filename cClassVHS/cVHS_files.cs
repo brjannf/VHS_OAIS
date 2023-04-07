@@ -92,5 +92,40 @@ namespace cClassVHS
             conn.Dispose();
             command.Dispose();
         }
+
+        public DataTable getAR(string strDrif)
+        {
+            string strSQL = string.Format("SELECT year(date) as ar FROM dt_files d where drifid = {0} group by year(Date);", strDrif);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getManud(string strDrif, string strAr)
+        {
+            string strSQL = string.Format("select month(date) as manudur, date(date) as dags  FROM dt_files d where year(date) = '{0}' and drifid= {1} group by month(Date);", strAr, strDrif);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getDaga(string strDrif, string strAr, string strManudur)
+        {
+            string strSQL = string.Format("select day(date) as dagur,Convert(Date(date), CHAR) as dags FROM dt_files d where month(date) = '{0}' and year(date) = {1} and drifid={2} group by day(Date);", strManudur, strAr, strDrif);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getFiles(string strDate,string strrDrif)
+        {
+            string strSQL = string.Format("SELECT * FROM dt_files d where date(date) = '{0}' and drifid = {1} ;", strDate, strrDrif);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            return dt;
+        }
     }
 }

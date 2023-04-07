@@ -189,7 +189,7 @@ namespace cClassOAIS
 
         public DataTable getSkjalamyndaralista()
         {
-            string strSQL = "SELECT d.`5_1_2_opinbert_heiti`, d.`5_1_6_auðkenni` FROM db_oais_admin.dt_isaar_skjalamyndarar d order by 5_1_2_opinbert_heiti;";
+            string strSQL = "SELECT d.`5_1_2_opinbert_heiti`, d.`id` FROM db_oais_admin.dt_isaar_skjalamyndarar d order by 5_1_2_opinbert_heiti;";
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -259,6 +259,53 @@ namespace cClassOAIS
                    this.dags_breytt= r["dags_breytt"].ToString();
                 }
                 
+            }
+
+        }
+
+        public void getSkjalamyndaraByAuðkenni(string strAuðkenni)
+        {
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_isaar_skjalamyndarar d where 5_1_6_auðkenni = '{0}';", strAuðkenni);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow r in dt.Rows)
+                {
+                    this.ID = Convert.ToInt32(r["id"]);
+                    this.opinbert_auðkenni = r["opinbert_auðkenni"].ToString();
+                    this.gerð_5_1_1 = r["5_1_1_gerð"].ToString();
+                    this.opinbert_heiti_5_1_2 = r["5_1_2_opinbert_heiti"].ToString();
+                    this.erlent_heiti_5_1_3 = r["5_1_3_erlent_heiti"].ToString();
+                    this.annað_heiti_aðlagað_5_1_4 = r["5_1_4_annað_heiti_aðlagað"].ToString();
+                    this.annað_heiti_5_1_5 = r["5_1_5_annað_heiti"].ToString();
+                    this.auðkenni_5_1_6 = r["5_1_6_auðkenni"].ToString();
+                    this.tímabil_5_2_1 = r["5_2_1_tímabil"].ToString();
+                    this.saga_5_2_2 = r["5_2_2_saga"].ToString();
+                    this.staðsetning_5_2_3 = r["5_2_3_staðsetning"].ToString();
+                    this.lagaleg_staða_5_2_4 = r["5_2_4_lagaleg_staða"].ToString();
+                    this.hlutverk_5_2_5 = r["5_2_5_hlutverk"].ToString();
+                    this.tilheyrandi_lög_5_2_6 = r["5_2_6_tilheyrandi_lög"].ToString();
+                    this.innri_stjórnun_5_2_7 = r["5_2_7_innri_stjórnun"].ToString();
+                    this.almennt_samhengi_5_2_8 = r["5_2_8_almennt_samhengi"].ToString();
+                    this.auðkenni_lands_5_4_1 = r["5_4_1_auðkenni_lands"].ToString();
+                    this.auðkenni_vörslustofnunar_5_4_2 = r["5_4_2_auðkenni_vörslustofnunar"].ToString();
+                    this.reglur_staðlar_5_4_3 = r["5_4_3_reglur_staðlar"].ToString();
+                    this.skráningarstaða_5_4_4 = r["5_4_4_skráningarstaða"].ToString();
+                    this.skráningarstig_5_4_5 = r["5_4_5_skráningarstig"].ToString();
+                    this.dagsetningar_5_4_6 = r["5_4_6_dagsetningar"].ToString();
+                    this.tungumál_5_4_7 = r["5_4_7_tungumál"].ToString();
+                    this.heimildir_5_4_8 = r["5_4_8_heimildir"].ToString();
+                    this.athugasemdir_5_4_9 = r["5_4_9_athugasemdir"].ToString();
+
+
+                    this.hver_skráði = r["hver_skráði"].ToString();
+                    this.dags_skráð = r["dags_skráð"].ToString();
+                    this.hver_breytti = r["hver_breytti"].ToString();
+                    this.dags_breytt = r["dags_breytt"].ToString();
+                }
+
             }
 
         }
