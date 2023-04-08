@@ -57,7 +57,7 @@ namespace OAIS_ADMIN
             }
             
             ReportDataSource reportDataSource = new ReportDataSource("dsKvittun", dtCloned);
-            //reportDataSource.Name = "DATASET2";
+            //reportDataSource.Nafn = "DATASET2";
             //reportDataSource.Value = dt;
             reportViewer.LocalReport.DataSources.Add(reportDataSource);
             reportViewer.RefreshReport();

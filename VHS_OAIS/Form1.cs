@@ -139,8 +139,8 @@ namespace VHS_OAIS
                     {
                         cDrive.comID = cComputer.ID;
                         m_dtDrifVirk = cDrive.driveComputers(cDrive.comID);
-                        cDrive.Name = folderBrowserDialog1.SelectedPath;
-                        DriveInfo difo = new DriveInfo(cDrive.Name);
+                        cDrive.Nafn = folderBrowserDialog1.SelectedPath;
+                        DriveInfo difo = new DriveInfo(cDrive.Nafn);
                         bool bErVirkt = false;
                         int iGamla = 0;
                         string strDrifNafn = m_dgvDrives.Rows[e.RowIndex].Cells["colDrifNafn"].Value.ToString(); //núverandi rótarmappa
@@ -154,7 +154,7 @@ namespace VHS_OAIS
                         dt .Merge(m_dtDrifVirk);
                         foreach(DataRow rr in dt.Rows)
                         {
-                            if (rr["nafn"].ToString() == cDrive.Name)
+                            if (rr["nafn"].ToString() == cDrive.Nafn)
                             {
                                 cDrive.geraVirktOvirkt(1, Convert.ToInt32(rr["id"]));
                                 cDrive.geraVirktOvirkt(0,strDrifNafn);
@@ -164,7 +164,7 @@ namespace VHS_OAIS
                         }
                         foreach (DataRow row in m_dtDrifVirk.Rows)
                         {
-                            if(difo.Name != cDrive.Name)
+                            if(difo.Name != cDrive.Nafn)
                             {
                                 if (row["nafn"].ToString().StartsWith(difo.Name))
                                 {
@@ -179,7 +179,7 @@ namespace VHS_OAIS
                         cDrive.Laust = cComputer.Drives[e.RowIndex].AvailableFreeSpace.ToString();
                         cDrive.Heild = cComputer.Drives[e.RowIndex].TotalSize.ToString();
                         cDrive.Tegund = cComputer.Drives[e.RowIndex].VolumeLabel;
-                        cDrive.Framleitt = cComputer.Drives[e.RowIndex].RootDirectory.CreationTime;
+                        cDrive.Framleitt = cComputer.Drives[e.RowIndex].RootDirectory.CreationTime.ToString();
                         cDrive.Virk = 1;
                         cDrive.saveDrive(folderBrowserDialog1.SelectedPath);
 

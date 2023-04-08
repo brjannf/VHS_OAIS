@@ -21,7 +21,7 @@ namespace cClassVHS
         private string driveHeild;
         private string driveTegund;
         private int iVirk;
-        private DateTime driveframleitt;
+        private string driveframleitt;
 
         private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
 
@@ -44,7 +44,7 @@ namespace cClassVHS
             get { return iComputer; }   // get method
             set { iComputer = value; }  // set method
         }
-        public string Name
+        public string Nafn
         {
             get { return driveName; }   // get method
             set { driveName = value; }  // set method
@@ -52,8 +52,8 @@ namespace cClassVHS
 
         public string Format
         {
-            get { return driveName; }   // get method
-            set { driveName = value; }  // set method
+            get { return driveFormat; }   // get method
+            set { driveFormat = value; }  // set method
         }
 
         public string Laust
@@ -74,7 +74,7 @@ namespace cClassVHS
             set { driveTegund = value; }  // set method
         }
 
-        public DateTime Framleitt
+        public string Framleitt
         {
             get { return driveframleitt; }   // get method
             set { driveframleitt = value; }  // set method
@@ -84,6 +84,41 @@ namespace cClassVHS
         {
             get { return iVirk; }   // get method
             set { iVirk = value; }  // set method
+        }
+
+        public void getDrif(int iID)
+        {
+            string strSQL = string.Format("SELECT * FROM dt_drives d where id = {0};", iID);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            foreach (DataRow r in dt.Rows)
+            {
+              //  id, comID, nafn, format, laust, heild, tegund, framleitt, virk
+                this.iID = Convert.ToInt32(r["id"]);
+                this.comID = Convert.ToInt32(r["comID"]);
+                this.Nafn = r["nafn"].ToString();
+                this.Format = r["format"].ToString();
+                this.Laust = r["laust"].ToString();
+                this.Heild = r["heild"].ToString();
+                this.Tegund = r["tegund"].ToString();
+                this.Framleitt = r["framleitt"].ToString();
+                this.Virk = Convert.ToInt32( r["virk"]);
+              }
+        }
+
+        public void hreinsaHlut()
+        {
+            this.iID = 0;
+            this.comID =0;
+            this.Nafn = null;
+            this.Format = null;
+            this.Laust = null;
+            this.Heild = null;
+            this.Tegund = null;
+            this.Framleitt = null;
+            this.Virk = 0;
         }
 
         public void geraVirktOvirkt(int iVirkt, int iID)

@@ -42,7 +42,7 @@ namespace VHS_OAIS
             }
 
             ReportDataSource reportDataSource = new ReportDataSource("DataSet2", dt);
-            //reportDataSource.Name = "DATASET2";
+            //reportDataSource.Nafn = "DATASET2";
             //reportDataSource.Value = dt;
             reportViewer.LocalReport.DataSources.Add(reportDataSource);
             reportViewer.RefreshReport();
