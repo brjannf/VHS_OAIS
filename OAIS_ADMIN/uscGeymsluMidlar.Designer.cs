@@ -74,6 +74,7 @@
             this.colBackDags = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colBackBtnRestore = new System.Windows.Forms.DataGridViewButtonColumn();
             this.colBackBtnOpna = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvDrif)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -504,7 +505,6 @@
             this.colBackDrifID.Name = "colBackDrifID";
             this.colBackDrifID.ReadOnly = true;
             this.colBackDrifID.Visible = false;
-            this.colBackDrifID.Width = 62;
             // 
             // colBackMerking
             // 
@@ -513,7 +513,7 @@
             this.colBackMerking.HeaderText = "Merking drifs";
             this.colBackMerking.Name = "colBackMerking";
             this.colBackMerking.ReadOnly = true;
-            this.colBackMerking.Width = 102;
+            this.colBackMerking.Width = 94;
             // 
             // colBackSlod
             // 
@@ -522,7 +522,7 @@
             this.colBackSlod.HeaderText = "Slóð á drifi";
             this.colBackSlod.Name = "colBackSlod";
             this.colBackSlod.ReadOnly = true;
-            this.colBackSlod.Width = 88;
+            this.colBackSlod.Width = 62;
             // 
             // colBackStaerd
             // 
@@ -540,7 +540,7 @@
             this.colBackGeymt.HeaderText = "Hvar geymt";
             this.colBackGeymt.Name = "colBackGeymt";
             this.colBackGeymt.ReadOnly = true;
-            this.colBackGeymt.Width = 94;
+            this.colBackGeymt.Width = 87;
             // 
             // colbackAthugasemdir
             // 
@@ -557,7 +557,7 @@
             this.colBackHver.HeaderText = "Hver tók afrit";
             this.colBackHver.Name = "colBackHver";
             this.colBackHver.ReadOnly = true;
-            this.colBackHver.Width = 101;
+            this.colBackHver.Width = 74;
             // 
             // colBackDags
             // 
@@ -669,5 +669,6 @@
         private DataGridViewTextBoxColumn colBackDags;
         private DataGridViewButtonColumn colBackBtnRestore;
         private DataGridViewButtonColumn colBackBtnOpna;
+        private FolderBrowserDialog folderBrowserDialog1;
     }
 }

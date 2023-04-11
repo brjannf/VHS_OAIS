@@ -25,6 +25,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>dsKvittun.xsd</DependentUpon>
     </Compile>
+    <Compile Update="dsVarsla.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsVarsla.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="uscGagnaUmsjon.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +41,15 @@
       <LastGenOutput>dsKvittun.Designer.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="dsVarsla.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsVarsla.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Report1.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="reportVarsla.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

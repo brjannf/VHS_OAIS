@@ -121,6 +121,19 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
+                <Value>Aðgangstakmörkun: </Value>
+                <Style />
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!adgangstakmarkanir.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
                 <Value>Innflutt af: </Value>
                 <Style />
               </TextRun>
@@ -378,14 +391,18 @@
           <DataField>dags_skrad</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
+        <Field Name="adgangstakmarkanir">
+          <DataField>adgangstakmarkanir</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSet1</rd:DataSetName>
         <rd:SchemaPath>C:\Users\brjann\source\repos\VHS_OAIS\OAIS_ADMIN\dsKvittun.xsd</rd:SchemaPath>
-        <rd:TableName>DataTable</rd:TableName>
+        <rd:TableName>DataTable1</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
-        <rd:TableAdapterName>DataTableTableAdapter</rd:TableAdapterName>
+        <rd:TableAdapterName>DataTable1TableAdapter</rd:TableAdapterName>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>

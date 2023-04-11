@@ -580,7 +580,7 @@ namespace OAIS_ADMIN
 
                 case "Fullskrá":
                     frmVörslustofnun frmVarsla = new frmVörslustofnun(vörslustofnun, virkurnotandi);
-                    frmVarsla.Show();
+                    frmVarsla.ShowDialog();
                     vörslustofnun.getVörslustofnun(vörslustofnun.auðkenni_5_1_1);
                     m_tboISDIAH_obinbert_heiti.Text = vörslustofnun.opinbert_heiti_5_1_2;
                     m_bISADG = true;
@@ -666,6 +666,7 @@ namespace OAIS_ADMIN
             varsla.afharnr = skrá.afhendingar_tilfærslur_3_2_4;
             varsla.MD5 = CreateMd5ForFolder(varsla.slod).ToUpper();
             varsla.hver_skradi = virkurnotandi.nafn;
+            varsla.adgangstakmarkanir = skrá.skilyrði_aðgengi_3_4_1;
             varsla.vista();
             if(strSlodFRUM != string.Empty)
             {
@@ -682,6 +683,7 @@ namespace OAIS_ADMIN
                 varsla.afharnr = skrá.afhendingar_tilfærslur_3_2_4;
                 varsla.MD5 = CreateMd5ForFolder(varsla.slod).ToUpper();
                 varsla.hver_skradi = virkurnotandi.nafn;
+                varsla.adgangstakmarkanir = skrá.skilyrði_aðgengi_3_4_1;
                 varsla.vista();
             }
             m_grbFlytjaSIP.BackColor = Color.LightGreen;

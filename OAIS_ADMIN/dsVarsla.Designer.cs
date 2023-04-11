@@ -20,17 +20,17 @@ namespace OAIS_ADMIN {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("DataSet1")]
+    [global::System.Xml.Serialization.XmlRootAttribute("dsVarsla")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class DataSet1 : global::System.Data.DataSet {
+    public partial class dsVarsla : global::System.Data.DataSet {
         
-        private DataTable1DataTable tableDataTable1;
+        private DataTableDataTable tableDataTable;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public DataSet1() {
+        public dsVarsla() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace OAIS_ADMIN {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        protected DataSet1(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected dsVarsla(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -54,8 +54,8 @@ namespace OAIS_ADMIN {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["DataTable1"] != null)) {
-                    base.Tables.Add(new DataTable1DataTable(ds.Tables["DataTable1"]));
+                if ((ds.Tables["DataTable"] != null)) {
+                    base.Tables.Add(new DataTableDataTable(ds.Tables["DataTable"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace OAIS_ADMIN {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public DataTable1DataTable DataTable1 {
+        public DataTableDataTable DataTable {
             get {
-                return this.tableDataTable1;
+                return this.tableDataTable;
             }
         }
         
@@ -127,7 +127,7 @@ namespace OAIS_ADMIN {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            DataSet1 cln = ((DataSet1)(base.Clone()));
+            dsVarsla cln = ((dsVarsla)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -152,8 +152,8 @@ namespace OAIS_ADMIN {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["DataTable1"] != null)) {
-                    base.Tables.Add(new DataTable1DataTable(ds.Tables["DataTable1"]));
+                if ((ds.Tables["DataTable"] != null)) {
+                    base.Tables.Add(new DataTableDataTable(ds.Tables["DataTable"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace OAIS_ADMIN {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableDataTable1 = ((DataTable1DataTable)(base.Tables["DataTable1"]));
+            this.tableDataTable = ((DataTableDataTable)(base.Tables["DataTable"]));
             if ((initTable == true)) {
-                if ((this.tableDataTable1 != null)) {
-                    this.tableDataTable1.InitVars();
+                if ((this.tableDataTable != null)) {
+                    this.tableDataTable.InitVars();
                 }
             }
         }
@@ -199,18 +199,18 @@ namespace OAIS_ADMIN {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "DataSet1";
+            this.DataSetName = "dsVarsla";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/DataSet1.xsd";
+            this.Namespace = "http://tempuri.org/dsVarsla.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableDataTable1 = new DataTable1DataTable();
-            base.Tables.Add(this.tableDataTable1);
+            this.tableDataTable = new DataTableDataTable();
+            base.Tables.Add(this.tableDataTable);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private bool ShouldSerializeDataTable1() {
+        private bool ShouldSerializeDataTable() {
             return false;
         }
         
@@ -225,7 +225,7 @@ namespace OAIS_ADMIN {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            DataSet1 ds = new DataSet1();
+            dsVarsla ds = new dsVarsla();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -270,14 +270,14 @@ namespace OAIS_ADMIN {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public delegate void DataTable1RowChangeEventHandler(object sender, DataTable1RowChangeEvent e);
+        public delegate void DataTableRowChangeEventHandler(object sender, DataTableRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class DataTable1DataTable : global::System.Data.TypedTableBase<DataTable1Row> {
+        public partial class DataTableDataTable : global::System.Data.TypedTableBase<DataTableRow> {
             
             private global::System.Data.DataColumn columnid;
             
@@ -311,10 +311,14 @@ namespace OAIS_ADMIN {
             
             private global::System.Data.DataColumn columnadgangstakmarkanir;
             
+            private global::System.Data.DataColumn columnheild;
+            
+            private global::System.Data.DataColumn columnverd;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable1DataTable() {
-                this.TableName = "DataTable1";
+            public DataTableDataTable() {
+                this.TableName = "DataTable";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -322,7 +326,7 @@ namespace OAIS_ADMIN {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal DataTable1DataTable(global::System.Data.DataTable table) {
+            internal DataTableDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -339,7 +343,7 @@ namespace OAIS_ADMIN {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected DataTable1DataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DataTableDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -474,6 +478,22 @@ namespace OAIS_ADMIN {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn heildColumn {
+                get {
+                    return this.columnheild;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn verdColumn {
+                get {
+                    return this.columnverd;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -483,34 +503,51 @@ namespace OAIS_ADMIN {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable1Row this[int index] {
+            public DataTableRow this[int index] {
                 get {
-                    return ((DataTable1Row)(this.Rows[index]));
+                    return ((DataTableRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event DataTable1RowChangeEventHandler DataTable1RowChanging;
+            public event DataTableRowChangeEventHandler DataTableRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event DataTable1RowChangeEventHandler DataTable1RowChanged;
+            public event DataTableRowChangeEventHandler DataTableRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event DataTable1RowChangeEventHandler DataTable1RowDeleting;
+            public event DataTableRowChangeEventHandler DataTableRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event DataTable1RowChangeEventHandler DataTable1RowDeleted;
+            public event DataTableRowChangeEventHandler DataTableRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void AddDataTable1Row(DataTable1Row row) {
+            public void AddDataTableRow(DataTableRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string vorsluutgafa, string utgafa_titill, string vorslustofnun, string varsla_heiti, string skjalamyndari, string skjalm_heiti, decimal staerd, string slod, string innihald, string timabil, string afharnr, string MD5, string hver_skradi, System.DateTime dags_skrad, string adgangstakmarkanir) {
-                DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
+            public DataTableRow AddDataTableRow(
+                        string vorsluutgafa, 
+                        string utgafa_titill, 
+                        string vorslustofnun, 
+                        string varsla_heiti, 
+                        string skjalamyndari, 
+                        string skjalm_heiti, 
+                        decimal staerd, 
+                        string slod, 
+                        string innihald, 
+                        string timabil, 
+                        string afharnr, 
+                        string MD5, 
+                        string hver_skradi, 
+                        System.DateTime dags_skrad, 
+                        string adgangstakmarkanir, 
+                        string heild, 
+                        string verd) {
+                DataTableRow rowDataTableRow = ((DataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         vorsluutgafa,
@@ -527,16 +564,18 @@ namespace OAIS_ADMIN {
                         MD5,
                         hver_skradi,
                         dags_skrad,
-                        adgangstakmarkanir};
-                rowDataTable1Row.ItemArray = columnValuesArray;
-                this.Rows.Add(rowDataTable1Row);
-                return rowDataTable1Row;
+                        adgangstakmarkanir,
+                        heild,
+                        verd};
+                rowDataTableRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDataTableRow);
+                return rowDataTableRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                DataTable1DataTable cln = ((DataTable1DataTable)(base.Clone()));
+                DataTableDataTable cln = ((DataTableDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -544,7 +583,7 @@ namespace OAIS_ADMIN {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new DataTable1DataTable();
+                return new DataTableDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -566,6 +605,8 @@ namespace OAIS_ADMIN {
                 this.columnhver_skradi = base.Columns["hver_skradi"];
                 this.columndags_skrad = base.Columns["dags_skrad"];
                 this.columnadgangstakmarkanir = base.Columns["adgangstakmarkanir"];
+                this.columnheild = base.Columns["heild"];
+                this.columnverd = base.Columns["verd"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -603,6 +644,10 @@ namespace OAIS_ADMIN {
                 base.Columns.Add(this.columndags_skrad);
                 this.columnadgangstakmarkanir = new global::System.Data.DataColumn("adgangstakmarkanir", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnadgangstakmarkanir);
+                this.columnheild = new global::System.Data.DataColumn("heild", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnheild);
+                this.columnverd = new global::System.Data.DataColumn("verd", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnverd);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnid}, false));
                 this.columnid.AutoIncrement = true;
@@ -637,32 +682,34 @@ namespace OAIS_ADMIN {
                 this.columndags_skrad.AllowDBNull = false;
                 this.columnadgangstakmarkanir.AllowDBNull = false;
                 this.columnadgangstakmarkanir.MaxLength = 800;
+                this.columnheild.AllowDBNull = false;
+                this.columnverd.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable1Row NewDataTable1Row() {
-                return ((DataTable1Row)(this.NewRow()));
+            public DataTableRow NewDataTableRow() {
+                return ((DataTableRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new DataTable1Row(builder);
+                return new DataTableRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(DataTable1Row);
+                return typeof(DataTableRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.DataTable1RowChanged != null)) {
-                    this.DataTable1RowChanged(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
+                if ((this.DataTableRowChanged != null)) {
+                    this.DataTableRowChanged(this, new DataTableRowChangeEvent(((DataTableRow)(e.Row)), e.Action));
                 }
             }
             
@@ -670,8 +717,8 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.DataTable1RowChanging != null)) {
-                    this.DataTable1RowChanging(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
+                if ((this.DataTableRowChanging != null)) {
+                    this.DataTableRowChanging(this, new DataTableRowChangeEvent(((DataTableRow)(e.Row)), e.Action));
                 }
             }
             
@@ -679,8 +726,8 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.DataTable1RowDeleted != null)) {
-                    this.DataTable1RowDeleted(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
+                if ((this.DataTableRowDeleted != null)) {
+                    this.DataTableRowDeleted(this, new DataTableRowChangeEvent(((DataTableRow)(e.Row)), e.Action));
                 }
             }
             
@@ -688,14 +735,14 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.DataTable1RowDeleting != null)) {
-                    this.DataTable1RowDeleting(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
+                if ((this.DataTableRowDeleting != null)) {
+                    this.DataTableRowDeleting(this, new DataTableRowChangeEvent(((DataTableRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void RemoveDataTable1Row(DataTable1Row row) {
+            public void RemoveDataTableRow(DataTableRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -704,7 +751,7 @@ namespace OAIS_ADMIN {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                DataSet1 ds = new DataSet1();
+                dsVarsla ds = new dsVarsla();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -722,7 +769,7 @@ namespace OAIS_ADMIN {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "DataTable1DataTable";
+                attribute2.FixedValue = "DataTableDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -766,15 +813,15 @@ namespace OAIS_ADMIN {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class DataTable1Row : global::System.Data.DataRow {
+        public partial class DataTableRow : global::System.Data.DataRow {
             
-            private DataTable1DataTable tableDataTable1;
+            private DataTableDataTable tableDataTable;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal DataTable1Row(global::System.Data.DataRowBuilder rb) : 
+            internal DataTableRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableDataTable1 = ((DataTable1DataTable)(this.Table));
+                this.tableDataTable = ((DataTableDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -782,14 +829,14 @@ namespace OAIS_ADMIN {
             public long id {
                 get {
                     try {
-                        return ((long)(this[this.tableDataTable1.idColumn]));
+                        return ((long)(this[this.tableDataTable.idColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'id\' in table \'DataTable1\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'id\' in table \'DataTable\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataTable1.idColumn] = value;
+                    this[this.tableDataTable.idColumn] = value;
                 }
             }
             
@@ -797,10 +844,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string vorsluutgafa {
                 get {
-                    return ((string)(this[this.tableDataTable1.vorsluutgafaColumn]));
+                    return ((string)(this[this.tableDataTable.vorsluutgafaColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.vorsluutgafaColumn] = value;
+                    this[this.tableDataTable.vorsluutgafaColumn] = value;
                 }
             }
             
@@ -808,10 +855,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string utgafa_titill {
                 get {
-                    return ((string)(this[this.tableDataTable1.utgafa_titillColumn]));
+                    return ((string)(this[this.tableDataTable.utgafa_titillColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.utgafa_titillColumn] = value;
+                    this[this.tableDataTable.utgafa_titillColumn] = value;
                 }
             }
             
@@ -819,10 +866,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string vorslustofnun {
                 get {
-                    return ((string)(this[this.tableDataTable1.vorslustofnunColumn]));
+                    return ((string)(this[this.tableDataTable.vorslustofnunColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.vorslustofnunColumn] = value;
+                    this[this.tableDataTable.vorslustofnunColumn] = value;
                 }
             }
             
@@ -830,10 +877,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string varsla_heiti {
                 get {
-                    return ((string)(this[this.tableDataTable1.varsla_heitiColumn]));
+                    return ((string)(this[this.tableDataTable.varsla_heitiColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.varsla_heitiColumn] = value;
+                    this[this.tableDataTable.varsla_heitiColumn] = value;
                 }
             }
             
@@ -841,10 +888,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string skjalamyndari {
                 get {
-                    return ((string)(this[this.tableDataTable1.skjalamyndariColumn]));
+                    return ((string)(this[this.tableDataTable.skjalamyndariColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.skjalamyndariColumn] = value;
+                    this[this.tableDataTable.skjalamyndariColumn] = value;
                 }
             }
             
@@ -852,10 +899,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string skjalm_heiti {
                 get {
-                    return ((string)(this[this.tableDataTable1.skjalm_heitiColumn]));
+                    return ((string)(this[this.tableDataTable.skjalm_heitiColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.skjalm_heitiColumn] = value;
+                    this[this.tableDataTable.skjalm_heitiColumn] = value;
                 }
             }
             
@@ -863,10 +910,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public decimal staerd {
                 get {
-                    return ((decimal)(this[this.tableDataTable1.staerdColumn]));
+                    return ((decimal)(this[this.tableDataTable.staerdColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.staerdColumn] = value;
+                    this[this.tableDataTable.staerdColumn] = value;
                 }
             }
             
@@ -874,10 +921,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string slod {
                 get {
-                    return ((string)(this[this.tableDataTable1.slodColumn]));
+                    return ((string)(this[this.tableDataTable.slodColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.slodColumn] = value;
+                    this[this.tableDataTable.slodColumn] = value;
                 }
             }
             
@@ -885,10 +932,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string innihald {
                 get {
-                    return ((string)(this[this.tableDataTable1.innihaldColumn]));
+                    return ((string)(this[this.tableDataTable.innihaldColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.innihaldColumn] = value;
+                    this[this.tableDataTable.innihaldColumn] = value;
                 }
             }
             
@@ -896,10 +943,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string timabil {
                 get {
-                    return ((string)(this[this.tableDataTable1.timabilColumn]));
+                    return ((string)(this[this.tableDataTable.timabilColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.timabilColumn] = value;
+                    this[this.tableDataTable.timabilColumn] = value;
                 }
             }
             
@@ -907,10 +954,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string afharnr {
                 get {
-                    return ((string)(this[this.tableDataTable1.afharnrColumn]));
+                    return ((string)(this[this.tableDataTable.afharnrColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.afharnrColumn] = value;
+                    this[this.tableDataTable.afharnrColumn] = value;
                 }
             }
             
@@ -918,10 +965,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string MD5 {
                 get {
-                    return ((string)(this[this.tableDataTable1.MD5Column]));
+                    return ((string)(this[this.tableDataTable.MD5Column]));
                 }
                 set {
-                    this[this.tableDataTable1.MD5Column] = value;
+                    this[this.tableDataTable.MD5Column] = value;
                 }
             }
             
@@ -929,10 +976,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string hver_skradi {
                 get {
-                    return ((string)(this[this.tableDataTable1.hver_skradiColumn]));
+                    return ((string)(this[this.tableDataTable.hver_skradiColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.hver_skradiColumn] = value;
+                    this[this.tableDataTable.hver_skradiColumn] = value;
                 }
             }
             
@@ -940,10 +987,10 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public System.DateTime dags_skrad {
                 get {
-                    return ((global::System.DateTime)(this[this.tableDataTable1.dags_skradColumn]));
+                    return ((global::System.DateTime)(this[this.tableDataTable.dags_skradColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.dags_skradColumn] = value;
+                    this[this.tableDataTable.dags_skradColumn] = value;
                 }
             }
             
@@ -951,23 +998,45 @@ namespace OAIS_ADMIN {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string adgangstakmarkanir {
                 get {
-                    return ((string)(this[this.tableDataTable1.adgangstakmarkanirColumn]));
+                    return ((string)(this[this.tableDataTable.adgangstakmarkanirColumn]));
                 }
                 set {
-                    this[this.tableDataTable1.adgangstakmarkanirColumn] = value;
+                    this[this.tableDataTable.adgangstakmarkanirColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string heild {
+                get {
+                    return ((string)(this[this.tableDataTable.heildColumn]));
+                }
+                set {
+                    this[this.tableDataTable.heildColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string verd {
+                get {
+                    return ((string)(this[this.tableDataTable.verdColumn]));
+                }
+                set {
+                    this[this.tableDataTable.verdColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsidNull() {
-                return this.IsNull(this.tableDataTable1.idColumn);
+                return this.IsNull(this.tableDataTable.idColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetidNull() {
-                this[this.tableDataTable1.idColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable.idColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -975,22 +1044,22 @@ namespace OAIS_ADMIN {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public class DataTable1RowChangeEvent : global::System.EventArgs {
+        public class DataTableRowChangeEvent : global::System.EventArgs {
             
-            private DataTable1Row eventRow;
+            private DataTableRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable1RowChangeEvent(DataTable1Row row, global::System.Data.DataRowAction action) {
+            public DataTableRowChangeEvent(DataTableRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public DataTable1Row Row {
+            public DataTableRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -1006,7 +1075,7 @@ namespace OAIS_ADMIN {
         }
     }
 }
-namespace OAIS_ADMIN.DataSet1TableAdapters {
+namespace OAIS_ADMIN.dsVarslaTableAdapters {
     
     
     /// <summary>
@@ -1018,7 +1087,7 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class DataTable1TableAdapter : global::System.ComponentModel.Component {
+    public partial class DataTableTableAdapter : global::System.ComponentModel.Component {
         
         private global::System.Data.Odbc.OdbcDataAdapter _adapter;
         
@@ -1032,7 +1101,7 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public DataTable1TableAdapter() {
+        public DataTableTableAdapter() {
             this.ClearBeforeFill = true;
         }
         
@@ -1129,7 +1198,7 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
             this._adapter = new global::System.Data.Odbc.OdbcDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "DataTable1";
+            tableMapping.DataSetTable = "DataTable";
             tableMapping.ColumnMappings.Add("id", "id");
             tableMapping.ColumnMappings.Add("vorsluutgafa", "vorsluutgafa");
             tableMapping.ColumnMappings.Add("utgafa_titill", "utgafa_titill");
@@ -1146,6 +1215,8 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
             tableMapping.ColumnMappings.Add("hver_skradi", "hver_skradi");
             tableMapping.ColumnMappings.Add("dags_skrad", "dags_skrad");
             tableMapping.ColumnMappings.Add("adgangstakmarkanir", "adgangstakmarkanir");
+            tableMapping.ColumnMappings.Add("heild", "heild");
+            tableMapping.ColumnMappings.Add("verd", "verd");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -1163,7 +1234,7 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
             this._commandCollection = new global::System.Data.Odbc.OdbcCommand[1];
             this._commandCollection[0] = new global::System.Data.Odbc.OdbcCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT * FROM `dt_vörsluutgafur`";
+            this._commandCollection[0].CommandText = "SELECT * FROM `v_vorslustofnun`";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1171,7 +1242,7 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(DataSet1.DataTable1DataTable dataTable) {
+        public virtual int Fill(dsVarsla.DataTableDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -1184,9 +1255,9 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual DataSet1.DataTable1DataTable GetData() {
+        public virtual dsVarsla.DataTableDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            DataSet1.DataTable1DataTable dataTable = new DataSet1.DataTable1DataTable();
+            dsVarsla.DataTableDataTable dataTable = new dsVarsla.DataTableDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -1260,7 +1331,7 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private int UpdateUpdatedRows(DataSet1 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateUpdatedRows(dsVarsla dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             return result;
         }
@@ -1270,7 +1341,7 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private int UpdateInsertedRows(DataSet1 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateInsertedRows(dsVarsla dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             return result;
         }
@@ -1280,7 +1351,7 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private int UpdateDeletedRows(DataSet1 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
+        private int UpdateDeletedRows(dsVarsla dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
             return result;
         }
@@ -1314,7 +1385,7 @@ namespace OAIS_ADMIN.DataSet1TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public virtual int UpdateAll(DataSet1 dataSet) {
+        public virtual int UpdateAll(dsVarsla dataSet) {
             if ((dataSet == null)) {
                 throw new global::System.ArgumentNullException("dataSet");
             }

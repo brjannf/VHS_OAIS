@@ -55,7 +55,9 @@ namespace OAIS_ADMIN
             cSkjalaskra skrá = new cSkjalaskra();
             m_dtAllt = skrá.getVörsluútgáfur();
             m_dtSumt = m_dtAllt.Clone();
+            m_dgvAllt.AutoGenerateColumns = false;
             m_dgvAllt.DataSource =formatTable(m_dtAllt);
+           
             fyllaVörslustofnun("");
             fyllaSkjalamyndara("");
         }
@@ -152,6 +154,7 @@ namespace OAIS_ADMIN
                     skjalm.getSkjalamyndaraByAuðkenni(strHeiti);
                     frmSkjalamyndariSkra frmSkjalm = new frmSkjalamyndariSkra(skjalm, virkurnotandi);
                     frmSkjalm.ShowDialog();
+                    endurHressa();
                 }
                 if (senderGrid.Columns["colEditVaral"].Index == e.ColumnIndex)
                 {
@@ -160,6 +163,7 @@ namespace OAIS_ADMIN
                     varsla.getVörslustofnun(strAuðkenni);
                     frmVörslustofnun frmVarsla = new frmVörslustofnun(varsla, virkurnotandi);
                     frmVarsla.ShowDialog();
+                    endurHressa();
                 }
                 if (senderGrid.Columns["colEditSkrá"].Index == e.ColumnIndex)
                 {
@@ -169,6 +173,7 @@ namespace OAIS_ADMIN
                     skrá.getSkraning(strAuðkenni);
                     frmSkráning frmSkra = new frmSkráning(skrá, virkurnotandi);
                     frmSkra.ShowDialog();
+                    endurHressa();
                 }
                 if (senderGrid.Columns["colOpna"].Index == e.ColumnIndex)
                 {
@@ -180,6 +185,22 @@ namespace OAIS_ADMIN
                     };
                     p.Start();
 
+                }
+
+                if (senderGrid.Columns["colEditKvittun"].Index == e.ColumnIndex)
+                {
+                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
+                    strAuðkenni = strAuðkenni.Replace("FRUM", "AVID");
+                    frmKvittun frmKvittun = new frmKvittun(strAuðkenni);
+                    frmKvittun.ShowDialog();
+                    endurHressa();
+                }
+                if (senderGrid.Columns["colRepVarsla"].Index == e.ColumnIndex)
+                {
+                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
+                    frmReportVarsla frmVarsla = new frmReportVarsla(strAuðkenni, virkurnotandi);
+                    frmVarsla.ShowDialog();
+                    endurHressa();
                 }
             }
         }

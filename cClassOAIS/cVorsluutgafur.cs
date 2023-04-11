@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,7 @@ namespace cClassOAIS
         public string MD5 { get; set; }
         public string hver_skradi { get; set; }
         public DateTime dags_skrad { get; set; }
+        public string adgangstakmarkanir { get; set; }
 
 
         #endregion
@@ -57,14 +59,17 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@afharnr", this.afharnr);
             command.Parameters.AddWithValue("@MD5", this.MD5);
             command.Parameters.AddWithValue("@hver_skradi", this.hver_skradi);
-           // command.Parameters.AddWithValue("@dags_skrad", this.dags_skrad);
+            command.Parameters.AddWithValue("@adgangstakmarkanir", this.adgangstakmarkanir);
+            // command.Parameters.AddWithValue("@dags_skrad", this.dags_skrad);
 
-            command.CommandText = "INSERT INTO `dt_vörsluutgafur` SET  `vorsluutgafa`=@vorsluutgafa,`utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi, `dags_skrad`=NOW()";
+            command.CommandText = "INSERT INTO `dt_vörsluutgafur` SET  `vorsluutgafa`=@vorsluutgafa,`utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir, `dags_skrad`=NOW()";
 
             command.ExecuteNonQuery();
             conn.Dispose();
             command.Dispose();
 
         }
+
+       
     }
 }

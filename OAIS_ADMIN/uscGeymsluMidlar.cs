@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Management;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -88,14 +89,10 @@ namespace OAIS_ADMIN
 
 
         }
-        private void button1_Click(object sender, EventArgs e)
+      
+        private void Restore(string strRestoreFile)
         {
-            //  Backup();
-            Restore();
-        }
-        private void Restore()
-        {
-            string file = "C:\\temp\\backup.sql";
+            string file = strRestoreFile;
             string constring = "server = localhost; user id = root; Password = ivarBjarkLind; database = db_oais_admin;";
             using (MySqlConnection conn = new MySqlConnection(constring))
             {
@@ -340,12 +337,12 @@ namespace OAIS_ADMIN
             {
                 Directory.CreateDirectory(strAip);
             }
-            flytjaAIPafrit(strAip, drif.Nafn);
+            flytjaAIPafrit(strAip, drif.Nafn, "Afrita");
 
             //id, drifid, merking, slodAfrit, steard, hvar_geymt, athugasemdir, hvar_afritadi, dagsetning
-
+            DriveInfo drivo = new DriveInfo(m_comAfritDrif.SelectedItem.ToString());
             backup.drifid = drif.ID;
-            backup.merking = drif.Tegund;
+            backup.merking =drivo.VolumeLabel;
             backup.slodAfrit = strDest;
             backup.steard = m_lStaerd.ToString();
             backup.hvar_geymt = m_comHvarGeymt.SelectedItem.ToString();
@@ -360,18 +357,18 @@ namespace OAIS_ADMIN
             MessageBox.Show("Búið");
         }
 
-        private void flytjaAIPafrit(string strDest, string strOrg)
+        private void flytjaAIPafrit(string strDest, string strOrg, string strAðgerð)
         {
 
             //Now Create all of the directories
             m_prgBackup.Maximum = Directory.GetDirectories(strOrg, "*", SearchOption.AllDirectories).Length;
             m_prgBackup.Step = 1;
             m_prgBackup.Value = 0;
-            m_lblHvadAfrita.Text = "Afrita möppur";
+            m_lblHvadAfrita.Text = strAðgerð + " möppur";
             foreach (string dirPath in Directory.GetDirectories(strOrg, "*", SearchOption.AllDirectories))
             {
                 Directory.CreateDirectory(dirPath.Replace(strOrg, strDest));
-                m_lblHvadAfrita.Text = "Afrita möppu " + (dirPath.Replace(strOrg, strDest));
+                m_lblHvadAfrita.Text = strAðgerð + " möppu " + (dirPath.Replace(strOrg, strDest));
                 m_prgBackup.PerformStep();
                 m_lblBackupStatus.Text = string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
                 Application.DoEvents();
@@ -380,12 +377,12 @@ namespace OAIS_ADMIN
             m_prgBackup.Maximum = Directory.GetFiles(strOrg, "*.*", SearchOption.AllDirectories).Length;
             m_prgBackup.Step = 1;
             m_prgBackup.Value = 0;
-            m_lblHvadAfrita.Text = "Afrita skrár";
+            m_lblHvadAfrita.Text = strAðgerð + " skrár";
             //Copy all the files & Replaces any files with the same name
             foreach (string newPath in Directory.GetFiles(strOrg, "*.*", SearchOption.AllDirectories))
             {
                 File.Copy(newPath, newPath.Replace(strOrg, strDest), true);
-                m_lblHvadAfrita.Text = "Afrita skrá " + newPath.Replace(strOrg, strDest);
+                m_lblHvadAfrita.Text = strAðgerð + " skrá " + newPath.Replace(strOrg, strDest);
                 FileInfo fifo = new FileInfo(newPath);
                 m_lStaerd += fifo.Length;
                 m_prgBackup.PerformStep();
@@ -420,9 +417,48 @@ namespace OAIS_ADMIN
                 }
                 if (senderGrid.Columns["colBackBtnRestore"].Index == e.ColumnIndex)
                 {
-                    MessageBox.Show("Klára þetta manni");
+                    string strBackup = senderGrid.Rows[e.RowIndex].Cells["colBackSlod"].Value.ToString();
+                    if(!Directory.Exists(strBackup))
+                    {
+                        DialogResult result = MessageBox.Show(string.Format("Finn ekki slóðina {0} viltu fletta möppunni upp?", strBackup), "Endurheimt", MessageBoxButtons.YesNo);
+                        if(result == DialogResult.Yes)
+                        {
+                           result = folderBrowserDialog1.ShowDialog();
+                            if(result == DialogResult.OK)
+                            {
+                                endurHeimta(folderBrowserDialog1.SelectedPath);
+                            }
+                            
+
+                        }
+                    }
+                    else
+                    {
+                        endurHeimta(strBackup);
+                    }
                 }
             }
+        }
+
+        private void endurHeimta(string strSlod)
+        {
+            //  MessageBox.Show("A") 1. gefa viðvörun
+
+            // backup _OAIS_10_4_2023.sql
+            string strBackupfile = string.Empty;
+
+            foreach (String str in   Directory.GetFiles(strSlod))
+            {
+                if(str.EndsWith(".sql"))
+                {
+                    strBackupfile = str;
+                }
+            }
+            m_lblHvadAfrita.Text = "Endurheimti gagangrunn";
+            Application.DoEvents();
+            Restore(strBackupfile);
+            flytjaAIPafrit(drif.Nafn.Replace("AIP",""), strSlod, "Endurheimta"); //vantar að laga hver er rótin?
+          
         }
     }
 }

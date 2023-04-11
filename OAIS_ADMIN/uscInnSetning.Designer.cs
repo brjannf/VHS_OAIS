@@ -184,7 +184,7 @@
             this.m_grbFlytjaSIP.Size = new System.Drawing.Size(734, 282);
             this.m_grbFlytjaSIP.TabIndex = 4;
             this.m_grbFlytjaSIP.TabStop = false;
-            this.m_grbFlytjaSIP.Text = "B Flytaja SIP búa til AIP";
+            this.m_grbFlytjaSIP.Text = "Færa afhendingarútgáfu inn í kerfið (AIP)";
             // 
             // m_grbFRUM
             // 
@@ -272,7 +272,7 @@
             this.m_btnFlytjaSIP.Name = "m_btnFlytjaSIP";
             this.m_btnFlytjaSIP.Size = new System.Drawing.Size(130, 23);
             this.m_btnFlytjaSIP.TabIndex = 0;
-            this.m_btnFlytjaSIP.Text = "Gera að AIP";
+            this.m_btnFlytjaSIP.Text = "Flytja inn";
             this.m_btnFlytjaSIP.UseVisualStyleBackColor = true;
             this.m_btnFlytjaSIP.Click += new System.EventHandler(this.m_btnFlytjaSIP_Click);
             // 
@@ -513,9 +513,9 @@
             this.m_lblISADG_AFHNR.AutoSize = true;
             this.m_lblISADG_AFHNR.Location = new System.Drawing.Point(24, 169);
             this.m_lblISADG_AFHNR.Name = "m_lblISADG_AFHNR";
-            this.m_lblISADG_AFHNR.Size = new System.Drawing.Size(59, 15);
+            this.m_lblISADG_AFHNR.Size = new System.Drawing.Size(122, 15);
             this.m_lblISADG_AFHNR.TabIndex = 10;
-            this.m_lblISADG_AFHNR.Text = "Titill 3.1.2.";
+            this.m_lblISADG_AFHNR.Text = "Afhendingaár/nr 3.2.4";
             // 
             // m_tboISADG_timabil
             // 
@@ -554,7 +554,7 @@
             "samningur"});
             this.m_comISADG_aðgengi.Location = new System.Drawing.Point(159, 57);
             this.m_comISADG_aðgengi.Name = "m_comISADG_aðgengi";
-            this.m_comISADG_aðgengi.Size = new System.Drawing.Size(181, 23);
+            this.m_comISADG_aðgengi.Size = new System.Drawing.Size(202, 23);
             this.m_comISADG_aðgengi.TabIndex = 6;
             this.m_comISADG_aðgengi.SelectedIndexChanged += new System.EventHandler(this.m_comISADG_aðgengi_SelectedIndexChanged);
             // 
@@ -590,7 +590,7 @@
             // 
             this.m_tboISADG_titill.Location = new System.Drawing.Point(159, 122);
             this.m_tboISADG_titill.Name = "m_tboISADG_titill";
-            this.m_tboISADG_titill.Size = new System.Drawing.Size(202, 23);
+            this.m_tboISADG_titill.Size = new System.Drawing.Size(248, 23);
             this.m_tboISADG_titill.TabIndex = 3;
             // 
             // m_lblISAAR_titill
@@ -598,9 +598,9 @@
             this.m_lblISAAR_titill.AutoSize = true;
             this.m_lblISAAR_titill.Location = new System.Drawing.Point(23, 125);
             this.m_lblISAAR_titill.Name = "m_lblISAAR_titill";
-            this.m_lblISAAR_titill.Size = new System.Drawing.Size(122, 15);
+            this.m_lblISAAR_titill.Size = new System.Drawing.Size(59, 15);
             this.m_lblISAAR_titill.TabIndex = 2;
-            this.m_lblISAAR_titill.Text = "Afhendingaár/nr 3.2.4";
+            this.m_lblISAAR_titill.Text = "Titill 3.1.2.";
             // 
             // m_tboISADG_auðkenni
             // 

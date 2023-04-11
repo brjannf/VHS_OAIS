@@ -24,7 +24,7 @@ namespace OAIS_ADMIN
         {
             InitializeComponent();
             m_strDrif = strDrif;
-            
+
             fyllaAr();
 
         }
@@ -32,7 +32,7 @@ namespace OAIS_ADMIN
         private void fyllaAr()
         {
             DataTable dt = files.getAR(m_strDrif);
-            foreach(DataRow r in dt.Rows) 
+            foreach (DataRow r in dt.Rows)
             {
                 TreeNode n = new TreeNode(r["ar"].ToString());
                 m_trwDate.Nodes.Add(n);
@@ -41,11 +41,11 @@ namespace OAIS_ADMIN
         }
         private void fyllaManud(string strAr, TreeNode n)
         {
-            DataTable dt = files.getManud(m_strDrif,strAr);
+            DataTable dt = files.getManud(m_strDrif, strAr);
             n.Nodes.Clear();
             foreach (DataRow r in dt.Rows)
             {
-              
+
                 TreeNode nn = new TreeNode(mánuðir(r["manudur"].ToString()));
                 nn.Tag = r["manudur"];
                 n.Nodes.Add(nn);
@@ -54,7 +54,7 @@ namespace OAIS_ADMIN
         }
         private void fyllaDaga(string strManudur, TreeNode n)
         {
-            DataTable dt = files.getDaga(m_strDrif, n.Parent.Text,n.Tag.ToString());
+            DataTable dt = files.getDaga(m_strDrif, n.Parent.Text, n.Tag.ToString());
             n.Nodes.Clear();
             foreach (DataRow r in dt.Rows)
             {
@@ -115,15 +115,15 @@ namespace OAIS_ADMIN
         private void fyllaFiles(string strDate)
         {
             DataTable dt = files.getFiles(strDate, m_strDrif);
-            m_dgvFiles.DataSource = dt; 
+            m_dgvFiles.DataSource = formatTable(dt);
         }
         private void m_trwDate_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if(m_trwDate.Focused)
+            if (m_trwDate.Focused)
             {
                 if (e.Node.Level == 0)
                 {
-                    fyllaManud(e.Node.Text,e.Node);
+                    fyllaManud(e.Node.Text, e.Node);
                 }
                 if (e.Node.Level == 1)
                 {
@@ -135,8 +135,40 @@ namespace OAIS_ADMIN
                 }
 
             }
-         
+
+        }
+
+        private DataTable formatTable(DataTable dt)
+        {
+            DataTable dtCloned = dt.Clone();
+            dtCloned.Columns["laust"].DataType = typeof(string);
+            foreach (DataRow row in dt.Rows)
+            {
+                dtCloned.ImportRow(row);
+
+
+            }
+            foreach (DataRow r in dtCloned.Rows)
+            {
+                long staerd = (long)Convert.ToDouble(r["laust"]);
+                r["laust"] = FormatBytes(staerd);
+            }
+
+            return dtCloned;
+        }
+
+        private static string FormatBytes(long bytes)
+        {
+            string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
+            int i;
+            double dblSByte = bytes;
+            for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
+            {
+                dblSByte = bytes / 1024.1;
+            }
+
+            return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
     }
-}
+    }
 

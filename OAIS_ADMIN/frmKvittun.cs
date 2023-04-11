@@ -37,7 +37,7 @@ namespace OAIS_ADMIN
         //    InitializeComponent();
         //}
 
-            private void frmLoad(object sender, EventArgs e)
+       private void frmLoad(object sender, EventArgs e)
         {
             cSkjalaskra varsla = new cSkjalaskra();
             DataTable dt = varsla.getKvittun(m_strAuðkenni);
