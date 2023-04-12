@@ -28,6 +28,7 @@ namespace OAIS_ADMIN
         {
             InitializeComponent();
             fyllaComputer();
+          
         }
 
         private void fyllaComputer()
@@ -145,7 +146,8 @@ namespace OAIS_ADMIN
                 m_lblDate.Text = "Tekinn í notkun: " + fRow[0]["Date"].ToString();
 
             }
-
+            m_grValinVel.Visible = true;
+            Application.DoEvents();
             DataTable dt = drif.driveComputersAllt(Convert.ToInt32(strTag));
             drif.hreinsaHlut();
             drif.getDrif(Convert.ToInt32(dt.Rows[0]["id"]));
@@ -162,12 +164,13 @@ namespace OAIS_ADMIN
             }
             m_dgvDrif.AutoGenerateColumns = false;
             m_dgvDrif.DataSource = dtClone;
-
+            m_grbDrif.Visible = true;
             //fylla backup
             m_grbAfritun.Text = string.Format("Afritun af möppu {0} á vél {1}", drif.Nafn, comp.Name);
             fyllaBackuplista();
             string[] strDrives = System.IO.Directory.GetLogicalDrives();
             m_comAfritDrif.DataSource = strDrives;
+            m_grbAfritun.Visible = true;
         }
 
         private void fyllaBackuplista()
@@ -181,8 +184,6 @@ namespace OAIS_ADMIN
                 {
                     r.DefaultCellStyle.BackColor = Color.LightGreen;
                 }
-
-
             }
         }
 
@@ -459,6 +460,18 @@ namespace OAIS_ADMIN
             Restore(strBackupfile);
             flytjaAIPafrit(drif.Nafn.Replace("AIP",""), strSlod, "Endurheimta"); //vantar að laga hver er rótin?
           
+        }
+
+        private void m_dgvBackup_DataSourceChanged(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow r in m_dgvBackup.Rows)
+            {
+                string strDir = r.Cells["colBackSlod"].Value.ToString();
+                if (Directory.Exists(strDir))
+                {
+                    r.DefaultCellStyle.BackColor = Color.LightGreen;
+                }
+            }
         }
     }
 }

@@ -268,6 +268,12 @@ namespace cClassOAIS
             return dt;
         }
 
+        public void eyða(string strAuðkenni)
+        {
+            string strSQL = string.Format("DELETE from dt_isdiah_vörslustofnanir WHERE 5_1_1_auðkenni= '{0}'", strAuðkenni);
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+        }
+
     }
 
    

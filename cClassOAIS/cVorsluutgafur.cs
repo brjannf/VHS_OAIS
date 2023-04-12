@@ -69,7 +69,11 @@ namespace cClassOAIS
             command.Dispose();
 
         }
-
+        public void merkjaEYtt(string strAuðkenni, int iEytt)
+        {
+            string strSQL = string.Format("UPDATE dt_vörsluutgafur set eytt='{0}' WHERE vorsluutgafa='{1}'", iEytt, strAuðkenni);
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+        }
        
     }
 }

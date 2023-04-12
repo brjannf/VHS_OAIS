@@ -116,6 +116,7 @@ namespace OAIS_ADMIN
         {
             DataTable dt = files.getFiles(strDate, m_strDrif);
             m_dgvFiles.DataSource = formatTable(dt);
+            m_lblFjoldi.Text = dt.Rows.Count + " hreyfingar skráðar";
         }
         private void m_trwDate_AfterSelect(object sender, TreeViewEventArgs e)
         {

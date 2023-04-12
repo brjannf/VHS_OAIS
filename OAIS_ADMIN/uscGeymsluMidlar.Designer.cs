@@ -45,11 +45,12 @@
             this.m_grbTolvur = new System.Windows.Forms.GroupBox();
             this.m_trwTolvur = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.m_grValinVel = new System.Windows.Forms.GroupBox();
             this.m_lblDate = new System.Windows.Forms.Label();
-            this.m_lblID = new System.Windows.Forms.Label();
-            this.m_lblSerial = new System.Windows.Forms.Label();
-            this.m_lblModel = new System.Windows.Forms.Label();
             this.m_lblHeiti = new System.Windows.Forms.Label();
+            this.m_lblID = new System.Windows.Forms.Label();
+            this.m_lblModel = new System.Windows.Forms.Label();
+            this.m_lblSerial = new System.Windows.Forms.Label();
             this.m_grbDrif = new System.Windows.Forms.GroupBox();
             this.m_grbAfritun = new System.Windows.Forms.GroupBox();
             this.m_lblBackupStatus = new System.Windows.Forms.Label();
@@ -85,6 +86,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.m_grValinVel.SuspendLayout();
             this.m_grbDrif.SuspendLayout();
             this.m_grbAfritun.SuspendLayout();
             this.m_grbAfritATH.SuspendLayout();
@@ -115,7 +117,7 @@
             this.m_dgvDrif.ReadOnly = true;
             this.m_dgvDrif.RowHeadersVisible = false;
             this.m_dgvDrif.RowTemplate.Height = 25;
-            this.m_dgvDrif.Size = new System.Drawing.Size(918, 102);
+            this.m_dgvDrif.Size = new System.Drawing.Size(918, 93);
             this.m_dgvDrif.TabIndex = 0;
             this.m_dgvDrif.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvDrif_CellClick);
             // 
@@ -272,11 +274,7 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.m_lblDate);
-            this.splitContainer2.Panel1.Controls.Add(this.m_lblID);
-            this.splitContainer2.Panel1.Controls.Add(this.m_lblSerial);
-            this.splitContainer2.Panel1.Controls.Add(this.m_lblModel);
-            this.splitContainer2.Panel1.Controls.Add(this.m_lblHeiti);
+            this.splitContainer2.Panel1.Controls.Add(this.m_grValinVel);
             this.splitContainer2.Panel1.Controls.Add(this.m_grbDrif);
             // 
             // splitContainer2.Panel2
@@ -286,67 +284,85 @@
             this.splitContainer2.SplitterDistance = 290;
             this.splitContainer2.TabIndex = 2;
             // 
+            // m_grValinVel
+            // 
+            this.m_grValinVel.Controls.Add(this.m_lblDate);
+            this.m_grValinVel.Controls.Add(this.m_lblHeiti);
+            this.m_grValinVel.Controls.Add(this.m_lblID);
+            this.m_grValinVel.Controls.Add(this.m_lblModel);
+            this.m_grValinVel.Controls.Add(this.m_lblSerial);
+            this.m_grValinVel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grValinVel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.m_grValinVel.Location = new System.Drawing.Point(0, 0);
+            this.m_grValinVel.Name = "m_grValinVel";
+            this.m_grValinVel.Size = new System.Drawing.Size(924, 165);
+            this.m_grValinVel.TabIndex = 12;
+            this.m_grValinVel.TabStop = false;
+            this.m_grValinVel.Text = "Upplýsingar um tölvu";
+            this.m_grValinVel.Visible = false;
+            // 
             // m_lblDate
             // 
             this.m_lblDate.AutoSize = true;
             this.m_lblDate.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.m_lblDate.Location = new System.Drawing.Point(57, 76);
+            this.m_lblDate.Location = new System.Drawing.Point(18, 91);
             this.m_lblDate.Name = "m_lblDate";
             this.m_lblDate.Size = new System.Drawing.Size(65, 25);
             this.m_lblDate.TabIndex = 11;
             this.m_lblDate.Text = "label3";
             // 
+            // m_lblHeiti
+            // 
+            this.m_lblHeiti.AutoSize = true;
+            this.m_lblHeiti.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.m_lblHeiti.Location = new System.Drawing.Point(18, 60);
+            this.m_lblHeiti.Name = "m_lblHeiti";
+            this.m_lblHeiti.Size = new System.Drawing.Size(65, 25);
+            this.m_lblHeiti.TabIndex = 7;
+            this.m_lblHeiti.Text = "label1";
+            // 
             // m_lblID
             // 
             this.m_lblID.AutoSize = true;
             this.m_lblID.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.m_lblID.Location = new System.Drawing.Point(57, 105);
+            this.m_lblID.Location = new System.Drawing.Point(18, 120);
             this.m_lblID.Name = "m_lblID";
             this.m_lblID.Size = new System.Drawing.Size(65, 25);
             this.m_lblID.TabIndex = 10;
             this.m_lblID.Text = "label2";
             // 
-            // m_lblSerial
-            // 
-            this.m_lblSerial.AutoSize = true;
-            this.m_lblSerial.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.m_lblSerial.Location = new System.Drawing.Point(57, 137);
-            this.m_lblSerial.Name = "m_lblSerial";
-            this.m_lblSerial.Size = new System.Drawing.Size(65, 25);
-            this.m_lblSerial.TabIndex = 9;
-            this.m_lblSerial.Text = "label3";
-            // 
             // m_lblModel
             // 
             this.m_lblModel.AutoSize = true;
             this.m_lblModel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.m_lblModel.Location = new System.Drawing.Point(57, 10);
+            this.m_lblModel.Location = new System.Drawing.Point(18, 25);
             this.m_lblModel.Name = "m_lblModel";
             this.m_lblModel.Size = new System.Drawing.Size(65, 25);
             this.m_lblModel.TabIndex = 8;
             this.m_lblModel.Text = "label2";
             // 
-            // m_lblHeiti
+            // m_lblSerial
             // 
-            this.m_lblHeiti.AutoSize = true;
-            this.m_lblHeiti.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.m_lblHeiti.Location = new System.Drawing.Point(57, 45);
-            this.m_lblHeiti.Name = "m_lblHeiti";
-            this.m_lblHeiti.Size = new System.Drawing.Size(65, 25);
-            this.m_lblHeiti.TabIndex = 7;
-            this.m_lblHeiti.Text = "label1";
+            this.m_lblSerial.AutoSize = true;
+            this.m_lblSerial.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.m_lblSerial.Location = new System.Drawing.Point(18, 152);
+            this.m_lblSerial.Name = "m_lblSerial";
+            this.m_lblSerial.Size = new System.Drawing.Size(65, 25);
+            this.m_lblSerial.TabIndex = 9;
+            this.m_lblSerial.Text = "label3";
             // 
             // m_grbDrif
             // 
             this.m_grbDrif.Controls.Add(this.m_dgvDrif);
             this.m_grbDrif.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.m_grbDrif.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.m_grbDrif.Location = new System.Drawing.Point(0, 156);
+            this.m_grbDrif.Location = new System.Drawing.Point(0, 165);
             this.m_grbDrif.Name = "m_grbDrif";
-            this.m_grbDrif.Size = new System.Drawing.Size(924, 130);
+            this.m_grbDrif.Size = new System.Drawing.Size(924, 121);
             this.m_grbDrif.TabIndex = 1;
             this.m_grbDrif.TabStop = false;
             this.m_grbDrif.Text = "Drif";
+            this.m_grbDrif.Visible = false;
             // 
             // m_grbAfritun
             // 
@@ -367,6 +383,7 @@
             this.m_grbAfritun.TabIndex = 0;
             this.m_grbAfritun.TabStop = false;
             this.m_grbAfritun.Text = "Afritun (backup)";
+            this.m_grbAfritun.Visible = false;
             // 
             // m_lblBackupStatus
             // 
@@ -488,6 +505,7 @@
             this.m_dgvBackup.RowTemplate.Height = 25;
             this.m_dgvBackup.Size = new System.Drawing.Size(918, 273);
             this.m_dgvBackup.TabIndex = 0;
+            this.m_dgvBackup.DataSourceChanged += new System.EventHandler(this.m_dgvBackup_DataSourceChanged);
             this.m_dgvBackup.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvBackup_CellClick);
             // 
             // colBackID
@@ -606,10 +624,11 @@
             this.splitContainer1.ResumeLayout(false);
             this.m_grbTolvur.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.m_grValinVel.ResumeLayout(false);
+            this.m_grValinVel.PerformLayout();
             this.m_grbDrif.ResumeLayout(false);
             this.m_grbAfritun.ResumeLayout(false);
             this.m_grbAfritun.PerformLayout();
@@ -670,5 +689,6 @@
         private DataGridViewButtonColumn colBackBtnRestore;
         private DataGridViewButtonColumn colBackBtnOpna;
         private FolderBrowserDialog folderBrowserDialog1;
+        private GroupBox m_grValinVel;
     }
 }

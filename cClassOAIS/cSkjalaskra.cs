@@ -121,7 +121,11 @@ namespace cClassOAIS
 
 
         }
-
+        public void eyða(string strAuðkenni)
+        {
+            string strSQL = string.Format("DELETE from dt_isadg_skráningar WHERE 3_1_1_auðkenni= '{0}'", strAuðkenni);
+            MySqlHelper.ExecuteNonQuery(m_strTenging,strSQL);   
+        }
         public void hreinsaHlut()
         {
             this.ID = 0;

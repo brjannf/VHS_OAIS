@@ -376,5 +376,20 @@ namespace cClassOAIS
 
             return strRet;
         }
+
+        public DataTable utgafurSkjalamyndara(string strAuðkenni)
+        {
+            string strSQL = string.Format("SELECT * FROM v_vorslustofnun v where skjalamyndari = '{0}';", strAuðkenni);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public void eyða(string strAuðkenni)
+        {
+            string strSQL = string.Format("DELETE from dt_isaar_skjalamyndarar WHERE 5_1_6_auðkenni= '{0}'", strAuðkenni);
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+        }
+
     }
 }

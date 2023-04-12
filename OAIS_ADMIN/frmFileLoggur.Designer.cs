@@ -41,11 +41,13 @@
             this.colDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVilla = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDrifID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_lblFjoldi = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvFiles)).BeginInit();
@@ -83,6 +85,10 @@
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.m_lblFjoldi);
             // 
             // splitContainer2.Panel2
             // 
@@ -193,6 +199,15 @@
             this.colDrifID.ReadOnly = true;
             this.colDrifID.Visible = false;
             // 
+            // m_lblFjoldi
+            // 
+            this.m_lblFjoldi.AutoSize = true;
+            this.m_lblFjoldi.Location = new System.Drawing.Point(71, 42);
+            this.m_lblFjoldi.Name = "m_lblFjoldi";
+            this.m_lblFjoldi.Size = new System.Drawing.Size(38, 15);
+            this.m_lblFjoldi.TabIndex = 0;
+            this.m_lblFjoldi.Text = "label1";
+            // 
             // frmFileLoggur
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -205,6 +220,8 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
@@ -228,5 +245,6 @@
         private DataGridViewTextBoxColumn colDate;
         private DataGridViewTextBoxColumn colVilla;
         private DataGridViewTextBoxColumn colDrifID;
+        private Label m_lblFjoldi;
     }
 }

@@ -7,6 +7,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,8 +25,6 @@ namespace OAIS_ADMIN
            
             cSkjalaskra skrá = new cSkjalaskra();
             m_dtAllt = skrá.getVörsluútgáfur();
-            
-
 
         }
 
@@ -55,8 +54,15 @@ namespace OAIS_ADMIN
             cSkjalaskra skrá = new cSkjalaskra();
             m_dtAllt = skrá.getVörsluútgáfur();
             m_dtSumt = m_dtAllt.Clone();
-            m_dgvAllt.AutoGenerateColumns = false;
-            m_dgvAllt.DataSource =formatTable(m_dtAllt);
+            m_dgvUtgafur.AutoGenerateColumns = false;
+            m_dgvUtgafur.DataSource =formatTable(m_dtAllt);
+            foreach(DataGridViewRow row in m_dgvUtgafur.Rows ) 
+            {
+                if (row.Cells["colEytt"].Value.ToString() == "1")
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightPink;
+                }
+            }
            
             fyllaVörslustofnun("");
             fyllaSkjalamyndara("");
@@ -77,7 +83,7 @@ namespace OAIS_ADMIN
                     {
                         dt.ImportRow(r);
                     }
-                    m_dgvAllt.DataSource = formatTable(dt);
+                    m_dgvUtgafur.DataSource = formatTable(dt);
                 }
              
             }
@@ -104,7 +110,7 @@ namespace OAIS_ADMIN
                     {
                         dt.ImportRow(r);
                     }
-                    m_dgvAllt.DataSource = dt;
+                    m_dgvUtgafur.DataSource = dt;
                 }
 
             }
@@ -134,7 +140,7 @@ namespace OAIS_ADMIN
             double dblSByte = bytes;
             for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
             {
-                dblSByte = bytes / 1024;
+                dblSByte = bytes / 1024.1;
             }
 
             return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
@@ -202,12 +208,49 @@ namespace OAIS_ADMIN
                     frmVarsla.ShowDialog();
                     endurHressa();
                 }
+                if (senderGrid.Columns["colRepSkjalm"].Index == e.ColumnIndex)
+                {
+                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
+                    frmReportSkjalamyndari frmRepSkjalm = new frmReportSkjalamyndari(strAuðkenni, virkurnotandi);
+                    frmRepSkjalm.ShowDialog();
+                    endurHressa();
+                }
+                if (senderGrid.Columns["colDelEyda"].Index == e.ColumnIndex)
+                {
+                    DialogResult result = MessageBox.Show("Viltu örruglega eyða þessari vörslútgáfu?", "Eyða vörsluútgáfu", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes) 
+                    {
+                        string strSkjalamyndari = senderGrid.Rows[e.RowIndex].Cells["colSkjalmHeiti"].Value.ToString();
+                        string strVörslustofnun = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
+                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
+                        string strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
+                        frmEyda eyða = new frmEyda(strAuðkenni,strSkjalamyndari,strVörslustofnun,strSlod);
+                        eyða.ShowDialog();
+                        endurHressa();
+                    }
+
+                }
             }
         }
 
         private void m_btnSkyrsla_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Ekkert komið en bý til eitthvað sniðugt og praktískt síðar");
+        }
+
+        private void m_btnLeita_Click(object sender, EventArgs e)
+        {
+            leit();
+        }
+
+        private void leit()
+        {
+            MessageBox.Show("eftir að útgfæra");
+        }
+
+        private void m_btnArskyrsla_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("sorrý árið er ekki búið");
         }
     }
 }

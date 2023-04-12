@@ -68,8 +68,8 @@ namespace OAIS_ADMIN
                     m_strRotVarsla = strVarsla;
                     m_grbAvid.Text = strVarsla;
                     //tékka hvort afhendinginn hefur verið skráð inn áður
-
-                    if( skrá.getKvittun(strVarsla).Rows.Count != 0)
+                    DataTable dtTil = skrá.getKvittun(strVarsla);
+                   if ( dtTil.Rows.Count != 0 && dtTil.Rows[0]["eytt"].ToString() == "0")
                     {
                         MessageBox.Show("Þessi vörsluútgáfa er þegar kominn inn í kerfið, hvað gerir maður þá?");
                         m_btnKvittun.Enabled = true;
@@ -667,7 +667,20 @@ namespace OAIS_ADMIN
             varsla.MD5 = CreateMd5ForFolder(varsla.slod).ToUpper();
             varsla.hver_skradi = virkurnotandi.nafn;
             varsla.adgangstakmarkanir = skrá.skilyrði_aðgengi_3_4_1;
-            varsla.vista();
+            DataTable dtTil = skrá.getKvittun(skrá.auðkenni_3_1_1);
+            bool bErEytt  = false;
+            if (dtTil.Rows.Count != 0 && dtTil.Rows[0]["eytt"].ToString() == "1")
+            {
+                varsla.merkjaEYtt(varsla.vorsluutgafa, 0);
+                bErEytt|= true;
+            }
+            else
+            {
+                
+                varsla.vista();
+
+            }
+               
             if(strSlodFRUM != string.Empty)
             {
                 varsla.vorsluutgafa = skrá.auðkenni_3_1_1.Replace("AVID", "FRUM");
@@ -684,7 +697,15 @@ namespace OAIS_ADMIN
                 varsla.MD5 = CreateMd5ForFolder(varsla.slod).ToUpper();
                 varsla.hver_skradi = virkurnotandi.nafn;
                 varsla.adgangstakmarkanir = skrá.skilyrði_aðgengi_3_4_1;
-                varsla.vista();
+                if(bErEytt)
+                {
+                    varsla.merkjaEYtt(varsla.vorsluutgafa, 0);
+                }
+                else
+                {
+                    varsla.vista();
+                }
+           
             }
             m_grbFlytjaSIP.BackColor = Color.LightGreen;
             m_grbSkyrsla.BackColor = Color.LightYellow;

@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.m_grbAðgerðir = new System.Windows.Forms.GroupBox();
-            this.m_btnFjarlaegja = new System.Windows.Forms.Button();
             this.m_grbSkyrsla = new System.Windows.Forms.GroupBox();
             this.m_btnKvittun = new System.Windows.Forms.Button();
             this.m_grbFlytjaSIP = new System.Windows.Forms.GroupBox();
@@ -89,7 +87,6 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.m_grbAðgerðir.SuspendLayout();
             this.m_grbSkyrsla.SuspendLayout();
             this.m_grbFlytjaSIP.SuspendLayout();
             this.m_grbFRUM.SuspendLayout();
@@ -114,7 +111,6 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.m_grbAðgerðir);
             this.splitContainer1.Panel1.Controls.Add(this.m_grbSkyrsla);
             this.splitContainer1.Panel1.Controls.Add(this.m_grbFlytjaSIP);
             this.splitContainer1.Panel1.Controls.Add(this.m_grbTekksuma);
@@ -126,27 +122,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(1369, 855);
             this.splitContainer1.SplitterDistance = 738;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // m_grbAðgerðir
-            // 
-            this.m_grbAðgerðir.Controls.Add(this.m_btnFjarlaegja);
-            this.m_grbAðgerðir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_grbAðgerðir.Location = new System.Drawing.Point(0, 728);
-            this.m_grbAðgerðir.Name = "m_grbAðgerðir";
-            this.m_grbAðgerðir.Size = new System.Drawing.Size(734, 123);
-            this.m_grbAðgerðir.TabIndex = 6;
-            this.m_grbAðgerðir.TabStop = false;
-            this.m_grbAðgerðir.Text = "Aðgerðir";
-            // 
-            // m_btnFjarlaegja
-            // 
-            this.m_btnFjarlaegja.Location = new System.Drawing.Point(492, 47);
-            this.m_btnFjarlaegja.Name = "m_btnFjarlaegja";
-            this.m_btnFjarlaegja.Size = new System.Drawing.Size(203, 23);
-            this.m_btnFjarlaegja.TabIndex = 0;
-            this.m_btnFjarlaegja.Text = "Fjarlægja vörsluútgáfu úr kerfinu";
-            this.m_btnFjarlaegja.UseVisualStyleBackColor = true;
-            this.m_btnFjarlaegja.Click += new System.EventHandler(this.m_btnFjarlaegja_Click);
             // 
             // m_grbSkyrsla
             // 
@@ -705,7 +680,6 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.m_grbAðgerðir.ResumeLayout(false);
             this.m_grbSkyrsla.ResumeLayout(false);
             this.m_grbFlytjaSIP.ResumeLayout(false);
             this.m_grbFRUM.ResumeLayout(false);
@@ -787,7 +761,5 @@
         private ProgressBar m_prbFRUM;
         private GroupBox m_grbAvid;
         private GroupBox m_grbFRUM;
-        private GroupBox m_grbAðgerðir;
-        private Button m_btnFjarlaegja;
     }
 }
