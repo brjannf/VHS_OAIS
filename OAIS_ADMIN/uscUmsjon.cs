@@ -81,7 +81,7 @@ namespace OAIS_ADMIN
                 }
             }
 
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BaseBoard");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_bios");
 
             ManagementObjectCollection information = searcher.Get();
             foreach (ManagementObject obj in information)
@@ -127,7 +127,15 @@ namespace OAIS_ADMIN
         {
             m_dgvNotendur.AutoGenerateColumns = false;
             m_dgvNotendur.DataSource = m_dtNotendur;
-            m_dgvNotendur.Height = (m_dtNotendur.Rows.Count * 30);
+            if(m_dtNotendur.Rows.Count == 1)
+            {
+                m_dgvNotendur.Height = (m_dtNotendur.Rows.Count * 60);
+            }
+            else
+            {
+                m_dgvNotendur.Height = (m_dtNotendur.Rows.Count * 30) +30;
+            }
+          
             Point p = new Point(m_btnStofnaNotanda.Location.X, m_dgvNotendur.Height + 40);
             m_btnStofnaNotanda.Location = p;
             m_dgvNotendur.BackgroundColor = Color.White;

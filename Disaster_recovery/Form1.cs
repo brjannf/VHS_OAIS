@@ -1,106 +1,40 @@
 using System.Runtime.CompilerServices;
-using static OAIS_ADMIN.uscNotandi;
+using cClassVHS;
 using cClassOAIS;
 using MySql.Data.MySqlClient;
 using static cClassVHS.cSkyrslur;
 using Google.Protobuf.WellKnownTypes;
+using System.Windows.Forms;
+using MaterialSkin.Controls;
+using MaterialSkin;
 
-namespace OAIS_ADMIN
+namespace Disaster_recovery
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MaterialForm
     {
-       cNotandi virkurNotandi = new cNotandi();
         public Form1()
         {
             InitializeComponent();
-            m_pnlNotandi.BringToFront();
-            m_pnlNotandi.Dock = DockStyle.Fill;
-            this.Text = "MHR";
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
 
-        }
-
-      
-
-        private void m_btnInnskra_Click(object sender, EventArgs e)
-        {
-            innskra();          
-        }
-
-        private void innskra()
-        {
-            m_lblVillaInnSkraning.Visible = false;  
-            string strNotandi = m_tboNoterndaNafn.Text;
-            string strLykilorð = m_tboLykilOrd.Text;
-            virkurNotandi.sækjaNotanda(strNotandi, strLykilorð);
-            if (virkurNotandi.nafn != null)
-            {
-                m_tacMain.BringToFront();
-                m_tacMain.Dock = DockStyle.Fill;
-                this.Text = "Velkominn " + virkurNotandi.nafn;
-                m_uscInnsetning.virkurnotandi = virkurNotandi;
-                uscGagnaUmsjon1.virkurnotandi = virkurNotandi;
-                uscGeymsluMidlar1.virkurnotandi = virkurNotandi;
-                uscUmsjon1.virkurnotandi = virkurNotandi;
-                virkurNotandi.skraInnskra(virkurNotandi.kennitala);
-                if (virkurNotandi.hlutverk != "Umsjónarmaður")
-                {
-                    m_tacMain.TabPages.Remove(m_tapUmsjon);
-                }
-                else
-                {
-                    if(!m_tacMain.Contains(m_tapUmsjon))
-                    {
-                        m_tacMain.TabPages.Add(m_tapUmsjon);
-                    }
-                     
-                }
-                m_tacMain.SelectedTab = m_tapInnsetning;
-                this.WindowState = FormWindowState.Maximized;
-               
-            }
-            else
-            {
-                m_lblVillaInnSkraning.Visible = true;
-                m_lblVillaInnSkraning.Text = "Rangt notendanafn eða lykilorð";
-            }
-        }
-
-        private void m_tboNoterndaNafn_KeyUp(object sender, KeyEventArgs e)
-        {
-            if(e.KeyCode == Keys.Enter)
-            {
-                innskra();
-            }
-            
-        }
-
-        private void m_tapUmsjon_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(m_tacMain.SelectedTab == m_tapGagnaUmsjon)
-            {
-                uscGagnaUmsjon1.endurHressa();
-            }
-       }
-
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            m_pnlNotandi.BringToFront();
-            virkurNotandi.hreinsaHlut();
-            m_tboLykilOrd.Text = string.Empty;
-            m_tboNoterndaNafn.Text = string.Empty;
-            this.Text = "MHR";
+            // Configure color schema
+            materialSkinManager.ColorScheme = new ColorScheme(
+                Primary.Indigo500, Primary.Blue500,
+                Primary.Blue500, Accent.LightBlue200,
+                TextShade.BLACK);
         }
 
         private void m_btnRecovery_Click(object sender, EventArgs e)
         {
-         
+
             DialogResult result = folderBrowserDialog1.ShowDialog();
-            if(result == DialogResult.OK) 
+            if (result == DialogResult.OK)
             {
                 endurHeimta(folderBrowserDialog1.SelectedPath, folderBrowserDialog1.SelectedPath);
             }
         }
-
         private void endurHeimta(string strSlod, string strDagsetning)
         {
             //  MessageBox.Show("A") 1. gefa viðvörun
@@ -117,13 +51,17 @@ namespace OAIS_ADMIN
                         strBackupfile = str;
                     }
                 }
-               m_lblHvadAfrita.Text = "Endurheimti gagangrunn";
+                m_lblHvadAfrita.Text = "Endurheimti gagangrunn";
                 Application.DoEvents();
                 cBackup back = new cBackup();
                 back.createDatabase();
                 Restore(strBackupfile);
                 m_lblHvadAfrita.Text = "Tæmi vörslusvæði";
-                Directory.Delete("D:\\AIP", true);
+                if (Directory.Exists("D:\\AIP"))
+                {
+                    Directory.Delete("D:\\AIP", true);
+                }
+                   
                 if (!Directory.Exists("D:\\AIP"))
                 {
                     Directory.CreateDirectory("D:\\AIP");
@@ -162,7 +100,7 @@ namespace OAIS_ADMIN
                 File.Copy(newPath, newPath.Replace(strOrg, strDest), true);
                 m_lblHvadAfrita.Text = strAðgerð + " skrá " + newPath.Replace(strOrg, strDest);
                 FileInfo fifo = new FileInfo(newPath);
-             //   m_lStaerd += fifo.Length;
+                //   m_lStaerd += fifo.Length;
                 m_prgBackup.PerformStep();
                 m_lblBackupStatus.Text = string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
                 Application.DoEvents();

@@ -653,6 +653,7 @@ namespace OAIS_ADMIN
             }
            
             cVorsluutgafur varsla = new cVorsluutgafur();
+            varsla.getVörsluútgáfu(skrá.auðkenni_3_1_1);
             varsla.vorsluutgafa = skrá.auðkenni_3_1_1;
             varsla.utgafa_titill = skrá.titill_3_1_2;
             varsla.vorslustofnun = vörslustofnun.auðkenni_5_1_1;
@@ -671,6 +672,7 @@ namespace OAIS_ADMIN
             bool bErEytt  = false;
             if (dtTil.Rows.Count != 0 && dtTil.Rows[0]["eytt"].ToString() == "1")
             {
+                varsla.vista();
                 varsla.merkjaEYtt(varsla.vorsluutgafa, 0);
                 bErEytt|= true;
             }
@@ -683,6 +685,7 @@ namespace OAIS_ADMIN
                
             if(strSlodFRUM != string.Empty)
             {
+                varsla.getVörsluútgáfu(skrá.auðkenni_3_1_1.Replace("AVID", "FRUM"));
                 varsla.vorsluutgafa = skrá.auðkenni_3_1_1.Replace("AVID", "FRUM");
                 varsla.utgafa_titill = skrá.titill_3_1_2;
                 varsla.vorslustofnun = vörslustofnun.auðkenni_5_1_1;

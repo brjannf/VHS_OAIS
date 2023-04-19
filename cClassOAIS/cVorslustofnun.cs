@@ -267,7 +267,17 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
-
+        public int fjoldiVirkarUtgafna(string strAuðkenni)
+        {
+            int iRet = 0;
+            string strSQL = string.Format("SELECT count(0) as fjoldi FROM db_oais_admin.`dt_vörsluutgafur` d where vorslustofnun = '{0}' and eytt = 0;", strAuðkenni);
+            var Fjoldi = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if (Fjoldi != null)
+            {
+                iRet = Convert.ToInt32(Fjoldi);
+            }
+            return iRet;
+        }
         public void eyða(string strAuðkenni)
         {
             string strSQL = string.Format("DELETE from dt_isdiah_vörslustofnanir WHERE 5_1_1_auðkenni= '{0}'", strAuðkenni);

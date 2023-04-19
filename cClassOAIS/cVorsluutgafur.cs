@@ -61,13 +61,47 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@hver_skradi", this.hver_skradi);
             command.Parameters.AddWithValue("@adgangstakmarkanir", this.adgangstakmarkanir);
             // command.Parameters.AddWithValue("@dags_skrad", this.dags_skrad);
-
-            command.CommandText = "INSERT INTO `dt_vörsluutgafur` SET  `vorsluutgafa`=@vorsluutgafa,`utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir, `dags_skrad`=NOW()";
+            if(this.ID == 0)
+            {
+                command.CommandText = "INSERT INTO `dt_vörsluutgafur` SET  `vorsluutgafa`=@vorsluutgafa,`utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir, `dags_skrad`=NOW()";
+            }
+            else
+            {
+                command.CommandText = string.Format("UPDATE `dt_vörsluutgafur` SET `utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir, `dags_skrad`=NOW() WHERE vorsluutgafa='{0}'", this.vorsluutgafa);
+            }
+            
 
             command.ExecuteNonQuery();
             conn.Dispose();
             command.Dispose();
 
+        }
+        public void getVörsluútgáfu(string strAIP)
+        {
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_vörsluutgafur` d where vorsluutgafa = '{0}'; ", strAIP);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            foreach (DataRow r in dt.Rows)
+            {
+                this.ID = Convert.ToInt32(r["id"]);
+                this.vorsluutgafa = r["vorsluutgafa"].ToString();
+                this.utgafa_titill = r["utgafa_titill"].ToString();
+                this.vorslustofnun = r["vorslustofnun"].ToString();
+                this.varsla_heiti = r["varsla_heiti"].ToString();
+                this.skjalamyndari = r["skjalamyndari"].ToString();
+                this.skjalm_heiti = r["skjalm_heiti"].ToString();
+                this.staerd = (long)Convert.ToDouble(r["staerd"].ToString());
+                this.slod = r["slod"].ToString();
+                this.innihald = r["innihald"].ToString();
+                this.timabil = r["timabil"].ToString();
+                this.afharnr = r["afharnr"].ToString();
+                this.MD5 = r["MD5"].ToString();
+                this.hver_skradi = r["hver_skradi"].ToString();
+                this.adgangstakmarkanir = r["adgangstakmarkanir"].ToString();
+
+            }
         }
         public void merkjaEYtt(string strAuðkenni, int iEytt)
         {

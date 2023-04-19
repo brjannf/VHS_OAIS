@@ -73,7 +73,7 @@ namespace OAIS_ADMIN
             //    }
             //}
 
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BaseBoard");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_bios");
 
             ManagementObjectCollection information = searcher.Get();
             foreach (ManagementObject obj in information)
@@ -299,6 +299,7 @@ namespace OAIS_ADMIN
         {
             try
             {
+
                 long size = 0;
                 // Add file sizes.
                 FileInfo[] fis = d.GetFiles();
@@ -419,7 +420,8 @@ namespace OAIS_ADMIN
                 if (senderGrid.Columns["colBackBtnRestore"].Index == e.ColumnIndex)
                 {
                     string strBackup = senderGrid.Rows[e.RowIndex].Cells["colBackSlod"].Value.ToString();
-                    if(!Directory.Exists(strBackup))
+                    string strDagsetning = senderGrid.Rows[e.RowIndex].Cells["colBackDags"].Value.ToString();
+                    if (!Directory.Exists(strBackup))
                     {
                         DialogResult result = MessageBox.Show(string.Format("Finn ekki slóðina {0} viltu fletta möppunni upp?", strBackup), "Endurheimt", MessageBoxButtons.YesNo);
                         if(result == DialogResult.Yes)
@@ -427,38 +429,49 @@ namespace OAIS_ADMIN
                            result = folderBrowserDialog1.ShowDialog();
                             if(result == DialogResult.OK)
                             {
-                                endurHeimta(folderBrowserDialog1.SelectedPath);
+                                endurHeimta(folderBrowserDialog1.SelectedPath, strDagsetning);
                             }
-                            
 
                         }
                     }
                     else
                     {
-                        endurHeimta(strBackup);
+                        endurHeimta(strBackup, strDagsetning);
                     }
                 }
             }
         }
 
-        private void endurHeimta(string strSlod)
+        private void endurHeimta(string strSlod, string strDagsetning)
         {
             //  MessageBox.Show("A") 1. gefa viðvörun
 
             // backup _OAIS_10_4_2023.sql
-            string strBackupfile = string.Empty;
-
-            foreach (String str in   Directory.GetFiles(strSlod))
+            DialogResult result = MessageBox.Show(string.Format("Viltu endursetja kerfið einsog það var {0}. Öll gögn eftir þann tíma hverfa!", strDagsetning), "Endurheimta", MessageBoxButtons.YesNo);
+            if(result == DialogResult.Yes ) 
             {
-                if(str.EndsWith(".sql"))
+                string strBackupfile = string.Empty;
+                foreach (String str in Directory.GetFiles(strSlod))
                 {
-                    strBackupfile = str;
+                    if (str.EndsWith(".sql"))
+                    {
+                        strBackupfile = str;
+                    }
                 }
+                m_lblHvadAfrita.Text = "Endurheimti gagangrunn";
+                Application.DoEvents();
+                Restore(strBackupfile);
+                m_lblHvadAfrita.Text = "Tæmi vörslusvæði";
+                Directory.Delete(drif.Nafn, true);
+                if (!Directory.Exists(drif.Nafn))
+                {
+                    Directory.CreateDirectory(drif.Nafn);
+                }
+
+                flytjaAIPafrit(drif.Nafn.Replace("AIP", ""), strSlod, "Endurheimta"); //vantar að laga hver er rótin?
+                MessageBox.Show("Endurheimt lokið");
             }
-            m_lblHvadAfrita.Text = "Endurheimti gagangrunn";
-            Application.DoEvents();
-            Restore(strBackupfile);
-            flytjaAIPafrit(drif.Nafn.Replace("AIP",""), strSlod, "Endurheimta"); //vantar að laga hver er rótin?
+     
           
         }
 

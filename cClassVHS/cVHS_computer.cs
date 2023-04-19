@@ -79,7 +79,7 @@ namespace cClassVHS
                }
             }
 
-            ManagementObjectSearcher searcher =  new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BaseBoard");
+            ManagementObjectSearcher searcher =  new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_bios");
 
             ManagementObjectCollection information = searcher.Get();
             foreach (ManagementObject obj in information)

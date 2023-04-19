@@ -37,5 +37,11 @@ namespace cClassOAIS
             conn.Dispose();
             command.Dispose();
         }
+        public void eyda(string strAIP)
+        {
+            string strSQL = string.Format("delete FROM db_oais_admin.dt_md5 d where AIP = '{0}';", strAIP);
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+    }
     }  
+    
 }

@@ -1,6 +1,7 @@
 using ByteSizeLib;
 using cClassVHS;
 using System.Data;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace VHS_OAIS
 {
@@ -31,10 +32,12 @@ namespace VHS_OAIS
         public void getComputer()
         {
            m_dtDrif.Rows.Clear();
-          
-            if(!cComputer.erVelTil(cComputer.Serial))
+            //var serialNumber = System.Profile.SystemManufacturers.SmbiosInformation.SerialNumber;
+            if (!cComputer.erVelTil(cComputer.Serial))
             {
                 cComputer.saveComputer();
+                cComputer.erVelTil(cComputer.Serial);
+                //cComputer.getComputers();
             }
 
             m_lblHeiti.Text = "Heiti vélar: " + cComputer.Name;  
@@ -218,6 +221,7 @@ namespace VHS_OAIS
         private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
         {
             FileSystemWatcher fsw = sender as FileSystemWatcher;
+            fsw.IncludeSubdirectories= true;
             cVHS_files file = new cVHS_files();
             file.Path = e.FullPath;
             file.Name = e.Name;
@@ -243,6 +247,8 @@ namespace VHS_OAIS
         private void fileSystemWatcher1_Created(object sender, FileSystemEventArgs e)
         {
             FileSystemWatcher fsw = sender as FileSystemWatcher;
+            fsw.IncludeSubdirectories= true;
+
             cVHS_files file = new cVHS_files();
             file.Path = e.FullPath;
             file.Name = e.Name;
@@ -267,6 +273,7 @@ namespace VHS_OAIS
         private void fileSystemWatcher1_Deleted(object sender, FileSystemEventArgs e)
         {
             FileSystemWatcher fsw = sender as FileSystemWatcher;
+            fsw.IncludeSubdirectories = true;
             cVHS_files file = new cVHS_files();
             file.Path = e.FullPath;
             file.Name = e.Name;
@@ -291,6 +298,7 @@ namespace VHS_OAIS
         private void fileSystemWatcher1_Error(object sender, ErrorEventArgs e)
         {
             FileSystemWatcher fsw = sender as FileSystemWatcher;
+            fsw.IncludeSubdirectories = true;
             cVHS_files file = new cVHS_files();
             file.Villa =  e.GetException().ToString();
             file.Event = "Error";
@@ -315,6 +323,7 @@ namespace VHS_OAIS
         private void fileSystemWatcher1_Renamed(object sender, RenamedEventArgs e)
         {
             FileSystemWatcher fsw = sender as FileSystemWatcher;
+            fsw.IncludeSubdirectories = true;
             cVHS_files file = new cVHS_files();
             file.Path = e.FullPath;
             file.Name = e.Name;

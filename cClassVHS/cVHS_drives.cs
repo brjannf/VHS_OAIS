@@ -207,7 +207,7 @@ namespace cClassVHS
         public string  driveVirkkComputers()
         {
             string strRet = string.Empty;
-            string strSQL = string.Format("SELECT nafn FROM dt_drives d where virk = 1;;");
+            string strSQL = string.Format("SELECT nafn FROM dt_drives d where virk = 1;");
             strRet = MySqlHelper.ExecuteScalar(m_strTenging, strSQL).ToString();
             return strRet;
         }

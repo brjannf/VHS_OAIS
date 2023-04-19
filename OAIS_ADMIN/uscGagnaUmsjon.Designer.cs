@@ -499,7 +499,7 @@
             this.colRepSkjalm.HeaderText = "Skýrsla skjalamyndara";
             this.colRepSkjalm.Name = "colRepSkjalm";
             this.colRepSkjalm.ReadOnly = true;
-            this.colRepSkjalm.Text = "Skýrsla skjala.m.";
+            this.colRepSkjalm.Text = "Skýrsla skjalam.";
             this.colRepSkjalm.UseColumnTextForButtonValue = true;
             this.colRepSkjalm.Width = 115;
             // 
@@ -509,7 +509,7 @@
             this.colRepVarsla.HeaderText = "Skýrsla vörslustofnunar";
             this.colRepVarsla.Name = "colRepVarsla";
             this.colRepVarsla.ReadOnly = true;
-            this.colRepVarsla.Text = "Skýrsla vörslu.s.";
+            this.colRepVarsla.Text = "Skýrsla vörslus.";
             this.colRepVarsla.UseColumnTextForButtonValue = true;
             this.colRepVarsla.Width = 122;
             // 

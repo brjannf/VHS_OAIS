@@ -61,6 +61,12 @@ namespace OAIS_ADMIN
                 if (row.Cells["colEytt"].Value.ToString() == "1")
                 {
                     row.DefaultCellStyle.BackColor = Color.LightPink;
+                    row.ReadOnly= true; 
+                }
+                else
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightGreen; ;
+                    row.ReadOnly = false;
                 }
             }
            
@@ -153,82 +159,107 @@ namespace OAIS_ADMIN
 
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
+                bool bEytt = Convert.ToBoolean(Convert.ToInt32(senderGrid.Rows[e.RowIndex].Cells["colEytt"].Value.ToString()));
                 if (senderGrid.Columns["colEditSkjalamyndari"].Index == e.ColumnIndex)
                 {
-                    string strHeiti = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
-                    cSkjalamyndari skjalm = new cSkjalamyndari();
-                    skjalm.getSkjalamyndaraByAuðkenni(strHeiti);
-                    frmSkjalamyndariSkra frmSkjalm = new frmSkjalamyndariSkra(skjalm, virkurnotandi);
-                    frmSkjalm.ShowDialog();
-                    endurHressa();
+                    if(!bEytt)
+                    {
+                        string strHeiti = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
+                        cSkjalamyndari skjalm = new cSkjalamyndari();
+                        skjalm.getSkjalamyndaraByAuðkenni(strHeiti);
+                        frmSkjalamyndariSkra frmSkjalm = new frmSkjalamyndariSkra(skjalm, virkurnotandi);
+                        frmSkjalm.ShowDialog();
+                        endurHressa();
+                    }
+                  
                 }
                 if (senderGrid.Columns["colEditVaral"].Index == e.ColumnIndex)
                 {
-                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
-                    cVorslustofnun varsla = new cVorslustofnun();
-                    varsla.getVörslustofnun(strAuðkenni);
-                    frmVörslustofnun frmVarsla = new frmVörslustofnun(varsla, virkurnotandi);
-                    frmVarsla.ShowDialog();
-                    endurHressa();
+                    if (!bEytt)
+                    {
+                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
+                        cVorslustofnun varsla = new cVorslustofnun();
+                        varsla.getVörslustofnun(strAuðkenni);
+                        frmVörslustofnun frmVarsla = new frmVörslustofnun(varsla, virkurnotandi);
+                        frmVarsla.ShowDialog();
+                        endurHressa();
+                    }
                 }
                 if (senderGrid.Columns["colEditSkrá"].Index == e.ColumnIndex)
                 {
-                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
-                    strAuðkenni = strAuðkenni.Replace("FRUM", "AVID");
-                    cSkjalaskra skrá = new cSkjalaskra();
-                    skrá.getSkraning(strAuðkenni);
-                    frmSkráning frmSkra = new frmSkráning(skrá, virkurnotandi);
-                    frmSkra.ShowDialog();
-                    endurHressa();
+                    if (!bEytt)
+                    {
+                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
+                        strAuðkenni = strAuðkenni.Replace("FRUM", "AVID");
+                        cSkjalaskra skrá = new cSkjalaskra();
+                        skrá.getSkraning(strAuðkenni);
+                        frmSkráning frmSkra = new frmSkráning(skrá, virkurnotandi);
+                        frmSkra.ShowDialog();
+                        endurHressa();
+                    }
                 }
                 if (senderGrid.Columns["colOpna"].Index == e.ColumnIndex)
                 {
-                    string strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
-                    var p = new Process();
-                    p.StartInfo = new ProcessStartInfo(strSlod)
+                    if (!bEytt)
                     {
-                        UseShellExecute = true
-                    };
-                    p.Start();
+                        string strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
+                        var p = new Process();
+                        p.StartInfo = new ProcessStartInfo(strSlod)
+                        {
+                            UseShellExecute = true
+                        };
+                        p.Start();
+                    }
 
                 }
 
                 if (senderGrid.Columns["colEditKvittun"].Index == e.ColumnIndex)
                 {
-                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
-                    strAuðkenni = strAuðkenni.Replace("FRUM", "AVID");
-                    frmKvittun frmKvittun = new frmKvittun(strAuðkenni);
-                    frmKvittun.ShowDialog();
-                    endurHressa();
+                    if (!bEytt)
+                    {
+                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
+                        strAuðkenni = strAuðkenni.Replace("FRUM", "AVID");
+                        frmKvittun frmKvittun = new frmKvittun(strAuðkenni);
+                        frmKvittun.ShowDialog();
+                        endurHressa();
+                    }
                 }
                 if (senderGrid.Columns["colRepVarsla"].Index == e.ColumnIndex)
                 {
-                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
-                    frmReportVarsla frmVarsla = new frmReportVarsla(strAuðkenni, virkurnotandi);
-                    frmVarsla.ShowDialog();
-                    endurHressa();
+                    if (!bEytt)
+                    {
+                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
+                        frmReportVarsla frmVarsla = new frmReportVarsla(strAuðkenni, virkurnotandi);
+                        frmVarsla.ShowDialog();
+                        endurHressa();
+                    }
                 }
                 if (senderGrid.Columns["colRepSkjalm"].Index == e.ColumnIndex)
                 {
-                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
-                    frmReportSkjalamyndari frmRepSkjalm = new frmReportSkjalamyndari(strAuðkenni, virkurnotandi);
-                    frmRepSkjalm.ShowDialog();
-                    endurHressa();
+                    if (!bEytt)
+                    {
+                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
+                        frmReportSkjalamyndari frmRepSkjalm = new frmReportSkjalamyndari(strAuðkenni, virkurnotandi);
+                        frmRepSkjalm.ShowDialog();
+                        endurHressa();
+                    }
                 }
                 if (senderGrid.Columns["colDelEyda"].Index == e.ColumnIndex)
                 {
-                    DialogResult result = MessageBox.Show("Viltu örruglega eyða þessari vörslútgáfu?", "Eyða vörsluútgáfu", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes) 
+                    if (!bEytt)
                     {
-                        string strSkjalamyndari = senderGrid.Rows[e.RowIndex].Cells["colSkjalmHeiti"].Value.ToString();
-                        string strVörslustofnun = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
-                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
-                        string strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
-                        frmEyda eyða = new frmEyda(strAuðkenni,strSkjalamyndari,strVörslustofnun,strSlod);
-                        eyða.ShowDialog();
-                        endurHressa();
+                        DialogResult result = MessageBox.Show("Viltu örruglega eyða þessari vörslútgáfu?", "Eyða vörsluútgáfu", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            string strSkjalamyndari = senderGrid.Rows[e.RowIndex].Cells["colSkjalmHeiti"].Value.ToString();
+                            string strVörslustofnun = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
+                            string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
+                            string strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
+                            frmEyda eyða = new frmEyda(strAuðkenni, strSkjalamyndari, strVörslustofnun, strSlod);
+                            eyða.ShowDialog();
+                            endurHressa();
+                        }
                     }
-
                 }
             }
         }

@@ -39,6 +39,7 @@
             this.m_tapUmsjon = new System.Windows.Forms.TabPage();
             this.uscUmsjon1 = new OAIS_ADMIN.uscUmsjon();
             this.m_pnlNotandi = new System.Windows.Forms.Panel();
+            this.m_btnRecovery = new System.Windows.Forms.Button();
             this.m_lblVillaInnSkraning = new System.Windows.Forms.Label();
             this.m_btnInnskra = new System.Windows.Forms.Button();
             this.m_lblLykilOrd = new System.Windows.Forms.Label();
@@ -47,6 +48,10 @@
             this.m_tboNoterndaNafn = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.m_prgBackup = new System.Windows.Forms.ProgressBar();
+            this.m_lblHvadAfrita = new System.Windows.Forms.Label();
+            this.m_lblBackupStatus = new System.Windows.Forms.Label();
             this.m_tacMain.SuspendLayout();
             this.m_tapInnsetning.SuspendLayout();
             this.m_tapGagnaUmsjon.SuspendLayout();
@@ -76,7 +81,7 @@
             this.m_tapInnsetning.Location = new System.Drawing.Point(4, 24);
             this.m_tapInnsetning.Name = "m_tapInnsetning";
             this.m_tapInnsetning.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapInnsetning.Size = new System.Drawing.Size(774, 433);
+            this.m_tapInnsetning.Size = new System.Drawing.Size(767, 445);
             this.m_tapInnsetning.TabIndex = 1;
             this.m_tapInnsetning.Text = "Innsetning (Ingest entity)";
             this.m_tapInnsetning.UseVisualStyleBackColor = true;
@@ -86,7 +91,7 @@
             this.m_uscInnsetning.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_uscInnsetning.Location = new System.Drawing.Point(3, 3);
             this.m_uscInnsetning.Name = "m_uscInnsetning";
-            this.m_uscInnsetning.Size = new System.Drawing.Size(768, 427);
+            this.m_uscInnsetning.Size = new System.Drawing.Size(761, 439);
             this.m_uscInnsetning.TabIndex = 0;
             // 
             // m_tapGagnaUmsjon
@@ -95,7 +100,7 @@
             this.m_tapGagnaUmsjon.Location = new System.Drawing.Point(4, 24);
             this.m_tapGagnaUmsjon.Name = "m_tapGagnaUmsjon";
             this.m_tapGagnaUmsjon.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapGagnaUmsjon.Size = new System.Drawing.Size(774, 433);
+            this.m_tapGagnaUmsjon.Size = new System.Drawing.Size(767, 445);
             this.m_tapGagnaUmsjon.TabIndex = 2;
             this.m_tapGagnaUmsjon.Text = "Gagnaumsjón (Data management)";
             this.m_tapGagnaUmsjon.UseVisualStyleBackColor = true;
@@ -105,7 +110,7 @@
             this.uscGagnaUmsjon1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uscGagnaUmsjon1.Location = new System.Drawing.Point(3, 3);
             this.uscGagnaUmsjon1.Name = "uscGagnaUmsjon1";
-            this.uscGagnaUmsjon1.Size = new System.Drawing.Size(768, 427);
+            this.uscGagnaUmsjon1.Size = new System.Drawing.Size(761, 439);
             this.uscGagnaUmsjon1.TabIndex = 0;
             // 
             // m_tapGeymsluMiðlar
@@ -114,7 +119,7 @@
             this.m_tapGeymsluMiðlar.Location = new System.Drawing.Point(4, 24);
             this.m_tapGeymsluMiðlar.Name = "m_tapGeymsluMiðlar";
             this.m_tapGeymsluMiðlar.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapGeymsluMiðlar.Size = new System.Drawing.Size(774, 433);
+            this.m_tapGeymsluMiðlar.Size = new System.Drawing.Size(767, 445);
             this.m_tapGeymsluMiðlar.TabIndex = 0;
             this.m_tapGeymsluMiðlar.Text = "Geymslumiðlar (Archival storage)";
             this.m_tapGeymsluMiðlar.UseVisualStyleBackColor = true;
@@ -124,7 +129,7 @@
             this.uscGeymsluMidlar1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uscGeymsluMidlar1.Location = new System.Drawing.Point(3, 3);
             this.uscGeymsluMidlar1.Name = "uscGeymsluMidlar1";
-            this.uscGeymsluMidlar1.Size = new System.Drawing.Size(768, 427);
+            this.uscGeymsluMidlar1.Size = new System.Drawing.Size(761, 439);
             this.uscGeymsluMidlar1.TabIndex = 0;
             // 
             // m_tapMiðlun
@@ -132,7 +137,7 @@
             this.m_tapMiðlun.Location = new System.Drawing.Point(4, 24);
             this.m_tapMiðlun.Name = "m_tapMiðlun";
             this.m_tapMiðlun.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapMiðlun.Size = new System.Drawing.Size(774, 433);
+            this.m_tapMiðlun.Size = new System.Drawing.Size(767, 445);
             this.m_tapMiðlun.TabIndex = 3;
             this.m_tapMiðlun.Text = "Miðlun (Access)";
             this.m_tapMiðlun.UseVisualStyleBackColor = true;
@@ -158,6 +163,10 @@
             // 
             // m_pnlNotandi
             // 
+            this.m_pnlNotandi.Controls.Add(this.m_lblBackupStatus);
+            this.m_pnlNotandi.Controls.Add(this.m_lblHvadAfrita);
+            this.m_pnlNotandi.Controls.Add(this.m_prgBackup);
+            this.m_pnlNotandi.Controls.Add(this.m_btnRecovery);
             this.m_pnlNotandi.Controls.Add(this.m_lblVillaInnSkraning);
             this.m_pnlNotandi.Controls.Add(this.m_btnInnskra);
             this.m_pnlNotandi.Controls.Add(this.m_lblLykilOrd);
@@ -168,6 +177,16 @@
             this.m_pnlNotandi.Name = "m_pnlNotandi";
             this.m_pnlNotandi.Size = new System.Drawing.Size(471, 437);
             this.m_pnlNotandi.TabIndex = 2;
+            // 
+            // m_btnRecovery
+            // 
+            this.m_btnRecovery.Location = new System.Drawing.Point(13, 16);
+            this.m_btnRecovery.Name = "m_btnRecovery";
+            this.m_btnRecovery.Size = new System.Drawing.Size(297, 23);
+            this.m_btnRecovery.TabIndex = 11;
+            this.m_btnRecovery.Text = "Hörmungabæting (disaster recoveery)";
+            this.m_btnRecovery.UseVisualStyleBackColor = true;
+            this.m_btnRecovery.Click += new System.EventHandler(this.m_btnRecovery_Click);
             // 
             // m_lblVillaInnSkraning
             // 
@@ -231,9 +250,9 @@
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Right;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1});
-            this.menuStrip1.Location = new System.Drawing.Point(1070, 0);
+            this.menuStrip1.Location = new System.Drawing.Point(1348, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(58, 701);
+            this.menuStrip1.Size = new System.Drawing.Size(58, 582);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -244,11 +263,36 @@
             this.toolStripMenuItem1.Text = "Útskrá";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
+            // m_prgBackup
+            // 
+            this.m_prgBackup.Location = new System.Drawing.Point(13, 63);
+            this.m_prgBackup.Name = "m_prgBackup";
+            this.m_prgBackup.Size = new System.Drawing.Size(288, 23);
+            this.m_prgBackup.TabIndex = 12;
+            // 
+            // m_lblHvadAfrita
+            // 
+            this.m_lblHvadAfrita.AutoSize = true;
+            this.m_lblHvadAfrita.Location = new System.Drawing.Point(18, 44);
+            this.m_lblHvadAfrita.Name = "m_lblHvadAfrita";
+            this.m_lblHvadAfrita.Size = new System.Drawing.Size(38, 15);
+            this.m_lblHvadAfrita.TabIndex = 13;
+            this.m_lblHvadAfrita.Text = "label1";
+            // 
+            // m_lblBackupStatus
+            // 
+            this.m_lblBackupStatus.AutoSize = true;
+            this.m_lblBackupStatus.Location = new System.Drawing.Point(319, 69);
+            this.m_lblBackupStatus.Name = "m_lblBackupStatus";
+            this.m_lblBackupStatus.Size = new System.Drawing.Size(38, 15);
+            this.m_lblBackupStatus.TabIndex = 14;
+            this.m_lblBackupStatus.Text = "label1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1128, 701);
+            this.ClientSize = new System.Drawing.Size(1406, 582);
             this.Controls.Add(this.m_pnlNotandi);
             this.Controls.Add(this.m_tacMain);
             this.Controls.Add(this.menuStrip1);
@@ -289,5 +333,10 @@
         private uscUmsjon uscUmsjon1;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem toolStripMenuItem1;
+        private Button m_btnRecovery;
+        private FolderBrowserDialog folderBrowserDialog1;
+        private ProgressBar m_prgBackup;
+        private Label m_lblHvadAfrita;
+        private Label m_lblBackupStatus;
     }
 }

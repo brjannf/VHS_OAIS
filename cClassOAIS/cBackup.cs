@@ -56,14 +56,18 @@ namespace cClassOAIS
             int iRet = 1;
             string strSQL = "SELECT max(id) as id FROM dt_backup d;";
             var id = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
-            if(id != null)
+            if(id != DBNull.Value)
             {
                 iRet = Convert.ToInt32(id) + 1; 
             }
             return iRet;    
         }
 
-
-
+        public void createDatabase()
+        {  
+            string strTenging = "server = localhost; user id = root; Password = ivarBjarkLind;";
+            string strSQL = "CREATE DATABASE  IF NOT EXISTS `db_oais_admin` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;";
+            MySqlHelper.ExecuteNonQuery(strTenging, strSQL);
+        }
     }
 }

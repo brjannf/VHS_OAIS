@@ -46,6 +46,7 @@ namespace OAIS_ADMIN
 
         private void eyða()
         {
+            DirectoryInfo dir = new DirectoryInfo(m_strSlod);
             //1. eyða skrám filesystem
             m_lblEyða.Text = "Eyði skrám";
             progressBar1.PerformStep();
@@ -54,6 +55,8 @@ namespace OAIS_ADMIN
             {
                 Directory.Delete(m_strSlod, true);
             }
+            cMD5 md5 = new cMD5();
+            md5.eyda(útgáfa.auðkenni_3_1_1);
            
             Application.DoEvents();
             //2.eyða ISADG færslu
@@ -66,6 +69,7 @@ namespace OAIS_ADMIN
             m_lblEyða.Text = "Merki vörslútgáfu eydda";
             progressBar1.PerformStep();
             Application.DoEvents();
+
             cVorsluutgafur utgaf = new cVorsluutgafur();
             utgaf.merkjaEYtt(m_strAuðkenni, 1);
             //4. tékka hvort fleiri nota skjalamynadra
@@ -73,19 +77,28 @@ namespace OAIS_ADMIN
             m_lblEyða.Text = "Skoða ISSAR";
             progressBar1.PerformStep();
             Application.DoEvents();
-            DataTable dt =  skjalamyndari.utgafurSkjalamyndara(skjalamyndari.auðkenni_5_1_6);
-            //5 ef ekki eyða skjalamyndara
-            if(dt.Rows.Count == 0 ) 
+             //5 ef ekki eyða skjalamyndara
+            if(skjalamyndari.fjoldiVirkarUtgafna(skjalamyndari.auðkenni_5_1_6) == 0 ) 
             {
+                if(Directory.GetDirectories(dir.Parent.FullName).Length == 0 ) 
+                {
+                    Directory.Delete(dir.Parent.FullName);
+                }
+               
                 skjalamyndari.eyða(skjalamyndari.auðkenni_5_1_6);
             }
             //6 tékka hvort vörslustofnun hafi fleiri skjalamyndara
             m_lblEyða.Text = "Skoða ISDIAH";
             progressBar1.PerformStep();
             Application.DoEvents();
-            dt = vörslustofnun.utgafurVorslustofnunar(vörslustofnun.auðkenni_5_1_1);
-            if(dt.Rows.Count == 0 ) 
+          
+            if(vörslustofnun.fjoldiVirkarUtgafna(vörslustofnun.auðkenni_5_1_1) == 0) 
             {
+                if (Directory.GetDirectories(dir.Parent.Parent.FullName).Length == 0)
+                {
+                    Directory.Delete(dir.Parent.Parent.FullName);
+                }
+
                 vörslustofnun.eyða(vörslustofnun.auðkenni_5_1_1);
             }
             this.Close();
