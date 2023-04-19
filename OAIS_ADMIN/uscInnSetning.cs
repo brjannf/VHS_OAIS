@@ -444,7 +444,7 @@ namespace OAIS_ADMIN
                     }
                     skjalamyndari.auðkenni_vörslustofnunar_5_4_2 = vörslustofnun.auðkenni_5_1_1;
                     skjalamyndari.vista();
-                    skjalamyndari.getSkjalamyndara(skjalamyndari.ID);
+                    skjalamyndari.getSkjalamyndara(skjalamyndari.opinbert_heiti_5_1_2);
                     m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
                     m_grbISAAR.BackColor = Color.LightGreen;
                     fyllaSkjalamyndaraLista();

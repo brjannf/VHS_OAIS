@@ -38,7 +38,7 @@
             // m_lblBackupStatus
             // 
             this.m_lblBackupStatus.AutoSize = true;
-            this.m_lblBackupStatus.Location = new System.Drawing.Point(427, 141);
+            this.m_lblBackupStatus.Location = new System.Drawing.Point(1027, 143);
             this.m_lblBackupStatus.Name = "m_lblBackupStatus";
             this.m_lblBackupStatus.Size = new System.Drawing.Size(38, 15);
             this.m_lblBackupStatus.TabIndex = 18;
@@ -57,12 +57,12 @@
             // 
             this.m_prgBackup.Location = new System.Drawing.Point(121, 135);
             this.m_prgBackup.Name = "m_prgBackup";
-            this.m_prgBackup.Size = new System.Drawing.Size(288, 23);
+            this.m_prgBackup.Size = new System.Drawing.Size(900, 23);
             this.m_prgBackup.TabIndex = 16;
             // 
             // m_btnRecovery
             // 
-            this.m_btnRecovery.Location = new System.Drawing.Point(121, 282);
+            this.m_btnRecovery.Location = new System.Drawing.Point(433, 253);
             this.m_btnRecovery.Name = "m_btnRecovery";
             this.m_btnRecovery.Size = new System.Drawing.Size(297, 23);
             this.m_btnRecovery.TabIndex = 15;
@@ -74,7 +74,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 475);
+            this.ClientSize = new System.Drawing.Size(1209, 475);
             this.Controls.Add(this.m_lblBackupStatus);
             this.Controls.Add(this.m_lblHvadAfrita);
             this.Controls.Add(this.m_prgBackup);

@@ -39,7 +39,6 @@
             this.m_tapUmsjon = new System.Windows.Forms.TabPage();
             this.uscUmsjon1 = new OAIS_ADMIN.uscUmsjon();
             this.m_pnlNotandi = new System.Windows.Forms.Panel();
-            this.m_btnRecovery = new System.Windows.Forms.Button();
             this.m_lblVillaInnSkraning = new System.Windows.Forms.Label();
             this.m_btnInnskra = new System.Windows.Forms.Button();
             this.m_lblLykilOrd = new System.Windows.Forms.Label();
@@ -49,9 +48,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.m_prgBackup = new System.Windows.Forms.ProgressBar();
-            this.m_lblHvadAfrita = new System.Windows.Forms.Label();
-            this.m_lblBackupStatus = new System.Windows.Forms.Label();
             this.m_tacMain.SuspendLayout();
             this.m_tapInnsetning.SuspendLayout();
             this.m_tapGagnaUmsjon.SuspendLayout();
@@ -163,10 +159,6 @@
             // 
             // m_pnlNotandi
             // 
-            this.m_pnlNotandi.Controls.Add(this.m_lblBackupStatus);
-            this.m_pnlNotandi.Controls.Add(this.m_lblHvadAfrita);
-            this.m_pnlNotandi.Controls.Add(this.m_prgBackup);
-            this.m_pnlNotandi.Controls.Add(this.m_btnRecovery);
             this.m_pnlNotandi.Controls.Add(this.m_lblVillaInnSkraning);
             this.m_pnlNotandi.Controls.Add(this.m_btnInnskra);
             this.m_pnlNotandi.Controls.Add(this.m_lblLykilOrd);
@@ -177,16 +169,6 @@
             this.m_pnlNotandi.Name = "m_pnlNotandi";
             this.m_pnlNotandi.Size = new System.Drawing.Size(471, 437);
             this.m_pnlNotandi.TabIndex = 2;
-            // 
-            // m_btnRecovery
-            // 
-            this.m_btnRecovery.Location = new System.Drawing.Point(13, 16);
-            this.m_btnRecovery.Name = "m_btnRecovery";
-            this.m_btnRecovery.Size = new System.Drawing.Size(297, 23);
-            this.m_btnRecovery.TabIndex = 11;
-            this.m_btnRecovery.Text = "Hörmungabæting (disaster recoveery)";
-            this.m_btnRecovery.UseVisualStyleBackColor = true;
-            this.m_btnRecovery.Click += new System.EventHandler(this.m_btnRecovery_Click);
             // 
             // m_lblVillaInnSkraning
             // 
@@ -263,31 +245,6 @@
             this.toolStripMenuItem1.Text = "Útskrá";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
-            // m_prgBackup
-            // 
-            this.m_prgBackup.Location = new System.Drawing.Point(13, 63);
-            this.m_prgBackup.Name = "m_prgBackup";
-            this.m_prgBackup.Size = new System.Drawing.Size(288, 23);
-            this.m_prgBackup.TabIndex = 12;
-            // 
-            // m_lblHvadAfrita
-            // 
-            this.m_lblHvadAfrita.AutoSize = true;
-            this.m_lblHvadAfrita.Location = new System.Drawing.Point(18, 44);
-            this.m_lblHvadAfrita.Name = "m_lblHvadAfrita";
-            this.m_lblHvadAfrita.Size = new System.Drawing.Size(38, 15);
-            this.m_lblHvadAfrita.TabIndex = 13;
-            this.m_lblHvadAfrita.Text = "label1";
-            // 
-            // m_lblBackupStatus
-            // 
-            this.m_lblBackupStatus.AutoSize = true;
-            this.m_lblBackupStatus.Location = new System.Drawing.Point(319, 69);
-            this.m_lblBackupStatus.Name = "m_lblBackupStatus";
-            this.m_lblBackupStatus.Size = new System.Drawing.Size(38, 15);
-            this.m_lblBackupStatus.TabIndex = 14;
-            this.m_lblBackupStatus.Text = "label1";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -333,10 +290,6 @@
         private uscUmsjon uscUmsjon1;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem toolStripMenuItem1;
-        private Button m_btnRecovery;
         private FolderBrowserDialog folderBrowserDialog1;
-        private ProgressBar m_prgBackup;
-        private Label m_lblHvadAfrita;
-        private Label m_lblBackupStatus;
     }
 }

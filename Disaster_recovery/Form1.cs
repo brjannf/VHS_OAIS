@@ -21,7 +21,7 @@ namespace Disaster_recovery
 
             // Configure color schema
             materialSkinManager.ColorScheme = new ColorScheme(
-                Primary.Indigo500, Primary.Blue500,
+                Primary.Blue400, Primary.Blue500,
                 Primary.Blue500, Accent.LightBlue200,
                 TextShade.BLACK);
         }

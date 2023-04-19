@@ -4,10 +4,12 @@ using cClassOAIS;
 using MySql.Data.MySqlClient;
 using static cClassVHS.cSkyrslur;
 using Google.Protobuf.WellKnownTypes;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace OAIS_ADMIN
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form //:MaterialForm
     {
        cNotandi virkurNotandi = new cNotandi();
         public Form1()
@@ -16,6 +18,17 @@ namespace OAIS_ADMIN
             m_pnlNotandi.BringToFront();
             m_pnlNotandi.Dock = DockStyle.Fill;
             this.Text = "MHR";
+
+            //MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
+            //materialSkinManager.AddFormToManage(this);
+            //materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+
+            //// Configure color schema
+            //materialSkinManager.ColorScheme = new ColorScheme(
+            //    Primary.Blue400, Primary.Blue500,
+            //    Primary.Blue500, Accent.LightBlue200,
+            //    TextShade.WHITE
+            //);
 
         }
 
@@ -91,101 +104,5 @@ namespace OAIS_ADMIN
             this.Text = "MHR";
         }
 
-        private void m_btnRecovery_Click(object sender, EventArgs e)
-        {
-         
-            DialogResult result = folderBrowserDialog1.ShowDialog();
-            if(result == DialogResult.OK) 
-            {
-                endurHeimta(folderBrowserDialog1.SelectedPath, folderBrowserDialog1.SelectedPath);
-            }
-        }
-
-        private void endurHeimta(string strSlod, string strDagsetning)
-        {
-            //  MessageBox.Show("A") 1. gefa viðvörun
-
-            // backup _OAIS_10_4_2023.sql
-            DialogResult result = MessageBox.Show(string.Format("Viltu endursetja kerfið frá þessu afriti {0}. Öll gögn eftir þann tíma hverfa!", strDagsetning), "Endurheimta", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                string strBackupfile = string.Empty;
-                foreach (String str in Directory.GetFiles(strSlod))
-                {
-                    if (str.EndsWith(".sql"))
-                    {
-                        strBackupfile = str;
-                    }
-                }
-               m_lblHvadAfrita.Text = "Endurheimti gagangrunn";
-                Application.DoEvents();
-                cBackup back = new cBackup();
-                back.createDatabase();
-                Restore(strBackupfile);
-                m_lblHvadAfrita.Text = "Tæmi vörslusvæði";
-                Directory.Delete("D:\\AIP", true);
-                if (!Directory.Exists("D:\\AIP"))
-                {
-                    Directory.CreateDirectory("D:\\AIP");
-                }
-
-                flytjaAIPafrit("D:\\", strSlod, "Endurheimta"); //vantar að laga hver er rótin?
-                MessageBox.Show("Endurheimt lokið");
-            }
-
-
-        }
-        private void flytjaAIPafrit(string strDest, string strOrg, string strAðgerð)
-        {
-
-            //Now Create all of the directories
-            m_prgBackup.Maximum = Directory.GetDirectories(strOrg, "*", SearchOption.AllDirectories).Length;
-            m_prgBackup.Step = 1;
-            m_prgBackup.Value = 0;
-            m_lblHvadAfrita.Text = strAðgerð + " möppur";
-            foreach (string dirPath in Directory.GetDirectories(strOrg, "*", SearchOption.AllDirectories))
-            {
-                Directory.CreateDirectory(dirPath.Replace(strOrg, strDest));
-                m_lblHvadAfrita.Text = strAðgerð + " möppu " + (dirPath.Replace(strOrg, strDest));
-                m_prgBackup.PerformStep();
-                m_lblBackupStatus.Text = string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
-                Application.DoEvents();
-            }
-
-            m_prgBackup.Maximum = Directory.GetFiles(strOrg, "*.*", SearchOption.AllDirectories).Length;
-            m_prgBackup.Step = 1;
-            m_prgBackup.Value = 0;
-            m_lblHvadAfrita.Text = strAðgerð + " skrár";
-            //Copy all the files & Replaces any files with the same name
-            foreach (string newPath in Directory.GetFiles(strOrg, "*.*", SearchOption.AllDirectories))
-            {
-                File.Copy(newPath, newPath.Replace(strOrg, strDest), true);
-                m_lblHvadAfrita.Text = strAðgerð + " skrá " + newPath.Replace(strOrg, strDest);
-                FileInfo fifo = new FileInfo(newPath);
-             //   m_lStaerd += fifo.Length;
-                m_prgBackup.PerformStep();
-                m_lblBackupStatus.Text = string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
-                Application.DoEvents();
-            }
-
-        }
-        private void Restore(string strRestoreFile)
-        {
-            string file = strRestoreFile;
-            string constring = "server = localhost; user id = root; Password = ivarBjarkLind; database = db_oais_admin;";
-            using (MySqlConnection conn = new MySqlConnection(constring))
-            {
-                using (MySqlCommand cmd = new MySqlCommand())
-                {
-                    using (MySqlBackup mb = new MySqlBackup(cmd))
-                    {
-                        cmd.Connection = conn;
-                        conn.Open();
-                        mb.ImportFromFile(file);
-                        conn.Close();
-                    }
-                }
-            }
-        }
     }
 }
