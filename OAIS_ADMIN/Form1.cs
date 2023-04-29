@@ -9,7 +9,7 @@ using MaterialSkin.Controls;
 
 namespace OAIS_ADMIN
 {
-    public partial class Form1 : Form //:MaterialForm
+    public partial class Form1 : Form //MaterialForm
     {
        cNotandi virkurNotandi = new cNotandi();
         public Form1()
@@ -54,6 +54,7 @@ namespace OAIS_ADMIN
                 uscGagnaUmsjon1.virkurnotandi = virkurNotandi;
                 uscGeymsluMidlar1.virkurnotandi = virkurNotandi;
                 uscUmsjon1.virkurnotandi = virkurNotandi;
+                uscMidlun1.virkurnotandi = virkurNotandi;
                 virkurNotandi.skraInnskra(virkurNotandi.kennitala);
                 if (virkurNotandi.hlutverk != "Umsjónarmaður")
                 {

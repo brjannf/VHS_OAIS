@@ -69,5 +69,13 @@ namespace cClassOAIS
             string strSQL = "CREATE DATABASE  IF NOT EXISTS `db_oais_admin` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;";
             MySqlHelper.ExecuteNonQuery(strTenging, strSQL);
         }
+
+        public DataTable getAllDatabases()
+        {
+            string strSQL = "SELECT schema_name FROM information_schema.schemata WHERE schema_name LIKE 'AVID%_';";
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
     }
 }

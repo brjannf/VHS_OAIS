@@ -117,7 +117,7 @@
             this.m_dgvDrif.ReadOnly = true;
             this.m_dgvDrif.RowHeadersVisible = false;
             this.m_dgvDrif.RowTemplate.Height = 25;
-            this.m_dgvDrif.Size = new System.Drawing.Size(918, 93);
+            this.m_dgvDrif.Size = new System.Drawing.Size(918, 78);
             this.m_dgvDrif.TabIndex = 0;
             this.m_dgvDrif.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvDrif_CellClick);
             // 
@@ -295,7 +295,7 @@
             this.m_grValinVel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.m_grValinVel.Location = new System.Drawing.Point(0, 0);
             this.m_grValinVel.Name = "m_grValinVel";
-            this.m_grValinVel.Size = new System.Drawing.Size(924, 165);
+            this.m_grValinVel.Size = new System.Drawing.Size(924, 180);
             this.m_grValinVel.TabIndex = 12;
             this.m_grValinVel.TabStop = false;
             this.m_grValinVel.Text = "Upplýsingar um tölvu";
@@ -356,9 +356,9 @@
             this.m_grbDrif.Controls.Add(this.m_dgvDrif);
             this.m_grbDrif.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.m_grbDrif.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.m_grbDrif.Location = new System.Drawing.Point(0, 165);
+            this.m_grbDrif.Location = new System.Drawing.Point(0, 180);
             this.m_grbDrif.Name = "m_grbDrif";
-            this.m_grbDrif.Size = new System.Drawing.Size(924, 121);
+            this.m_grbDrif.Size = new System.Drawing.Size(924, 106);
             this.m_grbDrif.TabIndex = 1;
             this.m_grbDrif.TabStop = false;
             this.m_grbDrif.Text = "Drif";

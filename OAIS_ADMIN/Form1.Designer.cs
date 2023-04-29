@@ -36,6 +36,7 @@
             this.m_tapGeymsluMiðlar = new System.Windows.Forms.TabPage();
             this.uscGeymsluMidlar1 = new OAIS_ADMIN.uscGeymsluMidlar();
             this.m_tapMiðlun = new System.Windows.Forms.TabPage();
+            this.uscMidlun1 = new OAIS_ADMIN.uscMidlun();
             this.m_tapUmsjon = new System.Windows.Forms.TabPage();
             this.uscUmsjon1 = new OAIS_ADMIN.uscUmsjon();
             this.m_pnlNotandi = new System.Windows.Forms.Panel();
@@ -52,6 +53,7 @@
             this.m_tapInnsetning.SuspendLayout();
             this.m_tapGagnaUmsjon.SuspendLayout();
             this.m_tapGeymsluMiðlar.SuspendLayout();
+            this.m_tapMiðlun.SuspendLayout();
             this.m_tapUmsjon.SuspendLayout();
             this.m_pnlNotandi.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -130,6 +132,7 @@
             // 
             // m_tapMiðlun
             // 
+            this.m_tapMiðlun.Controls.Add(this.uscMidlun1);
             this.m_tapMiðlun.Location = new System.Drawing.Point(4, 24);
             this.m_tapMiðlun.Name = "m_tapMiðlun";
             this.m_tapMiðlun.Padding = new System.Windows.Forms.Padding(3);
@@ -137,6 +140,14 @@
             this.m_tapMiðlun.TabIndex = 3;
             this.m_tapMiðlun.Text = "Miðlun (Access)";
             this.m_tapMiðlun.UseVisualStyleBackColor = true;
+            // 
+            // uscMidlun1
+            // 
+            this.uscMidlun1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uscMidlun1.Location = new System.Drawing.Point(3, 3);
+            this.uscMidlun1.Name = "uscMidlun1";
+            this.uscMidlun1.Size = new System.Drawing.Size(761, 439);
+            this.uscMidlun1.TabIndex = 0;
             // 
             // m_tapUmsjon
             // 
@@ -260,6 +271,7 @@
             this.m_tapInnsetning.ResumeLayout(false);
             this.m_tapGagnaUmsjon.ResumeLayout(false);
             this.m_tapGeymsluMiðlar.ResumeLayout(false);
+            this.m_tapMiðlun.ResumeLayout(false);
             this.m_tapUmsjon.ResumeLayout(false);
             this.m_pnlNotandi.ResumeLayout(false);
             this.m_pnlNotandi.PerformLayout();
@@ -291,5 +303,6 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem toolStripMenuItem1;
         private FolderBrowserDialog folderBrowserDialog1;
+        private uscMidlun uscMidlun1;
     }
 }

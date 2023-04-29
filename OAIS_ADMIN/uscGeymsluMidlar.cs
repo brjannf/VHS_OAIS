@@ -109,21 +109,24 @@ namespace OAIS_ADMIN
                 }
             }
         }
-        private void BackupSQL(string strDest)
+        private void BackupSQL(string strDest, string strDatabase)
         {
-            string constring = "server = localhost; user id = root; Password = ivarBjarkLind; database = db_oais_admin;"; //gera þetta abastract gegnum stillingar
+            string constring = "server = localhost; user id = root; Password = ivarBjarkLind; database =" + strDatabase + ";"; //gera þetta abastract gegnum stillingar
                                                                                                                           // string constring = "server=localhost;user=root;pwd=qwerty;database=test;";
-            string file = strDest;
+          
             using (MySqlConnection conn = new MySqlConnection(constring))
             {
                 using (MySqlCommand cmd = new MySqlCommand())
                 {
                     using (MySqlBackup mb = new MySqlBackup(cmd))
                     {
-                        cmd.Connection = conn;
-                        conn.Open();
-                        mb.ExportToFile(file);
-                        conn.Close();
+                            cmd.Connection = conn;
+                            conn.Open();
+                            mb.ExportToFile(strDest);
+                            conn.Close();
+                            cmd.Dispose();
+                            conn.Dispose();
+                       
                     }
                 }
             }
@@ -326,7 +329,6 @@ namespace OAIS_ADMIN
         {
             //1.
 
-
             string strDest = m_comAfritDrif.SelectedItem.ToString() + "\\MHR_BACKUP_" + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + "_" + backup.getNextBackupID(); //má bæta við síðar
 
             if (!Directory.Exists(strDest))
@@ -351,11 +353,25 @@ namespace OAIS_ADMIN
             backup.athugasemdir = m_tboAfritATH.Text;
             backup.hvar_afritadi = virkurnotandi.nafn;
             backup.vista();
-            fyllaBackuplista();
+          
 
             string strBackupSQL = strDest + "\\backup _OAIS_" + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + ".sql";
             m_lblHvadAfrita.Text = "Afrita gagnagrunn";
-            BackupSQL(strBackupSQL);
+            BackupSQL(strBackupSQL, "db_oais_admin");
+           // BackupSQL(strBackupSQL, "avid_sa_18006_filesystem");
+
+            DataTable dt = backup.getAllDatabases();
+           
+            foreach (DataRow r in dt.Rows)
+            {
+                string strDatabase = r["SCHEMA_NAME"].ToString(); ;
+                m_lblHvadAfrita.Text = "Afrita: " + strDatabase;
+                strBackupSQL = strDest + "\\backup _OAIS_" + strDatabase + "_"  + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + ".sql";
+                BackupSQL(strBackupSQL, strDatabase);
+              
+            }
+
+            fyllaBackuplista();
             MessageBox.Show("Búið");
         }
 
@@ -460,7 +476,16 @@ namespace OAIS_ADMIN
                 }
                 m_lblHvadAfrita.Text = "Endurheimti gagangrunn";
                 Application.DoEvents();
-                Restore(strBackupfile);
+                string[] strSQLFiles = Directory.GetFiles(strSlod);
+                foreach(string str in strSQLFiles)
+                {
+                    FileInfo fifo = new FileInfo(str);
+                    if(fifo.Extension == ".sql")
+                    {
+                        Restore(str);
+                    }
+                }
+            //    Restore(strBackupfile);
                 m_lblHvadAfrita.Text = "Tæmi vörslusvæði";
                 Directory.Delete(drif.Nafn, true);
                 if (!Directory.Exists(drif.Nafn))

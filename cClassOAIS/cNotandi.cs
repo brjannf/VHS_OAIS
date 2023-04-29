@@ -25,7 +25,6 @@ namespace cClassOAIS
         public string hlutverk { get; set; }
         public string netfang { get; set; }
         public string heimilisfang { get; set; }
-
         public string simi { get; set; } 
         #endregion
 
