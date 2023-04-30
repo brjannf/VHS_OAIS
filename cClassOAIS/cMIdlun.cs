@@ -51,9 +51,11 @@ namespace cClassOAIS
         public string dalkur_malTitill { get; set; }
         public string maltitill { get; set; }
         public string docInnihald { get; set; }
+        public string leitarord { get; set; }
+        public string Upphafsdags { get; set; }
+        public string Endadags { get; set; }
 
 
-       
         public void vista()
         {
 
@@ -311,7 +313,95 @@ namespace cClassOAIS
 
         public DataTable leit(string strLeitarord)
         {
-            string strSQL = string.Format("Select MATCH (titill_vorsluutgafu, doctitill,docLastWriten,maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, m.*  FROM dt_midlun m WHERE MATCH (titill_vorsluutgafu, doctitill,docLastWriten,maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) order by score desc;", strLeitarord);
+            string strSQL = string.Empty;
+           if(strLeitarord.Length != 0)
+            {
+                strSQL = string.Format("Select MATCH (titill_vorsluutgafu, doctitill,docLastWriten,maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, m.*  FROM dt_midlun m WHERE MATCH (titill_vorsluutgafu, doctitill,docLastWriten,maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
+            }
+           else
+            {
+                strSQL = "SELECT * FROM dt_midlun d ";
+            }
+           
+
+            if(this.vorslustofnun_audkenni != null)
+            {
+                if (strLeitarord.Length == 0)
+                {
+                    strSQL += " WHERE vorslustofnun_audkenni = '" + this.vorslustofnun_audkenni +"' "; 
+                }
+                else
+                {
+                    strSQL += " AND vorslustofnun_audkenni = '" + this.vorslustofnun_audkenni + "' ";
+                }
+                   
+            }
+
+            if (this.skjalamyndari_audkenni != null)
+            {
+                if (strLeitarord.Length == 0 && this.vorslustofnun_audkenni == null)
+                {
+                    strSQL += " WHERE skjalamyndari_audkenni = '" + this.skjalamyndari_audkenni + "' ";
+                }
+                else
+                {
+                    strSQL += " AND skjalamyndari_audkenni = '" + this.skjalamyndari_audkenni + "' ";
+                }
+
+            }
+            if(this.Upphafsdags != null || this.Endadags != null) 
+            {
+                if(this.Upphafsdags == null && this.Endadags !=null)
+                {
+                    DateTime dtEnd = Convert.ToDateTime(this.Endadags);
+                    string strEnd = dtEnd.Year.ToString() + "-" + dtEnd.Month.ToString() + "-" + dtEnd.Day.ToString();
+
+                    if (strLeitarord.Length == 0 && this.skjalamyndari_audkenni == null && this.vorslustofnun_audkenni == null)
+                    {
+                        strSQL += " WHERE DATE(docLastWriten) <= '" + strEnd + "' ";
+                    }
+                    else
+                    {
+                        strSQL += " AND DATE(docLastWriten) <= '" + strEnd + "' ";
+                    }
+                }
+                if (this.Upphafsdags != null && this.Endadags == null)
+                {
+                    DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
+                    string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
+                    if (strLeitarord.Length == 0 && this.skjalamyndari_audkenni == null && this.vorslustofnun_audkenni == null)
+                    {
+                        strSQL += " WHERE DATE(docLastWriten) >= '" + strStart + "' ";
+                    }
+                    else
+                    {
+                        strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' ";
+                    }
+                }
+                if (this.Upphafsdags != null && this.Endadags != null)
+                {
+                    DateTime dtEnd = Convert.ToDateTime(this.Endadags);
+                    string strEnd = dtEnd.Year.ToString() + "-" + dtEnd.Month.ToString() + "-" + dtEnd.Day.ToString();
+
+                    DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
+                    string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
+
+                    if (strLeitarord.Length == 0 && this.skjalamyndari_audkenni == null && this.vorslustofnun_audkenni == null)
+                    {
+                        strSQL += " WHERE DATE(docLastWriten) >= '" + strStart + "' AND DATE(docLastWriten) <= '" + strEnd + "' ";
+                    }
+                    else
+                    {
+                        strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' AND DATE(docLastWriten) <= '" + strEnd + "' ";
+                    }
+                }
+            }
+
+            if (strLeitarord!= string.Empty) 
+            {
+                strSQL += "order by score desc;";
+            }
+          
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS,strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -319,9 +409,46 @@ namespace cClassOAIS
         public string leitInnra(string strLeitarord, string strGagnagrunnur) 
         {
             string strRet = string.Empty;
-            string strSQL = string.Format("Select group_concat(documentid) as ids FROM dt_midlun m WHERE MATCH (doctitill,docLastWriten,maltitill, docInnihald)AGAINST ('{0}' IN BOOLEAN MODE) and heiti_gagangrunns = '{1}';", strLeitarord, strGagnagrunnur);
+            string strSQL = string.Empty;
+            if (strLeitarord.Length != 0)
+            {
+                strSQL = string.Format("Select group_concat(documentid) as ids FROM dt_midlun m WHERE MATCH (doctitill,docLastWriten,maltitill, docInnihald)AGAINST ('{0}' IN BOOLEAN MODE) and heiti_gagangrunns = '{1}';", strLeitarord, strGagnagrunnur);
+            }
+            else
+            {
+                strSQL = string.Format("SELECT group_concat(documentid) as ids FROM dt_midlun d WHERE  heiti_gagangrunns = '{0}' ", strGagnagrunnur);
+            }
+            if (this.Upphafsdags != null || this.Endadags != null)
+            {
+                if (this.Upphafsdags == null && this.Endadags != null)
+                {
+                    DateTime dtEnd = Convert.ToDateTime(this.Endadags);
+                    string strEnd = dtEnd.Year.ToString() + "-" + dtEnd.Month.ToString() + "-" + dtEnd.Day.ToString();
+
+                     strSQL += " AND DATE(docLastWriten) <= '" + strEnd + "' ";
+                   
+                }
+                if (this.Upphafsdags != null && this.Endadags == null)
+                {
+                    DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
+                    string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
+                    strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' ";
+                 
+                }
+                if (this.Upphafsdags != null && this.Endadags != null)
+                {
+                    DateTime dtEnd = Convert.ToDateTime(this.Endadags);
+                    string strEnd = dtEnd.Year.ToString() + "-" + dtEnd.Month.ToString() + "-" + dtEnd.Day.ToString();
+
+                    DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
+                    string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
+                    
+                    strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' AND DATE(docLastWriten) <= '" + strEnd + "' ";
+                   
+                }
+            }
             var strIDS = MySqlHelper.ExecuteScalar(m_strTengingOAIS,strSQL);
-            if(strIDS != DBNull.Value)
+            if(strIDS != null)
             {
                 strRet = strIDS.ToString();
             }

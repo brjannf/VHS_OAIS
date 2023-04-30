@@ -1,6 +1,7 @@
 using cClassOAIS;
 
 using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace MHR_LEIT
 {
@@ -10,8 +11,35 @@ namespace MHR_LEIT
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
+            fyllaV0rslusstofnanir();
+            fyllaSkjalamyndara();
+
+
         }
 
+        private void fyllaV0rslusstofnanir()
+        {
+            cVorslustofnun varsla = new cVorslustofnun();
+            DataTable dt = varsla.getAllVOrslustofnanir();
+            DataRow r = dt.NewRow();
+            r["varsla_heiti"] = "Veldu vörslustofnun";
+            dt.Rows.InsertAt(r, 0);
+            m_comVorslustofnun.ValueMember = "vorslustofnun";
+            m_comVorslustofnun.DisplayMember = "varsla_heiti";
+            m_comVorslustofnun.DataSource = dt;
+        }
+        private void fyllaSkjalamyndara()
+        {
+            cSkjalamyndari skjalam = new cSkjalamyndari();
+            DataTable dt = skjalam.getSkjalamyndaralista();
+            DataRow r = dt.NewRow();
+            r["5_1_2_opinbert_heiti"] = "Veldu skjalamyndara";
+            dt.Rows.InsertAt(r, 0);
+            m_comSkjalamyndari.ValueMember = "5_1_6_auðkenni";
+            m_comSkjalamyndari.DisplayMember = "5_1_2_opinbert_heiti";
+            m_comSkjalamyndari.DataSource = dt;
+
+        }
         private void m_btnLeita_Click(object sender, EventArgs e)
         {
             leita();  
@@ -20,9 +48,32 @@ namespace MHR_LEIT
         private void leita()
         {
             cMIdlun midlun = new cMIdlun();
+
+            midlun.leitarord = m_tboLeitOrd.Text;
+          
+           
+            if(m_comVorslustofnun.SelectedIndex != 0)
+            {
+                midlun.vorslustofnun_audkenni = m_comVorslustofnun.SelectedValue.ToString();
+            }
+            if(m_comSkjalamyndari.SelectedIndex != 0) 
+            {
+                midlun.skjalamyndari_audkenni = m_comSkjalamyndari.SelectedValue.ToString();
+            }
+            if(m_dtpStart.Checked)
+            {
+                midlun.Upphafsdags = m_dtpStart.Value.ToString();
+            }
+            if(m_dtEnd.Checked)
+            {
+                midlun.Endadags = m_dtEnd.Value.ToString();
+            }
+         //   mid
+
             DataTable dt = midlun.leit(m_tboLeitOrd.Text);
             m_dgvLeit.AutoGenerateColumns = false;
             m_dgvLeit.DataSource = dt;
+            m_lblLeitarnidurstodur.Visible = true;
             m_lblLeitarnidurstodur.Text = string.Format("Það fundust {0} leitarniðurstöður útfrá leitarorðunum {1}", dt.Rows.Count, m_tboLeitOrd.Text);
         }
 
@@ -49,6 +100,19 @@ namespace MHR_LEIT
                 frmSkraarkerfi skrakerfi = new frmSkraarkerfi(strGagnagrunnur, strValid, row, m_tboLeitOrd.Text);
                 skrakerfi.ShowDialog();
             }
+        }
+
+        private void m_btnHreinsa_Click(object sender, EventArgs e)
+        {
+            m_tboLeitOrd.Text = string.Empty;
+            fyllaSkjalamyndara();
+            fyllaV0rslusstofnanir();
+           
+            m_dtpStart.Value = DateTime.Now;
+            m_dtEnd.Value = DateTime.Now;
+            m_dtEnd.Checked = false;
+            m_dtpStart.Checked = false;
+
         }
     }
 }

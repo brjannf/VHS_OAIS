@@ -191,7 +191,7 @@ namespace cClassOAIS
 
         public DataTable getSkjalamyndaralista()
         {
-            string strSQL = "SELECT d.`5_1_2_opinbert_heiti`, d.`id` FROM db_oais_admin.dt_isaar_skjalamyndarar d order by 5_1_2_opinbert_heiti;";
+            string strSQL = "SELECT d.`5_1_2_opinbert_heiti`, d.`id`, 5_1_6_auðkenni FROM db_oais_admin.dt_isaar_skjalamyndarar d order by 5_1_2_opinbert_heiti;";
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

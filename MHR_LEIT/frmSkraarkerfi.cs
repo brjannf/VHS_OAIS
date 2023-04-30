@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using cClassOAIS;
 using cClassVHS;
+using DocumentFormat.OpenXml.EMMA;
 //using DocumentFormat.OpenXml.Drawing.Charts;
 //using DocumentFormat.OpenXml.EMMA;
 
@@ -32,17 +33,18 @@ namespace MHR_LEIT
         public frmSkraarkerfi()
         {
             InitializeComponent();
+           
         }
-        public frmSkraarkerfi(string strGagnagrunnur,string strValdi, DataRow row, string strLeitarOrd)
+        public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd)
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
             m_tobLeitarord.Text = strLeitarOrd;
-            m_strGagnagrunnur =strGagnagrunnur;
+            m_strGagnagrunnur = strGagnagrunnur;
             m_strIdValinn = strValdi;
             m_strFileValinn = strValdi;
-             m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
-            if(Directory.Exists(m_strRoot.Replace("AVID", "FRUM")))
+            m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
+            if (Directory.Exists(m_strRoot.Replace("AVID", "FRUM")))
             {
                 m_btnFrumRit.Enabled = true;
             }
@@ -53,7 +55,7 @@ namespace MHR_LEIT
 
             int iID = Convert.ToInt32(m_strFileValinn);
             double dColl = iID / 10000;
-            if(iID == 1)
+            if (iID == 1)
             {
                 dColl = 1;
             }
@@ -61,20 +63,23 @@ namespace MHR_LEIT
             {
                 dColl = dColl + 1;
             }
-            
+
 
             string strValid = m_strRoot + "\\Documents\\docCollection" + dColl.ToString() + "\\" + strValdi;
             string[] strFiles = Directory.GetFiles(strValid);
             m_strFileValinn = strFiles[0];
 
-            fyllaMyndSkjal(Convert.ToInt32(m_strIdValinn), 1);
+
             //Image image = Image.FromFile(m_strFileValinn);
             //m_pibSkjal.Image = image;
-            
+
             fyllaFilesystem();
+            fyllaMyndSkjal(Convert.ToInt32(m_strIdValinn), 1);
             //id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad
 
         }
+  
+       
         private void fyllaFilesystem()
         {
             //sækja fyrirspurnina
@@ -198,7 +203,8 @@ namespace MHR_LEIT
             {
                 if(e.Node.Tag != null)
                 {
-                    if(e.Node.Tag.ToString().Contains("\\"))
+                    label2.Text = e.Node.Tag.ToString();    
+                    if (e.Node.Tag.ToString().Contains("\\"))
                     {
                      //   MessageBox.Show("gaman");
 
@@ -221,9 +227,11 @@ namespace MHR_LEIT
                         string strExp = "mappa like '" + strLeitMappa + "%'";
                         DataTable dtRest = new DataTable();
                         DataRow[] fRows = m_dtSkrar.Select(strExp);
+                       
                         foreach(DataRow r in fRows)
                         {
-                            strSplit = r["mappa"].ToString().Split("\\");
+                           
+                           strSplit = r["mappa"].ToString().Split("\\");
                             foreach(string str in strSplit)
                             {
                                 if(bBuid)
@@ -235,21 +243,38 @@ namespace MHR_LEIT
                                 }
                                 else
                                 {
-                                    if(str.Contains("."))
+                                    if (r["mappa"].ToString().Contains(strMappa + "\\" + str))
                                     {
-                                        TreeNode n = new TreeNode(str);
-                                        n.Tag = r["skjalID"].ToString();
-                                        e.Node.Nodes.Add(n);
-                                        e.Node.Expand();
+                                        if (str.Contains("."))
+                                        {
+                                            TreeNode n = new TreeNode(str);
+                                            n.Tag = r["skjalID"].ToString();
+                                            Boolean b = false;
+                                            foreach (TreeNode thisNode in e.Node.Nodes)
+                                            {
+                                              if(thisNode.Text == n.Text)
+                                                {
+                                                    b = true;
+                                                }
+                                            }
+                                            if(!b)
+                                            {
+                                                e.Node.Nodes.Add(n);
+                                                e.Node.Expand();
+                                            }
+                                            else
+                                            {
+
+                                            }
+
+                                        }
                                     }
                                   
                                 }
-                               
+
                             }
                       
                         }
-
-
                     }
                     else
                     {
@@ -290,17 +315,15 @@ namespace MHR_LEIT
             dimension = FrameDimension.Page;
             int x = 70;
             int iPages = image.GetFrameCount(dimension);
-            splitContainer3.Panel1.Controls.Clear();
-            for (int i = 0; i < iPages; i++)
+            m_numUpDown.Maximum = iPages;
+            m_numUpDown.Minimum = 1;
+            m_lblSidaValinn.Text = string.Format("af {0} valin", iPages);
+            string strExp = "skjalID='" + m_strIdValinn + "'";
+            DataRow[] frow = m_dtSkrar.Select(strExp);
+            if (frow.Length > 0)
             {
-                Button l  = new Button();
-                l.Text = string.Format("Mynd {0}/{1}", i + 1, iPages);
-                splitContainer3.Panel1.Controls.Add(l);
-                Point p = new Point(x, 0);
-                l.Location = p;
-                x = x + 100;
-                l.Click += new EventHandler(pageImaga);
-
+              //  DateTime date = Convert.ToDateTime[]
+                m_lblDagsetning.Text = string.Format("Síðast var skráð í skjalið {0}", frow[0]["lastwriten"]);
             }
             image.SelectActiveFrame(FrameDimension.Page, iPage-1); // iPages - 1);
             m_pibSkjal.Image = image;
@@ -332,6 +355,19 @@ namespace MHR_LEIT
             }
           
             DataTable dt = m_dtSkrar.Clone();
+
+            
+            midlun.leitarord = m_tobLeitarord.Text ;
+
+          
+            if (m_dtpStart.Checked)
+            {
+                midlun.Upphafsdags = m_dtpStart.Value.ToString();
+            }
+            if (m_dtEnd.Checked)
+            {
+                midlun.Endadags = m_dtEnd.Value.ToString();
+            }
             string strIDS = midlun.leitInnra(m_tobLeitarord.Text, m_strGagnagrunnur);
             if (strIDS != string.Empty)
             {
@@ -460,6 +496,27 @@ namespace MHR_LEIT
                 UseShellExecute = true
             };
             p.Start();
+        }
+
+        private void m_numUpDown_ValueChanged(object sender, EventArgs e)
+        {
+           
+            fyllaMyndSkjal(Convert.ToInt32(m_strIdValinn),Convert.ToInt32(m_numUpDown.Value));
+        }
+
+        private void m_dtpStart_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_lblLeitarNidurstodur_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

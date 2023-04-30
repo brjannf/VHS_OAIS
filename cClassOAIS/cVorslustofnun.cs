@@ -284,6 +284,14 @@ namespace cClassOAIS
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }
 
+        public DataTable getAllVOrslustofnanir()
+        {
+            string strSQL = string.Format("SELECT distinct vorslustofnun, varsla_heiti  FROM v_vorslustofnun v order by varsla_heiti;;");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
     }
 
    
