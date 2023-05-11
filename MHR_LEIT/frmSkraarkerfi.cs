@@ -28,21 +28,34 @@ namespace MHR_LEIT
         string m_strFileValinn = string.Empty;
         string m_strIdValinn = string.Empty;
         string m_strRoot = string.Empty;
+        string m_strVorslutgafa = string.Empty;
         ArrayList arr = new ArrayList();
+        public DataTable m_dtValid = new DataTable();
 
         public frmSkraarkerfi()
         {
             InitializeComponent();
            
         }
-        public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd)
+        public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP)
         {
             InitializeComponent();
+            m_dtValid = dtDIP.Clone();
+            foreach(DataRow dr in dtDIP.Rows) 
+            {
+                m_dtValid.ImportRow(dr);
+            }
+            m_dgvValdarSkrar.DataSource = m_dtValid;    
+            //m_dtValid.Columns.Add("skjalID");
+            //m_dtValid.Columns.Add("titill");
+            //m_dtValid.Columns.Add("vorsluutgafa");
+
             this.WindowState = FormWindowState.Maximized;
             m_tobLeitarord.Text = strLeitarOrd;
             m_strGagnagrunnur = strGagnagrunnur;
             m_strIdValinn = strValdi;
             m_strFileValinn = strValdi;
+            m_strVorslutgafa = row["vorsluutgafa"].ToString();
             m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
             if (Directory.Exists(m_strRoot.Replace("AVID", "FRUM")))
             {
@@ -260,6 +273,7 @@ namespace MHR_LEIT
                                             if(!b)
                                             {
                                                 e.Node.Nodes.Add(n);
+                                                n.BackColor = Color.LightGray;
                                                 e.Node.Expand();
                                             }
                                             else
@@ -517,6 +531,89 @@ namespace MHR_LEIT
         private void m_lblLeitarNidurstodur_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void m_trwFileSystem_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            CheckTreeViewNode(e.Node, e.Node.Checked);
+            if(e.Node.Checked )
+            {
+                if(!e.Node.Tag.ToString().Contains("\\"))
+                {
+                    DataRow r = m_dtValid.NewRow();
+                    r["skjalID"] = e.Node.Tag;
+                    r["titill"] = e.Node.Text;
+                    r["vorsluutgafa"] = m_strVorslutgafa;
+                    string strExpr = "skjaliD = '" + e.Node.Tag.ToString() + "'";
+                    DataRow[] fRow = m_dtValid.Select(strExpr);
+                    if (fRow.Length == 0)
+                    {
+                        m_dtValid.Rows.Add(r);
+                        m_dtValid.AcceptChanges();
+
+                    }
+                     
+                }
+             
+
+            }
+            else
+            {
+                string strExpr = "skjaliD = '" + e.Node.Tag.ToString() + "'";
+                DataRow[] fRow = m_dtValid.Select(strExpr);
+                if(fRow.Length != 0 ) 
+                {
+                    int iLength = fRow.Length;
+                    for(int i = 0;i < iLength; i++) 
+                    {
+                        fRow[i].Delete();
+                    }
+                    
+                    m_dtValid.AcceptChanges();
+                }
+            }
+            m_dgvValdarSkrar.DataSource = m_dtValid;
+            m_grbValdinnSkjol.Text = string.Format("Valinn skjöl ({0})", m_dtValid.Rows.Count);
+        }
+        private void CheckTreeViewNode(TreeNode node, Boolean isChecked)
+        {
+            foreach (TreeNode item in node.Nodes)
+            {
+                item.Checked = isChecked;
+                if(isChecked )
+                {
+                    if(!item.Tag.ToString().Contains("\\"))
+                    {
+                        DataRow r = m_dtValid.NewRow();
+                        r["skjalID"] = item.Tag;
+                        r["titill"] = item.Text;
+                        r["vorsluutgafa"] = m_strVorslutgafa;
+                        string strExpr = "skjaliD = '" + item.Tag.ToString() + "'";
+                        DataRow[] fRow = m_dtValid.Select(strExpr);
+                        if(fRow.Length == 0 )
+                        {
+                            m_dtValid.Rows.Add(r);
+                            m_dtValid.AcceptChanges();
+                        }
+                    }
+                 
+                }
+                else
+                {
+                    string strExpr = "skjaliD = '" + item.ToString() + "'";
+                    DataRow[] fRow = m_dtValid.Select(strExpr);
+                    if (fRow.Length > 0)
+                    {
+                        fRow[0].Delete();
+                        m_dtValid.AcceptChanges();
+                    }
+                }
+
+                if (item.Nodes.Count > 0)
+                {
+                    this.CheckTreeViewNode(item, isChecked);
+                }
+            }
         }
     }
 }

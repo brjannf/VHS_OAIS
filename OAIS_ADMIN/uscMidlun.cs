@@ -30,7 +30,15 @@ namespace OAIS_ADMIN
             DataTable dt = skrá.getVörsluútgáfur();
 
             m_dgvUtgafur.AutoGenerateColumns = false;
-            m_dgvUtgafur.DataSource = formatTable(dt);
+            DataTable dtFormat = formatTable(dt);
+            m_dgvUtgafur.DataSource = dtFormat;
+            foreach (DataGridViewRow r in m_dgvUtgafur.Rows)
+            {
+              if (r.Cells["colMidlad"].Value.ToString() == "1")
+                {
+                    r.DefaultCellStyle.BackColor = Color.LightGreen;
+                }
+            }
         }
 
         private DataTable formatTable(DataTable dt)
@@ -86,6 +94,12 @@ namespace OAIS_ADMIN
 
                     midla(strslod);
                 }
+                //uppfæra vorsluutgafu
+                cVorsluutgafur utgafa = new cVorsluutgafur();
+                utgafa.getVörsluútgáfu(skrá.auðkenni_3_1_1);
+                utgafa.midlun = "1";
+                utgafa.hver_midladi = virkurnotandi.nafn;
+                utgafa.uppFaeraVegnaMidlun();
             }
 
         }
@@ -114,9 +128,9 @@ namespace OAIS_ADMIN
                 m_dgvFyrirSpurnir.DataSource = ds.Tables["view"];
             }
             DataColumnCollection columnsus = ds.Tables[0].Columns;
-            if (columnsus.Contains("dbName"))
+            if (columnsus.Contains("dbName")) //*****************tek þetta út nafn á gagangrunni************************
             {
-                strDataBase = ds.Tables[0].Rows[0]["dbName"].ToString().Replace("\"", "").Replace(" ", "_");
+              //  strDataBase = ds.Tables[0].Rows[0]["dbName"].ToString().Replace("\"", "").Replace(" ", "_"); 
             }
             else
             {
@@ -367,6 +381,11 @@ namespace OAIS_ADMIN
                 }
             }
            
+        }
+
+        private void m_btnEndurHressa_Click(object sender, EventArgs e)
+        {
+            fyllaVorsluUtgafur();
         }
     }
 }

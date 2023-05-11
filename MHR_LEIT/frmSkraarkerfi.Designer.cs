@@ -46,7 +46,13 @@
             this.m_numUpDown = new System.Windows.Forms.NumericUpDown();
             this.m_btnFrumRit = new System.Windows.Forms.Button();
             this.m_lblDagsetning = new System.Windows.Forms.Label();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.m_pibSkjal = new System.Windows.Forms.PictureBox();
+            this.m_grbValdinnSkjol = new System.Windows.Forms.GroupBox();
+            this.m_dgvValdarSkrar = new System.Windows.Forms.DataGridView();
+            this.colAudkenniSkjals = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTitillSkjals = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colVorsluutgafa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -60,7 +66,13 @@
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_numUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_pibSkjal)).BeginInit();
+            this.m_grbValdinnSkjol.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvValdarSkrar)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -88,6 +100,7 @@
             this.m_trwFileSystem.Name = "m_trwFileSystem";
             this.m_trwFileSystem.Size = new System.Drawing.Size(324, 931);
             this.m_trwFileSystem.TabIndex = 0;
+            this.m_trwFileSystem.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.m_trwFileSystem_AfterCheck);
             this.m_trwFileSystem.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwFileSystem_AfterSelect);
             // 
             // splitContainer2
@@ -199,7 +212,7 @@
             // 
             // splitContainer3.Panel2
             // 
-            this.splitContainer3.Panel2.Controls.Add(this.m_pibSkjal);
+            this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
             this.splitContainer3.Size = new System.Drawing.Size(1494, 763);
             this.splitContainer3.SplitterDistance = 83;
             this.splitContainer3.TabIndex = 1;
@@ -269,15 +282,81 @@
             this.m_lblDagsetning.TabIndex = 0;
             this.m_lblDagsetning.Text = "label1";
             // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.m_pibSkjal);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.m_grbValdinnSkjol);
+            this.splitContainer4.Size = new System.Drawing.Size(1494, 676);
+            this.splitContainer4.SplitterDistance = 722;
+            this.splitContainer4.TabIndex = 1;
+            // 
             // m_pibSkjal
             // 
             this.m_pibSkjal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_pibSkjal.Location = new System.Drawing.Point(0, 0);
             this.m_pibSkjal.Name = "m_pibSkjal";
-            this.m_pibSkjal.Size = new System.Drawing.Size(1494, 676);
+            this.m_pibSkjal.Size = new System.Drawing.Size(722, 676);
             this.m_pibSkjal.TabIndex = 0;
             this.m_pibSkjal.TabStop = false;
             this.m_pibSkjal.DoubleClick += new System.EventHandler(this.m_pibSkjal_DoubleClick);
+            // 
+            // m_grbValdinnSkjol
+            // 
+            this.m_grbValdinnSkjol.Controls.Add(this.m_dgvValdarSkrar);
+            this.m_grbValdinnSkjol.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbValdinnSkjol.Location = new System.Drawing.Point(0, 0);
+            this.m_grbValdinnSkjol.Name = "m_grbValdinnSkjol";
+            this.m_grbValdinnSkjol.Size = new System.Drawing.Size(768, 676);
+            this.m_grbValdinnSkjol.TabIndex = 1;
+            this.m_grbValdinnSkjol.TabStop = false;
+            this.m_grbValdinnSkjol.Text = "Skjöl valinn";
+            // 
+            // m_dgvValdarSkrar
+            // 
+            this.m_dgvValdarSkrar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.m_dgvValdarSkrar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colAudkenniSkjals,
+            this.colTitillSkjals,
+            this.colVorsluutgafa});
+            this.m_dgvValdarSkrar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_dgvValdarSkrar.Location = new System.Drawing.Point(3, 19);
+            this.m_dgvValdarSkrar.Name = "m_dgvValdarSkrar";
+            this.m_dgvValdarSkrar.RowHeadersVisible = false;
+            this.m_dgvValdarSkrar.RowTemplate.Height = 25;
+            this.m_dgvValdarSkrar.Size = new System.Drawing.Size(762, 654);
+            this.m_dgvValdarSkrar.TabIndex = 0;
+            // 
+            // colAudkenniSkjals
+            // 
+            this.colAudkenniSkjals.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colAudkenniSkjals.DataPropertyName = "skjalID";
+            this.colAudkenniSkjals.HeaderText = "Auðkenni skjals";
+            this.colAudkenniSkjals.Name = "colAudkenniSkjals";
+            this.colAudkenniSkjals.Width = 114;
+            // 
+            // colTitillSkjals
+            // 
+            this.colTitillSkjals.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colTitillSkjals.DataPropertyName = "titill";
+            this.colTitillSkjals.HeaderText = "Titill skjals";
+            this.colTitillSkjals.Name = "colTitillSkjals";
+            // 
+            // colVorsluutgafa
+            // 
+            this.colVorsluutgafa.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colVorsluutgafa.DataPropertyName = "vorsluutgafa";
+            this.colVorsluutgafa.HeaderText = "Vörsluútgafa";
+            this.colVorsluutgafa.Name = "colVorsluutgafa";
+            this.colVorsluutgafa.Width = 98;
             // 
             // frmSkraarkerfi
             // 
@@ -302,7 +381,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_numUpDown)).EndInit();
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_pibSkjal)).EndInit();
+            this.m_grbValdinnSkjol.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvValdarSkrar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -328,5 +413,11 @@
         private Label label3;
         private DateTimePicker m_dtEnd;
         private DateTimePicker m_dtpStart;
+        private SplitContainer splitContainer4;
+        private DataGridView m_dgvValdarSkrar;
+        private GroupBox m_grbValdinnSkjol;
+        private DataGridViewTextBoxColumn colAudkenniSkjals;
+        private DataGridViewTextBoxColumn colTitillSkjals;
+        private DataGridViewTextBoxColumn colVorsluutgafa;
     }
 }

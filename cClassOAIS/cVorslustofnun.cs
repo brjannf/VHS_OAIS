@@ -47,6 +47,10 @@ namespace cClassOAIS
         public string dags_skráð { get; set; }
         public string hver_breytti { get; set; }
         public string dags_breytt { get; set; }
+    
+
+
+        // eytt, dags_eytt, hver_eytti, midlun, dags_midlad, hver_midladi
         #endregion
         public DataTable getENUMSkraningStaða()
         {
@@ -292,7 +296,7 @@ namespace cClassOAIS
             return dt;
         }
 
-    }
+     }
 
    
 }

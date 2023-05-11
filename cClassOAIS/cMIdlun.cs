@@ -210,6 +210,8 @@ namespace cClassOAIS
 
                 command.CommandText = strSQL + ";";
                 command.ExecuteNonQuery();
+                conn.Close();
+                conn.Dispose();
 
                 //keyra hér inn í metadata í dt_midlun
                 if (strMetaFunction != string.Empty)

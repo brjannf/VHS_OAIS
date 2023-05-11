@@ -41,7 +41,18 @@ namespace cClassOAIS
         {
             string strSQL = string.Format("delete FROM db_oais_admin.dt_md5 d where AIP = '{0}';", strAIP);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
-    }
+        }
+        public string getMD5(string strSlod, string strUtgafa)
+        {
+            string strRet = string.Empty;
+            string strSQL = string.Format("SELECT MD5 FROM dt_md5 d where slod like '%{0}' and AIP = '{1}';", strSlod, strUtgafa);
+            var tala = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if(tala != null) 
+            {
+                strRet = tala.ToString();
+            }
+            return strRet;
+        }
     }  
     
 }

@@ -33,6 +33,12 @@ namespace cClassOAIS
         public string hver_skradi { get; set; }
         public DateTime dags_skrad { get; set; }
         public string adgangstakmarkanir { get; set; }
+        public string eytt { get; set; }
+        public string dags_eytt { get; set; }
+        public string hver_eytti { get; set; }
+        public string midlun { get; set; }
+        public string dags_midlad { get; set; }
+        public string hver_midladi { get; set; }
 
 
         #endregion
@@ -108,6 +114,30 @@ namespace cClassOAIS
             string strSQL = string.Format("UPDATE dt_vörsluutgafur set eytt='{0}' WHERE vorsluutgafa='{1}'", iEytt, strAuðkenni);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }
-       
+
+        public void midlunEyda(string strAuðkenni)
+        {
+            string strSQL = string.Format("delete FROM db_oais_admin.dt_midlun  where vorsluutgafa = '{0}';",  strAuðkenni);
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+        }
+        public void uppFaeraVegnaMidlun()
+        {
+            MySqlConnection conn = new MySqlConnection(m_strTenging);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+
+            command.Parameters.AddWithValue("@vorsluutgafa", this.vorsluutgafa);
+            command.Parameters.AddWithValue("@midlun", this.midlun);
+            command.Parameters.AddWithValue("@dags_midlad", this.dags_midlad);
+            command.Parameters.AddWithValue("@hver_midladi", this.hver_midladi);
+
+
+            command.CommandText = "UPDATE `dt_vörsluutgafur` SET  `midlun`=@midlun,  `hver_midladi`=@hver_midladi, `dags_midlad`=NOW() WHERE  `vorsluutgafa`=@vorsluutgafa;";
+
+            command.ExecuteNonQuery();
+            conn.Dispose();
+            command.Dispose();
+        }
+
     }
 }
