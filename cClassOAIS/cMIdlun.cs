@@ -97,7 +97,23 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@docInnihald", this.docInnihald);
 
             //dalkur_documentid, documentid, dalkur_doctitill, doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald
-            command.CommandText = "INSERT INTO `dt_midlun` SET  `vorsluutgafa`=@vorsluutgafa,  `titill_vorsluutgafu`=@titill_vorsluutgafu, heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  hver_skradi=@hver_skradi, dags_skrad=NOW();";
+           // heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  hver_skradi=@hver_skradi, dags_skrad=NOW();";
+
+            command.ExecuteNonQuery();
+            conn.Dispose();
+            command.Dispose();
+        }
+
+        public void vistaGagnagrunn(string strOrginal)
+        {
+            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+          //  id, vorsluutgafa, heiti_gagnagrunns, orgina_heiti
+            command.Parameters.AddWithValue("@vorsluutgafa", this.vorsluutgafa);
+            command.Parameters.AddWithValue("@heiti_gagnagrunns", this.heiti_gagangrunns);
+            command.Parameters.AddWithValue("@orgina_heiti", strOrginal);
+            command.CommandText = "INSERT INTO `ds_gagnagrunnar` SET  `vorsluutgafa`=@vorsluutgafa,  `heiti_gagnagrunns`=@heiti_gagnagrunns ,  `orgina_heiti`=@orgina_heiti;";
 
             command.ExecuteNonQuery();
             conn.Dispose();
@@ -474,6 +490,22 @@ namespace cClassOAIS
             string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + database + "; allow user variables = True; character set = utf8";
 
             DataSet ds = MySqlHelper.ExecuteDataset(strTengistrengur, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getGagnagrunnaFyrirSpurnir(string strGagnagrunnur)
+        {
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_fyrirspurnir d where gagnagrunnur = '{0}';", strGagnagrunnur);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getGagnagrunna()
+        {
+            string strSQL = "SELECT * FROM db_oais_admin.ds_gagnagrunnar d;";
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
         }

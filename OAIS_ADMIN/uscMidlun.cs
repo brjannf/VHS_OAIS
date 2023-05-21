@@ -19,6 +19,8 @@ namespace OAIS_ADMIN
         private cVorslustofnun vörslustofnun = new cVorslustofnun();
         private cSkjalaskra skrá = new cSkjalaskra();
         private cMIdlun midlun = new cMIdlun();
+        private string m_strSlod = string.Empty;
+        private string m_strGrunnur = string.Empty;
         public uscMidlun()
         {
             InitializeComponent();
@@ -81,10 +83,11 @@ namespace OAIS_ADMIN
                 if (senderGrid.Columns["colBtnBirta"].Index == e.ColumnIndex)
                 {
                     //0. ná í stlóð á vörsluútgáfu
-                    string strslod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
+                    m_strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
                     //1. auðkenni vörsluútgáfu
                     string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
                     skrá.getSkraning(strAuðkenni);
+                    m_strGrunnur = skrá.auðkenni_3_1_1.Replace(".", "_");
                     //2. auðkenni vörslustofnunar
                     string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
                     vörslustofnun.getVörslustofnun(strVarsla);
@@ -92,7 +95,7 @@ namespace OAIS_ADMIN
                     string strSkjalam = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
                     skjalamyndari.getSkjalamyndaraByAuðkenni(strSkjalam);
 
-                    midla(strslod);
+                   // midla(strslod);
                 }
                 //uppfæra vorsluutgafu
                 cVorsluutgafur utgafa = new cVorsluutgafur();
@@ -366,17 +369,17 @@ namespace OAIS_ADMIN
                 {
                     //0. ná í stlóð á vörsluútgáfu
                     string strFyrirspurn = senderGrid.Rows[e.RowIndex].Cells["colFyrirFyrirspurn"].Value.ToString();
-                    string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
-                    frmFyrirspurnProfa frmTest = new frmFyrirspurnProfa(strFyrirspurn, strDatabase);
+                   // string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
+                    frmFyrirspurnProfa frmTest = new frmFyrirspurnProfa(strFyrirspurn, m_strGrunnur);
                     frmTest.Show();
                 }
                 if (senderGrid.Columns["colBtnVista"].Index == e.ColumnIndex)
                 {
                     string strFyrirspurn = senderGrid.Rows[e.RowIndex].Cells["colFyrirFyrirspurn"].Value.ToString();
-                    string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
+                  // string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
                     string strNafn = senderGrid.Rows[e.RowIndex].Cells["colFyrirNafn"].Value.ToString();
                     string strLysing = senderGrid.Rows[e.RowIndex].Cells["colFyrirLýsing"].Value.ToString();
-                    midlun.vistaFyrirSpurn(strFyrirspurn, strDatabase, strNafn, strLysing);
+                    midlun.vistaFyrirSpurn(strFyrirspurn, m_strGrunnur, strNafn, strLysing);
                     MessageBox.Show("Fyrirspurn vistuð");
                 }
             }
@@ -386,6 +389,25 @@ namespace OAIS_ADMIN
         private void m_btnEndurHressa_Click(object sender, EventArgs e)
         {
             fyllaVorsluUtgafur();
+        }
+
+        private void m_btnkeyra_Click(object sender, EventArgs e)
+        {
+            if(m_comTegundVörslu.Text == "Gagnagrunnur")
+            {
+                cMIdlun midlun = new cMIdlun();
+                midlun.heiti_gagangrunns = m_strGrunnur;
+                midlun.vorsluutgafa = skrá.auðkenni_3_1_1;
+                string strOrginal = string.Empty;
+                string strTableIndex = m_strSlod + "\\Indices\\tableIndex.xml";
+                DataSet ds = new DataSet();
+                ds.ReadXml(strTableIndex);
+                {
+                    strOrginal = ds.Tables[0].Rows[0]["dbName"].ToString().Replace("\"", "").Replace(" ", "_");
+                }
+                midlun.vistaGagnagrunn(strOrginal);
+            }
+            midla(m_strSlod);
         }
     }
 }

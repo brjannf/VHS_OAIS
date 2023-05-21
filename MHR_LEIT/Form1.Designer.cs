@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label6 = new System.Windows.Forms.Label();
+            this.m_comGagnagrunnar = new System.Windows.Forms.ComboBox();
             this.m_lblLeitarnidurstodur = new System.Windows.Forms.Label();
             this.m_btnHreinsa = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -65,6 +67,7 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_trwDIP = new System.Windows.Forms.TreeView();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.m_btnTæma = new System.Windows.Forms.Button();
             this.m_lblLanthegi = new System.Windows.Forms.Label();
             this.m_btnOpna = new System.Windows.Forms.Button();
             this.m_btnKlaraPontun = new System.Windows.Forms.Button();
@@ -78,7 +81,6 @@
             this.colVarsla = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMd5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSlod = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_btnTæma = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -109,6 +111,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.label6);
+            this.splitContainer1.Panel1.Controls.Add(this.m_comGagnagrunnar);
             this.splitContainer1.Panel1.Controls.Add(this.m_lblLeitarnidurstodur);
             this.splitContainer1.Panel1.Controls.Add(this.m_btnHreinsa);
             this.splitContainer1.Panel1.Controls.Add(this.label4);
@@ -125,9 +129,27 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.m_dgvLeit);
-            this.splitContainer1.Size = new System.Drawing.Size(1203, 561);
+            this.splitContainer1.Size = new System.Drawing.Size(1414, 561);
             this.splitContainer1.SplitterDistance = 109;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(1187, 68);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(83, 15);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Gagnagrunnar";
+            // 
+            // m_comGagnagrunnar
+            // 
+            this.m_comGagnagrunnar.FormattingEnabled = true;
+            this.m_comGagnagrunnar.Location = new System.Drawing.Point(1276, 61);
+            this.m_comGagnagrunnar.Name = "m_comGagnagrunnar";
+            this.m_comGagnagrunnar.Size = new System.Drawing.Size(145, 23);
+            this.m_comGagnagrunnar.TabIndex = 13;
+            this.m_comGagnagrunnar.SelectedIndexChanged += new System.EventHandler(this.n_comGagnagrunnar_SelectedIndexChanged);
             // 
             // m_lblLeitarnidurstodur
             // 
@@ -262,7 +284,7 @@
             this.m_dgvLeit.ReadOnly = true;
             this.m_dgvLeit.RowHeadersVisible = false;
             this.m_dgvLeit.RowTemplate.Height = 25;
-            this.m_dgvLeit.Size = new System.Drawing.Size(1203, 448);
+            this.m_dgvLeit.Size = new System.Drawing.Size(1414, 448);
             this.m_dgvLeit.TabIndex = 0;
             this.m_dgvLeit.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvLeit_CellClick);
             // 
@@ -361,7 +383,7 @@
             this.m_pnlNotandi.Controls.Add(this.m_tboLykilOrd);
             this.m_pnlNotandi.Controls.Add(this.m_lblNotendaNafn);
             this.m_pnlNotandi.Controls.Add(this.m_tboNoterndaNafn);
-            this.m_pnlNotandi.Location = new System.Drawing.Point(1219, 111);
+            this.m_pnlNotandi.Location = new System.Drawing.Point(1352, 108);
             this.m_pnlNotandi.Name = "m_pnlNotandi";
             this.m_pnlNotandi.Size = new System.Drawing.Size(471, 437);
             this.m_pnlNotandi.TabIndex = 3;
@@ -427,10 +449,10 @@
             // 
             this.m_tacMain.Controls.Add(this.m_tapLeit);
             this.m_tacMain.Controls.Add(this.m_tapAfgreidsla);
-            this.m_tacMain.Location = new System.Drawing.Point(0, 0);
+            this.m_tacMain.Location = new System.Drawing.Point(-149, 23);
             this.m_tacMain.Name = "m_tacMain";
             this.m_tacMain.SelectedIndex = 0;
-            this.m_tacMain.Size = new System.Drawing.Size(1217, 595);
+            this.m_tacMain.Size = new System.Drawing.Size(1428, 595);
             this.m_tacMain.TabIndex = 1;
             // 
             // m_tapLeit
@@ -439,7 +461,7 @@
             this.m_tapLeit.Location = new System.Drawing.Point(4, 24);
             this.m_tapLeit.Name = "m_tapLeit";
             this.m_tapLeit.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapLeit.Size = new System.Drawing.Size(1209, 567);
+            this.m_tapLeit.Size = new System.Drawing.Size(1420, 567);
             this.m_tapLeit.TabIndex = 0;
             this.m_tapLeit.Text = "Leit";
             this.m_tapLeit.UseVisualStyleBackColor = true;
@@ -450,7 +472,7 @@
             this.m_tapAfgreidsla.Location = new System.Drawing.Point(4, 24);
             this.m_tapAfgreidsla.Name = "m_tapAfgreidsla";
             this.m_tapAfgreidsla.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapAfgreidsla.Size = new System.Drawing.Size(1209, 567);
+            this.m_tapAfgreidsla.Size = new System.Drawing.Size(1420, 567);
             this.m_tapAfgreidsla.TabIndex = 1;
             this.m_tapAfgreidsla.Text = "Afgreiðsla";
             this.m_tapAfgreidsla.UseVisualStyleBackColor = true;
@@ -468,8 +490,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Size = new System.Drawing.Size(1203, 561);
-            this.splitContainer2.SplitterDistance = 401;
+            this.splitContainer2.Size = new System.Drawing.Size(1414, 561);
+            this.splitContainer2.SplitterDistance = 470;
             this.splitContainer2.TabIndex = 3;
             // 
             // m_trwDIP
@@ -477,7 +499,7 @@
             this.m_trwDIP.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_trwDIP.Location = new System.Drawing.Point(0, 0);
             this.m_trwDIP.Name = "m_trwDIP";
-            this.m_trwDIP.Size = new System.Drawing.Size(401, 561);
+            this.m_trwDIP.Size = new System.Drawing.Size(470, 561);
             this.m_trwDIP.TabIndex = 0;
             this.m_trwDIP.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwDIP_AfterSelect);
             // 
@@ -501,9 +523,19 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.m_grbDIP);
-            this.splitContainer3.Size = new System.Drawing.Size(798, 561);
+            this.splitContainer3.Size = new System.Drawing.Size(940, 561);
             this.splitContainer3.SplitterDistance = 184;
             this.splitContainer3.TabIndex = 3;
+            // 
+            // m_btnTæma
+            // 
+            this.m_btnTæma.Location = new System.Drawing.Point(630, 146);
+            this.m_btnTæma.Name = "m_btnTæma";
+            this.m_btnTæma.Size = new System.Drawing.Size(125, 23);
+            this.m_btnTæma.TabIndex = 6;
+            this.m_btnTæma.Text = "Tæma lista";
+            this.m_btnTæma.UseVisualStyleBackColor = true;
+            this.m_btnTæma.Click += new System.EventHandler(this.m_btnTæma_Click);
             // 
             // m_lblLanthegi
             // 
@@ -569,7 +601,7 @@
             this.m_grbDIP.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbDIP.Location = new System.Drawing.Point(0, 0);
             this.m_grbDIP.Name = "m_grbDIP";
-            this.m_grbDIP.Size = new System.Drawing.Size(798, 373);
+            this.m_grbDIP.Size = new System.Drawing.Size(940, 373);
             this.m_grbDIP.TabIndex = 3;
             this.m_grbDIP.TabStop = false;
             this.m_grbDIP.Text = "Gögn í pöntun";
@@ -590,7 +622,7 @@
             this.m_dgvDIPList.ReadOnly = true;
             this.m_dgvDIPList.RowHeadersVisible = false;
             this.m_dgvDIPList.RowTemplate.Height = 25;
-            this.m_dgvDIPList.Size = new System.Drawing.Size(792, 351);
+            this.m_dgvDIPList.Size = new System.Drawing.Size(934, 351);
             this.m_dgvDIPList.TabIndex = 2;
             // 
             // colID
@@ -636,21 +668,11 @@
             this.colSlod.Name = "colSlod";
             this.colSlod.ReadOnly = true;
             // 
-            // m_btnTæma
-            // 
-            this.m_btnTæma.Location = new System.Drawing.Point(630, 146);
-            this.m_btnTæma.Name = "m_btnTæma";
-            this.m_btnTæma.Size = new System.Drawing.Size(125, 23);
-            this.m_btnTæma.TabIndex = 6;
-            this.m_btnTæma.Text = "Tæma lista";
-            this.m_btnTæma.UseVisualStyleBackColor = true;
-            this.m_btnTæma.Click += new System.EventHandler(this.m_btnTæma_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1319, 629);
+            this.ClientSize = new System.Drawing.Size(1802, 640);
             this.Controls.Add(this.m_pnlNotandi);
             this.Controls.Add(this.m_tacMain);
             this.Name = "Form1";
@@ -734,5 +756,7 @@
         private GroupBox m_grbDIP;
         private Label m_lblLanthegi;
         private Button m_btnTæma;
+        private Label label6;
+        private ComboBox m_comGagnagrunnar;
     }
 }

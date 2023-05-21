@@ -448,7 +448,7 @@ namespace OAIS_ADMIN
                     m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
                     m_grbISAAR.BackColor = Color.LightGreen;
                     fyllaSkjalamyndaraLista();
-                    m_comISAAR_nafn.SelectedValue = skjalamyndari.auðkenni_5_1_6;
+                  //  m_comISAAR_nafn.SelectedValue = skjalamyndari.auðkenni_5_1_6;
                     m_btnSkraningStaðfesta.Enabled = true;
                     m_bISAAR = true;
                     break;

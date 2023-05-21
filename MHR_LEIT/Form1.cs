@@ -1,4 +1,5 @@
 using cClassOAIS;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Data;
 using System.Diagnostics;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -12,6 +13,7 @@ namespace MHR_LEIT
         cDIPKarfa karfa = new cDIPKarfa();
         cLanthegar lanþegi = new cLanthegar();
         string m_strSlodDIP = string.Empty;
+        
         public Form1()
         {
             InitializeComponent();
@@ -29,11 +31,23 @@ namespace MHR_LEIT
             fyllaSkjalamyndara();
             fyllaLanthega();
             fyllaDIPLista();
+            fyllaGagnaGrunna();
 
 
 
         }
-
+        private void fyllaGagnaGrunna()
+        {
+            cMIdlun midlun= new cMIdlun();
+            DataTable dt = midlun.getGagnagrunna();
+            DataRow r = dt.NewRow();
+            r["orginal_heiti"] = "Veldu Gagnagrunn";
+            dt.Rows.InsertAt(r, 0);
+          //  id, vorsluutgafa, heiti_gagnagrunns, orgina_heiti
+            m_comGagnagrunnar.ValueMember = "heiti_gagnagrunns";
+            m_comGagnagrunnar.DisplayMember = "orginal_heiti";
+            m_comGagnagrunnar.DataSource = dt;
+        }
         private void fyllaDIPLista()
         {
             DataTable dt = karfa.getKorfurDIP();
@@ -525,6 +539,20 @@ namespace MHR_LEIT
         {
             m_dtDIP.Rows.Clear();
             m_dgvDIPList.DataSource = m_dtDIP;
+        }
+
+        private void n_comGagnagrunnar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(m_comGagnagrunnar.Focused)
+            {
+                if(m_comGagnagrunnar.SelectedIndex != 0)
+                {
+                    string strGrunnur = m_comGagnagrunnar.SelectedValue.ToString();
+                    string strHeiti = m_comGagnagrunnar.Text.ToString();
+                    frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti);
+                    frmGagn.ShowDialog();
+                }
+            }
         }
     }
 }
