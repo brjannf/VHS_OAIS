@@ -16,13 +16,17 @@ namespace MHR_LEIT
     {
         string m_strGagnagrunnur = string.Empty;
         string m_strOrginal = string.Empty; 
+        string m_strSQLpanta = string.Empty;
+        string m_strLeitSkilyrdi  = string.Empty;
+        
         DataTable m_dtFyrirspurnir = new DataTable();   
         cMIdlun mIdlun= new cMIdlun();
+        public DataTable m_dtPantad = new DataTable();
         public frmGagnagrunnur()
         {
             InitializeComponent();
         }
-        public frmGagnagrunnur(string strGagnagrunnur, string strOrginalHeiti)
+        public frmGagnagrunnur(string strGagnagrunnur, string strOrginalHeiti, DataTable dtSkrar)
         {
             InitializeComponent();
             m_strGagnagrunnur = strGagnagrunnur;
@@ -30,6 +34,14 @@ namespace MHR_LEIT
             m_dtFyrirspurnir = mIdlun.getGagnagrunnaFyrirSpurnir(strGagnagrunnur);
             fyllaFyrirspurnaform();
             this.Text = m_strOrginal;
+            m_dgvPantSkraarkerfi.DataSource = dtSkrar;
+            m_tapSkráarkerfi.Text = string.Format("Skráarkerfi ({0})", dtSkrar.Rows.Count);
+
+            m_dtPantad.Columns.Add("Heiti");
+            m_dtPantad.Columns.Add("vorsluutgafa");
+            m_dtPantad.Columns.Add("leitarskilyrði");
+            m_dtPantad.Columns.Add("sql");
+            
 
         }
 
@@ -163,8 +175,9 @@ namespace MHR_LEIT
                                     if(senderGrid.Rows[e.RowIndex].Cells[col.Index].Value != null)
                                     {
                                         string strValue = senderGrid.Rows[e.RowIndex].Cells[col.Index].Value.ToString();
-
+                                        string strText = senderGrid.Rows[e.RowIndex].Cells[col.Index].FormattedValue.ToString();
                                         strSQLSenda += "'" + strValue + "' ";
+                                        m_strLeitSkilyrdi += col.HeaderText + " =  '" + strText + "' ";
                                     }
                                     else
                                     {
@@ -190,6 +203,7 @@ namespace MHR_LEIT
                 {
 
                     DataTable dt = mIdlun.keyraFyrirspurn(strSQLSenda, m_strGagnagrunnur);
+                    m_strSQLpanta = strSQLSenda;
                     m_dgvNidurstodur.DataSource = dt;
                     m_grbNidurstodur.Text = string.Format("Það fundust {0} færslur", dt.Rows.Count.ToString("#,##0"));
                     foreach (DataGridViewColumn col in m_dgvNidurstodur.Columns)
@@ -201,6 +215,22 @@ namespace MHR_LEIT
                 {
                     MessageBox.Show(string.Format("Vantar að velja eftirfarandi breytur {0}{1}", Environment.NewLine, strVilla));
                 }
+            }
+        }
+
+        private void m_btnSetjaIkorfu_Click(object sender, EventArgs e)
+        {
+            if(m_dgvFyrirspurnir.DataSource != null) //breyta í fjölda niðurstaðna
+            {
+                DataRow r = m_dtPantad.NewRow();
+                r["heiti"] = m_strOrginal;
+                r["vorsluutgafa"] = m_strGagnagrunnur.Replace("_", ".");
+                r["leitarskilyrði"] = m_strLeitSkilyrdi;
+                r["sql"] = m_strSQLpanta;
+                m_dtPantad.Rows.Add(r);
+                m_dtPantad.AcceptChanges();
+                m_dgvPantGagnagrunnar.DataSource = m_dtPantad;   
+
             }
         }
     }

@@ -114,6 +114,7 @@ namespace OAIS_ADMIN
             string strDataBase = skrá.auðkenni_3_1_1;
             strDataBase = strDataBase.Replace(".", "_");
             midlun.createDatabase(strDataBase);
+            midlun.tegund_grunns = m_comTegundVörslu.Text;
             //2. skrá í yfirlitsgrunn
            //midlun.instertYfirlit(skrá.auðkenni_3_1_1, skrá.titill_3_1_2);
             //3. búa til töflur - fiska á sama tíma eftir functiondescription
@@ -337,7 +338,7 @@ namespace OAIS_ADMIN
                         midlun.skjalamyndari_audkenni = skjalamyndari.auðkenni_5_1_6;
                         midlun.skjalamyndari_heiti = skjalamyndari.opinbert_heiti_5_1_2;
                         midlun.tafla_grunns = strTableName;
-                        midlun.tegund_grunns = "Skráarkerfi"; //þarf að finna betur úr þessu eða láta notanda velja.
+                        midlun.tegund_grunns = m_comTegundVörslu.Text; //þarf að finna betur úr þessu eða láta notanda velja.
                         midlun.skjalaskra_adgengi = skrá.skilyrði_aðgengi_3_4_1;
                         midlun.skjalaskra_afharnr = skrá.afhendingar_tilfærslur_3_2_4;
                         midlun.skjalaskra_innihald = skrá.yfirlit_innihald_3_3_1;
@@ -354,8 +355,9 @@ namespace OAIS_ADMIN
                   
                     //5. skrá niður view
                 }
-                MessageBox.Show("Búið");
+               
             }
+            MessageBox.Show("Búið");
         }
 
         private void m_dgvFyrirSpurnir_CellClick(object sender, DataGridViewCellEventArgs e)

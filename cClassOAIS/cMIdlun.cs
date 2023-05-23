@@ -96,8 +96,9 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@maltitill", this.maltitill);
             command.Parameters.AddWithValue("@docInnihald", this.docInnihald);
 
+            command.CommandText = "INSERT INTO `dt_midlun` SET  `vorsluutgafa`=@vorsluutgafa,  `titill_vorsluutgafu`=@titill_vorsluutgafu, heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  hver_skradi=@hver_skradi, dags_skrad=NOW();";
             //dalkur_documentid, documentid, dalkur_doctitill, doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald
-           // heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  hver_skradi=@hver_skradi, dags_skrad=NOW();";
+            // heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  hver_skradi=@hver_skradi, dags_skrad=NOW();";
 
             command.ExecuteNonQuery();
             conn.Dispose();
@@ -113,7 +114,7 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@vorsluutgafa", this.vorsluutgafa);
             command.Parameters.AddWithValue("@heiti_gagnagrunns", this.heiti_gagangrunns);
             command.Parameters.AddWithValue("@orgina_heiti", strOrginal);
-            command.CommandText = "INSERT INTO `ds_gagnagrunnar` SET  `vorsluutgafa`=@vorsluutgafa,  `heiti_gagnagrunns`=@heiti_gagnagrunns ,  `orgina_heiti`=@orgina_heiti;";
+            command.CommandText = "INSERT INTO `ds_gagnagrunnar` SET  `vorsluutgafa`=@vorsluutgafa,  `heiti_gagnagrunns`=@heiti_gagnagrunns ,  `orginal_heiti`=@orgina_heiti;";
 
             command.ExecuteNonQuery();
             conn.Dispose();
@@ -255,9 +256,9 @@ namespace cClassOAIS
                                         dColl = 0;
                                     }
                                     dColl = dColl + 1;
-                               
+
                                     strSlod = strSlod + "\\Documents\\docCollection" + dColl.ToString() + "\\" + iID;
-                                    
+
                                     string[] strFile = Directory.GetFiles(strSlod);
                                     var Ocr = new IronTesseract();
                                     Ocr.Language = OcrLanguage.Icelandic;
@@ -266,10 +267,22 @@ namespace cClassOAIS
                                         Input.AddImage(strFile[0]);
                                         var Result = Ocr.Read(Input);
                                         this.docInnihald = Result.Text;
-                                       
-                                    }
 
+                                    }
                                 }
+                               
+
+                                if (strSplit[0] == "Sagsidentifikation")
+                                {
+                                    this.malID = strSplit[1];
+                                    this.dalkur_malID = strSplit[2];
+                                }
+                                if (strSplit[0] == "Sagstitel")
+                                {
+                                    this.maltitill = strSplit[1];
+                                    this.dalkur_malTitill= strSplit[2];
+                                }
+
                                 if (strSplit[0] == "Dokumenttitel")
                                 {
                                     this.doctitill = strSplit[1];
@@ -287,6 +300,12 @@ namespace cClassOAIS
                                         this.docLastWriten = strSplit[1];
                                         this.dalkur_docLastWriten = strSplit[2];
                                     }
+                                    if ((strSplit[2] != "date_created" || strSplit[2] == "lastwriten"))
+                                    {
+                                        this.docLastWriten = strSplit[1];
+                                        this.dalkur_docLastWriten = strSplit[2];
+                                    }
+
                                 }
                                 //eftir að gera málID og MálTitill
                               
@@ -320,7 +339,7 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@nafn", strNafn);
             command.Parameters.AddWithValue("@fyrirspurn", strFyrirspurn);
             command.Parameters.AddWithValue("@lysing", strLysing);
-            command.Parameters.AddWithValue("@gagangrunnur", strDatabase);
+            command.Parameters.AddWithValue("@gagnagrunnur", strDatabase);
 
             command.CommandText = "INSERT INTO `dt_fyrirspurnir` SET  `nafn`=@nafn,`fyrirspurn`=@fyrirspurn,`lysing`=@lysing,`gagangrunnur`=@gagangrunnur";
 
@@ -476,7 +495,7 @@ namespace cClassOAIS
         public string getFyrirspurn(string strDatabase)
         {
             string strRet = string.Empty;
-            string strQL = "SELECT fyrirspurn FROM db_oais_admin.dt_fyrirspurnir d where gagangrunnur = 'AVID_HMOS_2023001_1' and nafn = 'Get_files_path';"; //harðkóða fyrst vantar smá pælingu
+            string strQL = "SELECT fyrirspurn FROM db_oais_admin.dt_fyrirspurnir d where gagnagrunnur = 'AVID_HMOS_2023001_1' and nafn = 'Get_files_path';"; //harðkóða fyrst vantar smá pælingu
             var fyrirspurn = MySqlHelper.ExecuteScalar(m_strTengingOAIS, strQL);
             if(fyrirspurn != DBNull.Value)
             {
