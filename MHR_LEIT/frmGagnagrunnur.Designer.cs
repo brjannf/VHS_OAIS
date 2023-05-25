@@ -228,10 +228,14 @@
             // 
             // m_dgvPantGagnagrunnar
             // 
+            this.m_dgvPantGagnagrunnar.AllowUserToAddRows = false;
+            this.m_dgvPantGagnagrunnar.AllowUserToDeleteRows = false;
             this.m_dgvPantGagnagrunnar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_dgvPantGagnagrunnar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_dgvPantGagnagrunnar.Location = new System.Drawing.Point(3, 3);
             this.m_dgvPantGagnagrunnar.Name = "m_dgvPantGagnagrunnar";
+            this.m_dgvPantGagnagrunnar.ReadOnly = true;
+            this.m_dgvPantGagnagrunnar.RowHeadersVisible = false;
             this.m_dgvPantGagnagrunnar.RowTemplate.Height = 25;
             this.m_dgvPantGagnagrunnar.Size = new System.Drawing.Size(410, 232);
             this.m_dgvPantGagnagrunnar.TabIndex = 0;
@@ -249,10 +253,14 @@
             // 
             // m_dgvPantSkraarkerfi
             // 
+            this.m_dgvPantSkraarkerfi.AllowUserToAddRows = false;
+            this.m_dgvPantSkraarkerfi.AllowUserToDeleteRows = false;
             this.m_dgvPantSkraarkerfi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_dgvPantSkraarkerfi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_dgvPantSkraarkerfi.Location = new System.Drawing.Point(3, 3);
             this.m_dgvPantSkraarkerfi.Name = "m_dgvPantSkraarkerfi";
+            this.m_dgvPantSkraarkerfi.ReadOnly = true;
+            this.m_dgvPantSkraarkerfi.RowHeadersVisible = false;
             this.m_dgvPantSkraarkerfi.RowTemplate.Height = 25;
             this.m_dgvPantSkraarkerfi.Size = new System.Drawing.Size(410, 232);
             this.m_dgvPantSkraarkerfi.TabIndex = 0;
@@ -270,10 +278,14 @@
             // 
             // m_dgvPantMalaKerfi
             // 
+            this.m_dgvPantMalaKerfi.AllowUserToAddRows = false;
+            this.m_dgvPantMalaKerfi.AllowUserToDeleteRows = false;
             this.m_dgvPantMalaKerfi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_dgvPantMalaKerfi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_dgvPantMalaKerfi.Location = new System.Drawing.Point(3, 3);
             this.m_dgvPantMalaKerfi.Name = "m_dgvPantMalaKerfi";
+            this.m_dgvPantMalaKerfi.ReadOnly = true;
+            this.m_dgvPantMalaKerfi.RowHeadersVisible = false;
             this.m_dgvPantMalaKerfi.RowTemplate.Height = 25;
             this.m_dgvPantMalaKerfi.Size = new System.Drawing.Size(410, 232);
             this.m_dgvPantMalaKerfi.TabIndex = 0;

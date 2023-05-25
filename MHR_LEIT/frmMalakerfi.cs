@@ -420,11 +420,11 @@ namespace MHR_LEIT
         {
             DataTable dt = (DataTable)m_dgvPontunMalaKerfi.DataSource;
             int iFjold = dt.Rows.Count;
-            m_tapMalkerfi.Text = string.Format("SKráakerfi ({0})", dt.Rows.Count);
+            m_tapMalkerfi.Text = string.Format("Málakerfi ({0})", dt.Rows.Count);
 
             dt = (DataTable)m_dgvPontunGagnagrunnar.DataSource;
             iFjold = iFjold + dt.Rows.Count;
-            m_tapGagnagrunnar.Text = string.Format("SKráakerfi ({0})", dt.Rows.Count);
+            m_tapGagnagrunnar.Text = string.Format("Gagnagrunnur ({0})", dt.Rows.Count);
 
             dt = (DataTable)m_dgvPontunSkraarKerfi.DataSource;
             iFjold = iFjold + dt.Rows.Count;

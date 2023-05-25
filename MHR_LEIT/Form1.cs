@@ -178,7 +178,7 @@ namespace MHR_LEIT
                  
                 if(strTegund == "Skráarkerfi")
                 {
-                    frmSkraarkerfi skrakerfi = new frmSkraarkerfi(strGagnagrunnur, strValid, row, m_tboLeitOrd.Text, m_dtDIPSkra);
+                    frmSkraarkerfi skrakerfi = new frmSkraarkerfi(strGagnagrunnur, strValid, row, m_tboLeitOrd.Text, m_dtDIPSkra, m_dtDIPMal,m_dtDIPGrunn);
                     skrakerfi.ShowDialog();
 
                     foreach (DataRow r in skrakerfi.m_dtValid.Rows)
@@ -205,18 +205,36 @@ namespace MHR_LEIT
                         {
                             m_dsDIPmal.Tables.Remove(dt.TableName);
                             m_dsDIPmal.Tables.Add(dt);
+                            foreach (DataRow dr in dt.Rows)
+                            {
+                                DataRow rMal = m_dtDIPMal.NewRow();
+                                rMal["vorsluutgafa"] = strGagnagrunnur.Replace("_", ".");
+                                rMal["Skrar"] = dt.Rows.Count;
+
+                                m_dtDIPMal.Rows.Add(rMal);
+                                m_dtDIPMal.AcceptChanges();
+                            }
                             //vantar að uppfæra töflu M_dtDIPMal
 
                         }
                         else
                         {
                             m_dsDIPmal.Tables.Add(dt);
-                            DataRow rMal = m_dtDIPMal.NewRow();
-                            rMal["Vörsluútgáfa"] = strGagnagrunnur.Replace("_", ".");
-                            rMal["Skrár"] = dt.Rows.Count;
-                           
-                            m_dtDIPMal.Rows.Add(rMal);
-                            m_dtDIPMal.AcceptChanges();
+                            foreach(DataRow dr in dt.Rows) 
+                            {
+                                DataRow rMal = m_dtDIPMal.NewRow();
+                                rMal["vorsluutgafa"] = strGagnagrunnur.Replace("_", ".");
+                                rMal["Skrar"] = dt.Rows.Count;
+
+                                m_dtDIPMal.Rows.Add(rMal);
+                                m_dtDIPMal.AcceptChanges();
+                            }
+                            
+
+                            //m_dtDIPMal.Columns.Add("karfa");
+                            //m_dtDIPMal.Columns.Add("md5");
+                            //m_dtDIPMal.Columns.Add("vorsluutgafa");
+                            //m_dtDIPMal.Columns.Add("Skrar");
 
                         }
                     }
@@ -257,6 +275,7 @@ namespace MHR_LEIT
             m_dtEnd.Checked = false;
             m_dtpStart.Checked = false;
             m_dtLeitarNidurstodur.Rows.Clear();
+            m_comGagnagrunnar.SelectedIndex = 0;
             
 
         }
@@ -879,7 +898,8 @@ namespace MHR_LEIT
             {
                 col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
-            m_grbDIP.Text = string.Format("Afgreitt {0}", dt.Rows.Count);
+          
+
             DataTable dtMal = items.getKorfuItemDIPMalakerfi(strKarfa); 
             m_dgvDIPmal.DataSource = dtMal;
             foreach (DataGridViewColumn col in m_dgvDIPmal.Columns)
@@ -892,21 +912,25 @@ namespace MHR_LEIT
             {
                 string[] strSplit = dt.Rows[0]["slod"].ToString().Split("\\");
                 m_strSlodDIP = strSplit[0] + "\\" + strSplit[2] + "\\" + strSplit[3];
-                m_tapPontunSkra.Text = string.Format("Skráakerfi ({0})", dt.Rows.Count);
+               
             }
             if(dtGrunn.Rows.Count > 0 ) 
             {
                 string[] strSplit = dtGrunn.Rows[0]["slod"].ToString().Split("\\");
                 m_strSlodDIP = strSplit[0] + "\\" + strSplit[2] + "\\" + strSplit[3];
-                m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", dtGrunn.Rows.Count);
+               
             }
             if(dtMal.Rows.Count > 0 ) 
             {
                 string[] strSplit = dtMal.Rows[0]["slod"].ToString().Split("\\");
                 m_strSlodDIP = strSplit[0] + "\\" + strSplit[2] + "\\" + strSplit[3];
-                m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
+               
             }
-            
+            m_tapPontunSkra.Text = string.Format("Skráakerfi ({0})", dt.Rows.Count);
+            m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", dtGrunn.Rows.Count);
+            m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
+            int iFjoldi = dt.Rows.Count + dtGrunn.Rows.Count + dtMal.Rows.Count;
+            m_grbDIP.Text = string.Format("Afgreitt {0}", iFjoldi);
         }
 
         private void m_comLanthegar_SelectedIndexChanged(object sender, EventArgs e)
@@ -938,6 +962,16 @@ namespace MHR_LEIT
             m_dgvDIPList.DataSource = m_dtDIPSkra;
             m_dtDIPGrunn.Rows.Clear();
             m_dgvDIPGagnagrunnar.DataSource = m_dtDIPGrunn;
+            m_dtDIPMal.Rows.Clear();
+            m_dgvDIPmal.DataSource = m_dtDIPMal;
+            m_dsDIPmal.Tables.Clear();
+
+            m_tapPontunSkra.Text = string.Format("Skráakerfi ({0})", m_dtDIPSkra.Rows.Count);
+            m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
+            m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", m_dtDIPMal.Rows.Count);
+            int iFjoldi = m_dtDIPSkra.Rows.Count + m_dtDIPGrunn.Rows.Count + m_dtDIPMal.Rows.Count;
+            m_grbDIP.Text = string.Format("Óafgreitt {0}", iFjoldi);
+
         }
 
         private void n_comGagnagrunnar_SelectedIndexChanged(object sender, EventArgs e)
@@ -948,7 +982,7 @@ namespace MHR_LEIT
                 {
                     string strGrunnur = m_comGagnagrunnar.SelectedValue.ToString();
                     string strHeiti = m_comGagnagrunnar.Text.ToString();
-                    frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti, m_dtDIPSkra);
+                    frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti,m_dtDIPGrunn, m_dtDIPSkra, m_dtDIPMal);
                     frmGagn.ShowDialog();
 
                     foreach (DataRow r in frmGagn.m_dtPantad.Rows)

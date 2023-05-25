@@ -53,6 +53,12 @@
             this.colAudkenniSkjals = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTitillSkjals = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVorsluutgafa = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_tacPantanir = new System.Windows.Forms.TabControl();
+            this.m_tapSkraarkerfi = new System.Windows.Forms.TabPage();
+            this.m_tapMalakerfi = new System.Windows.Forms.TabPage();
+            this.m_tapGagnagrunnar = new System.Windows.Forms.TabPage();
+            this.m_dgvMalakerfi = new System.Windows.Forms.DataGridView();
+            this.m_dgvGagnaGrunnar = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -73,6 +79,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_pibSkjal)).BeginInit();
             this.m_grbValdinnSkjol.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvValdarSkrar)).BeginInit();
+            this.m_tacPantanir.SuspendLayout();
+            this.m_tapSkraarkerfi.SuspendLayout();
+            this.m_tapMalakerfi.SuspendLayout();
+            this.m_tapGagnagrunnar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvMalakerfi)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvGagnaGrunnar)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -311,7 +323,7 @@
             // 
             // m_grbValdinnSkjol
             // 
-            this.m_grbValdinnSkjol.Controls.Add(this.m_dgvValdarSkrar);
+            this.m_grbValdinnSkjol.Controls.Add(this.m_tacPantanir);
             this.m_grbValdinnSkjol.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbValdinnSkjol.Location = new System.Drawing.Point(0, 0);
             this.m_grbValdinnSkjol.Name = "m_grbValdinnSkjol";
@@ -328,11 +340,11 @@
             this.colTitillSkjals,
             this.colVorsluutgafa});
             this.m_dgvValdarSkrar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvValdarSkrar.Location = new System.Drawing.Point(3, 19);
+            this.m_dgvValdarSkrar.Location = new System.Drawing.Point(3, 3);
             this.m_dgvValdarSkrar.Name = "m_dgvValdarSkrar";
             this.m_dgvValdarSkrar.RowHeadersVisible = false;
             this.m_dgvValdarSkrar.RowTemplate.Height = 25;
-            this.m_dgvValdarSkrar.Size = new System.Drawing.Size(762, 654);
+            this.m_dgvValdarSkrar.Size = new System.Drawing.Size(748, 620);
             this.m_dgvValdarSkrar.TabIndex = 0;
             // 
             // colAudkenniSkjals
@@ -357,6 +369,76 @@
             this.colVorsluutgafa.HeaderText = "Vörsluútgafa";
             this.colVorsluutgafa.Name = "colVorsluutgafa";
             this.colVorsluutgafa.Width = 98;
+            // 
+            // m_tacPantanir
+            // 
+            this.m_tacPantanir.Controls.Add(this.m_tapSkraarkerfi);
+            this.m_tacPantanir.Controls.Add(this.m_tapMalakerfi);
+            this.m_tacPantanir.Controls.Add(this.m_tapGagnagrunnar);
+            this.m_tacPantanir.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_tacPantanir.Location = new System.Drawing.Point(3, 19);
+            this.m_tacPantanir.Name = "m_tacPantanir";
+            this.m_tacPantanir.SelectedIndex = 0;
+            this.m_tacPantanir.Size = new System.Drawing.Size(762, 654);
+            this.m_tacPantanir.TabIndex = 1;
+            // 
+            // m_tapSkraarkerfi
+            // 
+            this.m_tapSkraarkerfi.Controls.Add(this.m_dgvValdarSkrar);
+            this.m_tapSkraarkerfi.Location = new System.Drawing.Point(4, 24);
+            this.m_tapSkraarkerfi.Name = "m_tapSkraarkerfi";
+            this.m_tapSkraarkerfi.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapSkraarkerfi.Size = new System.Drawing.Size(754, 626);
+            this.m_tapSkraarkerfi.TabIndex = 0;
+            this.m_tapSkraarkerfi.Text = "Skráarkerfi";
+            this.m_tapSkraarkerfi.UseVisualStyleBackColor = true;
+            // 
+            // m_tapMalakerfi
+            // 
+            this.m_tapMalakerfi.Controls.Add(this.m_dgvMalakerfi);
+            this.m_tapMalakerfi.Location = new System.Drawing.Point(4, 24);
+            this.m_tapMalakerfi.Name = "m_tapMalakerfi";
+            this.m_tapMalakerfi.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapMalakerfi.Size = new System.Drawing.Size(754, 626);
+            this.m_tapMalakerfi.TabIndex = 1;
+            this.m_tapMalakerfi.Text = "Málakerfi";
+            this.m_tapMalakerfi.UseVisualStyleBackColor = true;
+            // 
+            // m_tapGagnagrunnar
+            // 
+            this.m_tapGagnagrunnar.Controls.Add(this.m_dgvGagnaGrunnar);
+            this.m_tapGagnagrunnar.Location = new System.Drawing.Point(4, 24);
+            this.m_tapGagnagrunnar.Name = "m_tapGagnagrunnar";
+            this.m_tapGagnagrunnar.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapGagnagrunnar.Size = new System.Drawing.Size(754, 626);
+            this.m_tapGagnagrunnar.TabIndex = 2;
+            this.m_tapGagnagrunnar.Text = "Gagnagrunnar";
+            this.m_tapGagnagrunnar.UseVisualStyleBackColor = true;
+            // 
+            // m_dgvMalakerfi
+            // 
+            this.m_dgvMalakerfi.AllowUserToAddRows = false;
+            this.m_dgvMalakerfi.AllowUserToDeleteRows = false;
+            this.m_dgvMalakerfi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.m_dgvMalakerfi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_dgvMalakerfi.Location = new System.Drawing.Point(3, 3);
+            this.m_dgvMalakerfi.Name = "m_dgvMalakerfi";
+            this.m_dgvMalakerfi.ReadOnly = true;
+            this.m_dgvMalakerfi.RowHeadersVisible = false;
+            this.m_dgvMalakerfi.RowTemplate.Height = 25;
+            this.m_dgvMalakerfi.Size = new System.Drawing.Size(748, 620);
+            this.m_dgvMalakerfi.TabIndex = 0;
+            // 
+            // m_dgvGagnaGrunnar
+            // 
+            this.m_dgvGagnaGrunnar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.m_dgvGagnaGrunnar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_dgvGagnaGrunnar.Location = new System.Drawing.Point(3, 3);
+            this.m_dgvGagnaGrunnar.Name = "m_dgvGagnaGrunnar";
+            this.m_dgvGagnaGrunnar.RowHeadersVisible = false;
+            this.m_dgvGagnaGrunnar.RowTemplate.Height = 25;
+            this.m_dgvGagnaGrunnar.Size = new System.Drawing.Size(748, 620);
+            this.m_dgvGagnaGrunnar.TabIndex = 0;
             // 
             // frmSkraarkerfi
             // 
@@ -388,6 +470,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_pibSkjal)).EndInit();
             this.m_grbValdinnSkjol.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvValdarSkrar)).EndInit();
+            this.m_tacPantanir.ResumeLayout(false);
+            this.m_tapSkraarkerfi.ResumeLayout(false);
+            this.m_tapMalakerfi.ResumeLayout(false);
+            this.m_tapGagnagrunnar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvMalakerfi)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvGagnaGrunnar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -419,5 +507,11 @@
         private DataGridViewTextBoxColumn colAudkenniSkjals;
         private DataGridViewTextBoxColumn colTitillSkjals;
         private DataGridViewTextBoxColumn colVorsluutgafa;
+        private TabControl m_tacPantanir;
+        private TabPage m_tapSkraarkerfi;
+        private TabPage m_tapMalakerfi;
+        private DataGridView m_dgvMalakerfi;
+        private TabPage m_tapGagnagrunnar;
+        private DataGridView m_dgvGagnaGrunnar;
     }
 }

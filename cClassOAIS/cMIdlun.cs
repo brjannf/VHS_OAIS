@@ -353,7 +353,7 @@ namespace cClassOAIS
             string strSQL = string.Empty;
            if(strLeitarord.Length != 0)
             {
-                strSQL = string.Format("Select MATCH (titill_vorsluutgafu, doctitill,docLastWriten,maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, m.*  FROM dt_midlun m WHERE MATCH (titill_vorsluutgafu, doctitill,docLastWriten,maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
+                strSQL = string.Format("Select MATCH (titill_vorsluutgafu, doctitill,docLastWriten, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, m.*  FROM dt_midlun m WHERE MATCH (titill_vorsluutgafu, doctitill,docLastWriten,maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
             }
            else
             {

@@ -26,9 +26,16 @@ namespace MHR_LEIT
         {
             InitializeComponent();
         }
-        public frmGagnagrunnur(string strGagnagrunnur, string strOrginalHeiti, DataTable dtSkrar)
+        public frmGagnagrunnur(string strGagnagrunnur, string strOrginalHeiti, DataTable dtGrunnar, DataTable dtSkrar, DataTable dtMal)
         {
             InitializeComponent();
+            m_dtPantad = dtGrunnar.Clone();
+            foreach(DataRow r in dtGrunnar.Rows)
+            {
+                m_dtPantad.ImportRow(r);
+            }
+
+            this.WindowState = FormWindowState.Maximized;
             m_strGagnagrunnur = strGagnagrunnur;
             m_strOrginal = strOrginalHeiti;
             m_dtFyrirspurnir = mIdlun.getGagnagrunnaFyrirSpurnir(strGagnagrunnur);
@@ -36,11 +43,31 @@ namespace MHR_LEIT
             this.Text = m_strOrginal;
             m_dgvPantSkraarkerfi.DataSource = dtSkrar;
             m_tapSkráarkerfi.Text = string.Format("Skráarkerfi ({0})", dtSkrar.Rows.Count);
-
-            m_dtPantad.Columns.Add("Heiti");
-            m_dtPantad.Columns.Add("vorsluutgafa");
-            m_dtPantad.Columns.Add("leitarskilyrði");
-            m_dtPantad.Columns.Add("sql");
+            foreach (DataGridViewColumn col in m_dgvPantSkraarkerfi.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+            m_dgvPantMalaKerfi.DataSource = dtMal;
+            m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
+            foreach (DataGridViewColumn col in m_dgvPantMalaKerfi.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+          
+            m_dgvPantGagnagrunnar.DataSource = m_dtPantad;
+            m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", dtGrunnar.Rows.Count);
+            foreach (DataGridViewColumn col in m_dgvPantGagnagrunnar.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+            if(m_dtPantad.Columns.Count != 5)
+            {
+                m_dtPantad.Columns.Add("Heiti");
+                m_dtPantad.Columns.Add("vorsluutgafa");
+                m_dtPantad.Columns.Add("leitarskilyrði");
+                m_dtPantad.Columns.Add("sql");
+            }
+      
             
 
         }
@@ -222,14 +249,28 @@ namespace MHR_LEIT
         {
             if(m_dgvFyrirspurnir.DataSource != null) //breyta í fjölda niðurstaðna
             {
-                DataRow r = m_dtPantad.NewRow();
-                r["heiti"] = m_strOrginal;
-                r["vorsluutgafa"] = m_strGagnagrunnur.Replace("_", ".");
-                r["leitarskilyrði"] = m_strLeitSkilyrdi;
-                r["sql"] = m_strSQLpanta;
-                m_dtPantad.Rows.Add(r);
-                m_dtPantad.AcceptChanges();
-                m_dgvPantGagnagrunnar.DataSource = m_dtPantad;   
+                if (m_strSQLpanta != string.Empty)
+                {
+                    DataRow r = m_dtPantad.NewRow();
+                    r["heiti"] = m_strOrginal;
+                    r["vorsluutgafa"] = m_strGagnagrunnur.Replace("_", ".");
+                    r["leitarskilyrði"] = m_strLeitSkilyrdi;
+                    r["sql"] = m_strSQLpanta;
+                    m_dtPantad.Rows.Add(r);
+                    m_dtPantad.AcceptChanges();
+                    m_dgvPantGagnagrunnar.DataSource = m_dtPantad;
+                    m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtPantad.Rows.Count);
+                    foreach (DataGridViewColumn col in m_dgvPantGagnagrunnar.Columns)
+                    {
+                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Vantar að keyra fyrirspurn");
+                }
+            
 
             }
         }

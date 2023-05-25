@@ -37,7 +37,7 @@ namespace MHR_LEIT
             InitializeComponent();
            
         }
-        public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP)
+        public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP, DataTable dtMal, DataTable dtGrunn)
         {
             InitializeComponent();
             m_dtValid = dtDIP.Clone();
@@ -46,6 +46,20 @@ namespace MHR_LEIT
                 m_dtValid.ImportRow(dr);
             }
             m_dgvValdarSkrar.DataSource = m_dtValid;    
+            m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
+
+            m_dgvGagnaGrunnar.DataSource = dtGrunn;
+            m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtValid.Rows.Count);
+            foreach (DataGridViewColumn col in m_dgvGagnaGrunnar.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+            m_dgvMalakerfi.DataSource= dtMal;
+            m_tapMalakerfi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
+            foreach (DataGridViewColumn col in m_dgvMalakerfi.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
             //m_dtValid.Columns.Add("skjalID");
             //m_dtValid.Columns.Add("titill");
             //m_dtValid.Columns.Add("vorsluutgafa");
@@ -573,7 +587,8 @@ namespace MHR_LEIT
                 }
             }
             m_dgvValdarSkrar.DataSource = m_dtValid;
-            m_grbValdinnSkjol.Text = string.Format("Valinn skjöl ({0})", m_dtValid.Rows.Count);
+            m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
+          //  m_grbValdinnSkjol.Text = string.Format("Valinn skjöl ({0})", m_dtValid.Rows.Count);
         }
         private void CheckTreeViewNode(TreeNode node, Boolean isChecked)
         {
