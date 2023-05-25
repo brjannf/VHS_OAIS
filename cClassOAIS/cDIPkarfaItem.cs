@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using SixLabors.ImageSharp.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,6 +25,7 @@ namespace cClassOAIS
         public string heiti { get; set; }
         public string leitarskilyrdi { get; set; }
         public string sql { get; set; }
+        public int Fjold_skrar { get; set; }
 
         //id, karfa, heiti, vorsluutgafa, leitarskilyrdi, sql, slod
 
@@ -91,6 +93,33 @@ namespace cClassOAIS
             command.Dispose();
         }
 
+        public void vistaMalaKerfi()
+        {
+            MySqlConnection conn = new MySqlConnection(m_strTenging);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+          //  id, karfa, md5, Vörlsuutgafa, Skrar, slod
+            command.Parameters.AddWithValue("@karfa", this.karfa);
+            command.Parameters.AddWithValue("@vorsluutgafa", this.vorsluutgafa);
+            command.Parameters.AddWithValue("@slod", this.slod);
+            command.Parameters.AddWithValue("@Skrar", this.Fjold_skrar);
+            command.Parameters.AddWithValue("@md5", this.md5);
+           
+
+            if (this.id == 0)
+            {
+                command.CommandText = "REPLACE INTO `dt_item_korfu_mal_dip` SET  `karfa`=@karfa, `vorsluutgafa`=@vorsluutgafa,`slod`=@slod,`Skrar`=@Skrar,`md5`=@md5; ";
+            }
+            else
+            {
+                // command.CommandText = string.Format("UPDATE `dt_notendur` SET  `kennitala`=@kennitala,  `notendanafn`=@notendanafn, `lykilorð`=@lykilorð, `vörslustofnun`=@vörslustofnun, `nafn`=@nafn,`virkur`=@virkur,`athugasemdir`=@athugasemdir,`hver_breytti`=@hver_breytti,`hlutverk`=@hlutverk,`email`=@email,`heimilisfang`=@heimilisfang,`simi`=@simi,`dags_breytt`=NOW() WHERE kennitala ={0};", strKennitala);
+            }
+
+            command.ExecuteNonQuery();
+            conn.Dispose();
+            command.Dispose();
+        }
+
         public DataTable getKorfuItemDIP(string strKarfa)
         {
             string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_item_korfu_dip d where karfa = {0};", strKarfa);
@@ -102,6 +131,14 @@ namespace cClassOAIS
         public DataTable getKorfuItemDIPGagnagrunnur(string strKarfa)
         {
             string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_karfa_item_gagna_dip d where karfa = {0};", strKarfa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getKorfuItemDIPMalakerfi(string strKarfa)
+        {
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_item_korfu_mal_dip d where karfa = {0};", strKarfa);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

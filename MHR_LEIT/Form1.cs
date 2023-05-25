@@ -2,6 +2,7 @@ using cClassOAIS;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Data;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace MHR_LEIT
@@ -9,8 +10,12 @@ namespace MHR_LEIT
     public partial class Form1 : Form
     {
         DataTable m_dtDIPSkra = new DataTable();
-        DataTable m_dtDIPGrunn = new DataTable();
         DataTable m_dtDIPMal = new DataTable();
+        DataTable m_dtDIPGrunn = new DataTable();
+        DataSet m_dsDIPmal= new DataSet();
+
+        DataTable m_dtLeitarNidurstodur = new DataTable();  
+
         cNotandi virkurNotandi = new cNotandi();
         cDIPKarfa karfa = new cDIPKarfa();
         cLanthegar lanþegi = new cLanthegar();
@@ -34,6 +39,14 @@ namespace MHR_LEIT
             m_dtDIPGrunn.Columns.Add("leitarskilyrði");
             m_dtDIPGrunn.Columns.Add("sql");
             m_dtDIPGrunn.Columns.Add("slod");
+
+            //id, karfa, md5, vorsluutgafa, Skrar, slod
+            m_dtDIPMal.Columns.Add("karfa");
+            m_dtDIPMal.Columns.Add("md5");
+            m_dtDIPMal.Columns.Add("vorsluutgafa");
+            m_dtDIPMal.Columns.Add("Skrar");
+          
+
 
             fyllaV0rslusstofnanir();
             fyllaSkjalamyndara();
@@ -135,11 +148,11 @@ namespace MHR_LEIT
             }
          //   mid
 
-            DataTable dt = midlun.leit(m_tboLeitOrd.Text);
+            m_dtLeitarNidurstodur = midlun.leit(m_tboLeitOrd.Text);
             m_dgvLeit.AutoGenerateColumns = false;
-            m_dgvLeit.DataSource = dt;
+            m_dgvLeit.DataSource = m_dtLeitarNidurstodur;
             m_lblLeitarnidurstodur.Visible = true;
-            m_lblLeitarnidurstodur.Text = string.Format("Það fundust {0} leitarniðurstöður útfrá leitarorðunum {1}", dt.Rows.Count, m_tboLeitOrd.Text);
+            m_lblLeitarnidurstodur.Text = string.Format("Það fundust {0} leitarniðurstöður útfrá leitarorðunum {1}", m_dtLeitarNidurstodur.Rows.Count, m_tboLeitOrd.Text);
         }
 
         private void m_tboLeitOrd_KeyDown(object sender, KeyEventArgs e)
@@ -181,16 +194,49 @@ namespace MHR_LEIT
                 }
                 if(strTegund == "Málakerfi")
                 {
-                    frmMalakerfi frmMala = new frmMalakerfi(strGagnagrunnur, row);
-                    frmMala.ShowDialog();   
+                    DataTable dtMal = m_dsDIPmal.Tables[strGagnagrunnur];
+                    frmMalakerfi frmMala = new frmMalakerfi(strGagnagrunnur, row, m_dtDIPGrunn, m_dtDIPSkra, dtMal);
+                    frmMala.ShowDialog();
+                    DataTable dt = frmMala.m_dtPontunMal;
+                    if(dt.Rows.Count != 0)
+                    {
+                        dt.TableName = strGagnagrunnur;
+                        if (m_dsDIPmal.Tables.Contains(strGagnagrunnur))
+                        {
+                            m_dsDIPmal.Tables.Remove(dt.TableName);
+                            m_dsDIPmal.Tables.Add(dt);
+                            //vantar að uppfæra töflu M_dtDIPMal
+
+                        }
+                        else
+                        {
+                            m_dsDIPmal.Tables.Add(dt);
+                            DataRow rMal = m_dtDIPMal.NewRow();
+                            rMal["Vörsluútgáfa"] = strGagnagrunnur.Replace("_", ".");
+                            rMal["Skrár"] = dt.Rows.Count;
+                           
+                            m_dtDIPMal.Rows.Add(rMal);
+                            m_dtDIPMal.AcceptChanges();
+
+                        }
+                    }
+                
+                 
                 }
          
             
               //  m_dgvDIPList.AutoGenerateColumns = false;
                 m_dgvDIPList.DataSource = m_dtDIPSkra;
+                m_dgvDIPmal.DataSource = m_dtDIPMal;
+                foreach (DataGridViewColumn col in m_dgvDIPmal.Columns)
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
 
 
                 m_tapPontunSkra.Text = string.Format("Skáarkerfi ({0})", m_dtDIPSkra.Rows.Count);
+                m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", m_dtDIPMal.Rows.Count);
+                m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
                 int iFjoldi = m_dtDIPGrunn.Rows.Count + m_dtDIPSkra.Rows.Count + m_dtDIPMal.Rows.Count;
                 m_grbDIP.Text = string.Format("Óafgreitt ({0})", iFjoldi);
                 m_tapAfgreidsla.Text  = string.Format("Afgreiðsla: {0} skrár óafgreiddar", iFjoldi);
@@ -210,6 +256,8 @@ namespace MHR_LEIT
             m_dtEnd.Value = DateTime.Now;
             m_dtEnd.Checked = false;
             m_dtpStart.Checked = false;
+            m_dtLeitarNidurstodur.Rows.Clear();
+            
 
         }
 
@@ -261,11 +309,21 @@ namespace MHR_LEIT
 
             string strExcell = string.Empty;
             string strExcellGagna = string.Empty; 
+            string strExcelMal = string.Empty;
 
             DataTable dtExcell = m_dtDIPSkra.Clone();
             DataTable dtExcellGrunnur = m_dtDIPGrunn.Clone();
+            DataTable dtExcellMal = new DataTable();
+            dtExcellMal.Columns.Add("Mál");
+            dtExcellMal.Columns.Add("Skrá");
+            dtExcellMal.Columns.Add("Slóð");
 
             //Skráarkerfi
+            m_pgbPontun.Maximum = m_dtDIPGrunn.Rows.Count + m_dtDIPMal.Rows.Count + m_dtDIPSkra.Rows.Count;
+            m_pgbPontun.Step = 1;
+            m_pgbPontun.Value = 0;
+            m_tacPontun.SelectedTab = m_tapPontunSkra;
+            Application.DoEvents();
             foreach (DataRow r in m_dtDIPSkra.Rows)
             {
                 //skrái körfu strax, geri það máski síðar síðar
@@ -411,12 +469,134 @@ namespace MHR_LEIT
 
                 }
 
-
+                m_pgbPontun.PerformStep();
+                m_lblPontunstatus.Text = string.Format("{0}/{1}", m_pgbPontun.Value, m_pgbPontun.Maximum);
+                m_pgbPontun.Visible = true;
+                m_lblPontunstatus.Visible = true;
+                Application.DoEvents();
             }
+
+            m_tacPontun.SelectedTab = m_tapPontunMalakerfi;
+            //Málakerfi
+            foreach(DataTable dt in m_dsDIPmal.Tables)
+            {
+                if (karfa.karfa == 0)
+                {
+                    karfa.heiti = m_comLanthegar.Text + " " + DateTime.Now.Day + "." + DateTime.Now.Month + "." + DateTime.Now.Year;
+                    karfa.lanthegi = m_comLanthegar.SelectedValue.ToString();
+                    karfa.hver_skradi = virkurNotandi.nafn;
+                    karfa.vista();
+                }
+
+                //skrái körfu strax, geri það máski síðar síðar
+                int iMal = 1;
+                string strSagsID = string.Empty;
+                foreach (DataRow r in dt.Rows)
+                {
+                    if (strSagsID != r["sagsID"].ToString())
+                    {
+                        if (strSagsID != string.Empty)
+                        {
+                            iMal++;
+                        }
+
+                        strSagsID = r["sagsID"].ToString();
+                    }
+                    string strVorsluutgafa = r["gagnagrunnur"].ToString().Replace("_", "."); 
+                                                                                           
+                    cVorsluutgafur utgafur = new cVorsluutgafur();
+                    utgafur.getVörsluútgáfu(strVorsluutgafa);
+                    string strSlod = utgafur.slod;
+
+                    DriveInfo divo = new DriveInfo(strSlod);
+                    string strDIProot = divo.Name + "\\DIP";
+                    if (!Directory.Exists(strDIProot))
+                    {
+                        Directory.CreateDirectory(strDIProot);
+                    }
+                    string strDIPfolder = strDIProot + "\\" + karfa.karfa + "_" + m_comLanthegar.Text;  //ná í þetta síðar með cLanthega
+
+                    {
+                        Directory.CreateDirectory(strDIPfolder);
+                    }
+                    strExcelMal = strDIPfolder;
+
+                  
+                    //flytja og skrá skrár sem hafa verið valdar
+                    strDIPfolder = strDIPfolder + "\\" + utgafur.utgafa_titill; // + " " + utgafur.afharnr;
+                    if (!Directory.Exists(strDIPfolder))
+                    {
+                        Directory.CreateDirectory(strDIPfolder);
+                    }
+                    string strSkraSlod = r["slod"].ToString() + "\\1.tif"; //þarf að laga síðar trúlega
+                    string[] strSplit = r["slod"].ToString().Split("\\");
+                    DataSet ds = new DataSet();
+
+                    string strDocIndex = strSlod + "\\Indices\\docIndex.xml";
+                    ds.ReadXml(strDocIndex);
+                    string strID = strSplit[strSplit.Length - 1];
+                    string strExp = "dID= '" + strSplit[strSplit.Length - 1] +"'";
+                    DataRow[] fRow = ds.Tables[0].Select(strExp);
+
+                    string strDocTitill = fRow[0]["oFn"].ToString();
+                    strSplit = strDocTitill.Split(".");
+                    strDocTitill = strSplit[0] + ".tif";
+                    if (!Directory.Exists(strDIPfolder +"\\" + "Mál_" + iMal.ToString("00")))
+                    {
+                        Directory.CreateDirectory(strDIPfolder + "\\"  + "Mál_" + iMal.ToString("00"));
+                    }
+                    string strDestDoc = strDIPfolder + "\\" + "Mál_" + iMal.ToString("00") + "\\" + strDocTitill;
+                    File.Copy(strSkraSlod, strDestDoc, true);
+
+                    string strDest = strDIPfolder +"\\" + "Mál_" + iMal.ToString("00") + "\\Mál.xlsx";
+                    //keyra út upplýsingar um málið
+                    cMIdlun mIdlun = new cMIdlun();
+                    string strSQL = r["sqlMal"].ToString();
+                    DataTable dtUmMal = mIdlun.keyraFyrirspurn(strSQL, r["gagnagrunnur"].ToString());
+                    exportExell(dtUmMal, "C:\\temp\\mal.xlsx");
+                    File.Copy("C:\\temp\\mal.xlsx", strDest, true);
+                    try
+                    {
+                        File.Delete("C:\\temp\\gagn.xlsx");
+                    }
+                    catch (Exception x)
+                    {
+
+                        // throw;
+                    }
+                    DataRow rr = dtExcellMal.NewRow();
+                    rr["Mál"] = "Mál_" + iMal.ToString("00");
+                    rr["Skrá"] = strDocTitill;
+                    rr["Slóð"] = strDestDoc.Replace(strDIProot, "");
+                    dtExcellMal.Rows.Add(rr);
+                    dtExcellMal.AcceptChanges();
+
+                    cDIPkarfaItem karfa_item = new cDIPkarfaItem();
+                    cMD5 mD5= new cMD5();
+                    string strMD5 = mD5.getMD5(strID, utgafur.vorsluutgafa);
+                    karfa_item.karfa = karfa.karfa;
+                    karfa_item.vorsluutgafa = r["gagnagrunnur"].ToString().Replace("_",".");
+                    karfa_item.Fjold_skrar = dt.Rows.Count;
+                    karfa_item.md5 = strMD5;
+                    karfa_item.slod = strDestDoc;
+                    karfa_item.vistaMalaKerfi();
+
+
+                }
+
+                m_pgbPontun.PerformStep();
+                m_lblPontunstatus.Text = string.Format("{0}/{1}", m_pgbPontun.Value, m_pgbPontun.Maximum);
+                m_pgbPontun.Visible = true;
+                m_lblPontunstatus.Visible = true;
+                Application.DoEvents();
+            }
+
             //gaggnagrunnur
             int iFjoldi = 0;
             string strTextTXT = string.Empty;
             string strTXTfile = string.Empty;
+            m_tacPontun.SelectedTab = m_tapPontunGagnagrunnar;
+            Application.DoEvents();
             foreach(DataRow rr in m_dtDIPGrunn.Rows)
             {
                 if (karfa.karfa == 0)
@@ -483,7 +663,7 @@ namespace MHR_LEIT
                 rGrunn["vorsluutgafa"] = rr["vorsluutgafa"].ToString();
                 rGrunn["leitarskilyrði"] = rr["leitarskilyrði"].ToString();
                 rGrunn["sql"] = rr["sql"].ToString();
-                rGrunn["slod"] = strDest.Replace(strDIProot, ""); ; // strSkjal[0];
+                rGrunn["slod"] = strDest.Replace(strDIProot, "");  // strSkjal[0];
               
                 dtExcellGrunnur.Rows.Add(rGrunn);
                
@@ -498,6 +678,12 @@ namespace MHR_LEIT
                 karfa_item.vistaGagnagrunn();
                 //setja hérna inn "lestumig.txt"
                 strTextTXT += "Fyrirspurn_" + 0 + " Leitarskilyrði: " + rr["leitarskilyrði"] + "Fjoldi niðurstaðna: " + dt.Rows.Count;
+
+                m_pgbPontun.PerformStep();
+                m_lblPontunstatus.Text = string.Format("{0}/{1}", m_pgbPontun.Value, m_pgbPontun.Maximum);
+                m_pgbPontun.Visible = true;
+                m_lblPontunstatus.Visible = true;
+                Application.DoEvents();
             }
 
 
@@ -517,6 +703,23 @@ namespace MHR_LEIT
                     // throw;
                 }
             }
+
+            if(dtExcellMal.Rows.Count > 0)
+            {
+
+                exportExell(dtExcellMal, "C:\\temp\\malaskra.xlsx");
+                File.Copy("C:\\temp\\malaskra.xlsx", strExcelMal + "\\Málaskrár.xlsx", true);
+                try
+                {
+                    File.Delete("C:\\temp\\listi.xlsx");
+                }
+                catch (Exception x)
+                {
+
+                    // throw;
+                }
+            }
+
             int i = 0;
             if(dtExcellGrunnur.Rows.Count >0)
             {
@@ -538,14 +741,19 @@ namespace MHR_LEIT
 
                     // throw;
                 }
-
+            
             }
           
             m_dgvDIPList.DataSource = m_dtDIPSkra;
             fyllaDIPLista();
             m_dtDIPSkra.Rows.Clear();
+            m_dtDIPGrunn.Rows.Clear();
+            m_dtDIPMal.Rows.Clear();
+            m_dsDIPmal.Tables.Clear();
             karfa.hreinsahlut();
             MessageBox.Show("DIP tilbúið");
+            m_pgbPontun.Visible = false;
+            m_lblPontunstatus.Visible = false;  
         }
 
         private void exportExell(System.Data.DataTable tbl, string excelFilePath)
@@ -590,6 +798,19 @@ namespace MHR_LEIT
                 {
                     try
                     {
+                        if(File.Exists(excelFilePath))
+                        {
+                            try
+                            {
+                                File.Delete(excelFilePath);
+                            }
+                            catch (Exception x)
+                            {
+
+                               
+                            }
+                        }
+
                         workSheet.SaveAs(excelFilePath);
                         excelApp.Quit();
                       //  MessageBox.Show(String.Format("Exelskjal skráð í VINNUSKJÖL{0}{1}", Environment.NewLine, excelFilePath));
@@ -651,19 +872,39 @@ namespace MHR_LEIT
             cDIPkarfaItem items = new cDIPkarfaItem();
             DataTable dt =  items.getKorfuItemDIP(strKarfa);
             m_dgvDIPList.DataSource = items.getKorfuItemDIP(strKarfa);
+          
             DataTable dtGrunn = items.getKorfuItemDIPGagnagrunnur(strKarfa);
             m_dgvDIPGagnagrunnar.DataSource = dtGrunn;
+            foreach (DataGridViewColumn col in m_dgvDIPGagnagrunnar.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
             m_grbDIP.Text = string.Format("Afgreitt {0}", dt.Rows.Count);
-         
-            if(dt.Rows.Count > 0 ) 
+            DataTable dtMal = items.getKorfuItemDIPMalakerfi(strKarfa); 
+            m_dgvDIPmal.DataSource = dtMal;
+            foreach (DataGridViewColumn col in m_dgvDIPmal.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+
+
+            if (dt.Rows.Count > 0 ) 
             {
                 string[] strSplit = dt.Rows[0]["slod"].ToString().Split("\\");
                 m_strSlodDIP = strSplit[0] + "\\" + strSplit[2] + "\\" + strSplit[3];
+                m_tapPontunSkra.Text = string.Format("Skráakerfi ({0})", dt.Rows.Count);
             }
             if(dtGrunn.Rows.Count > 0 ) 
             {
                 string[] strSplit = dtGrunn.Rows[0]["slod"].ToString().Split("\\");
                 m_strSlodDIP = strSplit[0] + "\\" + strSplit[2] + "\\" + strSplit[3];
+                m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", dtGrunn.Rows.Count);
+            }
+            if(dtMal.Rows.Count > 0 ) 
+            {
+                string[] strSplit = dtMal.Rows[0]["slod"].ToString().Split("\\");
+                m_strSlodDIP = strSplit[0] + "\\" + strSplit[2] + "\\" + strSplit[3];
+                m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
             }
             
         }
@@ -726,6 +967,10 @@ namespace MHR_LEIT
                     }
 
                     m_dgvDIPGagnagrunnar.DataSource = m_dtDIPGrunn;
+                    foreach (DataGridViewColumn col in m_dgvDIPGagnagrunnar.Columns)
+                    {
+                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
 
                     m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
                     int iFjoldi = m_dtDIPGrunn.Rows.Count + m_dtDIPSkra.Rows.Count + m_dtDIPMal.Rows.Count;

@@ -303,6 +303,7 @@
             this.m_dgvNidurstodur.RowTemplate.Height = 25;
             this.m_dgvNidurstodur.Size = new System.Drawing.Size(1522, 263);
             this.m_dgvNidurstodur.TabIndex = 0;
+            this.m_dgvNidurstodur.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.keyrafyrirspurn_CellClick);
             // 
             // frmGagnagrunnur
             // 
