@@ -47,7 +47,8 @@ namespace cClassOAIS
         public string dags_skráð { get; set; }
         public string hver_breytti { get; set; }
         public string dags_breytt { get; set; }
-    
+        public string klasi { get; set; }
+
 
 
         // eytt, dags_eytt, hver_eytti, midlun, dags_midlad, hver_midladi
@@ -90,6 +91,29 @@ namespace cClassOAIS
                 strGerð = strGerð.Replace(")", "");
                 strGerð = strGerð.Replace("\'", "");
                 r["gerd"] = strGerð;
+                dt.Rows.Add(r);
+                dt.AcceptChanges();
+
+            }
+
+            return dt;
+        }
+
+        public DataTable getENUMKlasar()
+        {
+            string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE, 5) as klasi FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'db_oais_admin' AND TABLE_NAME = 'dt_isdiah_vörslustofnanir'AND COLUMN_NAME = 'klasar'; ");
+            var strengur = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
+            DataTable dt = new DataTable();
+            dt.Columns.Add("klasi");
+            string[] strSplit = strengur.ToString().Split(',');
+            foreach (string str in strSplit)
+            {
+                DataRow r = dt.NewRow();
+                string strGerð = str.Replace("(", "");
+                strGerð = strGerð.Replace(")", "");
+                strGerð = strGerð.Replace("\'", "");
+                r["klasi"] = strGerð;
                 dt.Rows.Add(r);
                 dt.AcceptChanges();
 
@@ -186,6 +210,7 @@ namespace cClassOAIS
                 this.dags_skráð = r["dags_skráð"].ToString();
                 this.hver_breytti = r["hver_breytti"].ToString();
                 this.dags_breytt = r["dags_breytt"].ToString();
+                this.klasi = r["klasar"].ToString();
 
             }
         }
@@ -233,9 +258,10 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@dags_skráð", this.dags_skráð);
             command.Parameters.AddWithValue("@hver_breytti", this.hver_breytti);
             command.Parameters.AddWithValue("@dags_breytt", this.dags_breytt);
+            command.Parameters.AddWithValue("@klasi", this.klasi);
 
 
-                if(this.ID != 0)
+            if (this.ID != 0)
                 {
                     string strNewDate = string.Format("Breytt: {0} af {1}", DateTime.Now, this.hver_breytti);
                     string strDagsetningar = this.dagsetningar_5_6_6 + Environment.NewLine + strNewDate;
@@ -250,11 +276,11 @@ namespace cClassOAIS
          
             if(this.ID == 0)
             {
-                command.CommandText = "INSERT INTO `dt_isdiah_vörslustofnanir` SET  `id`=@id, `5_1_1_auðkenni`=@5_1_1_auðkenni, `5_1_2_opinbert_heiti`=@5_1_2_opinbert_heiti, `5_1_3_erlent_heiti`=@5_1_3_erlent_heiti, `5_1_4_annað_heiti`=@5_1_4_annað_heiti, `5_1_5_tegund`=@5_1_5_tegund, `5_2_1_aðsetur`=@5_2_1_aðsetur, `5_2_2_samskiptaleiðir`=@5_2_2_samskiptaleiðir, `5_2_3_samskiptaaðilar`=@5_2_3_samskiptaaðilar, `5_3_1_saga_stofnunar`=@5_3_1_saga_stofnunar, `5_3_2_landfræðilegt_samhengi`=@5_3_2_landfræðilegt_samhengi, `5_3_3_stjórnsýsluheimildir`=@5_3_3_stjórnsýsluheimildir, `5_3_4_stjórnsýsluleg_staða`=@5_3_4_stjórnsýsluleg_staða, `5_3_5_varðveislustefna`=@5_3_5_varðveislustefna, `5_3_6_byggingar`=@5_3_6_byggingar, `5_3_7_skjalaforði`=@5_3_7_skjalaforði, `5_3_8_útgáfur`=@5_3_8_útgáfur, `5_4_1_opnunartímar`=@5_4_1_opnunartímar, `5_4_2_aðgangsforsendur`=@5_4_2_aðgangsforsendur, `5_4_3_aðgengi`=@5_4_3_aðgengi, `5_5_1_rannsóknarþjónusta`=@5_5_1_rannsóknarþjónusta, `5_5_2_afritunarþjónusta`=@5_5_2_afritunarþjónusta, `5_5_3_almenningssvæði`=@5_5_3_almenningssvæði, `5_6_1_lýsandi_auðkenni`=@5_6_1_lýsandi_auðkenni, `5_6_2_einkennandi_heiti`=@5_6_2_einkennandi_heiti, `5_6_3_reglur_staðlar`=@5_6_3_reglur_staðlar, `5_6_4_skráningarstaða`=@5_6_4_skráningarstaða, `5_6_5_skráningarstig`=@5_6_5_skráningarstig, `5_6_6_dagsetningar`=@5_6_6_dagsetningar, `5_6_7_tungumál_letur`=@5_6_7_tungumál_letur, `5_6_8_heimildir`=@5_6_8_heimildir, `5_6_9_athugasemdir`=@5_6_9_athugasemdir, `hver_skráði`=@hver_skráði, `dags_skráð`=NOW();";
+                command.CommandText = "INSERT INTO `dt_isdiah_vörslustofnanir` SET  `id`=@id, `5_1_1_auðkenni`=@5_1_1_auðkenni, `5_1_2_opinbert_heiti`=@5_1_2_opinbert_heiti, `5_1_3_erlent_heiti`=@5_1_3_erlent_heiti, `5_1_4_annað_heiti`=@5_1_4_annað_heiti, `5_1_5_tegund`=@5_1_5_tegund, `5_2_1_aðsetur`=@5_2_1_aðsetur, `5_2_2_samskiptaleiðir`=@5_2_2_samskiptaleiðir, `5_2_3_samskiptaaðilar`=@5_2_3_samskiptaaðilar, `5_3_1_saga_stofnunar`=@5_3_1_saga_stofnunar, `5_3_2_landfræðilegt_samhengi`=@5_3_2_landfræðilegt_samhengi, `5_3_3_stjórnsýsluheimildir`=@5_3_3_stjórnsýsluheimildir, `5_3_4_stjórnsýsluleg_staða`=@5_3_4_stjórnsýsluleg_staða, `5_3_5_varðveislustefna`=@5_3_5_varðveislustefna, `5_3_6_byggingar`=@5_3_6_byggingar, `5_3_7_skjalaforði`=@5_3_7_skjalaforði, `5_3_8_útgáfur`=@5_3_8_útgáfur, `5_4_1_opnunartímar`=@5_4_1_opnunartímar, `5_4_2_aðgangsforsendur`=@5_4_2_aðgangsforsendur, `5_4_3_aðgengi`=@5_4_3_aðgengi, `5_5_1_rannsóknarþjónusta`=@5_5_1_rannsóknarþjónusta, `5_5_2_afritunarþjónusta`=@5_5_2_afritunarþjónusta, `5_5_3_almenningssvæði`=@5_5_3_almenningssvæði, `5_6_1_lýsandi_auðkenni`=@5_6_1_lýsandi_auðkenni, `5_6_2_einkennandi_heiti`=@5_6_2_einkennandi_heiti, `5_6_3_reglur_staðlar`=@5_6_3_reglur_staðlar, `5_6_4_skráningarstaða`=@5_6_4_skráningarstaða, `5_6_5_skráningarstig`=@5_6_5_skráningarstig, `5_6_6_dagsetningar`=@5_6_6_dagsetningar, `5_6_7_tungumál_letur`=@5_6_7_tungumál_letur, `5_6_8_heimildir`=@5_6_8_heimildir, `5_6_9_athugasemdir`=@5_6_9_athugasemdir, `hver_skráði`=@hver_skráði, `dags_skráð`=NOW(), `klasar`=@klasi;";
             }
             else
             {
-                command.CommandText = "UPDATE `dt_isdiah_vörslustofnanir` SET  `id`=@id, `5_1_1_auðkenni`=@5_1_1_auðkenni, `5_1_2_opinbert_heiti`=@5_1_2_opinbert_heiti, `5_1_3_erlent_heiti`=@5_1_3_erlent_heiti, `5_1_4_annað_heiti`=@5_1_4_annað_heiti, `5_1_5_tegund`=@5_1_5_tegund, `5_2_1_aðsetur`=@5_2_1_aðsetur, `5_2_2_samskiptaleiðir`=@5_2_2_samskiptaleiðir, `5_2_3_samskiptaaðilar`=@5_2_3_samskiptaaðilar, `5_3_1_saga_stofnunar`=@5_3_1_saga_stofnunar, `5_3_2_landfræðilegt_samhengi`=@5_3_2_landfræðilegt_samhengi, `5_3_3_stjórnsýsluheimildir`=@5_3_3_stjórnsýsluheimildir, `5_3_4_stjórnsýsluleg_staða`=@5_3_4_stjórnsýsluleg_staða, `5_3_5_varðveislustefna`=@5_3_5_varðveislustefna, `5_3_6_byggingar`=@5_3_6_byggingar, `5_3_7_skjalaforði`=@5_3_7_skjalaforði, `5_3_8_útgáfur`=@5_3_8_útgáfur, `5_4_1_opnunartímar`=@5_4_1_opnunartímar, `5_4_2_aðgangsforsendur`=@5_4_2_aðgangsforsendur, `5_4_3_aðgengi`=@5_4_3_aðgengi, `5_5_1_rannsóknarþjónusta`=@5_5_1_rannsóknarþjónusta, `5_5_2_afritunarþjónusta`=@5_5_2_afritunarþjónusta, `5_5_3_almenningssvæði`=@5_5_3_almenningssvæði, `5_6_1_lýsandi_auðkenni`=@5_6_1_lýsandi_auðkenni, `5_6_2_einkennandi_heiti`=@5_6_2_einkennandi_heiti, `5_6_3_reglur_staðlar`=@5_6_3_reglur_staðlar, `5_6_4_skráningarstaða`=@5_6_4_skráningarstaða, `5_6_5_skráningarstig`=@5_6_5_skráningarstig, `5_6_6_dagsetningar`=@5_6_6_dagsetningar, `5_6_7_tungumál_letur`=@5_6_7_tungumál_letur, `5_6_8_heimildir`=@5_6_8_heimildir, `5_6_9_athugasemdir`=@5_6_9_athugasemdir, `hver_breytti`=@hver_breytti, `dags_breytt`=NOW() where  `id`=@id;";
+                command.CommandText = "UPDATE `dt_isdiah_vörslustofnanir` SET  `id`=@id, `5_1_1_auðkenni`=@5_1_1_auðkenni, `5_1_2_opinbert_heiti`=@5_1_2_opinbert_heiti, `5_1_3_erlent_heiti`=@5_1_3_erlent_heiti, `5_1_4_annað_heiti`=@5_1_4_annað_heiti, `5_1_5_tegund`=@5_1_5_tegund, `5_2_1_aðsetur`=@5_2_1_aðsetur, `5_2_2_samskiptaleiðir`=@5_2_2_samskiptaleiðir, `5_2_3_samskiptaaðilar`=@5_2_3_samskiptaaðilar, `5_3_1_saga_stofnunar`=@5_3_1_saga_stofnunar, `5_3_2_landfræðilegt_samhengi`=@5_3_2_landfræðilegt_samhengi, `5_3_3_stjórnsýsluheimildir`=@5_3_3_stjórnsýsluheimildir, `5_3_4_stjórnsýsluleg_staða`=@5_3_4_stjórnsýsluleg_staða, `5_3_5_varðveislustefna`=@5_3_5_varðveislustefna, `5_3_6_byggingar`=@5_3_6_byggingar, `5_3_7_skjalaforði`=@5_3_7_skjalaforði, `5_3_8_útgáfur`=@5_3_8_útgáfur, `5_4_1_opnunartímar`=@5_4_1_opnunartímar, `5_4_2_aðgangsforsendur`=@5_4_2_aðgangsforsendur, `5_4_3_aðgengi`=@5_4_3_aðgengi, `5_5_1_rannsóknarþjónusta`=@5_5_1_rannsóknarþjónusta, `5_5_2_afritunarþjónusta`=@5_5_2_afritunarþjónusta, `5_5_3_almenningssvæði`=@5_5_3_almenningssvæði, `5_6_1_lýsandi_auðkenni`=@5_6_1_lýsandi_auðkenni, `5_6_2_einkennandi_heiti`=@5_6_2_einkennandi_heiti, `5_6_3_reglur_staðlar`=@5_6_3_reglur_staðlar, `5_6_4_skráningarstaða`=@5_6_4_skráningarstaða, `5_6_5_skráningarstig`=@5_6_5_skráningarstig, `5_6_6_dagsetningar`=@5_6_6_dagsetningar, `5_6_7_tungumál_letur`=@5_6_7_tungumál_letur, `5_6_8_heimildir`=@5_6_8_heimildir, `5_6_9_athugasemdir`=@5_6_9_athugasemdir, `hver_breytti`=@hver_breytti, `klasar`=@klasi, `dags_breytt`=NOW() where  `id`=@id;";
                 command.ExecuteNonQuery();
                 command.CommandText = "UPDATE `dt_vörsluutgafur` set `varsla_heiti` = @5_1_2_opinbert_heiti where `vorslustofnun`=@5_1_1_auðkenni;";
             }

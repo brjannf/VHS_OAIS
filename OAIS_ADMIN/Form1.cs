@@ -94,6 +94,10 @@ namespace OAIS_ADMIN
             {
                 uscGagnaUmsjon1.endurHressa();
             }
+            if(m_tacMain.SelectedTab == m_tapMiðlun)
+            {
+                uscMidlun1.fyllaVorsluUtgafur();
+            }
        }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)

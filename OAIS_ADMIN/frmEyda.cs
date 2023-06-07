@@ -102,7 +102,17 @@ namespace OAIS_ADMIN
                 vörslustofnun.eyða(vörslustofnun.auðkenni_5_1_1);
             }
             //7 eyða miðlun
+
             utgaf.midlunEyda(m_strAuðkenni);
+            utgaf.midlun = "0";
+            utgaf.vorsluutgafa = m_strAuðkenni;
+            utgaf.uppFaeraVegnaMidlun();
+            cMIdlun midlun = new cMIdlun();
+            midlun.eydaFyrirspurnum(m_strAuðkenni.Replace(".", "_"));
+            midlun.dropDatabase(m_strAuðkenni.Replace(".", "_"));
+          
+
+
             this.Close();
             //7 ef ekki eyða vörslustofnun.
 

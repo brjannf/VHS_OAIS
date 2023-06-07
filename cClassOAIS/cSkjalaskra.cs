@@ -231,6 +231,13 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
+        public DataTable getVörsluútgáfurMidlun()
+        {
+            string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where eytt = 0");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
         public DataTable getUpplysingastigENUM()
         {
             string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as stig FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isadg_skráningar'AND COLUMN_NAME='3_1_4_upplýsingastig';");

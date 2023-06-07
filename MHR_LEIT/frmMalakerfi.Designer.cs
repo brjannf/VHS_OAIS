@@ -32,8 +32,15 @@
             this.m_trwMalalykill = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
             this.m_grbMalInfo = new System.Windows.Forms.GroupBox();
             this.m_lblMalInfo = new System.Windows.Forms.Label();
+            this.m_dgvLeitarNidurstodur = new System.Windows.Forms.DataGridView();
+            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTitill = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_btnLeita = new System.Windows.Forms.Button();
+            this.m_tboLeita = new System.Windows.Forms.TextBox();
+            this.m_lblLeitNidurstsodur = new System.Windows.Forms.Label();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.m_btnAlltKarfa = new System.Windows.Forms.Button();
@@ -68,7 +75,12 @@
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).BeginInit();
+            this.splitContainer7.Panel1.SuspendLayout();
+            this.splitContainer7.Panel2.SuspendLayout();
+            this.splitContainer7.SuspendLayout();
             this.m_grbMalInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvLeitarNidurstodur)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
@@ -149,7 +161,7 @@
             // 
             // splitContainer3.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.m_grbMalInfo);
+            this.splitContainer3.Panel1.Controls.Add(this.splitContainer7);
             // 
             // splitContainer3.Panel2
             // 
@@ -158,13 +170,33 @@
             this.splitContainer3.SplitterDistance = 188;
             this.splitContainer3.TabIndex = 4;
             // 
+            // splitContainer7
+            // 
+            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer7.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer7.Name = "splitContainer7";
+            // 
+            // splitContainer7.Panel1
+            // 
+            this.splitContainer7.Panel1.Controls.Add(this.m_grbMalInfo);
+            // 
+            // splitContainer7.Panel2
+            // 
+            this.splitContainer7.Panel2.Controls.Add(this.m_dgvLeitarNidurstodur);
+            this.splitContainer7.Panel2.Controls.Add(this.m_btnLeita);
+            this.splitContainer7.Panel2.Controls.Add(this.m_tboLeita);
+            this.splitContainer7.Panel2.Controls.Add(this.m_lblLeitNidurstsodur);
+            this.splitContainer7.Size = new System.Drawing.Size(767, 188);
+            this.splitContainer7.SplitterDistance = 294;
+            this.splitContainer7.TabIndex = 4;
+            // 
             // m_grbMalInfo
             // 
             this.m_grbMalInfo.Controls.Add(this.m_lblMalInfo);
             this.m_grbMalInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbMalInfo.Location = new System.Drawing.Point(0, 0);
             this.m_grbMalInfo.Name = "m_grbMalInfo";
-            this.m_grbMalInfo.Size = new System.Drawing.Size(767, 188);
+            this.m_grbMalInfo.Size = new System.Drawing.Size(294, 188);
             this.m_grbMalInfo.TabIndex = 3;
             this.m_grbMalInfo.TabStop = false;
             this.m_grbMalInfo.Text = "Upplýsingar um mál";
@@ -177,6 +209,72 @@
             this.m_lblMalInfo.Size = new System.Drawing.Size(38, 15);
             this.m_lblMalInfo.TabIndex = 2;
             this.m_lblMalInfo.Text = "label1";
+            // 
+            // m_dgvLeitarNidurstodur
+            // 
+            this.m_dgvLeitarNidurstodur.AllowUserToAddRows = false;
+            this.m_dgvLeitarNidurstodur.AllowUserToDeleteRows = false;
+            this.m_dgvLeitarNidurstodur.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.m_dgvLeitarNidurstodur.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colID,
+            this.colTitill});
+            this.m_dgvLeitarNidurstodur.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.m_dgvLeitarNidurstodur.Location = new System.Drawing.Point(0, 73);
+            this.m_dgvLeitarNidurstodur.Name = "m_dgvLeitarNidurstodur";
+            this.m_dgvLeitarNidurstodur.ReadOnly = true;
+            this.m_dgvLeitarNidurstodur.RowHeadersVisible = false;
+            this.m_dgvLeitarNidurstodur.RowTemplate.Height = 25;
+            this.m_dgvLeitarNidurstodur.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.m_dgvLeitarNidurstodur.Size = new System.Drawing.Size(469, 115);
+            this.m_dgvLeitarNidurstodur.TabIndex = 3;
+            this.m_dgvLeitarNidurstodur.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvLeitarNidurstodur_CellClick);
+            this.m_dgvLeitarNidurstodur.SelectionChanged += new System.EventHandler(this.m_dgvLeitarNidurstodur_SelectionChanged);
+            this.m_dgvLeitarNidurstodur.SizeChanged += new System.EventHandler(this.m_dgvLeitarNidurstodur_SizeChanged);
+            // 
+            // colID
+            // 
+            this.colID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colID.DataPropertyName = "documentid";
+            this.colID.HeaderText = "ID";
+            this.colID.Name = "colID";
+            this.colID.ReadOnly = true;
+            this.colID.Width = 43;
+            // 
+            // colTitill
+            // 
+            this.colTitill.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colTitill.DataPropertyName = "doctitill";
+            this.colTitill.HeaderText = "Titill skjals";
+            this.colTitill.Name = "colTitill";
+            this.colTitill.ReadOnly = true;
+            // 
+            // m_btnLeita
+            // 
+            this.m_btnLeita.Location = new System.Drawing.Point(351, 18);
+            this.m_btnLeita.Name = "m_btnLeita";
+            this.m_btnLeita.Size = new System.Drawing.Size(75, 23);
+            this.m_btnLeita.TabIndex = 2;
+            this.m_btnLeita.Text = "Leita";
+            this.m_btnLeita.UseVisualStyleBackColor = true;
+            this.m_btnLeita.Click += new System.EventHandler(this.m_btnLeita_Click);
+            // 
+            // m_tboLeita
+            // 
+            this.m_tboLeita.Location = new System.Drawing.Point(16, 19);
+            this.m_tboLeita.Name = "m_tboLeita";
+            this.m_tboLeita.Size = new System.Drawing.Size(296, 23);
+            this.m_tboLeita.TabIndex = 1;
+            this.m_tboLeita.KeyUp += new System.Windows.Forms.KeyEventHandler(this.m_tboLeita_KeyUp);
+            // 
+            // m_lblLeitNidurstsodur
+            // 
+            this.m_lblLeitNidurstsodur.AutoSize = true;
+            this.m_lblLeitNidurstsodur.Location = new System.Drawing.Point(16, 55);
+            this.m_lblLeitNidurstsodur.Name = "m_lblLeitNidurstsodur";
+            this.m_lblLeitNidurstsodur.Size = new System.Drawing.Size(38, 15);
+            this.m_lblLeitNidurstsodur.TabIndex = 0;
+            this.m_lblLeitNidurstsodur.Text = "label1";
+            this.m_lblLeitNidurstsodur.Visible = false;
             // 
             // splitContainer4
             // 
@@ -466,8 +564,14 @@
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.splitContainer7.Panel1.ResumeLayout(false);
+            this.splitContainer7.Panel2.ResumeLayout(false);
+            this.splitContainer7.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
+            this.splitContainer7.ResumeLayout(false);
             this.m_grbMalInfo.ResumeLayout(false);
             this.m_grbMalInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvLeitarNidurstodur)).EndInit();
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
@@ -528,5 +632,12 @@
         private DataGridViewTextBoxColumn colGagn;
         private DataGridViewTextBoxColumn colSlod;
         private DataGridViewTextBoxColumn colSQL;
+        private SplitContainer splitContainer7;
+        private Button m_btnLeita;
+        private TextBox m_tboLeita;
+        private Label m_lblLeitNidurstsodur;
+        private DataGridView m_dgvLeitarNidurstodur;
+        private DataGridViewTextBoxColumn colID;
+        private DataGridViewTextBoxColumn colTitill;
     }
 }

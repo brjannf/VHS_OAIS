@@ -344,6 +344,16 @@ namespace OAIS_ADMIN
         private void fyllaVörslustofnn(string strVarsla)
         {
             vörslustofnun.hreinsaHlut();
+
+            DataTable dt = vörslustofnun.getENUMKlasar();
+            DataRow r = dt.NewRow();
+            r["klasi"] = "Veldu klasa";
+            dt.Rows.InsertAt(r, 0);
+
+            m_comISDIAH_klasi.ValueMember = "klasi";
+            m_comISDIAH_klasi.DisplayMember = "klasi";
+            m_comISDIAH_klasi.DataSource = dt;
+
             string[] strSplit = strVarsla.Split('.');
             string strVarslaAuðkenni = strSplit[1];
             vörslustofnun.getVörslustofnun(strVarslaAuðkenni);
@@ -351,6 +361,7 @@ namespace OAIS_ADMIN
             {
                 vörslustofnun.auðkenni_5_1_1 = strVarslaAuðkenni;
                 m_tboISDIAH_auðkenni.Text = vörslustofnun.auðkenni_5_1_1;
+                m_comISDIAH_klasi.SelectedItem = vörslustofnun.klasi;
                 vörslustofnun.hver_skráði = virkurnotandi.nafn;
                 vörslustofnun.tegund_5_1_5_ = "Héraðsskjalasafn";
                 vörslustofnun.skráningarstaða_5_6_4 = "Drög að lýsingu";
@@ -556,7 +567,11 @@ namespace OAIS_ADMIN
                     {
                         errorProvider1.SetError(m_tboISDIAH_obinbert_heiti, "Vantar heiti vörslustofnunar");
                     }
-                    if(errorProvider1.HasErrors)
+                    if (m_comISDIAH_klasi.SelectedIndex == 0)
+                    {
+                        errorProvider1.SetError(m_comISDIAH_klasi, "Vantar að velja klasa");
+                    }
+                    if (errorProvider1.HasErrors)
                     {
                         return;
                     }
@@ -874,6 +889,14 @@ namespace OAIS_ADMIN
                 m_btnSkjalamyndariStadfesta.Text = "Staðfesta";
                 
                 
+            }
+        }
+
+        private void m_comISDIAH_klasi_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (m_comISDIAH_klasi.SelectedIndex != 0)
+            {
+                vörslustofnun.klasi = m_comISDIAH_klasi.SelectedValue.ToString();
             }
         }
     }

@@ -330,8 +330,9 @@ namespace cClassOAIS
             dt = ds.Tables[0];
             return dt;
         }
-        public void vistaFyrirSpurn(string strFyrirspurn, string strDatabase, string strNafn, string strLysing)
+        public string vistaFyrirSpurn(string strFyrirspurn, string strDatabase, string strNafn, string strLysing, string strID)
         {
+            string strREt = "0";
             MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
             conn.Open();
                 MySqlCommand command = new MySqlCommand("", conn);
@@ -341,11 +342,27 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@lysing", strLysing);
             command.Parameters.AddWithValue("@gagnagrunnur", strDatabase);
 
-            command.CommandText = "INSERT INTO `dt_fyrirspurnir` SET  `nafn`=@nafn,`fyrirspurn`=@fyrirspurn,`lysing`=@lysing,`gagangrunnur`=@gagangrunnur";
+            if(strID == "0" || strID == string.Empty)
+            {
+                command.CommandText = "INSERT INTO `dt_fyrirspurnir` SET  `nafn`=@nafn,`fyrirspurn`=@fyrirspurn,`lysing`=@lysing,`gagnagrunnur`=@gagnagrunnur";
+                var id = MySqlHelper.ExecuteScalar(m_strTengingOAIS, "SELECT max(id) FROM dt_fyrirspurnir d ;");
+                if (id != DBNull.Value)
+                {
+                    strREt = id.ToString();
+                }
+
+            }
+            else
+            {
+                command.CommandText = "UPDATE`dt_fyrirspurnir` SET  `nafn`=@nafn,`fyrirspurn`=@fyrirspurn,`lysing`=@lysing,`gagnagrunnur`=@gagnagrunnur WHERE id =" + strID + ";" ;
+            }
+
+           
 
             command.ExecuteNonQuery();
             conn.Dispose();
             command.Dispose();
+            return strREt;
         }
 
         public DataTable leit(string strLeitarord)
@@ -491,7 +508,57 @@ namespace cClassOAIS
             }
             return strRet;
         }
-       // private string str
+
+        public DataTable leitInnraDataTable(string strLeitarord, string strGagnagrunnur)
+        {
+            string strRet = string.Empty;
+            string strSQL = string.Empty;
+            if (strLeitarord.Length != 0)
+            {
+                strSQL = string.Format("Select distinct documentid, doctitill  FROM dt_midlun m WHERE MATCH (doctitill,docLastWriten,maltitill, docInnihald)AGAINST ('{0}' IN BOOLEAN MODE) and heiti_gagangrunns = '{1}';", strLeitarord, strGagnagrunnur);
+            }
+            else
+            {
+                strSQL = string.Format("SELECT group_concat(documentid) , d.* FROM dt_midlun d WHERE  heiti_gagangrunns = '{0}' ", strGagnagrunnur);
+            }
+            if (this.Upphafsdags != null || this.Endadags != null)
+            {
+                if (this.Upphafsdags == null && this.Endadags != null)
+                {
+                    DateTime dtEnd = Convert.ToDateTime(this.Endadags);
+                    string strEnd = dtEnd.Year.ToString() + "-" + dtEnd.Month.ToString() + "-" + dtEnd.Day.ToString();
+
+                    strSQL += " AND DATE(docLastWriten) <= '" + strEnd + "' ";
+
+                }
+                if (this.Upphafsdags != null && this.Endadags == null)
+                {
+                    DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
+                    string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
+                    strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' ";
+
+                }
+                if (this.Upphafsdags != null && this.Endadags != null)
+                {
+                    DateTime dtEnd = Convert.ToDateTime(this.Endadags);
+                    string strEnd = dtEnd.Year.ToString() + "-" + dtEnd.Month.ToString() + "-" + dtEnd.Day.ToString();
+
+                    DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
+                    string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
+
+                    strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' AND DATE(docLastWriten) <= '" + strEnd + "' ";
+
+                }
+            }
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+
+
+
+        // private string str
         public string getFyrirspurn(string strDatabase)
         {
             string strRet = string.Empty;
@@ -520,13 +587,50 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
-
+        public DataTable getGagnagrunnaFyrirSpurnirMidlun(string strGagnagrunnur)
+        {
+            string strSQL = string.Format("SELECT id, nafn as name, fyrirspurn as queryOriginal, lysing as description, gagnagrunnur as _database FROM db_oais_admin.dt_fyrirspurnir d where gagnagrunnur = '{0}';", strGagnagrunnur);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
         public DataTable getGagnagrunna()
         {
             string strSQL = "SELECT * FROM db_oais_admin.ds_gagnagrunnar d;";
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
+        }
+        public void eydaFyrirspurnum(string strGagnagrunnur)
+        {
+            string strSQL = string.Empty;
+            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand(strSQL, conn);
+
+            
+            command.CommandText = string.Format ("delete FROM dt_fyrirspurnir  where gagnagrunnur = '{0}';", strGagnagrunnur);
+            command.ExecuteNonQuery();
+
+            conn.Dispose();
+            command.Dispose();
+           
+        }
+
+        public void dropDatabase(string strGagnagrunnur)
+        {
+            string strSQL = string.Empty;
+            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand(strSQL, conn);
+
+
+            command.CommandText = string.Format("drop database {0};", strGagnagrunnur);
+            command.ExecuteNonQuery();
+
+            conn.Dispose();
+            command.Dispose();
+
         }
 
     }

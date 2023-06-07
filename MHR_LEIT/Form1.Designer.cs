@@ -300,6 +300,7 @@
             this.m_dgvLeit.ReadOnly = true;
             this.m_dgvLeit.RowHeadersVisible = false;
             this.m_dgvLeit.RowTemplate.Height = 25;
+            this.m_dgvLeit.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.m_dgvLeit.Size = new System.Drawing.Size(1357, 418);
             this.m_dgvLeit.TabIndex = 0;
             this.m_dgvLeit.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvLeit_CellClick);

@@ -25,11 +25,12 @@ namespace OAIS_ADMIN
         {
             InitializeComponent();
             fyllaVorsluUtgafur();
+            splitContainer1.SplitterDistance = 250;
         }
-        private void fyllaVorsluUtgafur()
+        public void fyllaVorsluUtgafur()
         {
             cSkjalaskra skrá = new cSkjalaskra();
-            DataTable dt = skrá.getVörsluútgáfur();
+            DataTable dt = skrá.getVörsluútgáfurMidlun();
 
             m_dgvUtgafur.AutoGenerateColumns = false;
             DataTable dtFormat = formatTable(dt);
@@ -86,7 +87,7 @@ namespace OAIS_ADMIN
                     m_strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
                     //1. auðkenni vörsluútgáfu
                     string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
-                    skrá.getSkraning(strAuðkenni);
+                    skrá.getSkraning(strAuðkenni.Replace("FRUM","AVID"));
                     m_strGrunnur = skrá.auðkenni_3_1_1.Replace(".", "_");
                     //2. auðkenni vörslustofnunar
                     string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
@@ -94,22 +95,67 @@ namespace OAIS_ADMIN
                     //3. auðkenni skjalamyndara
                     string strSkjalam = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
                     skjalamyndari.getSkjalamyndaraByAuðkenni(strSkjalam);
+                    m_lblValinVorsluutgafa.Text = senderGrid.Rows[e.RowIndex].Cells["colTitill"].Value.ToString();
+                    m_lblValinVorsluutgafa.Visible = true;
 
-                   // midla(strslod);
+                    // midla(strslod);
                 }
-                //uppfæra vorsluutgafu
+
                 cVorsluutgafur utgafa = new cVorsluutgafur();
                 utgafa.getVörsluútgáfu(skrá.auðkenni_3_1_1);
-                utgafa.midlun = "1";
-                utgafa.hver_midladi = virkurnotandi.nafn;
-                utgafa.uppFaeraVegnaMidlun();
+                if (Convert.ToBoolean(Convert.ToInt32(utgafa.midlun)))
+                {
+                    DataTable dtFyrirspurnir = midlun.getGagnagrunnaFyrirSpurnirMidlun(skrá.auðkenni_3_1_1.Replace(".", "_"));
+                    m_dgvUtgafur.AutoGenerateColumns = false;
+                    m_dgvFyrirSpurnir.DataSource = dtFyrirspurnir;
+                    foreach(DataGridViewRow r in m_dgvFyrirSpurnir.Rows)
+                    {
+                        if(r.Cells["colID"].Value != null)
+                        {
+                            if (r.Cells["colID"].Value.ToString() != "0")
+                            {
+                                r.DefaultCellStyle.BackColor = Color.LightGreen;
+                            }
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    string strTableIndex = m_strSlod + "\\Indices\\tableIndex.xml";
+                    DataSet ds = new DataSet();
+                    ds.ReadXml(strTableIndex);
+                    if (ds.Tables.Contains("view"))
+                    {
+                        DataTable dt = ds.Tables["view"];
+                        dt.Columns.Add("database");
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                           // dr["database"] = strDataBase;
+                        }
+                        m_dgvUtgafur.AutoGenerateColumns = false;
+                        m_dgvFyrirSpurnir.DataSource = ds.Tables["view"];
+                    }
+                }
+           
+                //uppfæra vorsluutgafu
+                //cVorsluutgafur utgafa = new cVorsluutgafur();
+                //utgafa.getVörsluútgáfu(skrá.auðkenni_3_1_1);
+                //utgafa.midlun = "1";
+                //utgafa.hver_midladi = virkurnotandi.nafn;
+                //utgafa.uppFaeraVegnaMidlun();
             }
 
         }
 
         private void midla(string strSlod)
         {
-
+            //þarf að fara neðar
+            cVorsluutgafur utgafa = new cVorsluutgafur();
+            utgafa.getVörsluútgáfu(skrá.auðkenni_3_1_1);
+            utgafa.midlun = "1";
+            utgafa.hver_midladi = virkurnotandi.nafn;
+            utgafa.uppFaeraVegnaMidlun();
             //1. búa til gagnagrunninn
             string strDataBase = skrá.auðkenni_3_1_1;
             strDataBase = strDataBase.Replace(".", "_");
@@ -358,31 +404,47 @@ namespace OAIS_ADMIN
                
             }
             MessageBox.Show("Búið");
+            m_grbStatus.Visible = false;
         }
 
         private void m_dgvFyrirSpurnir_CellClick(object sender, DataGridViewCellEventArgs e)
         {
 
             var senderGrid = (DataGridView)sender;
-
+            string strID = string.Empty;
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
                 if (senderGrid.Columns["colBtnPrófa"].Index == e.ColumnIndex)
                 {
+                  
+                    
                     //0. ná í stlóð á vörsluútgáfu
                     string strFyrirspurn = senderGrid.Rows[e.RowIndex].Cells["colFyrirFyrirspurn"].Value.ToString();
                    // string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
                     frmFyrirspurnProfa frmTest = new frmFyrirspurnProfa(strFyrirspurn, m_strGrunnur);
-                    frmTest.Show();
+                    frmTest.ShowDialog();
+                    senderGrid.Rows[e.RowIndex].Cells["colFyrirFyrirspurn"].Value = frmTest.m_strFyrirspurn;
+
                 }
                 if (senderGrid.Columns["colBtnVista"].Index == e.ColumnIndex)
                 {
+                    if (senderGrid.Rows[e.RowIndex].Cells["colID"].Value != null)
+                    {
+                        strID = senderGrid.Rows[e.RowIndex].Cells["colID"].Value.ToString();
+                    }
+                    else
+                    {
+                        strID = "0";
+                    }
                     string strFyrirspurn = senderGrid.Rows[e.RowIndex].Cells["colFyrirFyrirspurn"].Value.ToString();
+                  
                   // string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
                     string strNafn = senderGrid.Rows[e.RowIndex].Cells["colFyrirNafn"].Value.ToString();
                     string strLysing = senderGrid.Rows[e.RowIndex].Cells["colFyrirLýsing"].Value.ToString();
-                    midlun.vistaFyrirSpurn(strFyrirspurn, m_strGrunnur, strNafn, strLysing);
+                     strID =  midlun.vistaFyrirSpurn(strFyrirspurn, m_strGrunnur, strNafn, strLysing, strID);
                     MessageBox.Show("Fyrirspurn vistuð");
+                    senderGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+                    senderGrid.Rows[e.RowIndex].Cells["colID"].Value = strID;
                 }
             }
            
@@ -395,21 +457,31 @@ namespace OAIS_ADMIN
 
         private void m_btnkeyra_Click(object sender, EventArgs e)
         {
-            if(m_comTegundVörslu.Text == "Gagnagrunnur")
+            if(m_comTegundVörslu.Text != "")
             {
-                cMIdlun midlun = new cMIdlun();
-                midlun.heiti_gagangrunns = m_strGrunnur;
-                midlun.vorsluutgafa = skrá.auðkenni_3_1_1;
-                string strOrginal = string.Empty;
-                string strTableIndex = m_strSlod + "\\Indices\\tableIndex.xml";
-                DataSet ds = new DataSet();
-                ds.ReadXml(strTableIndex);
+                if (m_comTegundVörslu.Text == "Gagnagrunnur")
                 {
-                    strOrginal = ds.Tables[0].Rows[0]["dbName"].ToString().Replace("\"", "").Replace(" ", "_");
+                    cMIdlun midlun = new cMIdlun();
+                    midlun.heiti_gagangrunns = m_strGrunnur;
+                    midlun.vorsluutgafa = skrá.auðkenni_3_1_1;
+                    string strOrginal = string.Empty;
+                    string strTableIndex = m_strSlod + "\\Indices\\tableIndex.xml";
+                    DataSet ds = new DataSet();
+                    ds.ReadXml(strTableIndex);
+                    {
+                        strOrginal = ds.Tables[0].Rows[0]["dbName"].ToString().Replace("\"", "").Replace(" ", "_");
+                    }
+                    midlun.vistaGagnagrunn(strOrginal);
                 }
-                midlun.vistaGagnagrunn(strOrginal);
+                m_grbStatus.Visible = true;
+                midla(m_strSlod);
+                fyllaVorsluUtgafur();
             }
-            midla(m_strSlod);
+            else
+            {
+                MessageBox.Show("Veldu tegund");
+            }
+       
         }
     }
 }

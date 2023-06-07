@@ -75,6 +75,8 @@
             this.m_tboISADG_auðkenni = new System.Windows.Forms.TextBox();
             this.m_lblISADG_Auðkenni = new System.Windows.Forms.Label();
             this.m_grbISDIAH = new System.Windows.Forms.GroupBox();
+            this.m_lblISDIAH_klasi = new System.Windows.Forms.Label();
+            this.m_comISDIAH_klasi = new System.Windows.Forms.ComboBox();
             this.m_lblHeitVarslaVantar = new System.Windows.Forms.Label();
             this.m_btnVörslustofnunStaðfesta = new System.Windows.Forms.Button();
             this.m_tboISDIAH_obinbert_heiti = new System.Windows.Forms.TextBox();
@@ -596,6 +598,8 @@
             // 
             // m_grbISDIAH
             // 
+            this.m_grbISDIAH.Controls.Add(this.m_lblISDIAH_klasi);
+            this.m_grbISDIAH.Controls.Add(this.m_comISDIAH_klasi);
             this.m_grbISDIAH.Controls.Add(this.m_lblHeitVarslaVantar);
             this.m_grbISDIAH.Controls.Add(this.m_btnVörslustofnunStaðfesta);
             this.m_grbISDIAH.Controls.Add(this.m_tboISDIAH_obinbert_heiti);
@@ -611,10 +615,28 @@
             this.m_grbISDIAH.TabStop = false;
             this.m_grbISDIAH.Text = "1. Vörslustofnun";
             // 
+            // m_lblISDIAH_klasi
+            // 
+            this.m_lblISDIAH_klasi.AutoSize = true;
+            this.m_lblISDIAH_klasi.Location = new System.Drawing.Point(23, 30);
+            this.m_lblISDIAH_klasi.Name = "m_lblISDIAH_klasi";
+            this.m_lblISDIAH_klasi.Size = new System.Drawing.Size(31, 15);
+            this.m_lblISDIAH_klasi.TabIndex = 11;
+            this.m_lblISDIAH_klasi.Text = "Klasi";
+            // 
+            // m_comISDIAH_klasi
+            // 
+            this.m_comISDIAH_klasi.FormattingEnabled = true;
+            this.m_comISDIAH_klasi.Location = new System.Drawing.Point(144, 27);
+            this.m_comISDIAH_klasi.Name = "m_comISDIAH_klasi";
+            this.m_comISDIAH_klasi.Size = new System.Drawing.Size(296, 23);
+            this.m_comISDIAH_klasi.TabIndex = 10;
+            this.m_comISDIAH_klasi.SelectedIndexChanged += new System.EventHandler(this.m_comISDIAH_klasi_SelectedIndexChanged);
+            // 
             // m_lblHeitVarslaVantar
             // 
             this.m_lblHeitVarslaVantar.AutoSize = true;
-            this.m_lblHeitVarslaVantar.Location = new System.Drawing.Point(150, 129);
+            this.m_lblHeitVarslaVantar.Location = new System.Drawing.Point(156, 159);
             this.m_lblHeitVarslaVantar.Name = "m_lblHeitVarslaVantar";
             this.m_lblHeitVarslaVantar.Size = new System.Drawing.Size(233, 15);
             this.m_lblHeitVarslaVantar.TabIndex = 9;
@@ -633,7 +655,7 @@
             // 
             // m_tboISDIAH_obinbert_heiti
             // 
-            this.m_tboISDIAH_obinbert_heiti.Location = new System.Drawing.Point(147, 87);
+            this.m_tboISDIAH_obinbert_heiti.Location = new System.Drawing.Point(147, 114);
             this.m_tboISDIAH_obinbert_heiti.Name = "m_tboISDIAH_obinbert_heiti";
             this.m_tboISDIAH_obinbert_heiti.Size = new System.Drawing.Size(293, 23);
             this.m_tboISDIAH_obinbert_heiti.TabIndex = 3;
@@ -642,7 +664,7 @@
             // m_lblISDIAH_Obinbert_heiti
             // 
             this.m_lblISDIAH_Obinbert_heiti.AutoSize = true;
-            this.m_lblISDIAH_Obinbert_heiti.Location = new System.Drawing.Point(24, 90);
+            this.m_lblISDIAH_Obinbert_heiti.Location = new System.Drawing.Point(24, 117);
             this.m_lblISDIAH_Obinbert_heiti.Name = "m_lblISDIAH_Obinbert_heiti";
             this.m_lblISDIAH_Obinbert_heiti.Size = new System.Drawing.Size(110, 15);
             this.m_lblISDIAH_Obinbert_heiti.TabIndex = 2;
@@ -651,7 +673,7 @@
             // m_tboISDIAH_auðkenni
             // 
             this.m_tboISDIAH_auðkenni.Enabled = false;
-            this.m_tboISDIAH_auðkenni.Location = new System.Drawing.Point(147, 43);
+            this.m_tboISDIAH_auðkenni.Location = new System.Drawing.Point(147, 70);
             this.m_tboISDIAH_auðkenni.Name = "m_tboISDIAH_auðkenni";
             this.m_tboISDIAH_auðkenni.Size = new System.Drawing.Size(293, 23);
             this.m_tboISDIAH_auðkenni.TabIndex = 1;
@@ -659,7 +681,7 @@
             // m_lblISDIAH_auðkenni
             // 
             this.m_lblISDIAH_auðkenni.AutoSize = true;
-            this.m_lblISDIAH_auðkenni.Location = new System.Drawing.Point(24, 43);
+            this.m_lblISDIAH_auðkenni.Location = new System.Drawing.Point(24, 70);
             this.m_lblISDIAH_auðkenni.Name = "m_lblISDIAH_auðkenni";
             this.m_lblISDIAH_auðkenni.Size = new System.Drawing.Size(88, 15);
             this.m_lblISDIAH_auðkenni.TabIndex = 0;
@@ -761,5 +783,7 @@
         private ProgressBar m_prbFRUM;
         private GroupBox m_grbAvid;
         private GroupBox m_grbFRUM;
+        private Label m_lblISDIAH_klasi;
+        private ComboBox m_comISDIAH_klasi;
     }
 }
