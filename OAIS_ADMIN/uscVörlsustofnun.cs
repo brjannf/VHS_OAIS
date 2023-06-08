@@ -28,6 +28,7 @@ namespace OAIS_ADMIN
             virkurnotandi = virkur;
             fyllaSkraningarStöðu();
             fyllaSkraningarStig();
+            fyllaKlasa();
             fyllaVörslustofnun();
         }
 
@@ -45,6 +46,13 @@ namespace OAIS_ADMIN
             m_comSkrangingrStig_5_6_5.DataSource = dt;
             m_comSkrangingrStig_5_6_5.ValueMember = "gerd";
             m_comSkrangingrStig_5_6_5.DisplayMember = "gerd";
+        }
+        private void fyllaKlasa()
+        {
+            DataTable dt = vörslustofnun.getENUMKlasar();
+            m_comKlasi.DataSource = dt;
+            m_comKlasi.ValueMember = "klasi";
+            m_comKlasi.DisplayMember = "klasi";
         }
 
         private void fyllaVörslustofnun()
@@ -86,6 +94,7 @@ namespace OAIS_ADMIN
             m_tboTungumal_5_6_7.Text = vörslustofnun.tungumál_letur_5_6_7;
             m_tboHeimildir_5_6_8.Text = vörslustofnun.heimildir_5_6_8;
             m_tboAthugasemdir_5_6_9.Text = vörslustofnun.athugasemdir_5_6_9;
+            m_comKlasi.SelectedValue = vörslustofnun.klasi;
 
         }
 
@@ -158,6 +167,7 @@ namespace OAIS_ADMIN
             vörslustofnun.tungumál_letur_5_6_7 = m_tboTungumal_5_6_7.Text;
             vörslustofnun.heimildir_5_6_8 = m_tboHeimildir_5_6_8.Text;
             vörslustofnun.athugasemdir_5_6_9 = m_tboAthugasemdir_5_6_9.Text;
+            vörslustofnun.klasi = m_comKlasi.SelectedValue.ToString();
             vörslustofnun.hver_breytti = virkurnotandi.nafn;
 
             vörslustofnun.vista();

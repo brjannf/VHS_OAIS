@@ -260,6 +260,29 @@ namespace cClassOAIS
 
             return dt;
         }
+
+        public DataTable getAdgengiENUM()
+        {
+            string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as adgengi FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isadg_skráningar'AND COLUMN_NAME='3_4_1_skilyrði_aðgengi';");
+            var strengur = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
+            DataTable dt = new DataTable();
+            dt.Columns.Add("adgengi");
+            string[] strSplit = strengur.ToString().Split(',');
+            foreach (string str in strSplit)
+            {
+                DataRow r = dt.NewRow();
+                string strGerð = str.Replace("(", "");
+                strGerð = strGerð.Replace(")", "");
+                strGerð = strGerð.Replace("\'", "");
+                r["adgengi"] = strGerð;
+                dt.Rows.Add(r);
+                dt.AcceptChanges();
+
+            }
+
+            return dt;
+        }
     }
 
 }

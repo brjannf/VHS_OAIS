@@ -619,17 +619,24 @@ namespace cClassOAIS
 
         public void dropDatabase(string strGagnagrunnur)
         {
-            string strSQL = string.Empty;
-            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
-            conn.Open();
-            MySqlCommand command = new MySqlCommand(strSQL, conn);
+            try
+            {
+                string strSQL = string.Empty;
+                MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+                conn.Open();
+                MySqlCommand command = new MySqlCommand(strSQL, conn);
 
 
-            command.CommandText = string.Format("drop database {0};", strGagnagrunnur);
-            command.ExecuteNonQuery();
+                command.CommandText = string.Format("drop database {0};", strGagnagrunnur);
+                command.ExecuteNonQuery();
 
-            conn.Dispose();
-            command.Dispose();
+                conn.Dispose();
+                command.Dispose();
+            }
+            catch (Exception x)
+            {
+
+            }
 
         }
 

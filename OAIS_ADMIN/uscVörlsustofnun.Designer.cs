@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.m_tlp_1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.m_btn_5_1 = new System.Windows.Forms.Button();
             this.m_lblVorsluUtgafuNumer = new System.Windows.Forms.Label();
@@ -42,6 +43,7 @@
             this.m_tboErlendHeiti_5_1_3 = new System.Windows.Forms.TextBox();
             this.m_tboAnnaðHeiti_5_1_4 = new System.Windows.Forms.TextBox();
             this.m_tboTegund_5_1_5 = new System.Windows.Forms.TextBox();
+            this.m_comKlasi = new System.Windows.Forms.ComboBox();
             this.m_tpl_2 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.m_btn_5_2 = new System.Windows.Forms.Button();
@@ -134,6 +136,7 @@
             this.m_tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 196F));
             this.m_tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 517F));
             this.m_tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.m_tlp_1.Controls.Add(this.label3, 1, 6);
             this.m_tlp_1.Controls.Add(this.label1, 0, 1);
             this.m_tlp_1.Controls.Add(this.m_btn_5_1, 0, 0);
             this.m_tlp_1.Controls.Add(this.m_lblVorsluUtgafuNumer, 1, 1);
@@ -147,18 +150,31 @@
             this.m_tlp_1.Controls.Add(this.m_tboErlendHeiti_5_1_3, 2, 3);
             this.m_tlp_1.Controls.Add(this.m_tboAnnaðHeiti_5_1_4, 2, 4);
             this.m_tlp_1.Controls.Add(this.m_tboTegund_5_1_5, 2, 5);
+            this.m_tlp_1.Controls.Add(this.m_comKlasi, 2, 6);
             this.m_tlp_1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.m_tlp_1.Location = new System.Drawing.Point(67, 85);
             this.m_tlp_1.Name = "m_tlp_1";
-            this.m_tlp_1.RowCount = 6;
+            this.m_tlp_1.RowCount = 7;
             this.m_tlp_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.m_tlp_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.m_tlp_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.m_tlp_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.m_tlp_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.m_tlp_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.m_tlp_1.Size = new System.Drawing.Size(1138, 177);
+            this.m_tlp_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.m_tlp_1.Size = new System.Drawing.Size(1138, 206);
             this.m_tlp_1.TabIndex = 2;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.SystemColors.Control;
+            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label3.Location = new System.Drawing.Point(25, 177);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(31, 15);
+            this.label3.TabIndex = 51;
+            this.label3.Text = "Klasi";
             // 
             // label1
             // 
@@ -282,6 +298,15 @@
             this.m_tboTegund_5_1_5.Size = new System.Drawing.Size(912, 23);
             this.m_tboTegund_5_1_5.TabIndex = 34;
             // 
+            // m_comKlasi
+            // 
+            this.m_comKlasi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_comKlasi.FormattingEnabled = true;
+            this.m_comKlasi.Location = new System.Drawing.Point(222, 180);
+            this.m_comKlasi.Name = "m_comKlasi";
+            this.m_comKlasi.Size = new System.Drawing.Size(912, 23);
+            this.m_comKlasi.TabIndex = 52;
+            // 
             // m_tpl_2
             // 
             this.m_tpl_2.AutoSize = true;
@@ -301,7 +326,7 @@
             this.m_tpl_2.Controls.Add(this.label22, 1, 3);
             this.m_tpl_2.Controls.Add(this.m_tboSamskiptaaðilar_5_2_3, 2, 3);
             this.m_tpl_2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.m_tpl_2.Location = new System.Drawing.Point(67, 288);
+            this.m_tpl_2.Location = new System.Drawing.Point(64, 310);
             this.m_tpl_2.Name = "m_tpl_2";
             this.m_tpl_2.RowCount = 4;
             this.m_tpl_2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -432,7 +457,7 @@
             this.m_tpl_3.Controls.Add(this.label35, 1, 8);
             this.m_tpl_3.Controls.Add(this.m_tboUtgafur_5_3_8, 2, 8);
             this.m_tpl_3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.m_tpl_3.Location = new System.Drawing.Point(67, 427);
+            this.m_tpl_3.Location = new System.Drawing.Point(67, 443);
             this.m_tpl_3.Name = "m_tpl_3";
             this.m_tpl_3.RowCount = 9;
             this.m_tpl_3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -658,7 +683,7 @@
             this.m_tpl_4.Controls.Add(this.label44, 1, 3);
             this.m_tpl_4.Controls.Add(this.m_tboAdgengi_5_4_3, 2, 3);
             this.m_tpl_4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.m_tpl_4.Location = new System.Drawing.Point(67, 775);
+            this.m_tpl_4.Location = new System.Drawing.Point(68, 790);
             this.m_tpl_4.Name = "m_tpl_4";
             this.m_tpl_4.RowCount = 4;
             this.m_tpl_4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -772,7 +797,7 @@
             this.m_tpl_5.Controls.Add(this.label53, 1, 3);
             this.m_tpl_5.Controls.Add(this.m_tboAlmenning_5_5_3, 2, 3);
             this.m_tpl_5.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.m_tpl_5.Location = new System.Drawing.Point(67, 909);
+            this.m_tpl_5.Location = new System.Drawing.Point(67, 928);
             this.m_tpl_5.Name = "m_tpl_5";
             this.m_tpl_5.RowCount = 4;
             this.m_tpl_5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -898,7 +923,7 @@
             this.m_tpl_6.Controls.Add(this.label70, 1, 9);
             this.m_tpl_6.Controls.Add(this.m_tboAthugasemdir_5_6_9, 2, 9);
             this.m_tpl_6.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.m_tpl_6.Location = new System.Drawing.Point(67, 1044);
+            this.m_tpl_6.Location = new System.Drawing.Point(67, 1068);
             this.m_tpl_6.Name = "m_tpl_6";
             this.m_tpl_6.RowCount = 10;
             this.m_tpl_6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -1272,5 +1297,7 @@
         private Button m_btnVista;
         private Label m_lblBreytt;
         private Label m_lblSkrad;
+        private Label label3;
+        private ComboBox m_comKlasi;
     }
 }

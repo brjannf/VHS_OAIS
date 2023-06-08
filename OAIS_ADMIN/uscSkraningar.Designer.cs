@@ -705,11 +705,6 @@
             this.m_comAdgegni_3_4_1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_comAdgegni_3_4_1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_comAdgegni_3_4_1.FormattingEnabled = true;
-            this.m_comAdgegni_3_4_1.Items.AddRange(new object[] {
-            "Veldu aðgengi",
-            "ekkert aðgengi",
-            "fullt aðgengi",
-            "samningur"});
             this.m_comAdgegni_3_4_1.Location = new System.Drawing.Point(222, 25);
             this.m_comAdgegni_3_4_1.Name = "m_comAdgegni_3_4_1";
             this.m_comAdgegni_3_4_1.Size = new System.Drawing.Size(903, 23);

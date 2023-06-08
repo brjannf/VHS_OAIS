@@ -52,112 +52,81 @@ namespace OAIS_ADMIN
             m_comISAAR_nafn.DisplayMember = "5_1_2_opinbert_heiti";
             m_comISAAR_nafn.ValueMember = "id";
         }
-        private void m_lblDragDrop_Click(object sender, EventArgs e)
+        private void hreinsaform()
         {
+            m_grbTekksuma.BackColor = SystemColors.Window;
+            m_grbFlytjaSIP.BackColor = SystemColors.Window;
+            m_grbAvid.Visible = false;
+            m_grbFRUM.Visible = false;
+            m_grbSkyrsla.BackColor = SystemColors.Window;
+            m_pgbTekksuma.Visible = false;
+            m_lblTekkSuma.Visible = false;
+            m_dgvMD5Villur.Visible = false;
+            m_grbSkyrsla.Enabled = false;
+     
           
-            DialogResult result = folderBrowserDialog1.ShowDialog();
-            if (result == DialogResult.OK) 
-            {
-                string strFileIndex = folderBrowserDialog1.SelectedPath + "\\Indices\\fileIndex.xml";
-                string strArchiveIndex = folderBrowserDialog1.SelectedPath + "\\Indices\\archiveIndex.xml";
-                m_strSlodVarsla = folderBrowserDialog1.SelectedPath;
-                if (File.Exists(strFileIndex))
-                {
-                    string[] strSplit = folderBrowserDialog1.SelectedPath.Split('\\');
-                    string strVarsla = strSplit[strSplit.Length - 1];
-                    m_strRotVarsla = strVarsla;
-                    m_grbAvid.Text = strVarsla;
-                    //tékka hvort afhendinginn hefur verið skráð inn áður
-                    DataTable dtTil = skrá.getKvittun(strVarsla);
-                   if ( dtTil.Rows.Count != 0 && dtTil.Rows[0]["eytt"].ToString() == "0")
-                    {
-                        MessageBox.Show("Þessi vörsluútgáfa er þegar kominn inn í kerfið, hvað gerir maður þá?");
-                        m_btnKvittun.Enabled = true;
-                        m_grbSkyrsla.BackColor = Color.LightYellow;
-                        m_grbFlytjaSIP.BackColor = Color.LightGreen;
-                        m_grbTekksuma.BackColor = Color.LightGreen;
-                      //  m_grbISAAR.BackColor = Color.LightGreen;
-                       // m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
-                        fyllaSkjalamyndara(strArchiveIndex, strVarsla);
-                        if(skjalamyndari.ID != 0)
-                        {
-                            m_grbISAAR.BackColor = Color.LightGreen;
-                            m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
-                        }
-                        m_btnSkjalamyndariStadfesta.Enabled = true;
-                        m_grbISAAR.Enabled = true;
-                      
-                        fyllaSkjalaSkra(strArchiveIndex, strVarsla);
-                        m_grbISASG.Enabled = true;
-                        m_grbISASG.BackColor = Color.LightGreen;
-                        m_btnSkraningStaðfesta.Enabled = true;
-                        m_btnSkraningStaðfesta.Text = "Fullskrá";
-                        fyllaVörslustofnn(strVarsla);
-                        m_grbISDIAH.Enabled = true;
-                        m_grbISDIAH.BackColor = Color.LightGreen;
-                        m_btnVörslustofnunStaðfesta.Enabled =true;
-                        m_btnVörslustofnunStaðfesta.Text = "Fullskrá";
+            m_grbISDIAH.BackColor = SystemColors.Window;
+            m_grbISAAR.BackColor = SystemColors.Window;
+            m_grbISASG.BackColor = SystemColors.Window;
+
+            m_lblHeitVarslaVantar.Visible = false;
+            m_comISDIAH_klasi.DataSource = null;
+            m_tboISDIAH_obinbert_heiti.Text = string.Empty;
+            m_tboISDIAH_auðkenni.Text = string.Empty;
+            m_grbISDIAH.Enabled = false;
+            m_btnVörslustofnunStaðfesta.Text = "Staðfesta";
+
+            m_tboISAAR_auðkenni.Text = string.Empty;
+            m_comISAAR_gerð.DataSource = null;
+            m_comISAAR_nafn.Text = string.Empty;
+            m_grbISAAR.Enabled = false;
+         //   m_comISAAR_nafn.DataSource = null;
+            m_btnSkjalamyndariStadfesta.Text = "Staðfesta";
+
+            m_tboISADG_auðkenni.Text = string.Empty;
+            m_tboISADG_timabil.Text = string.Empty;
+            m_comISADG_aðgengi.DataSource = null;
+            m_tboISADG_titill.Text = string.Empty;
+            m_tboISADG_innihald.Text = string.Empty;
+            m_tboISADG_AFHNR.Text = string.Empty;
+            m_btnSkraningStaðfesta.Text = "Staðfesta";
+            m_grbISASG.Enabled = false;
+            m_grbFlytjaSIP.Enabled = false;
+
+            bool m_bISDIAH = false;
+            bool m_bISAAR = false;
+            bool m_bISADG = false;
+          //  bool m_bMD5 = false;
 
 
-                        return;
-                    }
-
-                    fyllaSkjalamyndara(strArchiveIndex, strVarsla);
-                    m_grbISDIAH.Enabled = true;
-                    fyllaSkjalaSkra(strArchiveIndex, strVarsla);
-                    m_grbISASG.Enabled = true;
-                    fyllaVörslustofnn(strVarsla);
-                    m_grbISAAR.Enabled = true;
-                    m_bMD5 = bMD5Test(strFileIndex, strVarsla);
-                   // m_btnFlytjaSIP.Enabled = true; //kommenta út svo
-
-
-                    if (m_bMD5)
-                    {
-                        m_grbTekksuma.BackColor = Color.LightGreen;
-                        if (m_bISDIAH && m_bISAAR && m_bISADG && m_bMD5)
-                        {
-                            m_btnFlytjaSIP.Enabled = true;
-                            m_grbFlytjaSIP.BackColor = Color.LightYellow;
-                        }
-
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Vantar fileIndex.xml");
-                }
-
-            }
         }
 
-       
-        private void m_pnlSIP_DragEnter(object sender, DragEventArgs e)
+        private void FyllaForm(string strFileIndex, string strArchiveIndex)
         {
-            var dropped = ((string[])e.Data.GetData(DataFormats.FileDrop));
-
-            string strFileIndex = dropped[0].ToString() + "\\Indices\\fileIndex.xml";
-            string strArchiveIndex = dropped[0].ToString() + "\\Indices\\archiveIndex.xml";
-            m_strSlodVarsla = dropped[0].ToString();
-
-            if (File.Exists(strFileIndex)) 
+            hreinsaform();
+            if (File.Exists(strFileIndex))
             {
-                string[] strSplit = dropped[0].ToString().Split('\\');
-                string strVarsla = strSplit[strSplit.Length-1];
+                string[] strSplit = m_strSlodVarsla.Split('\\');
+                string strVarsla = strSplit[strSplit.Length - 1];
                 m_strRotVarsla = strVarsla;
                 m_grbAvid.Text = strVarsla;
                 //tékka hvort afhendinginn hefur verið skráð inn áður
-
-                if (skrá.getKvittun(strVarsla).Rows.Count != 0)
+                DataTable dtTil = skrá.getKvittun(strVarsla);
+                if (dtTil.Rows.Count != 0 && dtTil.Rows[0]["eytt"].ToString() == "0")
                 {
-                    MessageBox.Show("Þessi vörsluútgáfa er þegar kominn inn í kerfið, hvað gerir maður þá?");
+                    //   MessageBox.Show("Þessi vörsluútgáfa er þegar kominn inn í kerfið, hvað gerir maður þá?");
                     m_btnKvittun.Enabled = true;
                     m_grbSkyrsla.BackColor = Color.LightYellow;
                     m_grbFlytjaSIP.BackColor = Color.LightGreen;
                     m_grbTekksuma.BackColor = Color.LightGreen;
+                    //  m_grbISAAR.BackColor = Color.LightGreen;
+                    // m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
                     fyllaSkjalamyndara(strArchiveIndex, strVarsla);
-                    m_grbISAAR.BackColor = Color.LightGreen;
-                    m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
+                    if (skjalamyndari.ID != 0)
+                    {
+                        m_grbISAAR.BackColor = Color.LightGreen;
+                        m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
+                    }
                     m_btnSkjalamyndariStadfesta.Enabled = true;
                     m_grbISAAR.Enabled = true;
 
@@ -171,21 +140,22 @@ namespace OAIS_ADMIN
                     m_grbISDIAH.BackColor = Color.LightGreen;
                     m_btnVörslustofnunStaðfesta.Enabled = true;
                     m_btnVörslustofnunStaðfesta.Text = "Fullskrá";
+                    m_grbSkyrsla.Enabled = true;
 
 
                     return;
                 }
 
-
-                m_strRotVarsla = strVarsla;
                 fyllaSkjalamyndara(strArchiveIndex, strVarsla);
                 m_grbISDIAH.Enabled = true;
                 fyllaSkjalaSkra(strArchiveIndex, strVarsla);
                 m_grbISASG.Enabled = true;
                 fyllaVörslustofnn(strVarsla);
                 m_grbISAAR.Enabled = true;
-
                 m_bMD5 = bMD5Test(strFileIndex, strVarsla);
+                // m_btnFlytjaSIP.Enabled = true; //kommenta út svo
+
+
                 if (m_bMD5)
                 {
                     m_grbTekksuma.BackColor = Color.LightGreen;
@@ -200,8 +170,95 @@ namespace OAIS_ADMIN
             else
             {
                 MessageBox.Show("Vantar fileIndex.xml");
-               
             }
+        }
+
+        private void m_lblDragDrop_Click(object sender, EventArgs e)
+        {
+
+            hreinsaform();
+
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK) 
+            {
+
+                string strFileIndex = folderBrowserDialog1.SelectedPath + "\\Indices\\fileIndex.xml";
+                string strArchiveIndex = folderBrowserDialog1.SelectedPath + "\\Indices\\archiveIndex.xml";
+                m_strSlodVarsla = folderBrowserDialog1.SelectedPath;
+                FyllaForm(strFileIndex, strArchiveIndex);
+                
+
+            }
+        }
+       
+        private void m_pnlSIP_DragEnter(object sender, DragEventArgs e)
+        {
+            var dropped = ((string[])e.Data.GetData(DataFormats.FileDrop));
+
+            string strFileIndex = dropped[0].ToString() + "\\Indices\\fileIndex.xml";
+            string strArchiveIndex = dropped[0].ToString() + "\\Indices\\archiveIndex.xml";
+            m_strSlodVarsla = dropped[0].ToString();
+            FyllaForm(strFileIndex, strArchiveIndex);
+           
+                
+            //if (File.Exists(strFileIndex)) 
+            //{
+            //    string[] strSplit = dropped[0].ToString().Split('\\');
+            //    string strVarsla = strSplit[strSplit.Length-1];
+            //    m_strRotVarsla = strVarsla;
+            //    m_grbAvid.Text = strVarsla;
+            //    //tékka hvort afhendinginn hefur verið skráð inn áður
+
+            //    if (skrá.getKvittun(strVarsla).Rows.Count != 0)
+            //    {
+            //        MessageBox.Show("Þessi vörsluútgáfa er þegar kominn inn í kerfið, hvað gerir maður þá?");
+            //        m_btnKvittun.Enabled = true;
+            //        m_grbSkyrsla.BackColor = Color.LightYellow;
+            //        m_grbFlytjaSIP.BackColor = Color.LightGreen;
+            //        m_grbTekksuma.BackColor = Color.LightGreen;
+            //        fyllaSkjalamyndara(strArchiveIndex, strVarsla);
+            //        m_grbISAAR.BackColor = Color.LightGreen;
+            //        m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
+            //        m_btnSkjalamyndariStadfesta.Enabled = true;
+            //        m_grbISAAR.Enabled = true;
+
+            //        fyllaSkjalaSkra(strArchiveIndex, strVarsla);
+            //        m_grbISASG.Enabled = true;
+            //        m_grbISASG.BackColor = Color.LightGreen;
+            //        m_btnSkraningStaðfesta.Enabled = true;
+            //        m_btnSkraningStaðfesta.Text = "Fullskrá";
+            //        fyllaVörslustofnn(strVarsla);
+            //        m_grbISDIAH.Enabled = true;
+            //        m_grbISDIAH.BackColor = Color.LightGreen;
+            //        m_btnVörslustofnunStaðfesta.Enabled = true;
+            //        m_btnVörslustofnunStaðfesta.Text = "Fullskrá";
+
+
+            //        return;
+            //    }
+
+
+            //    m_strRotVarsla = strVarsla;
+            //    fyllaSkjalamyndara(strArchiveIndex, strVarsla);
+            //    m_grbISDIAH.Enabled = true;
+            //    fyllaSkjalaSkra(strArchiveIndex, strVarsla);
+            //    m_grbISASG.Enabled = true;
+            //    fyllaVörslustofnn(strVarsla);
+            //    m_grbISAAR.Enabled = true;
+
+            //    m_bMD5 = bMD5Test(strFileIndex, strVarsla);
+            //    if (m_bMD5)
+            //    {
+            //        m_grbTekksuma.BackColor = Color.LightGreen;
+            //        if (m_bISDIAH && m_bISAAR && m_bISADG && m_bMD5)
+            //        {
+            //            m_btnFlytjaSIP.Enabled = true;
+            //            m_grbFlytjaSIP.BackColor = Color.LightYellow;
+            //        }
+
+            //    }
+            //}
+           
         }
 
         private bool bMD5Test(string strFileName, string strVarsla)
@@ -292,7 +349,17 @@ namespace OAIS_ADMIN
         private void fyllaSkjalaSkra(string strArchiveIndex, string strVarsla)
         {
             skrá.hreinsaHlut();
-            m_comISADG_aðgengi.Text = "Veldu aðgengi";
+            m_comISADG_aðgengi.Text = "";
+
+            DataTable dt = skrá.getAdgengiENUM();
+            DataRow r = dt.NewRow();
+            r["adgengi"] = "Veldu aðgengi";
+            dt.Rows.InsertAt(r, 0);
+
+            m_comISADG_aðgengi.ValueMember = "adgengi";
+            m_comISADG_aðgengi.DisplayMember = "adgengi";
+            m_comISADG_aðgengi.DataSource = dt;
+
             DataSet ds = new DataSet();
             ds.ReadXml(strArchiveIndex);
             skrá.auðkenni_3_1_1 = strVarsla;
@@ -361,7 +428,7 @@ namespace OAIS_ADMIN
             {
                 vörslustofnun.auðkenni_5_1_1 = strVarslaAuðkenni;
                 m_tboISDIAH_auðkenni.Text = vörslustofnun.auðkenni_5_1_1;
-                m_comISDIAH_klasi.SelectedItem = vörslustofnun.klasi;
+                m_comISDIAH_klasi.SelectedValue= vörslustofnun.klasi;
                 vörslustofnun.hver_skráði = virkurnotandi.nafn;
                 vörslustofnun.tegund_5_1_5_ = "Héraðsskjalasafn";
                 vörslustofnun.skráningarstaða_5_6_4 = "Drög að lýsingu";
@@ -459,6 +526,7 @@ namespace OAIS_ADMIN
                     m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
                     m_grbISAAR.BackColor = Color.LightGreen;
                     fyllaSkjalamyndaraLista();
+                    m_comISAAR_nafn.SelectedValue = skjalamyndari.ID;
                   //  m_comISAAR_nafn.SelectedValue = skjalamyndari.auðkenni_5_1_6;
                     m_btnSkraningStaðfesta.Enabled = true;
                     m_bISAAR = true;
@@ -537,6 +605,7 @@ namespace OAIS_ADMIN
 
             if (m_bISDIAH && m_bISAAR && m_bISADG && m_bMD5)
             {
+                m_grbFlytjaSIP.Enabled = true;
                 m_btnFlytjaSIP.Enabled = true;
                 m_grbFlytjaSIP.BackColor = Color.LightYellow;
             }
@@ -545,11 +614,15 @@ namespace OAIS_ADMIN
 
         private void m_comISAAR_gerð_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            if(m_comISAAR_gerð.SelectedIndex != 0 )
+            if(m_comISAAR_gerð.Focused)
             {
-                skjalamyndari.gerð_5_1_1 = m_comISAAR_gerð.SelectedValue.ToString();
+                if (m_comISAAR_gerð.SelectedIndex != 0)
+                {
+                    skjalamyndari.gerð_5_1_1 = m_comISAAR_gerð.SelectedValue.ToString();
+                }
+
             }
+          
         }
 
         private void m_btnVörslustofnunStaðfesta_Click(object sender, EventArgs e)
@@ -605,16 +678,29 @@ namespace OAIS_ADMIN
 
         private void m_tboISDIAH_obinbert_heiti_TextChanged(object sender, EventArgs e)
         {
-            vörslustofnun.opinbert_heiti_5_1_2 = m_tboISDIAH_obinbert_heiti.Text;
-            m_lblHeitVarslaVantar.Visible = false;
+            if(m_tboISDIAH_obinbert_heiti.Text != string.Empty)
+            {
+                vörslustofnun.opinbert_heiti_5_1_2 = m_tboISDIAH_obinbert_heiti.Text;
+                m_lblHeitVarslaVantar.Visible = false;
+            }
+            else
+            {
+                vörslustofnun.opinbert_heiti_5_1_2 = null;
+                m_lblHeitVarslaVantar.Visible = true;
+            }
+         
         }
 
         private void m_comISADG_aðgengi_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(m_comISADG_aðgengi.SelectedIndex != 0)
+            if(m_comISADG_aðgengi.Focused)
             {
-                skrá.skilyrði_aðgengi_3_4_1 = m_comISADG_aðgengi.SelectedItem.ToString();
+                if (m_comISADG_aðgengi.SelectedIndex != 0)
+                {
+                    skrá.skilyrði_aðgengi_3_4_1 = m_comISADG_aðgengi.SelectedValue.ToString();
+                }
             }
+           
         }
 
         private void m_btnFlytjaSIP_Click(object sender, EventArgs e)
@@ -728,6 +814,7 @@ namespace OAIS_ADMIN
             m_grbFlytjaSIP.BackColor = Color.LightGreen;
             m_grbSkyrsla.BackColor = Color.LightYellow;
             m_btnFlytjaSIP.Enabled = false;
+            m_grbSkyrsla.Enabled = true;
             m_btnKvittun.Enabled = true; 
             MessageBox.Show("Búið");
 
@@ -870,11 +957,7 @@ namespace OAIS_ADMIN
             m_grbSkyrsla.BackColor = Color.LightGreen;
         }
 
-        private void m_btnFjarlaegja_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Eftir að útfæra");
-        }
-
+       
         private void m_comISAAR_nafn_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(m_comISAAR_nafn.Focused)
@@ -887,17 +970,21 @@ namespace OAIS_ADMIN
                 m_comISAAR_gerð.SelectedValue = skjalamyndari.gerð_5_1_1;
                 m_grbISAAR.BackColor = Color.LightYellow;
                 m_btnSkjalamyndariStadfesta.Text = "Staðfesta";
-                
-                
+ 
             }
+            
         }
 
         private void m_comISDIAH_klasi_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (m_comISDIAH_klasi.SelectedIndex != 0)
+            if(m_comISDIAH_klasi.Focused)
             {
-                vörslustofnun.klasi = m_comISDIAH_klasi.SelectedValue.ToString();
+                if (m_comISDIAH_klasi.SelectedIndex != 0)
+                {
+                    vörslustofnun.klasi = m_comISDIAH_klasi.SelectedValue.ToString();
+                }
             }
+            
         }
     }
 }

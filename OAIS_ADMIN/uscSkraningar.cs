@@ -25,8 +25,10 @@ namespace OAIS_ADMIN
             InitializeComponent();
             skjalaskra = skjal;
             virkurnotandi = virkur;
+            fyllaAdgengi();
             fyllaUpplysingastig();
             fyllaSkjalasafn();
+          ;
         }
 
         private void fyllaUpplysingastig()
@@ -35,6 +37,14 @@ namespace OAIS_ADMIN
             m_comUpplysingastig_3_1_4.DataSource = dt;
             m_comUpplysingastig_3_1_4.ValueMember = "gerd";
             m_comUpplysingastig_3_1_4.DisplayMember = "gerd";
+        }
+
+        private void fyllaAdgengi()
+        {
+            DataTable dt = skjalaskra.getAdgengiENUM();
+            m_comAdgegni_3_4_1.DataSource = dt;
+            m_comAdgegni_3_4_1.ValueMember = "adgengi";
+            m_comAdgegni_3_4_1.DisplayMember = "adgengi";
         }
 
         private void fyllaSkjalasafn()
@@ -58,7 +68,7 @@ namespace OAIS_ADMIN
            m_tboTimaætlanir_3_3_2.Text = skjalaskra.tímaáætlanir_3_3_2;
            m_tboFyrirSkja_3_3_3.Text = skjalaskra.fyrirsjáanlegar_viðbætur_3_3_3;
            m_tboInnriSkipan_3_3_4.Text = skjalaskra.innri_skipan_3_3_4;
-           m_comAdgegni_3_4_1.Text = skjalaskra.skilyrði_aðgengi_3_4_1;
+           m_comAdgegni_3_4_1.SelectedValue = skjalaskra.skilyrði_aðgengi_3_4_1;
            m_tboEndurPrentun_3_4_2.Text = skjalaskra.skilyrði_endurprentun_3_4_2;
             if (string.IsNullOrEmpty(skjalaskra.tungumál_3_4_3))
             {
