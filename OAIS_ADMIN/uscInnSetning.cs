@@ -216,7 +216,7 @@ namespace OAIS_ADMIN
             //        m_grbSkyrsla.BackColor = Color.LightYellow;
             //        m_grbFlytjaSIP.BackColor = Color.LightGreen;
             //        m_grbTekksuma.BackColor = Color.LightGreen;
-            //        fyllaSkjalamyndara(strArchiveIndex, strVarsla);
+            //        fyllaSkjalamyndaraOLD(strArchiveIndex, strVarsla);
             //        m_grbISAAR.BackColor = Color.LightGreen;
             //        m_btnSkjalamyndariStadfesta.Text = "Fullskrá";
             //        m_btnSkjalamyndariStadfesta.Enabled = true;
@@ -239,7 +239,7 @@ namespace OAIS_ADMIN
 
 
             //    m_strRotVarsla = strVarsla;
-            //    fyllaSkjalamyndara(strArchiveIndex, strVarsla);
+            //    fyllaSkjalamyndaraOLD(strArchiveIndex, strVarsla);
             //    m_grbISDIAH.Enabled = true;
             //    fyllaSkjalaSkra(strArchiveIndex, strVarsla);
             //    m_grbISASG.Enabled = true;
@@ -414,7 +414,7 @@ namespace OAIS_ADMIN
 
             DataTable dt = vörslustofnun.getENUMKlasar();
             DataRow r = dt.NewRow();
-            r["klasi"] = "Veldu klasa";
+            r["klasi"] = "Veldu landsvæði";
             dt.Rows.InsertAt(r, 0);
 
             m_comISDIAH_klasi.ValueMember = "klasi";

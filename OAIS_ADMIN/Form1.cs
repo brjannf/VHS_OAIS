@@ -93,6 +93,7 @@ namespace OAIS_ADMIN
             if(m_tacMain.SelectedTab == m_tapGagnaUmsjon)
             {
                 uscGagnaUmsjon1.endurHressa();
+                uscGagnaUmsjon1.fyllaVörsluUtgafur();
             }
             if(m_tacMain.SelectedTab == m_tapMiðlun)
             {

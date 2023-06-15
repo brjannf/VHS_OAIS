@@ -196,6 +196,23 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
+
+        public DataTable getSkjalamyndaralistaGU()
+        {
+            string strSQL = "SELECT 5_1_6_auðkenni, 5_1_2_opinbert_heiti as heiti,5_1_1_gerð as gerd, 5_2_1_tímabil as timabil, hver_skráði, dags_skráð, 5_4_2_auðkenni_vörslustofnunar, '' as fullskra FROM db_oais_admin.dt_isaar_skjalamyndarar d order by 5_1_2_opinbert_heiti ;";
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getSkjalamyndaraVörslustofnun(string strVarsla)
+        {
+            string strSQL = string.Format("SELECT 5_1_1_auðkenni, 5_1_2_opinbert_heiti, klasar FROM db_oais_admin.`dt_isdiah_vörslustofnanir` d WHERE 5_1_1_auðkenni = '{0}';",strVarsla);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
         public DataTable getENUMSkraningStig()
         {
             string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE, 5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'db_oais_admin' AND TABLE_NAME = 'dt_isaar_skjalamyndarar'AND COLUMN_NAME = '5_4_5_skráningarstig'; ");

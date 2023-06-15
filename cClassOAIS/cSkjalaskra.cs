@@ -231,6 +231,14 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
+
+        public DataTable getVörsluútgáfurGU()
+        {
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_vörsluutgafur` d where vorsluutgafa not like 'frum%';");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
         public DataTable getVörsluútgáfurMidlun()
         {
             string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where eytt = 0");
