@@ -122,6 +122,8 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.m_grbLeitSkjalamyndari = new System.Windows.Forms.GroupBox();
+            this.m_comLeitSkjalmLok = new System.Windows.Forms.ComboBox();
+            this.m_comLeitSkjalmUpp = new System.Windows.Forms.ComboBox();
             this.m_btnLeitSkjalmHreinsa = new System.Windows.Forms.Button();
             this.m_btnLeitSkjalam = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
@@ -163,6 +165,12 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.m_grbVaralaLeit = new System.Windows.Forms.GroupBox();
+            this.m_btnLeitVarslaHreinsa = new System.Windows.Forms.Button();
+            this.m_btnLeitVarsla = new System.Windows.Forms.Button();
+            this.m_lblLeitVarslaKlasi = new System.Windows.Forms.Label();
+            this.m_lblLeitVarslaHeiti = new System.Windows.Forms.Label();
+            this.m_comLeitVarslaKlasi = new System.Windows.Forms.ComboBox();
+            this.m_comLeitVarslaHeiti = new System.Windows.Forms.ComboBox();
             this.m_dgvVorslustofnanir = new System.Windows.Forms.DataGridView();
             this.colVarslaAudkenni = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVarslaHeiti = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -188,8 +196,6 @@
             this.colVarslaUtgafaAudkenni = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVarslaUtgafaTitill = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.m_comLeitSkjalmUpp = new System.Windows.Forms.ComboBox();
-            this.m_comLeitSkjalmLok = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvUtgafur)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -244,6 +250,7 @@
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.m_grbVaralaLeit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvVorslustofnanir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).BeginInit();
             this.splitContainer9.Panel1.SuspendLayout();
@@ -796,9 +803,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(654, 83);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(97, 15);
+            this.label9.Size = new System.Drawing.Size(91, 15);
             this.label9.TabIndex = 13;
-            this.label9.Text = "Lokadagasetning";
+            this.label9.Text = "Lokadagsetning";
             // 
             // m_comUtgafaLeitSkjalamyndari
             // 
@@ -814,9 +821,9 @@
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(654, 35);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(113, 15);
+            this.label11.Size = new System.Drawing.Size(110, 15);
             this.label11.TabIndex = 12;
-            this.label11.Text = "Upphafsdagsetning:";
+            this.label11.Text = "Upphafsdagsetning";
             // 
             // m_lblUtgafaLeitSkjalamyndari
             // 
@@ -1272,6 +1279,24 @@
             this.m_grbLeitSkjalamyndari.TabStop = false;
             this.m_grbLeitSkjalamyndari.Text = "Leit";
             // 
+            // m_comLeitSkjalmLok
+            // 
+            this.m_comLeitSkjalmLok.FormattingEnabled = true;
+            this.m_comLeitSkjalmLok.Location = new System.Drawing.Point(762, 106);
+            this.m_comLeitSkjalmLok.Name = "m_comLeitSkjalmLok";
+            this.m_comLeitSkjalmLok.Size = new System.Drawing.Size(200, 23);
+            this.m_comLeitSkjalmLok.TabIndex = 21;
+            this.m_comLeitSkjalmLok.SelectedIndexChanged += new System.EventHandler(this.m_comLeitSkjalamyndaraHeiti_SelectedIndexChanged);
+            // 
+            // m_comLeitSkjalmUpp
+            // 
+            this.m_comLeitSkjalmUpp.FormattingEnabled = true;
+            this.m_comLeitSkjalmUpp.Location = new System.Drawing.Point(762, 39);
+            this.m_comLeitSkjalmUpp.Name = "m_comLeitSkjalmUpp";
+            this.m_comLeitSkjalmUpp.Size = new System.Drawing.Size(200, 23);
+            this.m_comLeitSkjalmUpp.TabIndex = 20;
+            this.m_comLeitSkjalmUpp.SelectedIndexChanged += new System.EventHandler(this.m_comLeitSkjalamyndaraHeiti_SelectedIndexChanged);
+            // 
             // m_btnLeitSkjalmHreinsa
             // 
             this.m_btnLeitSkjalmHreinsa.Location = new System.Drawing.Point(887, 157);
@@ -1280,6 +1305,7 @@
             this.m_btnLeitSkjalmHreinsa.TabIndex = 19;
             this.m_btnLeitSkjalmHreinsa.Text = "Hreinsa";
             this.m_btnLeitSkjalmHreinsa.UseVisualStyleBackColor = true;
+            this.m_btnLeitSkjalmHreinsa.Click += new System.EventHandler(this.m_btnLeitSkjalmHreinsa_Click);
             // 
             // m_btnLeitSkjalam
             // 
@@ -1294,20 +1320,20 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(636, 106);
+            this.label13.Location = new System.Drawing.Point(648, 114);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(97, 15);
+            this.label13.Size = new System.Drawing.Size(55, 15);
             this.label13.TabIndex = 17;
-            this.label13.Text = "Lokadagasetning";
+            this.label13.Text = "Lokadaár";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(636, 50);
+            this.label14.Location = new System.Drawing.Point(642, 42);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(113, 15);
+            this.label14.Size = new System.Drawing.Size(61, 15);
             this.label14.TabIndex = 16;
-            this.label14.Text = "Upphafsdagsetning:";
+            this.label14.Text = "Upphafsár";
             // 
             // m_lblLeitSkjalmGerd
             // 
@@ -1325,6 +1351,7 @@
             this.m_comLeitSkjalmGerd.Name = "m_comLeitSkjalmGerd";
             this.m_comLeitSkjalmGerd.Size = new System.Drawing.Size(451, 23);
             this.m_comLeitSkjalmGerd.TabIndex = 2;
+            this.m_comLeitSkjalmGerd.SelectedIndexChanged += new System.EventHandler(this.m_comLeitSkjalamyndaraHeiti_SelectedIndexChanged);
             // 
             // m_lblLeitSkjalmHeiti
             // 
@@ -1724,6 +1751,12 @@
             // 
             // m_grbVaralaLeit
             // 
+            this.m_grbVaralaLeit.Controls.Add(this.m_btnLeitVarslaHreinsa);
+            this.m_grbVaralaLeit.Controls.Add(this.m_btnLeitVarsla);
+            this.m_grbVaralaLeit.Controls.Add(this.m_lblLeitVarslaKlasi);
+            this.m_grbVaralaLeit.Controls.Add(this.m_lblLeitVarslaHeiti);
+            this.m_grbVaralaLeit.Controls.Add(this.m_comLeitVarslaKlasi);
+            this.m_grbVaralaLeit.Controls.Add(this.m_comLeitVarslaHeiti);
             this.m_grbVaralaLeit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbVaralaLeit.Location = new System.Drawing.Point(0, 0);
             this.m_grbVaralaLeit.Name = "m_grbVaralaLeit";
@@ -1731,6 +1764,62 @@
             this.m_grbVaralaLeit.TabIndex = 1;
             this.m_grbVaralaLeit.TabStop = false;
             this.m_grbVaralaLeit.Text = "Leit";
+            // 
+            // m_btnLeitVarslaHreinsa
+            // 
+            this.m_btnLeitVarslaHreinsa.Location = new System.Drawing.Point(868, 151);
+            this.m_btnLeitVarslaHreinsa.Name = "m_btnLeitVarslaHreinsa";
+            this.m_btnLeitVarslaHreinsa.Size = new System.Drawing.Size(75, 23);
+            this.m_btnLeitVarslaHreinsa.TabIndex = 21;
+            this.m_btnLeitVarslaHreinsa.Text = "Hreinsa";
+            this.m_btnLeitVarslaHreinsa.UseVisualStyleBackColor = true;
+            this.m_btnLeitVarslaHreinsa.Click += new System.EventHandler(this.m_btnLeitVarslaHreinsa_Click);
+            // 
+            // m_btnLeitVarsla
+            // 
+            this.m_btnLeitVarsla.Location = new System.Drawing.Point(744, 151);
+            this.m_btnLeitVarsla.Name = "m_btnLeitVarsla";
+            this.m_btnLeitVarsla.Size = new System.Drawing.Size(75, 23);
+            this.m_btnLeitVarsla.TabIndex = 20;
+            this.m_btnLeitVarsla.Text = "Leita";
+            this.m_btnLeitVarsla.UseVisualStyleBackColor = true;
+            this.m_btnLeitVarsla.Click += new System.EventHandler(this.m_btnLeitVarsla_Click);
+            // 
+            // m_lblLeitVarslaKlasi
+            // 
+            this.m_lblLeitVarslaKlasi.AutoSize = true;
+            this.m_lblLeitVarslaKlasi.Location = new System.Drawing.Point(92, 102);
+            this.m_lblLeitVarslaKlasi.Name = "m_lblLeitVarslaKlasi";
+            this.m_lblLeitVarslaKlasi.Size = new System.Drawing.Size(98, 15);
+            this.m_lblLeitVarslaKlasi.TabIndex = 3;
+            this.m_lblLeitVarslaKlasi.Text = "Landsvæði (klasi)";
+            // 
+            // m_lblLeitVarslaHeiti
+            // 
+            this.m_lblLeitVarslaHeiti.AutoSize = true;
+            this.m_lblLeitVarslaHeiti.Location = new System.Drawing.Point(92, 53);
+            this.m_lblLeitVarslaHeiti.Name = "m_lblLeitVarslaHeiti";
+            this.m_lblLeitVarslaHeiti.Size = new System.Drawing.Size(118, 15);
+            this.m_lblLeitVarslaHeiti.TabIndex = 2;
+            this.m_lblLeitVarslaHeiti.Text = "Heiti vörslustofnunar";
+            // 
+            // m_comLeitVarslaKlasi
+            // 
+            this.m_comLeitVarslaKlasi.FormattingEnabled = true;
+            this.m_comLeitVarslaKlasi.Location = new System.Drawing.Point(228, 94);
+            this.m_comLeitVarslaKlasi.Name = "m_comLeitVarslaKlasi";
+            this.m_comLeitVarslaKlasi.Size = new System.Drawing.Size(501, 23);
+            this.m_comLeitVarslaKlasi.TabIndex = 1;
+            this.m_comLeitVarslaKlasi.SelectedIndexChanged += new System.EventHandler(this.m_comLeitVarslaHeiti_SelectedIndexChanged);
+            // 
+            // m_comLeitVarslaHeiti
+            // 
+            this.m_comLeitVarslaHeiti.FormattingEnabled = true;
+            this.m_comLeitVarslaHeiti.Location = new System.Drawing.Point(228, 46);
+            this.m_comLeitVarslaHeiti.Name = "m_comLeitVarslaHeiti";
+            this.m_comLeitVarslaHeiti.Size = new System.Drawing.Size(501, 23);
+            this.m_comLeitVarslaHeiti.TabIndex = 0;
+            this.m_comLeitVarslaHeiti.SelectedIndexChanged += new System.EventHandler(this.m_comLeitVarslaHeiti_SelectedIndexChanged);
             // 
             // m_dgvVorslustofnanir
             // 
@@ -1758,12 +1847,11 @@
             this.m_dgvVorslustofnanir.TabIndex = 0;
             this.m_dgvVorslustofnanir.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvVorslustofnanir_CellClick);
             this.m_dgvVorslustofnanir.SelectionChanged += new System.EventHandler(this.m_dgvVorslustofnanir_SelectionChanged);
-            this.m_dgvVorslustofnanir.SizeChanged += new System.EventHandler(this.m_dgvVorslustofnanir_SizeChanged);
             // 
             // colVarslaAudkenni
             // 
             this.colVarslaAudkenni.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colVarslaAudkenni.DataPropertyName = "5_1_1_auðkenni";
+            this.colVarslaAudkenni.DataPropertyName = "auðkenni";
             this.colVarslaAudkenni.HeaderText = "Auðkenni vörslustofnunar";
             this.colVarslaAudkenni.Name = "colVarslaAudkenni";
             this.colVarslaAudkenni.ReadOnly = true;
@@ -1772,7 +1860,7 @@
             // colVarslaHeiti
             // 
             this.colVarslaHeiti.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colVarslaHeiti.DataPropertyName = "5_1_2_opinbert_heiti";
+            this.colVarslaHeiti.DataPropertyName = "heiti";
             this.colVarslaHeiti.HeaderText = "Opinbert heiti vörslustofnunar";
             this.colVarslaHeiti.Name = "colVarslaHeiti";
             this.colVarslaHeiti.ReadOnly = true;
@@ -2022,22 +2110,6 @@
             this.tabPage4.Text = "gamalt";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // m_comLeitSkjalmUpp
-            // 
-            this.m_comLeitSkjalmUpp.FormattingEnabled = true;
-            this.m_comLeitSkjalmUpp.Location = new System.Drawing.Point(767, 47);
-            this.m_comLeitSkjalmUpp.Name = "m_comLeitSkjalmUpp";
-            this.m_comLeitSkjalmUpp.Size = new System.Drawing.Size(180, 23);
-            this.m_comLeitSkjalmUpp.TabIndex = 20;
-            // 
-            // m_comLeitSkjalmLok
-            // 
-            this.m_comLeitSkjalmLok.FormattingEnabled = true;
-            this.m_comLeitSkjalmLok.Location = new System.Drawing.Point(767, 101);
-            this.m_comLeitSkjalmLok.Name = "m_comLeitSkjalmLok";
-            this.m_comLeitSkjalmLok.Size = new System.Drawing.Size(180, 23);
-            this.m_comLeitSkjalmLok.TabIndex = 21;
-            // 
             // uscGagnaUmsjon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -2104,6 +2176,8 @@
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.m_grbVaralaLeit.ResumeLayout(false);
+            this.m_grbVaralaLeit.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvVorslustofnanir)).EndInit();
             this.splitContainer9.Panel1.ResumeLayout(false);
             this.splitContainer9.Panel2.ResumeLayout(false);
@@ -2229,13 +2303,6 @@
         private DataGridView m_dgvVarslaSkjalmyndarar;
         private GroupBox m_grbVarslaUtgafur;
         private DataGridView m_dgvVarslaUtgafur;
-        private DataGridViewTextBoxColumn colVarslaAudkenni;
-        private DataGridViewTextBoxColumn colVarslaHeiti;
-        private DataGridViewTextBoxColumn colVarslaKlasi;
-        private DataGridViewTextBoxColumn colVarslaDagsSkrad;
-        private DataGridViewTextBoxColumn colVarslaSkradAf;
-        private DataGridViewButtonColumn colVaralSkyrsla;
-        private DataGridViewButtonColumn colVarslaFullskra;
         private DataGridViewTextBoxColumn colVarslaSkjalmAudkenni;
         private DataGridViewTextBoxColumn colVarslaSkjalamHeiti;
         private DataGridViewTextBoxColumn colVarslaUtgafaAudkenni;
@@ -2288,5 +2355,18 @@
         private DataGridViewButtonColumn colSkjalmFullskra;
         private ComboBox m_comLeitSkjalmLok;
         private ComboBox m_comLeitSkjalmUpp;
+        private ComboBox m_comLeitVarslaKlasi;
+        private ComboBox m_comLeitVarslaHeiti;
+        private Label m_lblLeitVarslaKlasi;
+        private Label m_lblLeitVarslaHeiti;
+        private Button m_btnLeitVarslaHreinsa;
+        private Button m_btnLeitVarsla;
+        private DataGridViewTextBoxColumn colVarslaAudkenni;
+        private DataGridViewTextBoxColumn colVarslaHeiti;
+        private DataGridViewTextBoxColumn colVarslaKlasi;
+        private DataGridViewTextBoxColumn colVarslaDagsSkrad;
+        private DataGridViewTextBoxColumn colVarslaSkradAf;
+        private DataGridViewButtonColumn colVaralSkyrsla;
+        private DataGridViewButtonColumn colVarslaFullskra;
     }
 }

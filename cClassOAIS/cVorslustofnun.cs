@@ -323,7 +323,7 @@ namespace cClassOAIS
         }
         public DataTable getAllVorslustofnanirGU()
         {
-            string strSQL = string.Format("SELECT 5_1_1_auðkenni, 5_1_2_opinbert_heiti, klasar, hver_skráði, dags_skráð, '' as fullskra FROM db_oais_admin.`dt_isdiah_vörslustofnanir` d;");
+            string strSQL = string.Format("SELECT 5_1_1_auðkenni as auðkenni, 5_1_2_opinbert_heiti as heiti, klasar, hver_skráði, dags_skráð, '' as fullskra FROM db_oais_admin.`dt_isdiah_vörslustofnanir` d;");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

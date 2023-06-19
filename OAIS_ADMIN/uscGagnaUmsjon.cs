@@ -45,17 +45,44 @@ namespace OAIS_ADMIN
 
         }
         
+        private void fyllaLeitVörslustofnanir()
+        {
+            DataView view = new DataView(m_dtVorslustofnanir);
+            view.Sort = "heiti";
+            DataTable dtHeiti = view.ToTable(true, "heiti");
+            DataRow r = dtHeiti.NewRow();
+            r["heiti"] = "Veldu heiti vörslustofnunar";
+            dtHeiti.Rows.InsertAt(r, 0);
+            m_comLeitVarslaHeiti.ValueMember = "heiti";
+            m_comLeitVarslaHeiti.DisplayMember = "heiti";
+            m_comLeitVarslaHeiti.DataSource = dtHeiti;
+
+            DataTable dtKlasar = view.ToTable(true, "klasar");
+            DataRow rr = dtKlasar.NewRow();
+            rr["klasar"] = "Veldu landsvæði";
+            dtKlasar.Rows.InsertAt(rr, 0);
+            m_comLeitVarslaKlasi.ValueMember = "klasar";
+            m_comLeitVarslaKlasi.DisplayMember = "klasar";
+            m_comLeitVarslaKlasi.DataSource = dtKlasar;
+        }
+
         private void fyllaLeitVorsluutgafu()
         {
             DataView view = new DataView(m_dtUtgáfur);
+            view.Sort = "utgafa_titill";
             DataTable dtTitill = view.ToTable(true, "utgafa_titill");
+                   
             DataRow r = dtTitill.NewRow();
             r["utgafa_titill"] = "Veldu titil vörsluútgáfu";
+
+            //  m_comUtgafaLeittitill.Items.Insert(0,r);
             dtTitill.Rows.InsertAt(r, 0);
             m_comUtgafaLeittitill.ValueMember = "utgafa_titill";
             m_comUtgafaLeittitill.DisplayMember = "utgafa_titill";
+         
             m_comUtgafaLeittitill.DataSource = dtTitill;
 
+            view.Sort = "afharnr";
             DataTable dtAfhAr = view.ToTable(true, "afharnr");
             DataRow rar = dtAfhAr.NewRow();
             rar["afharnr"] = "Veldu afhendingaár/númer";
@@ -64,6 +91,7 @@ namespace OAIS_ADMIN
             m_comUtgafaLeitAfhar.DisplayMember = "afharnr";
             m_comUtgafaLeitAfhar.DataSource = dtAfhAr;
 
+            view.Sort = "varsla_heiti";
             DataTable dtVarsla = view.ToTable(true, "varsla_heiti");
             DataRow rav = dtVarsla.NewRow();
             rav["varsla_heiti"] = "Veldu Vörslustofnun";
@@ -72,6 +100,7 @@ namespace OAIS_ADMIN
             m_comUtgafaVorsluStofnun.DisplayMember = "varsla_heiti";
             m_comUtgafaVorsluStofnun.DataSource = dtVarsla;
 
+            view.Sort = "skjalm_heiti";
             DataTable dtSkjalm = view.ToTable(true, "skjalm_heiti");
             DataRow ras = dtSkjalm.NewRow();
             ras["skjalm_heiti"] = "Veldu Vörslustofnun";
@@ -100,6 +129,7 @@ namespace OAIS_ADMIN
         public void fyllaVörsluUtgafur()
         {
             FyllaLeitSkjalamyndara();
+            fyllaLeitVörslustofnanir();
             m_dtUtgáfur = utgafur.getVörsluútgáfurGU();
           
             m_dgvVorsluUtgafur.AutoGenerateColumns = false;
@@ -516,8 +546,9 @@ namespace OAIS_ADMIN
                         }
                     }
                 }
-
+               
                 fyllaVörsluUtgafur();
+                fyllaLeitVorsluutgafu();
             }
         }
 
@@ -582,7 +613,7 @@ namespace OAIS_ADMIN
             ComboBox com = (ComboBox)sender;
             if (com.Focused)
             {
-                if (com.SelectedIndex != 0)
+              //  if (com.SelectedIndex != 0)
                 {
                     LeitaSkjalmyndara();
 
@@ -643,14 +674,10 @@ namespace OAIS_ADMIN
                     frmVarsla.ShowDialog();
                
                 }
+           
                 fyllaVörslustofnanir();
+                fyllaLeitVörslustofnanir();
             }
-        }
-
-        private void m_dgvVorslustofnanir_SizeChanged(object sender, EventArgs e)
-        {
-            //fá vörslustofnanir skjalamyndara
-          
         }
 
         private void m_dgvVorslustofnanir_SelectionChanged(object sender, EventArgs e)
@@ -690,6 +717,46 @@ namespace OAIS_ADMIN
         private void m_btnUtgafurLeit_Click(object sender, EventArgs e)
         {
             LeitaVörsluÚgafur();
+        }
+        private void LeitVörslustofnanir()
+        {
+            string strExpession = string.Empty;
+            string strHeiti = string.Empty;
+            string StrKlasi = string.Empty;
+
+            if(m_comLeitVarslaHeiti.SelectedIndex != 0)
+            {
+                strHeiti = m_comLeitVarslaHeiti.SelectedValue.ToString();
+            }
+            if(m_comLeitVarslaKlasi.SelectedIndex != 0)
+            {
+                StrKlasi = m_comLeitVarslaKlasi.SelectedValue.ToString();
+            }
+            if(strHeiti != string.Empty) 
+            {
+                strExpession = "heiti='" + strHeiti + "'";
+            }
+            if(StrKlasi != string.Empty)
+            {
+                if (strExpession == string.Empty)
+                {
+                    strExpession = "klasar='" + StrKlasi + "'";
+                }
+                else
+                {
+                    strExpession += " and Klasar='" + StrKlasi + "'";
+                }
+            }
+
+            DataTable dtClone = m_dtVorslustofnanir.Clone();
+            DataRow[] frow = m_dtVorslustofnanir.Select(strExpession);
+
+            foreach(DataRow row in frow) 
+            {
+                dtClone.ImportRow(row);
+            }
+            m_dgvVorslustofnanir.DataSource = dtClone;
+            m_dgvVorslustofnanir.ClearSelection();
         }
         private void LeitaSkjalmyndara()
         {
@@ -988,35 +1055,35 @@ namespace OAIS_ADMIN
            ComboBox com = (ComboBox)sender;
             if(com.Focused)
             {
-                if (com.SelectedIndex != 0)
+              //  if (com.SelectedIndex != 0)
                 {
                      LeitaVörsluÚgafur();
                    
                 }
-                else
-                {
-                    m_dgvVorsluUtgafur.DataSource = m_dtUtgáfur;
-                    foreach (DataGridViewRow r in m_dgvVorsluUtgafur.Rows)
-                    {
+                //else
+                //{
+                //    m_dgvVorsluUtgafur.DataSource = m_dtUtgáfur;
+                //    foreach (DataGridViewRow r in m_dgvVorsluUtgafur.Rows)
+                //    {
 
-                        if (r.Cells["colUtgafurMidlad"].Value.ToString() == "1")
-                        {
-                            r.DefaultCellStyle.BackColor = Color.LightGreen;
-                            r.ReadOnly = false;
-                        }
-                        else
-                        {
-                            r.DefaultCellStyle.BackColor = Color.LightYellow;
-                            r.ReadOnly = false;
-                        }
-                        if (r.Cells["colUtgafurEytt"].Value.ToString() == "1")
-                        {
-                            r.DefaultCellStyle.BackColor = Color.LightPink;
-                            r.ReadOnly = true;
-                        }
+                //        if (r.Cells["colUtgafurMidlad"].Value.ToString() == "1")
+                //        {
+                //            r.DefaultCellStyle.BackColor = Color.LightGreen;
+                //            r.ReadOnly = false;
+                //        }
+                //        else
+                //        {
+                //            r.DefaultCellStyle.BackColor = Color.LightYellow;
+                //            r.ReadOnly = false;
+                //        }
+                //        if (r.Cells["colUtgafurEytt"].Value.ToString() == "1")
+                //        {
+                //            r.DefaultCellStyle.BackColor = Color.LightPink;
+                //            r.ReadOnly = true;
+                //        }
 
-                    }
-                }
+                //    }
+                //}
             }
             
          
@@ -1025,6 +1092,38 @@ namespace OAIS_ADMIN
         private void m_btnLeitSkjalam_Click(object sender, EventArgs e)
         {
             LeitaSkjalmyndara();
+        }
+
+        private void m_btnLeitSkjalmHreinsa_Click(object sender, EventArgs e)
+        {
+            FyllaLeitSkjalamyndara();
+            LeitaSkjalmyndara();
+        }
+
+        private void m_btnLeitVarsla_Click(object sender, EventArgs e)
+        {
+            LeitaVörsluÚgafur();
+        }
+
+        private void m_comLeitVarslaHeiti_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            ComboBox com = (ComboBox)sender;
+            if (com.Focused)
+            {
+             //   if (com.SelectedIndex != 0)
+                {
+                    LeitVörslustofnanir();
+
+                }
+
+            }
+        }
+
+        private void m_btnLeitVarslaHreinsa_Click(object sender, EventArgs e)
+        {
+            fyllaLeitVörslustofnanir();
+            LeitVörslustofnanir();
         }
     }
 }
