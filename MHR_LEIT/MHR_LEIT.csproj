@@ -25,4 +25,10 @@
     <ProjectReference Include="..\cClassVHS\cClassVHS.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="video.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -260,15 +260,28 @@ namespace cClassOAIS
                                     strSlod = strSlod + "\\Documents\\docCollection" + dColl.ToString() + "\\" + iID;
 
                                     string[] strFile = Directory.GetFiles(strSlod);
-                                    var Ocr = new IronTesseract();
-                                    Ocr.Language = OcrLanguage.Icelandic;
-                                    using (var Input = new OcrInput())
+                                    try
                                     {
-                                        Input.AddImage(strFile[0]);
-                                        var Result = Ocr.Read(Input);
-                                        this.docInnihald = Result.Text;
+                                        if (strFile[0].EndsWith(".tif"))
+                                        {
+                                            IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
+                                            var Ocr = new IronTesseract();
+                                            Ocr.Language = OcrLanguage.Icelandic;
+                                            using (var Input = new OcrInput())
+                                            {
+                                                Input.AddImage(strFile[0]);
+                                                var Result = Ocr.Read(Input);
+                                                this.docInnihald = Result.Text;
 
+                                            }
+                                        }
                                     }
+                                    catch (Exception x)
+                                    {
+
+                                        //throw;
+                                    }
+                                   
                                 }
                                
 
@@ -562,7 +575,7 @@ namespace cClassOAIS
         public string getFyrirspurn(string strDatabase)
         {
             string strRet = string.Empty;
-            string strQL = "SELECT fyrirspurn FROM db_oais_admin.dt_fyrirspurnir d where gagnagrunnur = 'AVID_HMOS_2023001_1' and nafn = 'Get_files_path';"; //harðkóða fyrst vantar smá pælingu
+            string strQL = string.Format("SELECT fyrirspurn FROM db_oais_admin.dt_fyrirspurnir d where gagnagrunnur = '{0}' and nafn = 'Get_files_path';", strDatabase);
             var fyrirspurn = MySqlHelper.ExecuteScalar(m_strTengingOAIS, strQL);
             if(fyrirspurn != DBNull.Value)
             {

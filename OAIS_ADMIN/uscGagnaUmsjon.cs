@@ -1,6 +1,7 @@
 ﻿using cClassOAIS;
 //using DocumentFormat.OpenXml.Spreadsheet;
-using Org.BouncyCastle.Bcpg.OpenPgp;
+//using DocumentFormat.OpenXml.Spreadsheet;
+//using Org.BouncyCastle.Bcpg.OpenPgp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace OAIS_ADMIN
 {
@@ -29,19 +31,74 @@ namespace OAIS_ADMIN
 
         DataTable m_dtAllt = new DataTable();   
         DataTable m_dtSumt = new DataTable();   
+
+        string m_strRoot = string.Empty;
+        DataTable m_dtSkjalamArchive = new DataTable();
+
+        private DataTable m_dtStyring_tafla1 = new DataTable();
+        private DataTable m_dtVirkni_tafla2 = new DataTable();
+        private DataTable m_dtAfhending_tafla3 = new DataTable();
+        private DataTable m_dtVidtaka_tafla4 = new DataTable();
+        private DataTable m_dtVardVeisla_tafla5 = new DataTable();
+        private DataTable m_dtAnnad_tafla6 = new DataTable();
+        private DataSet m_dsAllt = new DataSet();
+
+        DataTable m_dtDoc = new DataTable();
+        DataTable m_dtFile = new DataTable();
+
         public uscGagnaUmsjon()
         {
             InitializeComponent();
             fyllaVörslustofnanir();
             fyllaSkjalamyndara();
             fyllaVörsluUtgafur();
-
+            FyllaVOrsluUtgafurArchiveIndex();
             fyllaLeitVorsluutgafu();
+            FyllaVOrsluUtgafurDocIndex();
 
 
 
             cSkjalaskra skrá = new cSkjalaskra();
             m_dtAllt = skrá.getVörsluútgáfur();
+
+
+            m_dtSkjalamArchive.Columns.Add("skjalamyndari");
+            m_dtSkjalamArchive.Columns.Add("dags_fyrst");
+            m_dtSkjalamArchive.Columns.Add("dags_sidast");
+
+            //m_dtStyring_tafla1
+            m_dtStyring_tafla1.Columns.Add("skjal");
+            m_dtStyring_tafla1.Columns.Add("slod");
+            m_dtStyring_tafla1.Columns.Add("tegund");
+            m_dtStyring_tafla1.Columns.Add("tag");
+            m_dtStyring_tafla1.Columns.Add("opna");
+            m_dtStyring_tafla1.Columns.Add("lysing");
+            m_dtStyring_tafla1.Columns.Add("hofundur");
+            m_dtStyring_tafla1.Columns.Add("stofnun");
+            m_dtStyring_tafla1.Columns.Add("skrad");
+            m_dtStyring_tafla1.Columns.Add("nr");
+            m_dtStyring_tafla1.Columns.Add("tafla");
+            m_dtStyring_tafla1.TableName = "tafla1";
+            m_dsAllt.Tables.Add(m_dtStyring_tafla1);
+
+            m_dtVirkni_tafla2 = m_dtStyring_tafla1.Clone();
+            m_dtVirkni_tafla2.TableName = "tafla2";
+            m_dsAllt.Tables.Add(m_dtVirkni_tafla2);
+
+            m_dtAfhending_tafla3 = m_dtStyring_tafla1.Clone();
+            m_dtAfhending_tafla3.TableName = "tafla3";
+            m_dsAllt.Tables.Add(m_dtAfhending_tafla3);
+
+            m_dtVidtaka_tafla4 = m_dtStyring_tafla1.Clone();
+            m_dtVidtaka_tafla4.TableName = "tafla4";
+            m_dsAllt.Tables.Add(m_dtVidtaka_tafla4);
+
+            m_dtVardVeisla_tafla5 = m_dtStyring_tafla1.Clone();
+            m_dtVardVeisla_tafla5.TableName = "tafla5";
+            m_dsAllt.Tables.Add(m_dtVardVeisla_tafla5);
+
+            m_dtAnnad_tafla6 = m_dtStyring_tafla1.Clone();
+            m_dtAnnad_tafla6.TableName = "tafla6";
 
         }
         
@@ -126,6 +183,22 @@ namespace OAIS_ADMIN
             m_dgvSkjalaMyndarar.ClearSelection();
 
         }
+        private void FyllaVOrsluUtgafurArchiveIndex()
+        {
+            m_dgvArchiveUtgafur.AutoGenerateColumns = false;
+            m_dgvArchiveUtgafur.DataSource = m_dtUtgáfur;
+            m_dgvContextUtgafur.AutoGenerateColumns = false;
+            m_dgvContextUtgafur.DataSource = m_dtUtgáfur;
+
+        }
+        private void FyllaVOrsluUtgafurDocIndex()
+        {
+            m_dgvDocUtgafur.AutoGenerateColumns = false;
+            m_dgvDocUtgafur.DataSource = m_dtUtgáfur;
+            m_dgvDocUtgafur.AutoGenerateColumns = false;
+            m_dgvDocUtgafur.DataSource = m_dtUtgáfur;
+
+        }
         public void fyllaVörsluUtgafur()
         {
             FyllaLeitSkjalamyndara();
@@ -156,19 +229,7 @@ namespace OAIS_ADMIN
 
             }
         }
-        private void fyllaVörslustofnunOLD(string strSkjalamyndari)
-        {
-            if(strSkjalamyndari == string.Empty)
-            {
-                //id, vorsluutgafa, utgafa_titill, vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, innihald, timabil, afharnr, MD5, hver_skradi, dags_skrad
-                //string strExp = string.Format("vorslustofnun='{0}",
-                m_comVörslustofnanir.DataSource = m_dtAllt;
-                m_comVörslustofnanir.ValueMember = "vorslustofnun";
-                m_comVörslustofnanir.DisplayMember = "varsla_heiti";
-               
-            }
-        }
-
+        
         private void FyllaLeitSkjalamyndara()
         {
             DataView view = new DataView(m_dtSkjalamyndarar);
@@ -249,86 +310,10 @@ namespace OAIS_ADMIN
 
         }
         
-        private void fyllaSkjalamyndaraOLD(string strVörlsustofnun)
-        {
-            m_comSkjalamyndarar.DataSource = m_dtAllt;
-            m_comSkjalamyndarar.ValueMember = "skjalamyndari";
-            m_comSkjalamyndarar.DisplayMember = "skjalm_heiti";
-        }
+       
+      
 
-        public void endurHressa()
-        {
-            cSkjalaskra skrá = new cSkjalaskra();
-            m_dtAllt = skrá.getVörsluútgáfur();
-            m_dtSumt = m_dtAllt.Clone();
-            m_dgvUtgafur.AutoGenerateColumns = false;
-            m_dgvUtgafur.DataSource =formatTable(m_dtAllt);
-            foreach(DataGridViewRow row in m_dgvUtgafur.Rows ) 
-            {
-                if (row.Cells["colEytt"].Value.ToString() == "1")
-                {
-                    row.DefaultCellStyle.BackColor = Color.LightPink;
-                    row.ReadOnly= true; 
-                }
-                else
-                {
-                    row.DefaultCellStyle.BackColor = Color.LightGreen; ;
-                    row.ReadOnly = false;
-                }
-            }
-           
-            fyllaVörslustofnunOLD("");
-            fyllaSkjalamyndaraOLD("");
-        }
-
-        private void m_comVörslustofnanir_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(m_comVörslustofnanir.Focused )
-            {
-                if(m_comVörslustofnanir.SelectedValue != null)
-                {
-                    DataTable dt = new DataTable();
-                    dt = m_dtAllt.Clone(); 
-                   
-                    string strExpr = string.Format("vorslustofnun='{0}'", m_comVörslustofnanir.SelectedValue.ToString());
-                    DataRow[] fROW = m_dtAllt.Select(strExpr);
-                    foreach (DataRow r in fROW)
-                    {
-                        dt.ImportRow(r);
-                    }
-                    m_dgvUtgafur.DataSource = formatTable(dt);
-                }
-             
-            }
-         
-        }
-
-        private void m_btnHreinsa_Click(object sender, EventArgs e)
-        {
-            endurHressa();
-        }
-
-        private void m_comSkjalamyndarar_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (m_comSkjalamyndarar.Focused)
-            {
-                if (m_comSkjalamyndarar.SelectedValue != null)
-                {
-                    DataTable dt = new DataTable();
-                    dt = m_dtAllt.Clone();
-
-                    string strExpr = string.Format("skjalamyndari='{0}'", m_comSkjalamyndarar.SelectedValue.ToString());
-                    DataRow[] fROW = m_dtAllt.Select(strExpr);
-                    foreach (DataRow r in fROW)
-                    {
-                        dt.ImportRow(r);
-                    }
-                    m_dgvUtgafur.DataSource = dt;
-                }
-
-            }
-
-        }
+       
         private DataTable formatTable(DataTable dt)
         {
             DataTable dtCloned = dt.Clone();
@@ -359,118 +344,7 @@ namespace OAIS_ADMIN
             return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
 
-        private void m_dgvAllt_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-            var senderGrid = (DataGridView)sender;
-
-            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
-            {
-                bool bEytt = Convert.ToBoolean(Convert.ToInt32(senderGrid.Rows[e.RowIndex].Cells["colEytt"].Value.ToString()));
-                if (senderGrid.Columns["colEditSkjalamyndari"].Index == e.ColumnIndex)
-                {
-                    if(!bEytt)
-                    {
-                        string strHeiti = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
-                        cSkjalamyndari skjalm = new cSkjalamyndari();
-                        skjalm.getSkjalamyndaraByAuðkenni(strHeiti);
-                        frmSkjalamyndariSkra frmSkjalm = new frmSkjalamyndariSkra(skjalm, virkurnotandi);
-                        frmSkjalm.ShowDialog();
-                        endurHressa();
-                    }
-                  
-                }
-                if (senderGrid.Columns["colEditVaral"].Index == e.ColumnIndex)
-                {
-                    if (!bEytt)
-                    {
-                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
-                        cVorslustofnun varsla = new cVorslustofnun();
-                        varsla.getVörslustofnun(strAuðkenni);
-                        frmVörslustofnun frmVarsla = new frmVörslustofnun(varsla, virkurnotandi);
-                        frmVarsla.ShowDialog();
-                        endurHressa();
-                    }
-                }
-                if (senderGrid.Columns["colEditSkrá"].Index == e.ColumnIndex)
-                {
-                    if (!bEytt)
-                    {
-                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
-                        strAuðkenni = strAuðkenni.Replace("FRUM", "AVID");
-                        cSkjalaskra skrá = new cSkjalaskra();
-                        skrá.getSkraning(strAuðkenni);
-                        frmSkráning frmSkra = new frmSkráning(skrá, virkurnotandi);
-                        frmSkra.ShowDialog();
-                        endurHressa();
-                    }
-                }
-                if (senderGrid.Columns["colOpna"].Index == e.ColumnIndex)
-                {
-                    if (!bEytt)
-                    {
-                        string strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
-                        var p = new Process();
-                        p.StartInfo = new ProcessStartInfo(strSlod)
-                        {
-                            UseShellExecute = true
-                        };
-                        p.Start();
-                    }
-
-                }
-
-                if (senderGrid.Columns["colEditKvittun"].Index == e.ColumnIndex)
-                {
-                    if (!bEytt)
-                    {
-                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
-                        strAuðkenni = strAuðkenni.Replace("FRUM", "AVID");
-                        frmKvittun frmKvittun = new frmKvittun(strAuðkenni);
-                        frmKvittun.ShowDialog();
-                        endurHressa();
-                    }
-                }
-                if (senderGrid.Columns["colRepVarsla"].Index == e.ColumnIndex)
-                {
-                    if (!bEytt)
-                    {
-                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
-                        frmReportVarsla frmVarsla = new frmReportVarsla(strAuðkenni, virkurnotandi);
-                        frmVarsla.ShowDialog();
-                        endurHressa();
-                    }
-                }
-                if (senderGrid.Columns["colRepSkjalm"].Index == e.ColumnIndex)
-                {
-                    if (!bEytt)
-                    {
-                        string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
-                        frmReportSkjalamyndari frmRepSkjalm = new frmReportSkjalamyndari(strAuðkenni, virkurnotandi);
-                        frmRepSkjalm.ShowDialog();
-                        endurHressa();
-                    }
-                }
-                if (senderGrid.Columns["colDelEyda"].Index == e.ColumnIndex)
-                {
-                    if (!bEytt)
-                    {
-                        DialogResult result = MessageBox.Show("Viltu örruglega eyða þessari vörslútgáfu?", "Eyða vörsluútgáfu", MessageBoxButtons.YesNo);
-                        if (result == DialogResult.Yes)
-                        {
-                            string strSkjalamyndari = senderGrid.Rows[e.RowIndex].Cells["colSkjalmHeiti"].Value.ToString();
-                            string strVörslustofnun = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
-                            string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
-                            string strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
-                            frmEyda eyða = new frmEyda(strAuðkenni, strSkjalamyndari, strVörslustofnun, strSlod);
-                            eyða.ShowDialog();
-                            endurHressa();
-                        }
-                    }
-                }
-            }
-        }
-
+     
         private void m_btnSkyrsla_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Ekkert komið en bý til eitthvað sniðugt og praktískt síðar");
@@ -511,7 +385,7 @@ namespace OAIS_ADMIN
                         skrá.getSkraning(strAuðkenni);
                         frmSkráning frmSkra = new frmSkráning(skrá, virkurnotandi);
                         frmSkra.ShowDialog();
-                        endurHressa();
+                      
                     }
                 }
                
@@ -524,7 +398,7 @@ namespace OAIS_ADMIN
                         strAuðkenni = strAuðkenni.Replace("FRUM", "AVID");
                         frmKvittun frmKvittun = new frmKvittun(strAuðkenni);
                         frmKvittun.ShowDialog();
-                        endurHressa();
+                        
                     }
                 }
               
@@ -546,8 +420,8 @@ namespace OAIS_ADMIN
                         }
                     }
                 }
-               
-                fyllaVörsluUtgafur();
+
+                LeitaVörsluÚgafur(); 
                 fyllaLeitVorsluutgafu();
             }
         }
@@ -648,6 +522,7 @@ namespace OAIS_ADMIN
 
                 }
                 fyllaSkjalamyndara();
+                FyllaLeitSkjalamyndara();
             }
         }
 
@@ -1124,6 +999,1075 @@ namespace OAIS_ADMIN
         {
             fyllaLeitVörslustofnanir();
             LeitVörslustofnanir();
+        }
+
+        private void m_dgvArchiveUtgafur_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+
+                if (senderGrid.Rows[e.RowIndex].Cells["colArchiveOpnaIndex"].ColumnIndex== e.ColumnIndex)
+                {
+                    m_strRoot = senderGrid.Rows[e.RowIndex].Cells["colArchiveSlod"].Value.ToString();
+                    string strSlod = m_strRoot + "\\Indices\\archiveIndex.xml";
+
+                    var p = new Process();
+                    p.StartInfo = new ProcessStartInfo(strSlod)
+                    {
+                        UseShellExecute = true
+                    };
+                    p.Start();
+                }
+                if (senderGrid.Rows[e.RowIndex].Cells["colArchiveOpnaVorslu"].ColumnIndex == e.ColumnIndex)
+                {
+                    m_strRoot = senderGrid.Rows[e.RowIndex].Cells["colArchiveSlod"].Value.ToString();
+                    string strSlod = m_strRoot;
+
+                    var p = new Process();
+                    p.StartInfo = new ProcessStartInfo(strSlod)
+                    {
+                        UseShellExecute = true
+                    };
+                    p.Start();
+                }
+            }
+        }
+
+        public void fyllaArchiveIndex()
+        {
+            try
+            {
+                //DataSet ds = new DataSet();
+                //ds.ReadXml(m_strRoot + "\\Indices\\archiveIndex.xml");
+                //DataColumnCollection columns = ds.Tables[0].Columns;
+                bool bTrueFalse = false;
+                DateTime dat = new DateTime();
+                dat = DateTime.Now;
+
+                XmlDocument doc = new XmlDocument();
+                string strSlod = m_strRoot + "\\Indices\\archiveIndex.xml";
+                doc.Load(m_strRoot + "\\Indices\\archiveIndex.xml");
+
+                //m_tboVorsluUtgafuNumer_1.Text = doc.SelectSingleNode("/archiveIndex/archiveInformationPackageID").InnerText; 
+
+                // m_tboVorsluUtgafuNumer_1.Text = doc.SelectSingleNode("/archiveIndex/archiveInformationPackageID").InnerText;
+                //1. archiveInformationPackageID
+                if (doc.SelectSingleNode("//*[local-name()='archiveInformationPackageID']") != null)
+                {
+                    m_tboVorsluUtgafuNumer_1.Text = doc.SelectSingleNode("//*[local-name()='archiveInformationPackageID']").InnerText;
+                    //  m_comSkjalaMyndarar_8.Text = ds.Tables[0].Rows[0]["archiveInformationPackageID"].ToString();
+                }
+                else
+                {
+                    m_tboVorsluUtgafuNumer_1.Text = string.Empty;
+                }
+                //2. archiveInformationPackageIDPrevious
+                if (doc.SelectSingleNode("//*[local-name()='archiveInformationPackageIDPrevious']") != null)
+                {
+                    m_tboVorsluNumerFyrra_2.Text = doc.SelectSingleNode("//*[local-name()='archiveInformationPackageIDPrevious']").InnerText;
+                    // m_tboVorsluNumerFyrra_2.Text = ds.Tables[0].Rows[0]["archiveInformationPackageIDPrevious"].ToString();
+                }
+                else
+                {
+                    m_tboVorsluNumerFyrra_2.Text = string.Empty;
+                }
+                //3. archivePeriodStart
+                if (doc.SelectSingleNode("//*[local-name()='archivePeriodStart']") != null)
+                {
+                    m_dtpUppafsDagsetningGogn_6.Value = Convert.ToDateTime(doc.SelectSingleNode("//*[local-name()='archivePeriodStart']").InnerText);
+                    //  m_dtpUppafsDagsetning_3.Value = Convert.ToDateTime(ds.Tables[0].Rows[0]["archivePeriodStart"].ToString());
+                }
+                else
+                {
+
+                    m_dtpUppafsDagsetningGogn_6.Value = dat;
+                }
+                //4. archivePeriodEnd
+                if (doc.SelectSingleNode("//*[local-name()='archivePeriodEnd']") != null)
+                {
+                    m_dtpLokaDagsetningGogn_7.Value = Convert.ToDateTime(doc.SelectSingleNode("//*[local-name()='archivePeriodEnd']").InnerText.ToString());
+                }
+                else
+                {
+
+                    m_dtpLokaDagsetningGogn_7.Value = dat;
+                }
+                //5. archiveInformationPacketType
+                if (doc.SelectSingleNode("//*[local-name()='archiveInformationPacketType']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='archiveInformationPacketType']").InnerText.ToString());
+                    if (bTrueFalse)
+                    {
+                        m_rdbLokaAfhendingJA_5.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbLokaAfhendingNei_5.Checked = true;
+                    }
+                }
+
+                //5. archiveType
+                if (doc.SelectSingleNode("//*[local-name()='archiveType']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='archiveType']").InnerText.ToString());
+                    if (bTrueFalse)
+                    {
+                        m_rdbSkjalTimLokidJa.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbSkjalTimLokidNei.Checked = true;
+                    }
+                }
+
+                m_dtSkjalamArchive.Rows.Clear();
+
+                XmlNodeList list = doc.SelectNodes("//*[local-name()='creatorName']");
+                XmlNodeList listStart = doc.SelectNodes("//*[local-name()='creationPeriodStart']");
+                XmlNodeList listEnd = doc.SelectNodes("//*[local-name()='creationPeriodEnd']");
+                int i = 0;
+                foreach (XmlNode n in list)
+                {
+                    DataRow r = m_dtSkjalamArchive.NewRow();
+                    r["skjalamyndari"] = n.InnerText;
+                    r["dags_fyrst"] = listStart[i].InnerText;
+                    r["dags_sidast"] = listEnd[i].InnerText;
+                    m_dtSkjalamArchive.Rows.Add(r);
+                    m_dtSkjalamArchive.AcceptChanges();
+                    i++;
+                }
+                m_dgvSkjalmArchive  .DataSource = m_dtSkjalamArchive;
+
+                //6. creationPeriodStart
+                //if (doc.SelectSingleNode("//*[local-name()='creationPeriodStart']") != null)
+                //{
+                //    m_dtpUppafsDagsetning_3.Value = Convert.ToDateTime(doc.SelectSingleNode("//*[local-name()='creationPeriodStart']").InnerText.ToString());
+                //}
+                //else
+                //{
+
+                //    m_dtpUppafsDagsetning_3.Value = dat;
+                //}
+
+                ////7. creationPeriodEnd
+                //if (doc.SelectSingleNode("//*[local-name()='creationPeriodEnd']").InnerText != null)
+                //{
+                //    m_dtpLokaDagsetning_4.Value = Convert.ToDateTime(doc.SelectSingleNode("//*[local-name()='creationPeriodEnd']").InnerText.ToString());
+                //}
+                //else
+                //{
+
+                //    m_dtpLokaDagsetning_4.Value = dat;
+                //}
+
+
+                ////8. creatorName
+                //if (doc.SelectSingleNode("//*[local-name()='creatorName']") != null)
+                //{
+                //    //Þarf að hugsa út í ef ekkert creatorID er
+                //    if (doc.SelectSingleNode("//*[local-name()='creatorID']") != null)
+                //    {
+                //       m_comSkjalaMyndarar_8.SelectedValue = doc.SelectSingleNode("//*[local-name()='creatorID']").InnerText;
+                //    }
+                //    else
+                //    {
+                //      m_comSkjalaMyndarar_8.Text = doc.SelectSingleNode("//*[local-name()='creatorName']").InnerText;
+                //    }
+
+                //}
+
+                //9. systemName
+                if (doc.SelectSingleNode("//*[local-name()='systemName']") != null)
+                {
+                    //Þarf að hugsa út í ef ekkert creatorID er
+                    m_tboKerfisHeiti_9.Text = doc.SelectSingleNode("//*[local-name()='systemName']").InnerText;
+                }
+                else
+                {
+                    m_tboKerfisHeiti_9.Text = string.Empty;
+                }
+
+                //10. alternativeName
+                if (doc.SelectSingleNode("//*[local-name()='alternativeName']") != null)
+                {
+                    //Þarf að hugsa út í ef ekkert creatorID er
+                    m_tboKerfiAnnadHeiti_10.Text = doc.SelectSingleNode("//*[local-name()='alternativeName']").InnerText;
+                }
+                else
+                {
+                    m_tboKerfiAnnadHeiti_10.Text = string.Empty;
+                }
+
+                //11. systemPurpose
+                if (doc.SelectSingleNode("//*[local-name()='systemPurpose']") != null)
+                {
+                    //Þarf að hugsa út í ef ekkert creatorID er
+                    m_tboKerfiTilgangur_11.Text = doc.SelectSingleNode("//*[local-name()='systemPurpose']").InnerText;
+                }
+                else
+                {
+                    m_tboKerfiTilgangur_11.Text = string.Empty;
+                }
+
+                //12. systemContent
+                if (doc.SelectSingleNode("//*[local-name()='systemContent']") != null)
+                {
+                    //Þarf að hugsa út í ef ekkert creatorID er
+                    m_tboKerfiInnihald_12.Text = doc.SelectSingleNode("//*[local-name()='systemContent']").InnerText;
+                }
+                else
+                {
+                    m_tboKerfiInnihald_12.Text = string.Empty;
+
+                }
+
+                //13. regionNum
+                if (doc.SelectSingleNode("//*[local-name()='regionNum']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='regionNum']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbSvaedisNumerJa_13.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbSvaedisNumerNei_13.Checked = true;
+                    }
+                }
+                //14. regionNum
+                if (doc.SelectSingleNode("//*[local-name()='regionNum']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='regionNum']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbSveitarFelagJa_14.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbSveitarFelagNei_14.Checked = true;
+                    }
+                }
+                //15. cprNum
+                if (doc.SelectSingleNode("//*[local-name()='cprNum']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='cprNum']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbKennitalaJa_15.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbKennitalaNei_15.Checked = true;
+                    }
+                }
+                //16. cvrNum
+                if (doc.SelectSingleNode("//*[local-name()='cvrNum']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='cvrNum']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbKennitalaFyrirTaekisJa_16.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbKennitalaFyrirTaekisJNei_16.Checked = true;
+                    }
+                }
+                //17. matrikNum
+                if (doc.SelectSingleNode("//*[local-name()='matrikNum']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='matrikNum']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbLandsNumerJa_17.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbLandsNumerNei_17.Checked = true;
+                    }
+                }
+                //18. matrikNum
+                if (doc.SelectSingleNode("//*[local-name()='bbrNum']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='bbrNum']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbFastaNumerJa_18.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbFastaNumerNei_18.Checked = true;
+                    }
+                }
+                //19. whoSygKod
+                if (doc.SelectSingleNode("//*[local-name()='whoSygKod']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='whoSygKod']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbSjukKodarJa_19.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbSjukKodarNei_19.Checked = true;
+                    }
+                }
+                //20. sourceName
+                if (doc.SelectSingleNode("//*[local-name()='sourceName']") != null)
+                {
+                    //Þarf að hugsa út í ef ekkert creatorID er
+                    m_tboGagnaLind_20.Text = doc.SelectSingleNode("//*[local-name()='sourceName']").InnerText;
+                }
+                else
+                {
+                    m_tboGagnaLind_20.Text = string.Empty;
+
+                }
+                //21. userName
+                if (doc.SelectSingleNode("//*[local-name()='userName']") != null)
+                {
+                    //Þarf að hugsa út í ef ekkert creatorID er
+                    m_tboGagnaNotandi_21.Text = doc.SelectSingleNode("//*[local-name()='userName']").InnerText;
+                }
+                else
+                {
+                    m_tboGagnaNotandi_21.Text = string.Empty;
+
+                }
+                //22. predecessorName
+                if (doc.SelectSingleNode("//*[local-name()='predecessorName']") != null)
+                {
+                    //Þarf að hugsa út í ef ekkert creatorID er
+                    m_tboFyrriKerfisHeiti_22.Text = doc.SelectSingleNode("//*[local-name()='predecessorName']").InnerText;
+                }
+                else
+                {
+                    m_tboFyrriKerfisHeiti_22.Text = string.Empty;
+
+                }
+                //23. containsDigitalDocuments
+                if (doc.SelectSingleNode("//*[local-name()='containsDigitalDocuments']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='containsDigitalDocuments']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbStafreanSkjolJa_23.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbStafreanSkjolNei_23.Checked = true;
+                    }
+                }
+                //24. searchRelatedOtherRecords
+                if (doc.SelectSingleNode("//*[local-name()='searchRelatedOtherRecords']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='searchRelatedOtherRecords']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbLeitarAdferdJa_24.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbLeitarAdferdNei_24.Checked = true;
+                    }
+                }
+
+
+                //25. relatedRecordsName
+                if (doc.SelectSingleNode("//*[local-name()='relatedRecordsName']") != null)
+                {
+                    //Þarf að hugsa út í ef ekkert creatorID er
+                    if (doc.SelectSingleNode("//*[local-name()='relatedRecordsName']").InnerText != string.Empty)
+                    {
+                        m_tboTengdSkjalaSafns_25.Text = doc.SelectSingleNode("//*[local-name()='relatedRecordsName']").InnerText;
+                    }
+                    else
+                    {
+                        m_tboTengdSkjalaSafns_25.Text = string.Empty;
+
+                    }
+
+                }
+                else
+                {
+                    m_tboTengdSkjalaSafns_25.Text = string.Empty;
+
+                }
+                //26. systemFileConcept
+                if (doc.SelectSingleNode("//*[local-name()='systemFileConcept']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='systemFileConcept']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbTilvistMalaSkraJa_26.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbTilvistMalaSkraNei_26.Checked = true;
+                    }
+                }
+
+                //27. multipleDataCollection
+                if (doc.SelectSingleNode("//*[local-name()='multipleDataCollection']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='multipleDataCollection']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbSOAJa_27.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbSOANei_27.Checked = true;
+                    }
+                }
+                //28.otherAccessTypeRestrictions
+                if (doc.SelectSingleNode("//*[local-name()='otherAccessTypeRestrictions']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='otherAccessTypeRestrictions']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbLokudGognJa_29.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbLokudGognJNei_29.Checked = true;
+                    }
+                }
+                //29.personalDataRestrictedInfo
+                if (doc.SelectSingleNode("//*[local-name()='personalDataRestrictedInfo']") != null)
+                {
+                    bTrueFalse = Convert.ToBoolean(doc.SelectSingleNode("//*[local-name()='personalDataRestrictedInfo']").InnerText);
+                    if (bTrueFalse)
+                    {
+                        m_rdbPersonuGognJa_28.Checked = true;
+                    }
+                    else
+                    {
+                        m_rdbPersonuGognNei_28.Checked = true;
+                    }
+                }
+                //30.archiveApproval
+                if (doc.SelectSingleNode("//*[local-name()='archiveApproval']") != null)
+                {
+
+                    if (doc.SelectSingleNode("//*[local-name()='archiveApproval']").InnerText != string.Empty)
+                    {
+                        m_tboVidtokuSkjalasafn_30.Text = doc.SelectSingleNode("//*[local-name()='archiveApproval']").InnerText;
+                    }
+                    else
+                    {
+                        m_tboVidtokuSkjalasafn_30.Text = string.Empty;
+
+                    }
+
+                }
+                //30.archiveRestrictions
+                if (doc.SelectSingleNode("//*[local-name()='archiveRestrictions']") != null)
+                {
+
+                    if (doc.SelectSingleNode("//*[local-name()='archiveRestrictions']").InnerText != string.Empty)
+                    {
+                        m_tboAdagansTakmark_31.Text = doc.SelectSingleNode("//*[local-name()='archiveRestrictions']").InnerText;
+                    }
+                    else
+                    {
+                        m_tboAdagansTakmark_31.Text = string.Empty;
+
+                    }
+
+                }
+
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(string.Format("Fann ekki {0}", m_strRoot + "\\Indices\\archiveIndex.xml"));
+            }
+
+        }
+
+      
+        public void fyllaContexdocument()
+        {
+
+            //0. tæma töflur
+            m_dtStyring_tafla1.Rows.Clear();
+            m_dtVirkni_tafla2.Rows.Clear();
+            m_dtAfhending_tafla3.Rows.Clear();
+            m_dtVidtaka_tafla4.Rows.Clear();
+            m_dtVardVeisla_tafla5.Rows.Clear();
+            m_dtAnnad_tafla6.Rows.Clear();
+            //1.sækja condexDocumentIndex.xml
+            XmlDocument doc = new XmlDocument();
+            doc.Load(m_strRoot + "\\Indices\\contextDocumentationIndex.xml");
+            //2. fá document listan
+            XmlNodeList list = doc.SelectNodes("//*[local-name()='document']");
+            foreach (XmlNode n in list)
+            {
+                DataTable dtAllt = m_dtStyring_tafla1.Clone();
+                DataRow r = dtAllt.NewRow();
+
+                //  DataRow rr = m_dtVirkni_tafla2.NewRow();
+                //    DataRow rrr = m_dtAfhending_tafla3.NewRow();
+                // string i = n.SelectSingleNode("//*[local-name()='document']").InnerText;
+                // string strBla = n.ch
+                XmlNodeList aCild = n.ChildNodes;
+                foreach (XmlNode a in aCild)
+                {
+                    r["opna"] = "Opna skjal";
+                    if (a.Name == "documentCategory")
+                    {
+                        //Tvær gerðir - 1. Aðeins með það sem er true 2. allt uppi og það er true/false
+                        XmlNodeList cCildChild = a.ChildNodes;
+                        string strTag = string.Empty;
+
+                        foreach (XmlNode c in cCildChild)
+                        {
+                            if (c.Name == "systemInformation")
+                            {
+                                XmlNodeList dCildChild = c.ChildNodes;
+                                foreach (XmlNode d in dCildChild)
+                                {
+                                    if (d.Name == "systemPurpose" || d.Name == "systemRegulations" || d.Name == "systemContent" || d.Name == "systemAdministrativeFunctions" || d.Name == "systemPresentationStructure" || d.Name == "systemDataProvision" || d.Name == "systemDataTransfer" || d.Name == "systemAgencyQualityControl" || d.Name == "systemPublication" || d.Name == "systemInformationOther")
+                                    {
+                                        if (Convert.ToBoolean(d.InnerText))
+                                        {
+                                            r["tafla"] = "1";
+                                            strTag += d.Name + ",";
+                                            r["tag"] = d.Name; //   r["tag"] = "Skráð";
+                                        }
+                                    }
+
+                                }
+                            }
+                            if (c.Name == "operationalInformation")
+                            {
+                                XmlNodeList dCildChild = c.ChildNodes;
+                                foreach (XmlNode d in dCildChild)
+                                {
+                                    if (d.Name == "operationalSystemInformation" || d.Name == "operationalSystemConvertedInformation" || d.Name == "operationalSystemSOA" || d.Name == "operationalSystemInformationOther")
+                                    {
+                                        if (Convert.ToBoolean(d.InnerText))
+                                        {
+                                            r["tafla"] = "2";
+                                            strTag += d.Name + ",";
+                                            r["tag"] = d.Name; //   r["tag"] = "Skráð";
+                                        }
+                                    }
+                                }
+                            }
+                            if (c.Name == "submissionInformation")
+                            {
+                                XmlNodeList dCildChild = c.ChildNodes;
+                                foreach (XmlNode d in dCildChild)
+                                {
+                                    if (d.Name == "archivalProvisions" || d.Name == "archivalTransformationInformation" || d.Name == "archivalInformationOther")
+                                    {
+                                        if (Convert.ToBoolean(d.InnerText))
+                                        {
+                                            r["tafla"] = "3";
+                                            strTag += d.Name + ",";
+                                            r["tag"] = d.Name; //   r["tag"] = "Skráð";
+                                        }
+                                    }
+                                }
+                            }
+                            if (c.Name == "ingestInformation")
+                            {
+                                XmlNodeList dCildChild = c.ChildNodes;
+                                foreach (XmlNode d in dCildChild)
+                                {
+                                    if (d.Name == "archivistNotes" || d.Name == "archivalTestNotes" || d.Name == "archivalInformationOther")
+                                    {
+                                        if (Convert.ToBoolean(d.InnerText))
+                                        {
+                                            r["tafla"] = "4";
+                                            strTag += d.Name + ",";
+                                            r["tag"] = d.Name; //   r["tag"] = "Skráð";
+                                        }
+                                    }
+                                }
+                            }
+                            if (c.Name == "archivalPreservationInformation")
+                            {
+                                XmlNodeList dCildChild = c.ChildNodes;
+                                foreach (XmlNode d in dCildChild)
+                                {
+                                    if (d.Name == "archicalMigrationInformation" || d.Name == "archivalInformationOther")
+                                    {
+                                        if (Convert.ToBoolean(d.InnerText))
+                                        {
+                                            r["tafla"] = "5";
+                                            strTag += d.Name + ",";
+                                            r["tag"] = d.Name; //   r["tag"] = "Skráð";
+                                        }
+                                    }
+                                }
+                            }
+                            if (c.Name == "informationOther")
+                            {
+                                XmlNodeList dCildChild = c.ChildNodes;
+                                foreach (XmlNode d in dCildChild)
+                                {
+                                    if (d.Name == "informationOther")
+                                    {
+                                        if (Convert.ToBoolean(d.InnerText))
+                                        {
+                                            r["tafla"] = "6";
+                                            strTag += d.Name + ",";
+                                            r["tag"] = d.Name; //   r["tag"] = "Skráð";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (strTag != string.Empty)
+                        {
+                            r["tegund"] = strTag.Remove(strTag.Length - 1);
+                        }
+
+                    }
+                    if (a.Name == "documentID")
+                    {
+                        r["nr"] = a.InnerText;
+                        //ná í skjalið og skella í minni og nota við uppfærslu
+                        //https://stackoverflow.com/questions/8624071/save-and-load-memorystream-to-from-a-file
+                        //MemoryStream stream = new MemoryStream
+                        //FileStream.CopyTo(stream);
+                        //m_stRoot + "\\Indices\\contextDocumentationIndex.xml"
+                        MemoryStream ms = new MemoryStream();
+                        // string strFile = m_stRoot + "\\ContextDocumentation\\docCollection1\\";
+
+                        string[] strFile = Directory.GetFiles(m_strRoot + "\\ContextDocumentation\\docCollection1\\" + r["nr"].ToString() + "\\");
+                        if (strFile.Length != 0)
+                        {
+                            r["slod"] = strFile[0];
+                            //FileInfo fifo = new FileInfo(strFile[0]);
+                            //File.Copy(fifo.FullName, "C:\\temp\\" + r["nr"] + "." + fifo.Extension, true);
+                            //r["slod"] = "C:\\temp\\" + r["nr"] + "." + fifo.Extension;
+                        }
+
+                        //using (FileStream file = new FileStream(strFile[0], FileMode.Create, System.IO.FileAccess.Write))
+                        //{
+                        //    byte[] bytes = new byte[ms.Length];
+                        //    ms.Read(bytes, 0, (int)ms.Length);
+                        //    file.Write(bytes, 0, bytes.Length);
+                        //    ms.Close();
+                        //}
+
+                    }
+                    if (a.Name == "documentTitle")
+                    {
+                        r["skjal"] = a.InnerText;
+                    }
+                    if (a.Name == "documentDescription")
+                    {
+                        r["lysing"] = a.InnerText;
+                    }
+                    if (a.Name == "documentDate")
+                    {
+                        r["skrad"] = a.InnerText;
+                    }
+                    //documentAuthor
+                    if (a.Name == "documentAuthor")
+                    {
+                        XmlNodeList bCildChild = a.ChildNodes;
+                        foreach (XmlNode b in bCildChild)
+                        {
+                            if (b.Name == "authorName")
+                            {
+                                r["hofundur"] = b.InnerText;
+                            }
+                            if (b.Name == "authorInstitution")
+                            {
+                                r["stofnun"] = b.InnerText;
+                            }
+                        }
+                    }
+                }
+
+
+                //    r["nr"] = n.SelectNodes("//documentID").ToString();   // ("//*[local-name()='documentID']").InnerText;
+                dtAllt.Rows.Add(r);
+                if (r["tafla"].ToString() == "1")
+                {
+                    m_dtStyring_tafla1.ImportRow(r);
+                }
+                if (r["tafla"].ToString() == "2")
+                {
+                    m_dtVirkni_tafla2.ImportRow(r);
+                }
+                if (r["tafla"].ToString() == "3")
+                {
+                    m_dtAfhending_tafla3.ImportRow(r);
+                }
+                if (r["tafla"].ToString() == "4")
+                {
+                    m_dtVidtaka_tafla4.ImportRow(r);
+                }
+                if (r["tafla"].ToString() == "5")
+                {
+                    m_dtVardVeisla_tafla5.ImportRow(r);
+                }
+                if (r["tafla"].ToString() == "6")
+                {
+                    m_dtAnnad_tafla6.ImportRow(r);
+                }
+
+
+            }
+            m_dgvStyring_tafla1.AutoGenerateColumns = false;
+            m_dgvStyring_tafla1.DataSource = m_dtStyring_tafla1;
+            m_dgvVirkni_tafla2.AutoGenerateColumns = false;
+            m_dgvVirkni_tafla2.DataSource = m_dtVirkni_tafla2;
+            m_dgvAfhending_tafla3.AutoGenerateColumns = false;
+            m_dgvAfhending_tafla3.DataSource = m_dtAfhending_tafla3;
+            m_dgvVidtaka_tafla4.AutoGenerateColumns = false;
+            m_dgvVidtaka_tafla4.DataSource = m_dtVidtaka_tafla4;
+            m_dgvVardVeisla_tafla5.AutoGenerateColumns = false;
+            m_dgvVardVeisla_tafla5.DataSource = m_dtVardVeisla_tafla5;
+            m_dgvAnnad_tafla6.AutoGenerateColumns = false;
+            m_dgvAnnad_tafla6.DataSource = m_dtAnnad_tafla6;
+        }
+
+        private void m_btnArch1_Click(object sender, EventArgs e)
+        {
+            Button takki = (Button)sender;
+            TableLayoutPanel TPN = (TableLayoutPanel)takki.Parent;
+
+            if (takki.Text == "+")
+            {
+                TPN.AutoSize = false;
+                takki.Tag = TPN.Height;
+                TPN.Height = 20;
+
+                takki.Text = "-";
+            }
+            else
+            {
+                TPN.AutoSize = false;
+                TPN.Height = Convert.ToInt32(takki.Tag);
+                takki.Text = "+";
+            }
+            stillaToflur();
+        }
+        private void stillaToflur()
+        {
+            int x = m_tlpUtgafa1.Location.X;
+            m_tlpSkjalm2.Location = new Point(m_tlpUtgafa1.Location.X, m_tlpUtgafa1.Location.Y + m_tlpUtgafa1.Height + 20);
+            int y = m_tlpUtgafa1.Height + 20 + m_tlpSkjalm2.Height + 20; 
+            m_tlpKerfisUpp3.Location = new Point(x, y);
+            //y = m_tlp_1.Location.Y + m_tlp_1.Height + 20 + m_tpl_2.Height + 20 + m_tpl_3.Height + 20;
+            //m_tpl_4.Location = new Point(x, y);
+            x = m_tlpInniHald4.Location.X;
+            m_tlpNotkun5.Location = new Point(x, m_tlpInniHald4.Location.Y + m_tlpInniHald4.Height + 20);
+        }
+
+        private void m_dgvArchiveUtgafur_SelectionChanged(object sender, EventArgs e)
+        {
+           if(m_dgvArchiveUtgafur.Focused)
+            {
+                m_strRoot = m_dgvArchiveUtgafur.Rows[m_dgvArchiveUtgafur.SelectedRows[0].Index].Cells["colArchiveSlod"].Value.ToString();
+                fyllaArchiveIndex();
+
+            }
+  
+        }
+
+        private void m_dgvStyring_tafla1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+            string strName = senderGrid.Name;
+
+            switch (strName)
+            {
+                case "m_dgvStyring_tafla1":
+                if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+                    {
+
+                        if (senderGrid.Rows[e.RowIndex].Cells["colContext1Skoda"].ColumnIndex == e.ColumnIndex)
+                        {
+                            string strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlodSkjals"].Value.ToString();
+
+
+                            var p = new Process();
+                            p.StartInfo = new ProcessStartInfo(strSlod)
+                            {
+                                UseShellExecute = true
+                            };
+                            p.Start();
+                        }
+
+                    }
+                break;
+                case "m_dgvVirkni_tafla2":
+
+                    if (senderGrid.Rows[e.RowIndex].Cells["colOpna2"].ColumnIndex == e.ColumnIndex)
+                    {
+                        string strSlod = senderGrid.Rows[e.RowIndex].Cells["colTafla2Slod"].Value.ToString();
+
+
+                        var p = new Process();
+                        p.StartInfo = new ProcessStartInfo(strSlod)
+                        {
+                            UseShellExecute = true
+                        };
+                        p.Start();
+                    }
+                    break;
+                case "m_dgvAfhending_tafla3":
+
+                    if (senderGrid.Rows[e.RowIndex].Cells["colOpna3"].ColumnIndex == e.ColumnIndex)
+                    {
+                        string strSlod = senderGrid.Rows[e.RowIndex].Cells["colTafla3Slod"].Value.ToString();
+
+
+                        var p = new Process();
+                        p.StartInfo = new ProcessStartInfo(strSlod)
+                        {
+                            UseShellExecute = true
+                        };
+                        p.Start();
+                    }
+                    break;
+                case "m_dgvVidtaka_tafla4":
+
+                    if (senderGrid.Rows[e.RowIndex].Cells["colOpna4"].ColumnIndex == e.ColumnIndex)
+                    {
+                        string strSlod = senderGrid.Rows[e.RowIndex].Cells["colTafla4Slod"].Value.ToString();
+
+
+                        var p = new Process();
+                        p.StartInfo = new ProcessStartInfo(strSlod)
+                        {
+                            UseShellExecute = true
+                        };
+                        p.Start();
+                    }
+                    break;
+                case "m_dgvVardVeisla_tafla5":
+
+                    if (senderGrid.Rows[e.RowIndex].Cells["colOpna5"].ColumnIndex == e.ColumnIndex)
+                    {
+                        string strSlod = senderGrid.Rows[e.RowIndex].Cells["colTafla5Slod"].Value.ToString();
+
+
+                        var p = new Process();
+                        p.StartInfo = new ProcessStartInfo(strSlod)
+                        {
+                            UseShellExecute = true
+                        };
+                        p.Start();
+                    }
+                    break;
+                case "m_dgvAnnad_tafla6":
+
+                    if (senderGrid.Rows[e.RowIndex].Cells["colOpna6"].ColumnIndex == e.ColumnIndex)
+                    {
+                        string strSlod = senderGrid.Rows[e.RowIndex].Cells["colTafla6Slod"].Value.ToString();
+
+
+                        var p = new Process();
+                        p.StartInfo = new ProcessStartInfo(strSlod)
+                        {
+                            UseShellExecute = true
+                        };
+                        p.Start();
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            
+        }
+
+        private void m_dgvContextUtgafur_SelectionChanged(object sender, EventArgs e)
+        {
+            if(m_dgvContextUtgafur.Focused)
+            {
+                m_strRoot = m_dgvContextUtgafur.Rows[m_dgvContextUtgafur.SelectedRows[0].Index].Cells["colContextSlod"].Value.ToString();
+                fyllaContexdocument();
+            }
+            
+        }
+
+        private void m_dgvDocUtgafur_SelectionChanged(object sender, EventArgs e)
+        {
+            if(m_dgvDocUtgafur.Focused)
+            {
+                m_strRoot = m_dgvDocUtgafur.Rows[m_dgvDocUtgafur.SelectedRows[0].Index].Cells["colDocSlod"].Value.ToString();
+
+                DataSet ds = new DataSet();
+                string strSlodDoc = m_strRoot + "\\Indices\\docIndex.xml";
+               // string strSlodFile = m_strRoot + "\\Indices\\fileIndex.xml";
+                if (File.Exists(strSlodDoc)) 
+                {
+                    ds.ReadXml(strSlodDoc);
+                    if (ds.Tables.Contains("doc"))
+                    {
+                        m_dtDoc = ds.Tables["doc"];
+                        m_dgvDoc.AutoGenerateColumns = false;
+                        m_dgvDoc.DataSource = m_dtDoc;
+                        m_grbDoc.Text = string.Format("Skjöl ({0})", ds.Tables["doc"].Rows.Count);
+                    }
+                }
+                else
+                {
+                    // MessageBox.Show("Engar skrár í þessari vörsluútgáfu");
+                    m_grbDoc.Text = string.Format("Skjöl (0) - vörsluútgáfan innheldur enginn skjöl");
+                    m_dtDoc.Rows.Clear();
+                    m_dgvDoc.AutoGenerateColumns = false;
+                    m_dgvDoc.DataSource = m_dtDoc;
+                }
+                //if (File.Exists(strSlodFile))
+                //{ 
+                //    DataSet dsFile = new DataSet();
+                //    dsFile.ReadXml(strSlodFile);
+                //    if (dsFile.Tables.Contains("f"))
+                //    {
+                //        m_dtFile = dsFile.Tables["f"];
+                //        m_dgvFile.DataSource = m_dtFile;
+                //        m_grbFile.Text = string.Format("Gátsummur ({0})", m_dtFile.Rows.Count);
+                //    }
+                //}
+              
+
+            }
+        }
+
+        private void m_dgvFile_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string strSlod = m_dgvFile.Rows[e.RowIndex].Cells["colFileSlod"].Value.ToString();
+            string strSkjal = m_dgvFile.Rows[e.RowIndex].Cells["colFileSkjal"].Value.ToString();
+            string[] strSplit = m_strRoot.Split("\\");
+            string strFinal = m_strRoot.Replace(strSplit[strSplit.Length - 1], "") + strSlod + "\\" + strSkjal;
+
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(strFinal)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        private void m_dgvDoc_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string strID = m_dgvDoc.Rows[e.RowIndex].Cells["colDocID"].Value.ToString();
+            string strColl = m_dgvDoc.Rows[e.RowIndex].Cells["colDocCollection"].Value.ToString();
+
+
+            string strSlod = m_strRoot + "\\Documents\\" + strColl + "\\" + strID;
+            string[] strFile = Directory.GetFiles(strSlod);
+
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(strFile[0])
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        private void m_docLeit_Click(object sender, EventArgs e)
+        {
+            docLeit();
+
+        }
+
+        private void m_btnLDocHreinsa_Click(object sender, EventArgs e)
+        {
+            m_dgvDoc.DataSource = m_dtDoc;
+            m_grbDoc.Text = string.Format("Skjöl ({0})", m_dtDoc.Rows.Count);
+            m_tboDocLeit.Text = string.Empty;
+        }
+        private void docLeit()
+        {
+            if (m_dtDoc.Rows.Count == 0) return;
+            string strExpression = string.Empty;
+            DataTable dt = m_dtDoc.Clone();
+            strExpression = "oFn like '%" + m_tboDocLeit.Text + "%'";
+
+            DataRow[] fRow = m_dtDoc.Select(strExpression);
+
+            foreach (DataRow r in fRow)
+            {
+                dt.ImportRow(r);
+            }
+            m_dgvDoc.DataSource = dt;
+            m_grbDoc.Text = string.Format("Skjöl ({0})", dt.Rows.Count);
+        }
+        private void m_tboDocLeit_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter) 
+            {
+                docLeit();
+            }
+        }
+
+        private void fileLeit()
+        {
+            if (m_dtFile.Rows.Count == 0) return;
+            string strExpression = string.Empty;
+            DataTable dt = m_dtFile.Clone();
+            strExpression = "md5 ='" + m_tboLeitGatsumma.Text.ToUpper() + "'";
+
+            DataRow[] fRow = m_dtFile.Select(strExpression);
+
+            foreach (DataRow r in fRow)
+            {
+                dt.ImportRow(r);
+            }
+            m_dgvFile.DataSource = dt;
+            m_grbFile.Text = string.Format("Gátsummur({0})", dt.Rows.Count);
+        }
+       
+
+        private void m_btnGatsummaLeit_Click_1(object sender, EventArgs e)
+        {
+            //fileLeit();
+            string strMD5 = m_tboLeitGatsumma.Text;
+            cMD5 mD5= new cMD5();
+            DataTable dt = mD5.getMD5(strMD5);
+                       //finna docindex skjalið
+            if(dt.Rows.Count == 1)
+            {
+                string strSlod = dt.Rows[0]["slod"].ToString();
+                if(strSlod.Contains("\\Documents"))
+                {
+                    string[] strSplit = strSlod.Split('\\');
+                    string strAIP = dt.Rows[0]["mappa"].ToString();
+                    string strdocIndex = strAIP + "\\Indices\\docIndex.xml";
+                    DataSet ds = new DataSet();
+                    ds.ReadXml(strdocIndex);
+                    
+                    DataTable dtMD5 = ds.Tables["doc"];
+                    string strExp = "dID = '" + strSplit[strSplit.Length - 1] + "'";
+                    DataRow[] fRow = dtMD5.Select(strExp);
+                    if(fRow.Length > 0) 
+                    {
+                        string strTitill = fRow[0]["oFN"].ToString();
+                        dt.Rows[0]["titill"] = strTitill;
+                    }
+                }
+                else
+                {
+                    dt.Rows[0]["titill"] = dt.Rows[0]["file"];
+                }
+               
+
+            }
+
+            m_dgvFile.DataSource = dt;
+        }
+
+        private void m_btnGatsummaHreinsa_Click_1(object sender, EventArgs e)
+        {
+
+            m_dgvFile.DataSource = m_dtFile;
+            m_grbFile.Text = string.Format("Gátsummur ({0})", m_dtDoc.Rows.Count);
+            m_tboLeitGatsumma.Text = string.Empty;
         }
     }
 }

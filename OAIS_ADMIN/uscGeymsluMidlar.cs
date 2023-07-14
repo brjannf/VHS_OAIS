@@ -24,11 +24,35 @@ namespace OAIS_ADMIN
         cVHS_drives drif = new cVHS_drives();
         DataTable m_dtComputers = new DataTable();
         long m_lStaerd = 0;
+        long m_lNotad = 0;
         public uscGeymsluMidlar()
         {
             InitializeComponent();
             fyllaComputer();
-          
+             getSize();
+         
+
+
+        }
+
+        private  async Task<long> getSize(string bla = "D:\\AIP")
+        {
+            try
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(bla);
+                if (dirInfo.Exists)
+                {
+
+                 //  m_lNotad = await Task.Run(() => dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length));
+                }
+            }
+            catch (Exception x)
+            {
+
+               //throw;
+            }
+         
+            return m_lNotad;
         }
 
         private void fyllaComputer()
@@ -144,7 +168,7 @@ namespace OAIS_ADMIN
             {
                 m_lblHeiti.Text = "Heiti vélar: " + fRow[0]["Name"].ToString();
                 m_lblModel.Text = "Tegund vélar: " + fRow[0]["Model"].ToString();
-                m_lblSerial.Text = "Serial móðurborðs: " + fRow[0]["Serial"].ToString();
+                m_lblSerial.Text = "Serial: " + fRow[0]["Serial"].ToString();
                 m_lblID.Text = "Auðkenni vélar: " + fRow[0]["ID"].ToString();
                 m_lblDate.Text = "Tekinn í notkun: " + fRow[0]["Date"].ToString();
 
@@ -158,6 +182,9 @@ namespace OAIS_ADMIN
             if (dt.Rows.Count > 0)
             {
                 m_grbDrif.Visible = true;
+                //Thread thread = new Thread(new ParameterizedThreadStart(formatTableThreat));
+                //thread.Start(dt);
+
 
                 dtClone = formatTable(dt);
             }
@@ -252,6 +279,14 @@ namespace OAIS_ADMIN
 
             return dtCloned;
         }
+        public void formatTableThreat(object ob)
+        {
+            DataTable dt = (DataTable)ob;
+            DataTable dtCloned = dt.Clone();
+            m_dgvDrif.AutoGenerateColumns = false;
+            m_dgvDrif.DataSource = dtCloned;
+            m_grbDrif.Visible = true;
+        }
         private DataTable formatTable(DataTable dt)
         {
             DataTable dtCloned = dt.Clone();
@@ -266,7 +301,10 @@ namespace OAIS_ADMIN
                 //row["notad"] = heild - laust;
                 string strSlod = row["nafn"].ToString();
                 DirectoryInfo difo = new DirectoryInfo(strSlod);
-                row["notad"] = DirSize(difo);
+
+
+
+                row["notad"] = m_lNotad; // DirSize(difo);
                 row["framleitt"] = Convert.ToDateTime(row["framleitt"]);
                 dtCloned.ImportRow(row);
 
@@ -277,7 +315,7 @@ namespace OAIS_ADMIN
                 }
                 else
                 {
-                    row["laust"] = "????";
+                    row["laust"] = "na";
                 }
 
 
@@ -341,7 +379,8 @@ namespace OAIS_ADMIN
             {
                 Directory.CreateDirectory(strAip);
             }
-            flytjaAIPafrit(strAip, drif.Nafn, "Afrita");
+            CopyFolder( drif.Nafn, strAip);
+          //  flytjaAIPafrit(strAip, drif.Nafn, "Afrita");
 
             //id, drifid, merking, slodAfrit, steard, hvar_geymt, athugasemdir, hvar_afritadi, dagsetning
             DriveInfo drivo = new DriveInfo(m_comAfritDrif.SelectedItem.ToString());
@@ -373,6 +412,38 @@ namespace OAIS_ADMIN
 
             fyllaBackuplista();
             MessageBox.Show("Búið");
+        }
+        //temp redding meðan NAS boxið virkar ekki með flytjAIPafrit
+        private void CopyFolder(string sourceFolder, string destFolder)
+        {
+            if (!Directory.Exists(destFolder))
+                Directory.CreateDirectory(destFolder);
+            string[] files = Directory.GetFiles(sourceFolder);
+            m_prgBackup.Maximum = files.Length;
+            m_prgBackup.Step = 1;
+         //   m_prgBackup.Value = 0;
+            foreach (string file in files)
+            {
+                string name = Path.GetFileName(file);
+                string dest = Path.Combine(destFolder, name);
+                File.Copy(file, dest,true);
+                m_prgBackup.PerformStep();
+                m_lblBackupStatus.Text = string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
+                Application.DoEvents();
+            }
+            string[] folders = Directory.GetDirectories(sourceFolder);
+            m_prgBackup.Maximum = folders.Length;
+            m_prgBackup.Step = 1;
+        //    m_prgBackup.Value = 0;
+            foreach (string folder in folders)
+            {
+                string name = Path.GetFileName(folder);
+                string dest = Path.Combine(destFolder, name);
+                CopyFolder(folder, dest);
+                m_prgBackup.PerformStep();
+                m_lblBackupStatus.Text = string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
+                Application.DoEvents();
+            }
         }
 
         private void flytjaAIPafrit(string strDest, string strOrg, string strAðgerð)

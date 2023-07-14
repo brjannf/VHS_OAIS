@@ -110,7 +110,7 @@ namespace MHR_LEIT
         private void fyllaFilesystem()
         {
             //sækja fyrirspurnina
-            string strFyrirspurn =  midlun.getFyrirspurn("Þarf að laga hér og setja í alvöru jú sí");
+            string strFyrirspurn =  midlun.getFyrirspurn(m_strGagnagrunnur);
             //keyra fyrirspurninga
             m_dtSkrar = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
             int i = 0;
@@ -337,24 +337,43 @@ namespace MHR_LEIT
             string[] strFiles = Directory.GetFiles(strValid);
             m_strFileValinn = strFiles[0];
 
-            Image image = Image.FromFile(m_strFileValinn);
-            FrameDimension dimension;
+            FileInfo fifo = new FileInfo(strFiles[0]);
 
-            dimension = FrameDimension.Page;
-            int x = 70;
-            int iPages = image.GetFrameCount(dimension);
-            m_numUpDown.Maximum = iPages;
-            m_numUpDown.Minimum = 1;
-            m_lblSidaValinn.Text = string.Format("af {0} valin", iPages);
-            string strExp = "skjalID='" + m_strIdValinn + "'";
-            DataRow[] frow = m_dtSkrar.Select(strExp);
-            if (frow.Length > 0)
+            if(fifo.Extension == ".tif")
             {
-              //  DateTime date = Convert.ToDateTime[]
-                m_lblDagsetning.Text = string.Format("Síðast var skráð í skjalið {0}", frow[0]["lastwriten"]);
+                Image image = Image.FromFile(m_strFileValinn);
+                FrameDimension dimension;
+
+                dimension = FrameDimension.Page;
+                int x = 70;
+                int iPages = image.GetFrameCount(dimension);
+                m_numUpDown.Maximum = iPages;
+                m_numUpDown.Minimum = 1;
+                m_lblSidaValinn.Text = string.Format("af {0} valin", iPages);
+                string strExp = "skjalID='" + m_strIdValinn + "'";
+                DataRow[] frow = m_dtSkrar.Select(strExp);
+                if (frow.Length > 0)
+                {
+                    //  DateTime date = Convert.ToDateTime[]
+                    m_lblDagsetning.Text = string.Format("Síðast var skráð í skjalið {0}", frow[0]["lastwriten"]);
+                }
+                image.SelectActiveFrame(FrameDimension.Page, iPage - 1); // iPages - 1);
+                m_pibSkjal.Image = image;
             }
-            image.SelectActiveFrame(FrameDimension.Page, iPage-1); // iPages - 1);
-            m_pibSkjal.Image = image;
+            if(fifo.Extension == ".mpg")
+            {
+
+                string strExp = "skjalID='" + m_strIdValinn + "'";
+                DataRow[] frow = m_dtSkrar.Select(strExp);
+                if (frow.Length > 0)
+                {
+                    //  DateTime date = Convert.ToDateTime[]
+                    m_lblDagsetning.Text = string.Format("Síðast var skráð í skjalið {0}", frow[0]["lastwriten"]);
+                }
+                 m_pibSkjal.ImageLocation = "video.png";
+            }
+            
+           
             //opna blættí skalið
         }
 

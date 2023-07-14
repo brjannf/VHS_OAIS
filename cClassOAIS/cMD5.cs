@@ -1,6 +1,8 @@
-﻿using MySql.Data.MySqlClient;
+﻿//using DocumentFormat.OpenXml.Drawing.Charts;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,6 +54,14 @@ namespace cClassOAIS
                 strRet = tala.ToString();
             }
             return strRet;
+        }
+
+        public DataTable getMD5(string strMD5)
+        {
+            string strSQL = string.Format("SELECT '' as titill, vorsluutgafa,utgafa_titill, d.slod,v.slod as mappa, d.MD5, d.file FROM dt_md5 d, dt_vörsluutgafur v where d.AIP= v.vorsluutgafa and d.MD5 = '{0}';", strMD5);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
         }
     }  
     
