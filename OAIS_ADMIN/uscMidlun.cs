@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using cClassOAIS;
+using cClassVHS;
 using Google.Protobuf.WellKnownTypes;
+using MySql.Data.MySqlClient;
 
 namespace OAIS_ADMIN
 {
@@ -21,10 +23,14 @@ namespace OAIS_ADMIN
         private cMIdlun midlun = new cMIdlun();
         private string m_strSlod = string.Empty;
         private string m_strGrunnur = string.Empty;
+        private DataTable m_dtKlasar = new DataTable();
         public uscMidlun()
         {
             InitializeComponent();
             fyllaVorsluUtgafur();
+            fyllaklasa();
+
+
             splitContainer1.SplitterDistance = 250;
         }
         public void fyllaVorsluUtgafur()
@@ -42,6 +48,21 @@ namespace OAIS_ADMIN
                     r.DefaultCellStyle.BackColor = Color.LightGreen;
                 }
             }
+        }
+
+        private void fyllaklasa()
+        {
+            m_dtKlasar = vörslustofnun.getAllKlasa();
+            DataView view = new DataView(m_dtKlasar);
+            DataTable klasar = view.ToTable(true, "klasar");
+
+            foreach(DataRow r in klasar.Rows)
+            {
+                TreeNode n = new TreeNode(r["klasar"].ToString());
+                m_trwKlasarVorslustonun.Nodes.Add(n);
+            }
+
+
         }
 
         private DataTable formatTable(DataTable dt)
@@ -482,6 +503,370 @@ namespace OAIS_ADMIN
                 MessageBox.Show("Veldu tegund");
             }
        
+        }
+
+        private void m_trwKlasarVorslustonun_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if(e.Node.Level == 0) 
+            {
+                string strExpr = string.Empty;
+                strExpr = "klasar='" + e.Node.Text + "'";
+                DataTable dt = m_dtKlasar.Clone();
+                DataRow[] fRow = m_dtKlasar.Select(strExpr);
+                if (fRow.Length > 0)
+                {
+                    foreach (DataRow row in fRow)
+                    {
+                        dt.ImportRow(row);
+                    }
+                }
+                DataView view = new DataView(dt);
+                DataTable dtVarsla = view.ToTable(true, "5_1_2_opinbert_heiti", "5_1_1_auðkenni");
+                e.Node.Nodes.Clear();
+                string strVorslur = string.Empty;
+                foreach (DataRow row in dtVarsla.Rows)
+                {
+                    TreeNode n = new TreeNode(row["5_1_2_opinbert_heiti"].ToString());
+                    n.Tag = row["5_1_1_auðkenni"].ToString();
+                    strVorslur += "'" + n.Tag + "',";
+                    e.Node.Nodes.Add(n);
+                    e.Node.Expand();
+                }
+                cVorsluutgafur utgafur = new cVorsluutgafur();
+                DataTable dtKlasar = utgafur.getVorsluUtgafurKlasa(strVorslur.Remove(strVorslur.Length-1));
+                m_dgvUtafurKlasarVarsla.AutoGenerateColumns = false;
+      
+                m_dgvUtafurKlasarVarsla.DataSource = dtKlasar;
+                m_dgvUtafurKlasarVarsla.ClearSelection();
+                m_lblKlasiVarslaValinn.Text = string.Format("Klasi {0} valinn", e.Node.Text);
+                m_btnBuaTilPakka.Text = string.Format("Búa til miðlunarpakka fyrir {0} klasa", e.Node.Text);
+                
+            }
+            if (e.Node.Level == 1)
+            {
+                m_dgvUtafurKlasarVarsla.AutoGenerateColumns = false;
+                cVorsluutgafur utgafur = new cVorsluutgafur();
+                DataTable dtKVarsla = utgafur.getVorsluUtgafurVorslu(e.Node.Tag.ToString());
+                m_dgvUtafurKlasarVarsla.DataSource = dtKVarsla;
+                m_dgvUtafurKlasarVarsla.ClearSelection();
+                m_lblKlasiVarslaValinn.Text = string.Format("Vörslustofnun {0} valinn", e.Node.Text);
+                m_btnBuaTilPakka.Text = string.Format("Búa til miðlunarpakka fyrir {0}", e.Node.Text);
+            }
+            foreach (DataGridViewRow dRow in m_dgvUtafurKlasarVarsla.Rows)
+            {
+                string strAuðkenni = dRow.Cells["colAudkenni"].Value.ToString();
+                cSkjalaskra skra = new cSkjalaskra();
+                DataTable dtSkra = skra.getGeymsluSkra(strAuðkenni);
+                if (dtSkra.Rows.Count > 1)
+                {
+                    dRow.DefaultCellStyle.BackColor = Color.LightGreen;
+                }
+            }
+
+        }
+
+        private void m_dgvUtafurKlasarVarsla_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                if (senderGrid.Columns["colGeymsluskra"].Index == e.ColumnIndex)
+                {
+                    
+                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colAudkenni"].Value.ToString();
+                    string strSlod = senderGrid.Rows[e.RowIndex].Cells["colVarslaSlod"].Value.ToString();
+                    frmGeymsluskra frmgeymsla= new frmGeymsluskra(strAuðkenni, strSlod, virkurnotandi);
+                    frmgeymsla.ShowDialog();
+                }
+            }
+        }
+
+        private void m_dgvFyrirSpurnir_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+          
+        }
+
+        private void m_btnBuaTilPakka_Click(object sender, EventArgs e)
+        {
+            //Fara yfir gridview og keyra eftirfarandi
+            //1. Flytja vörsluútgáfu á ákveðina möppu - þarf að ákveða heiti líklega AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni}/vörsluútgáfuauðkenni
+            m_lblStatus.Text = "Bý til möppur";
+            if (!Directory.Exists("D:\\AIP-Afrit"))
+            {
+                Directory.CreateDirectory("D:\\AIP-Afrit");
+            }
+            string strAfritunarMappa = string.Empty;
+            string strDags = DateTime.Now.Day.ToString() + "_" + DateTime.Now.Month.ToString() + "_" + DateTime.Now.Year.ToString(); 
+            if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
+            {
+               strAfritunarMappa = string.Format("D:\\AIP-Afrit\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags) ;
+            }
+            else
+            {
+                strAfritunarMappa = string.Format("D:\\AIP-Afrit\\{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
+            }
+            if (!Directory.Exists(strAfritunarMappa))
+            {
+                Directory.CreateDirectory(strAfritunarMappa);
+            }
+            //búa til möppu fyrir hverja vörsluútgáfu
+            DataTable dtVarsla = (DataTable)m_dgvUtafurKlasarVarsla.DataSource;
+            string strVarslAuðkenni = string.Empty;
+            string strAuðkenni = string.Empty;
+            string strVarslaStofnun = string.Empty;
+            string strStofnanir = string.Empty;
+            foreach (DataRow r in dtVarsla.Rows)
+            {
+                m_prgVorsluStofnun.Maximum = dtVarsla.Rows.Count;
+                m_prgVorsluStofnun.Value = 0;
+                m_prgVorsluStofnun.Step = 1;
+                m_lblStatus.Text = "flytt gögn frá " + r["varsla_heiti"].ToString();
+                strVarslAuðkenni = r["vorsluutgafa"].ToString();
+                strAuðkenni += "'" + strVarslAuðkenni + "',";
+                string strVarslaTitill = r["utgafa_titill"].ToString().Replace(" / ", "_");
+                string strBackup = string.Empty;
+                if (r["vorslustofnun"].ToString() != strVarslaStofnun)
+                {
+                    strVarslaStofnun = r["vorslustofnun"].ToString();
+                    strStofnanir += "'" + strVarslaStofnun + "',";
+                }
+                if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
+                {
+
+                }
+                if (m_trwKlasarVorslustonun.SelectedNode.Level == 1)
+                {
+
+                    string strVarslaMappa = strAfritunarMappa + "\\Vörsluútgáfur";
+                    if (!Directory.Exists(strVarslaMappa))
+                    {
+                        Directory.CreateDirectory(strVarslaMappa);
+                    }
+                    strVarslaMappa = strVarslaMappa + "\\" + strVarslaTitill;
+                    strBackup = strVarslaMappa;
+                    if (!Directory.Exists(strVarslaMappa))
+                    {
+                        Directory.CreateDirectory(strVarslaMappa);
+                    }
+                    string strFrum = strVarslaMappa;
+                    strVarslaMappa = strVarslaMappa + "\\" + strVarslAuðkenni;
+                    if (!Directory.Exists(strVarslaMappa))
+                    {
+                        Directory.CreateDirectory(strVarslaMappa);
+                    }
+
+                    //ef til eru frummgögn
+                    string strSlod = r["slod"].ToString().Replace("AVID", "FRUM");
+                    if (Directory.Exists(strSlod))
+                    {
+                     
+                        strFrum = strFrum + "\\" + strVarslAuðkenni.Replace("AVID", "FRUM");
+                        m_lblStatus.Text = m_lblStatus.Text + " " + strFrum;
+                        Application.DoEvents();
+                        CopyFolder(r["slod"].ToString().Replace("AVID", "FRUM"), strFrum);
+                    }
+                    m_lblStatus.Text = m_lblStatus.Text + " " + strVarslaMappa;
+                    Application.DoEvents();
+                    CopyFolder(r["slod"].ToString(), strVarslaMappa);
+                    
+                }
+                m_prgVorsluStofnun.PerformStep();
+                m_lblVorsluStofnunPrg.Text = string.Format("{0}/{1}", m_prgVorsluStofnun.Value, m_prgVorsluStofnun.Maximum);
+                //2. Taka  sql-afrit afhverri útgáfu AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{gagnagrunnsheiti.sql}
+                string strDest = strBackup + "\\SQL";
+                if (!Directory.Exists(strDest)) 
+                {
+                    Directory.CreateDirectory(strDest); 
+                }
+                strDest = strDest + "\\" + strVarslAuðkenni.Replace(".", "_") + ".Sql";
+                m_lblStatus.Text = "Tek afrit af grunni " + strVarslAuðkenni.Replace(".", "_");
+                BackupSQL(strDest, strVarslAuðkenni.Replace(".", "_"));
+            }
+
+
+            //3. Gera insert-skriptu fyrir allan pakkan (metadata) AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{metadata.sql}
+            //A. ná í schemað
+            if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
+            {
+                strAfritunarMappa = string.Format("D:\\AIP-Afrit\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
+            }
+            else
+            {
+                strAfritunarMappa = string.Format("D:\\AIP-Afrit\\{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
+            }
+            if (!Directory.Exists(strAfritunarMappa))
+            {
+                Directory.CreateDirectory(strAfritunarMappa);
+            }
+            string strSchema = strAfritunarMappa + "\\SQL_META_AFRIT";
+            if (!Directory.Exists(strSchema))
+            {
+                Directory.CreateDirectory(strSchema);
+            }
+            File.Copy("OAIS_ADMIN_AFRIT.sql", strSchema + "\\OAIS_ADMIN_AFRIT.sql", true);
+            //A. gera innsert sriptu
+            cBackup back = new cBackup();
+            DataTable dtGogn = new DataTable();
+            //  string[] strTöflur = { "dt_fyrirspurnir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_isdiah_vörslustofnanir", "dt_item_korfu_dip", "dt_item_korfu_mal_dip", "dt_karfa_dip", "dt_karfa_item_gagna_dip", "dt_lanthegar", "dt_md5", "dt_midlun", "dt_notendur" };
+            string[] strTöflur = { "dt_isdiah_vörslustofnanir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_fyrirspurnir",  "dt_md5", "dt_midlun", "ds_gagnagrunnar", "dt_notendur" };
+            string strSQLTEXT = string.Empty;
+            foreach (string str in strTöflur) 
+            {
+                if (str == "dt_isdiah_vörslustofnanir")
+                {
+                    //þarf að búa til nýtt fall ef allt á að komast
+                    string strID = strStofnanir.Remove(strStofnanir.Length - 1);
+                    dtGogn = back.getDataFromTable(str, "5_1_1_auðkenni", strID);
+                    strSQLTEXT += createInsert(dtGogn, "dt_isdiah_vörslustofnanir");
+                }
+                if (str == "dt_isaar_skjalamyndarar")
+                {
+                    string strID = strStofnanir.Remove(strStofnanir.Length - 1);
+                    dtGogn = back.getDataFromTable(str, "5_4_2_auðkenni_vörslustofnunar", strID);
+                    strSQLTEXT += createInsert(dtGogn, "dt_isaar_skjalamyndarar");
+                }
+                if (str == "dt_isadg_skráningar")
+                {
+                    //þarf að búa til nýtt fall ef allt á að komast
+                    string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
+
+                    dtGogn = back.getDataFromTable(str, "3_1_1_auðkenni", strID);
+                    strSQLTEXT += createInsert(dtGogn, "dt_isadg_skráningar");
+                }
+                if (str == "dt_fyrirspurnir")
+                {
+                    string strID = strAuðkenni.Replace(".", "_").Remove(strAuðkenni.Length-1);
+                    dtGogn = back.getDataFromTable(str, "gagnagrunnur", strID);
+                    strSQLTEXT += createInsert(dtGogn, "dt_fyrirspurnir"); //vantar að laga slaufusviga {}
+                }
+                
+               
+                //if (str == "dt_isadg_skráningar")
+                //{
+                //    //þarf að búa til nýtt fall ef allt á að komast
+                //    string strID = strStofnanir.Remove(strStofnanir.Length - 1);
+                //    dtGogn = back.getDataFromTable(str, "vörslustofnun", strID);
+                //}
+              
+                if (str == "dt_md5")
+                {
+                    //þarf að búa til nýtt fall ef allt á að komast
+                    string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
+                    dtGogn = back.getDataFromTable(str, "AIP", strID);
+                    strSQLTEXT += createInsert(dtGogn, "dt_md5");
+                }
+                if (str == "dt_midlun")
+                {
+                    //þarf að búa til nýtt fall ef allt á að komast
+                    string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
+                    dtGogn = back.getDataFromTable(str, "vorsluutgafa", strID);
+                    strSQLTEXT += createInsert(dtGogn, "dt_midlun");
+                }
+                if(str == "ds_gagnagrunnar")
+                {
+                    //þarf að búa til nýtt fall ef allt á að komast
+                    string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
+                    dtGogn = back.getDataFromTable(str, "vorsluutgafa", strID);
+                    strSQLTEXT += createInsert(dtGogn, "ds_gagnagrunnar");
+                }
+                if(str == "dt_notendur")
+                {
+                    //búa til einn master notanda
+                }
+
+            }
+            //vista innsertið
+            strSchema = strSchema + "\\INSERT.sql";
+            File.WriteAllText(strSchema, strSQLTEXT);
+            //4. gera geymsluskrá á ákveðnu formati AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{geymsluskra.xlsx}
+            //5. gera EAD
+            //6 gera EAC-CPF.
+
+            MessageBox.Show("Búið");
+        }
+
+        private string createInsert(DataTable dt, string strTafla)
+        {
+            string strRet = string.Empty;
+            string strClolumns = string.Empty;
+            
+            foreach(DataRow dr in dt.Rows) 
+            {
+                strRet += "INSERT INTO db_oais_admin_afrit." + strTafla + "  VALUES (";
+                foreach (DataColumn col in dt.Columns)
+                {
+                    string strBla = mysqlESCAPE(dr[col.ColumnName].ToString());
+                    strClolumns += "'" + mysqlESCAPE(dr[col.ColumnName].ToString()) + "',";
+                }
+                strRet += strClolumns.Remove(strClolumns.Length - 1) + ");" + Environment.NewLine;
+                strClolumns = string.Empty;
+            }
+            return strRet;
+        }
+        private string mysqlESCAPE(string strTexti)
+        {
+           
+                strTexti = strTexti.Replace("'", "\\'");
+                strTexti = strTexti.Replace("{", "\\{");
+                strTexti = strTexti.Replace("}", "\\}");
+           
+          
+            return strTexti;
+        }
+        private void BackupSQL(string strDest, string strDatabase)
+        {
+            string constring = "server = localhost; user id = root; Password = ivarBjarkLind; database =" + strDatabase + ";"; //gera þetta abastract gegnum stillingar
+                                                                                                                               // string constring = "server=localhost;user=root;pwd=qwerty;database=test;";
+
+            using (MySqlConnection conn = new MySqlConnection(constring))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        cmd.Connection = conn;
+                        conn.Open();
+                        mb.ExportToFile(strDest);
+                        conn.Close();
+                        cmd.Dispose();
+                        conn.Dispose();
+
+                    }
+                }
+            }
+        }
+
+        private void CopyFolder(string sourceFolder, string destFolder)
+        {
+            if (!Directory.Exists(destFolder))
+                Directory.CreateDirectory(destFolder);
+            string[] files = Directory.GetFiles(sourceFolder);
+            m_prgBackup.Maximum = files.Length;
+            m_prgBackup.Step = 1;
+            m_prgBackup.Value = 0;
+            foreach (string file in files)
+            {
+                string name = Path.GetFileName(file);
+                string dest = Path.Combine(destFolder, name);
+                File.Copy(file, dest, true);
+                m_prgBackup.PerformStep();
+                m_lblBackupStatus.Text = file; // string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
+                Application.DoEvents();
+            }
+            string[] folders = Directory.GetDirectories(sourceFolder);
+            m_prgBackup.Maximum = folders.Length;
+            m_prgBackup.Step = 1;
+           m_prgBackup.Value = 0;
+            foreach (string folder in folders)
+            {
+                string name = Path.GetFileName(folder);
+                string dest = Path.Combine(destFolder, name);
+                CopyFolder(folder, dest);
+                m_prgBackup.PerformStep();
+                m_lblBackupStatus.Text = folder; // string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
+                Application.DoEvents();
+            }
         }
     }
 }

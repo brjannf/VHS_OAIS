@@ -142,5 +142,21 @@ namespace cClassOAIS
             command.Dispose();
         }
 
+        public DataTable  getVorsluUtgafurKlasa(string strAuðkenni)
+        {
+            string strSQL = string.Format("SELECT id, vorsluutgafa, concat(utgafa_titill, ' ', afharnr) as utgafa_titill , vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, innihald, timabil, afharnr, MD5, hver_skradi, dags_skrad, adgangstakmarkanir, eytt, dags_eytt, hver_eytti, midlun, dags_midlad, hver_midladi, frumeintak  FROM db_oais_admin.`dt_vörsluutgafur` d where midlun = 1 and vorsluutgafa like 'AVID%' and vorslustofnun in({0});", strAuðkenni);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getVorsluUtgafurVorslu(string strAuðkenni)
+        {
+            string strSQL = string.Format("SELECT id, vorsluutgafa, concat(utgafa_titill, ' ', afharnr) as utgafa_titill , vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, innihald, timabil, afharnr, MD5, hver_skradi, dags_skrad, adgangstakmarkanir, eytt, dags_eytt, hver_eytti, midlun, dags_midlad, hver_midladi, frumeintak  FROM db_oais_admin.`dt_vörsluutgafur` d where midlun = 1 and vorsluutgafa like 'AVID%' and vorslustofnun = '{0}';", strAuðkenni);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
     }
 }

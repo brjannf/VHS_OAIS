@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -72,6 +73,8 @@
             this.colArchiveSlod = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_btnPizza = new System.Windows.Forms.Button();
+            this.m_btnVistaArkiveIndex = new System.Windows.Forms.Button();
             this.m_tlpSkjalm2 = new System.Windows.Forms.TableLayoutPanel();
             this.m_dtpLokaDagsetning_4 = new System.Windows.Forms.DateTimePicker();
             this.m_dtpUppafsDagsetning_3 = new System.Windows.Forms.DateTimePicker();
@@ -379,6 +382,7 @@
             this.colContextSlod = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn51 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colContextOpna = new System.Windows.Forms.DataGridViewButtonColumn();
             this.m_tclContexDoc = new System.Windows.Forms.TabControl();
             this.m_tapProvider = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -480,6 +484,7 @@
             this.colDocSlod = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn59 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn60 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDocOpna = new System.Windows.Forms.DataGridViewButtonColumn();
             this.splitContainer14 = new System.Windows.Forms.SplitContainer();
             this.m_grbDocLeit = new System.Windows.Forms.GroupBox();
             this.m_btnLDocHreinsa = new System.Windows.Forms.Button();
@@ -501,6 +506,14 @@
             this.label88 = new System.Windows.Forms.Label();
             this.m_grbFile = new System.Windows.Forms.GroupBox();
             this.m_dgvFile = new System.Windows.Forms.DataGridView();
+            this.colMD5Titill = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMD5Titilvarsla = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMD5TitillVorsluutgafu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMD5Vorsluutgafa = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMD5Slod = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMD5Mappa = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMD5Md5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -645,6 +658,7 @@
             this.m_grbFileLeit.SuspendLayout();
             this.m_grbFile.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvFile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer2
@@ -662,6 +676,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.AutoScroll = true;
+            this.splitContainer2.Panel2.Controls.Add(this.m_btnPizza);
+            this.splitContainer2.Panel2.Controls.Add(this.m_btnVistaArkiveIndex);
             this.splitContainer2.Panel2.Controls.Add(this.m_tlpSkjalm2);
             this.splitContainer2.Panel2.Controls.Add(this.m_tlpNotkun5);
             this.splitContainer2.Panel2.Controls.Add(this.m_tlpInniHald4);
@@ -895,6 +911,26 @@
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
             this.dataGridViewTextBoxColumn16.ReadOnly = true;
             this.dataGridViewTextBoxColumn16.Visible = false;
+            // 
+            // m_btnPizza
+            // 
+            this.m_btnPizza.Location = new System.Drawing.Point(1493, 66);
+            this.m_btnPizza.Name = "m_btnPizza";
+            this.m_btnPizza.Size = new System.Drawing.Size(84, 23);
+            this.m_btnPizza.TabIndex = 42;
+            this.m_btnPizza.Text = "Pítslu kaup";
+            this.m_btnPizza.UseVisualStyleBackColor = true;
+            this.m_btnPizza.Visible = false;
+            // 
+            // m_btnVistaArkiveIndex
+            // 
+            this.m_btnVistaArkiveIndex.Location = new System.Drawing.Point(1493, 24);
+            this.m_btnVistaArkiveIndex.Name = "m_btnVistaArkiveIndex";
+            this.m_btnVistaArkiveIndex.Size = new System.Drawing.Size(75, 23);
+            this.m_btnVistaArkiveIndex.TabIndex = 41;
+            this.m_btnVistaArkiveIndex.Text = "Vista";
+            this.m_btnVistaArkiveIndex.UseVisualStyleBackColor = true;
+            this.m_btnVistaArkiveIndex.Click += new System.EventHandler(this.m_btnVistaArkiveIndex_Click);
             // 
             // m_tlpSkjalm2
             // 
@@ -4380,7 +4416,8 @@
             this.dataGridViewTextBoxColumn48,
             this.colContextSlod,
             this.dataGridViewTextBoxColumn50,
-            this.dataGridViewTextBoxColumn51});
+            this.dataGridViewTextBoxColumn51,
+            this.colContextOpna});
             this.m_dgvContextUtgafur.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_dgvContextUtgafur.Location = new System.Drawing.Point(3, 19);
             this.m_dgvContextUtgafur.MultiSelect = false;
@@ -4391,6 +4428,7 @@
             this.m_dgvContextUtgafur.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.m_dgvContextUtgafur.Size = new System.Drawing.Size(1621, 178);
             this.m_dgvContextUtgafur.TabIndex = 1;
+            this.m_dgvContextUtgafur.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvContextUtgafur_CellClick);
             this.m_dgvContextUtgafur.SelectionChanged += new System.EventHandler(this.m_dgvContextUtgafur_SelectionChanged);
             // 
             // dataGridViewTextBoxColumn37
@@ -4530,6 +4568,16 @@
             this.dataGridViewTextBoxColumn51.Name = "dataGridViewTextBoxColumn51";
             this.dataGridViewTextBoxColumn51.ReadOnly = true;
             this.dataGridViewTextBoxColumn51.Visible = false;
+            // 
+            // colContextOpna
+            // 
+            this.colContextOpna.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colContextOpna.HeaderText = "Opna contextDocumentationIndex";
+            this.colContextOpna.Name = "colContextOpna";
+            this.colContextOpna.ReadOnly = true;
+            this.colContextOpna.Text = "Opna contextDocumentationIndex";
+            this.colContextOpna.UseColumnTextForButtonValue = true;
+            this.colContextOpna.Width = 187;
             // 
             // m_tclContexDoc
             // 
@@ -5562,7 +5610,8 @@
             this.dataGridViewTextBoxColumn57,
             this.colDocSlod,
             this.dataGridViewTextBoxColumn59,
-            this.dataGridViewTextBoxColumn60});
+            this.dataGridViewTextBoxColumn60,
+            this.colDocOpna});
             dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle20.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -5581,6 +5630,7 @@
             this.m_dgvDocUtgafur.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.m_dgvDocUtgafur.Size = new System.Drawing.Size(1621, 178);
             this.m_dgvDocUtgafur.TabIndex = 1;
+            this.m_dgvDocUtgafur.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvDocUtgafur_CellClick);
             this.m_dgvDocUtgafur.SelectionChanged += new System.EventHandler(this.m_dgvDocUtgafur_SelectionChanged);
             // 
             // dataGridViewTextBoxColumn14
@@ -5720,6 +5770,16 @@
             this.dataGridViewTextBoxColumn60.Name = "dataGridViewTextBoxColumn60";
             this.dataGridViewTextBoxColumn60.ReadOnly = true;
             this.dataGridViewTextBoxColumn60.Visible = false;
+            // 
+            // colDocOpna
+            // 
+            this.colDocOpna.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colDocOpna.HeaderText = "Opna documentIndex";
+            this.colDocOpna.Name = "colDocOpna";
+            this.colDocOpna.ReadOnly = true;
+            this.colDocOpna.Text = "Opna documentIndex";
+            this.colDocOpna.UseColumnTextForButtonValue = true;
+            this.colDocOpna.Width = 116;
             // 
             // splitContainer14
             // 
@@ -5932,6 +5992,7 @@
             this.m_tboLeitGatsumma.Name = "m_tboLeitGatsumma";
             this.m_tboLeitGatsumma.Size = new System.Drawing.Size(339, 23);
             this.m_tboLeitGatsumma.TabIndex = 4;
+            this.m_tboLeitGatsumma.KeyUp += new System.Windows.Forms.KeyEventHandler(this.m_tboLeitGatsumma_KeyUp);
             // 
             // m_btnGatsummaLeit
             // 
@@ -5968,6 +6029,14 @@
             this.m_dgvFile.AllowUserToAddRows = false;
             this.m_dgvFile.AllowUserToDeleteRows = false;
             this.m_dgvFile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.m_dgvFile.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colMD5Titill,
+            this.colMD5Titilvarsla,
+            this.colMD5TitillVorsluutgafu,
+            this.colMD5Vorsluutgafa,
+            this.colMD5Slod,
+            this.colMD5Mappa,
+            this.colMD5Md5});
             dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle23.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -5985,6 +6054,73 @@
             this.m_dgvFile.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.m_dgvFile.Size = new System.Drawing.Size(1621, 740);
             this.m_dgvFile.TabIndex = 0;
+            this.m_dgvFile.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvFile_CellClick_1);
+            // 
+            // colMD5Titill
+            // 
+            this.colMD5Titill.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colMD5Titill.DataPropertyName = "titill";
+            this.colMD5Titill.HeaderText = "Titill skjals";
+            this.colMD5Titill.Name = "colMD5Titill";
+            this.colMD5Titill.ReadOnly = true;
+            this.colMD5Titill.Width = 81;
+            // 
+            // colMD5Titilvarsla
+            // 
+            this.colMD5Titilvarsla.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colMD5Titilvarsla.DataPropertyName = "file";
+            this.colMD5Titilvarsla.HeaderText = "Titill skjals í vörsluútgáfu";
+            this.colMD5Titilvarsla.Name = "colMD5Titilvarsla";
+            this.colMD5Titilvarsla.ReadOnly = true;
+            this.colMD5Titilvarsla.Width = 153;
+            // 
+            // colMD5TitillVorsluutgafu
+            // 
+            this.colMD5TitillVorsluutgafu.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colMD5TitillVorsluutgafu.DataPropertyName = "utgafa_titill";
+            this.colMD5TitillVorsluutgafu.HeaderText = "Titill vörsluútgáfu";
+            this.colMD5TitillVorsluutgafu.Name = "colMD5TitillVorsluutgafu";
+            this.colMD5TitillVorsluutgafu.ReadOnly = true;
+            this.colMD5TitillVorsluutgafu.Width = 119;
+            // 
+            // colMD5Vorsluutgafa
+            // 
+            this.colMD5Vorsluutgafa.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colMD5Vorsluutgafa.DataPropertyName = "vorsluutgafa";
+            this.colMD5Vorsluutgafa.HeaderText = "Auðkenni vörsluútgáfu";
+            this.colMD5Vorsluutgafa.Name = "colMD5Vorsluutgafa";
+            this.colMD5Vorsluutgafa.ReadOnly = true;
+            this.colMD5Vorsluutgafa.Width = 145;
+            // 
+            // colMD5Slod
+            // 
+            this.colMD5Slod.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colMD5Slod.DataPropertyName = "slod";
+            this.colMD5Slod.HeaderText = "Slóð á skjal";
+            this.colMD5Slod.Name = "colMD5Slod";
+            this.colMD5Slod.ReadOnly = true;
+            // 
+            // colMD5Mappa
+            // 
+            this.colMD5Mappa.DataPropertyName = " mappa";
+            this.colMD5Mappa.HeaderText = "Mappa skjals";
+            this.colMD5Mappa.Name = "colMD5Mappa";
+            this.colMD5Mappa.ReadOnly = true;
+            this.colMD5Mappa.Visible = false;
+            this.colMD5Mappa.Width = 943;
+            // 
+            // colMD5Md5
+            // 
+            this.colMD5Md5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colMD5Md5.DataPropertyName = "MD5";
+            this.colMD5Md5.HeaderText = "Gátsumma";
+            this.colMD5Md5.Name = "colMD5Md5";
+            this.colMD5Md5.ReadOnly = true;
+            this.colMD5Md5.Width = 92;
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
             // 
             // uscGagnaUmsjon
             // 
@@ -6165,6 +6301,7 @@
             this.m_grbFileLeit.PerformLayout();
             this.m_grbFile.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvFile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -6511,22 +6648,6 @@
         private DataGridViewButtonColumn colContext1Skoda;
         private GroupBox groupBox5;
         private DataGridView m_dgvContextUtgafur;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn37;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn38;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn39;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn40;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn41;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn42;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn43;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn44;
-        private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn2;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn45;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn46;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn47;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn48;
-        private DataGridViewTextBoxColumn colContextSlod;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn50;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn51;
         private GroupBox m_grbLysigögn;
         private Panel m_pnlLysigogn;
         private DataGridView m_dgvVirkni_tafla2;
@@ -6587,22 +6708,6 @@
         private GroupBox m_grbDocLeit;
         private GroupBox m_grbDoc;
         private DataGridView m_dgvDoc;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn20;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn24;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn28;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn30;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn49;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn52;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn53;
-        private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn3;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn54;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn55;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn56;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn57;
-        private DataGridViewTextBoxColumn colDocSlod;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn59;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn60;
         private DataGridViewTextBoxColumn colDocID;
         private DataGridViewTextBoxColumn colDocCollection;
         private DataGridViewTextBoxColumn colDocTitill;
@@ -6620,5 +6725,49 @@
         private Label label88;
         private GroupBox m_grbFile;
         private DataGridView m_dgvFile;
+        private DataGridViewTextBoxColumn colMD5Titill;
+        private DataGridViewTextBoxColumn colMD5Titilvarsla;
+        private DataGridViewTextBoxColumn colMD5TitillVorsluutgafu;
+        private DataGridViewTextBoxColumn colMD5Vorsluutgafa;
+        private DataGridViewTextBoxColumn colMD5Slod;
+        private DataGridViewTextBoxColumn colMD5Mappa;
+        private DataGridViewTextBoxColumn colMD5Md5;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn37;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn38;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn39;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn40;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn41;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn42;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn43;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn44;
+        private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn45;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn46;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn47;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn48;
+        private DataGridViewTextBoxColumn colContextSlod;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn50;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn51;
+        private DataGridViewButtonColumn colContextOpna;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn20;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn24;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn28;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn30;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn49;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn52;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn53;
+        private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn3;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn54;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn55;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn56;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn57;
+        private DataGridViewTextBoxColumn colDocSlod;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn59;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn60;
+        private DataGridViewButtonColumn colDocOpna;
+        private Button m_btnVistaArkiveIndex;
+        private ErrorProvider errorProvider1;
+        private Button m_btnPizza;
     }
 }

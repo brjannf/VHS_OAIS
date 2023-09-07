@@ -121,7 +121,7 @@ namespace cClassVHS
 
         public DataTable getFiles(string strDate,string strrDrif)
         {
-            string strSQL = string.Format("SELECT * FROM dt_files d where date(date) = '{0}' and drifid = {1} ;", strDate, strrDrif);
+            string strSQL = string.Format("SELECT id, nafn, oldNafn, slod, adgerd, laust, drifID, CAST(DATE AS char) as DATE, villa FROM dt_files d where date(date) = '{0}' and drifid = {1} ;", strDate, strrDrif);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = new DataTable();
             dt = ds.Tables[0];

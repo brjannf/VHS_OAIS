@@ -328,6 +328,14 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
+
+        public DataTable getAllKlasa()
+        {
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_isdiah_vörslustofnanir` v, db_oais_admin.`dt_isadg_skráningar` s where v.5_1_1_auðkenni = s.vörslustofnun; ");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
     }
 
    

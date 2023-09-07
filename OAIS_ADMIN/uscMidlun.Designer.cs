@@ -69,6 +69,29 @@
             this.m_btnkeyra = new System.Windows.Forms.Button();
             this.m_btnEndurHressa = new System.Windows.Forms.Button();
             this.m_grbVorsluutgafur = new System.Windows.Forms.GroupBox();
+            this.m_tacMidlun = new System.Windows.Forms.TabControl();
+            this.m_tap_HRM_ACCESS = new System.Windows.Forms.TabPage();
+            this.m_tapVorslur = new System.Windows.Forms.TabPage();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.m_grbKlasar = new System.Windows.Forms.GroupBox();
+            this.m_trwKlasarVorslustonun = new System.Windows.Forms.TreeView();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.m_lblStatus = new System.Windows.Forms.Label();
+            this.m_lblVorsluStofnunPrg = new System.Windows.Forms.Label();
+            this.m_prgVorsluStofnun = new System.Windows.Forms.ProgressBar();
+            this.label2 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.m_lblBackupStatus = new System.Windows.Forms.Label();
+            this.m_prgBackup = new System.Windows.Forms.ProgressBar();
+            this.m_btnBuaTilPakka = new System.Windows.Forms.Button();
+            this.m_lblKlasiVarslaValinn = new System.Windows.Forms.Label();
+            this.m_grbUtgafur = new System.Windows.Forms.GroupBox();
+            this.m_dgvUtafurKlasarVarsla = new System.Windows.Forms.DataGridView();
+            this.colAudkenni = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colVorslustofun = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colGeymsluskra = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.colVarslaSlod = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvUtgafur)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -78,6 +101,20 @@
             this.m_grbFyrirspurnir.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvFyrirSpurnir)).BeginInit();
             this.m_grbVorsluutgafur.SuspendLayout();
+            this.m_tacMidlun.SuspendLayout();
+            this.m_tap_HRM_ACCESS.SuspendLayout();
+            this.m_tapVorslur.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            this.m_grbKlasar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            this.m_grbUtgafur.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvUtafurKlasarVarsla)).BeginInit();
             this.SuspendLayout();
             // 
             // m_dgvUtgafur
@@ -112,7 +149,7 @@
             this.m_dgvUtgafur.ReadOnly = true;
             this.m_dgvUtgafur.RowHeadersVisible = false;
             this.m_dgvUtgafur.RowTemplate.Height = 25;
-            this.m_dgvUtgafur.Size = new System.Drawing.Size(1534, 232);
+            this.m_dgvUtgafur.Size = new System.Drawing.Size(1592, 242);
             this.m_dgvUtgafur.TabIndex = 1;
             this.m_dgvUtgafur.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvUtgafur_CellClick);
             // 
@@ -281,7 +318,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -298,8 +335,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.m_grbVorsluutgafur);
-            this.splitContainer1.Size = new System.Drawing.Size(1540, 626);
-            this.splitContainer1.SplitterDistance = 368;
+            this.splitContainer1.Size = new System.Drawing.Size(1598, 650);
+            this.splitContainer1.SplitterDistance = 382;
             this.splitContainer1.TabIndex = 2;
             // 
             // m_grbStatus
@@ -352,9 +389,9 @@
             // 
             this.m_grbFyrirspurnir.Controls.Add(this.m_dgvFyrirSpurnir);
             this.m_grbFyrirspurnir.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.m_grbFyrirspurnir.Location = new System.Drawing.Point(0, 163);
+            this.m_grbFyrirspurnir.Location = new System.Drawing.Point(0, 177);
             this.m_grbFyrirspurnir.Name = "m_grbFyrirspurnir";
-            this.m_grbFyrirspurnir.Size = new System.Drawing.Size(1540, 205);
+            this.m_grbFyrirspurnir.Size = new System.Drawing.Size(1598, 205);
             this.m_grbFyrirspurnir.TabIndex = 10;
             this.m_grbFyrirspurnir.TabStop = false;
             this.m_grbFyrirspurnir.Text = "Fyrirspurnir";
@@ -375,9 +412,10 @@
             this.m_dgvFyrirSpurnir.Name = "m_dgvFyrirSpurnir";
             this.m_dgvFyrirSpurnir.RowHeadersVisible = false;
             this.m_dgvFyrirSpurnir.RowTemplate.Height = 25;
-            this.m_dgvFyrirSpurnir.Size = new System.Drawing.Size(1534, 183);
+            this.m_dgvFyrirSpurnir.Size = new System.Drawing.Size(1592, 183);
             this.m_dgvFyrirSpurnir.TabIndex = 4;
             this.m_dgvFyrirSpurnir.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvFyrirSpurnir_CellClick);
+            this.m_dgvFyrirSpurnir.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvFyrirSpurnir_CellContentClick);
             // 
             // colID
             // 
@@ -491,18 +529,272 @@
             this.m_grbVorsluutgafur.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbVorsluutgafur.Location = new System.Drawing.Point(0, 0);
             this.m_grbVorsluutgafur.Name = "m_grbVorsluutgafur";
-            this.m_grbVorsluutgafur.Size = new System.Drawing.Size(1540, 254);
+            this.m_grbVorsluutgafur.Size = new System.Drawing.Size(1598, 264);
             this.m_grbVorsluutgafur.TabIndex = 2;
             this.m_grbVorsluutgafur.TabStop = false;
             this.m_grbVorsluutgafur.Text = "Vörsluútgafur";
+            // 
+            // m_tacMidlun
+            // 
+            this.m_tacMidlun.Controls.Add(this.m_tap_HRM_ACCESS);
+            this.m_tacMidlun.Controls.Add(this.m_tapVorslur);
+            this.m_tacMidlun.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_tacMidlun.Location = new System.Drawing.Point(0, 0);
+            this.m_tacMidlun.Name = "m_tacMidlun";
+            this.m_tacMidlun.SelectedIndex = 0;
+            this.m_tacMidlun.Size = new System.Drawing.Size(1612, 684);
+            this.m_tacMidlun.TabIndex = 3;
+            // 
+            // m_tap_HRM_ACCESS
+            // 
+            this.m_tap_HRM_ACCESS.Controls.Add(this.splitContainer1);
+            this.m_tap_HRM_ACCESS.Location = new System.Drawing.Point(4, 24);
+            this.m_tap_HRM_ACCESS.Name = "m_tap_HRM_ACCESS";
+            this.m_tap_HRM_ACCESS.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tap_HRM_ACCESS.Size = new System.Drawing.Size(1604, 656);
+            this.m_tap_HRM_ACCESS.TabIndex = 0;
+            this.m_tap_HRM_ACCESS.Text = "Miðlun fyrir MHR";
+            this.m_tap_HRM_ACCESS.UseVisualStyleBackColor = true;
+            // 
+            // m_tapVorslur
+            // 
+            this.m_tapVorslur.Controls.Add(this.splitContainer3);
+            this.m_tapVorslur.Location = new System.Drawing.Point(4, 24);
+            this.m_tapVorslur.Name = "m_tapVorslur";
+            this.m_tapVorslur.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapVorslur.Size = new System.Drawing.Size(1604, 656);
+            this.m_tapVorslur.TabIndex = 1;
+            this.m_tapVorslur.Text = "Miðlun fyrir vörslustofnanir";
+            this.m_tapVorslur.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.m_grbKlasar);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer3.Size = new System.Drawing.Size(1598, 650);
+            this.splitContainer3.SplitterDistance = 217;
+            this.splitContainer3.TabIndex = 1;
+            // 
+            // m_grbKlasar
+            // 
+            this.m_grbKlasar.Controls.Add(this.m_trwKlasarVorslustonun);
+            this.m_grbKlasar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbKlasar.Location = new System.Drawing.Point(0, 0);
+            this.m_grbKlasar.Name = "m_grbKlasar";
+            this.m_grbKlasar.Size = new System.Drawing.Size(217, 650);
+            this.m_grbKlasar.TabIndex = 1;
+            this.m_grbKlasar.TabStop = false;
+            this.m_grbKlasar.Text = "Klasara/ Vörslustofnanir";
+            // 
+            // m_trwKlasarVorslustonun
+            // 
+            this.m_trwKlasarVorslustonun.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_trwKlasarVorslustonun.Location = new System.Drawing.Point(3, 19);
+            this.m_trwKlasarVorslustonun.Name = "m_trwKlasarVorslustonun";
+            this.m_trwKlasarVorslustonun.Size = new System.Drawing.Size(211, 628);
+            this.m_trwKlasarVorslustonun.TabIndex = 0;
+            this.m_trwKlasarVorslustonun.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwKlasarVorslustonun_AfterSelect);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.m_lblStatus);
+            this.splitContainer2.Panel1.Controls.Add(this.m_lblVorsluStofnunPrg);
+            this.splitContainer2.Panel1.Controls.Add(this.m_prgVorsluStofnun);
+            this.splitContainer2.Panel1.Controls.Add(this.label2);
+            this.splitContainer2.Panel1.Controls.Add(this.progressBar1);
+            this.splitContainer2.Panel1.Controls.Add(this.m_lblBackupStatus);
+            this.splitContainer2.Panel1.Controls.Add(this.m_prgBackup);
+            this.splitContainer2.Panel1.Controls.Add(this.m_btnBuaTilPakka);
+            this.splitContainer2.Panel1.Controls.Add(this.m_lblKlasiVarslaValinn);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.m_grbUtgafur);
+            this.splitContainer2.Size = new System.Drawing.Size(1377, 650);
+            this.splitContainer2.SplitterDistance = 280;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // m_lblStatus
+            // 
+            this.m_lblStatus.AutoSize = true;
+            this.m_lblStatus.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.m_lblStatus.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.m_lblStatus.Location = new System.Drawing.Point(147, 68);
+            this.m_lblStatus.Name = "m_lblStatus";
+            this.m_lblStatus.Size = new System.Drawing.Size(50, 19);
+            this.m_lblStatus.TabIndex = 8;
+            this.m_lblStatus.Text = "label2";
+            // 
+            // m_lblVorsluStofnunPrg
+            // 
+            this.m_lblVorsluStofnunPrg.AutoSize = true;
+            this.m_lblVorsluStofnunPrg.Location = new System.Drawing.Point(836, 113);
+            this.m_lblVorsluStofnunPrg.Name = "m_lblVorsluStofnunPrg";
+            this.m_lblVorsluStofnunPrg.Size = new System.Drawing.Size(38, 15);
+            this.m_lblVorsluStofnunPrg.TabIndex = 7;
+            this.m_lblVorsluStofnunPrg.Text = "label2";
+            // 
+            // m_prgVorsluStofnun
+            // 
+            this.m_prgVorsluStofnun.Location = new System.Drawing.Point(147, 105);
+            this.m_prgVorsluStofnun.Name = "m_prgVorsluStofnun";
+            this.m_prgVorsluStofnun.Size = new System.Drawing.Size(660, 23);
+            this.m_prgVorsluStofnun.TabIndex = 6;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(836, 155);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 15);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "label2";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(147, 147);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(660, 23);
+            this.progressBar1.TabIndex = 4;
+            // 
+            // m_lblBackupStatus
+            // 
+            this.m_lblBackupStatus.AutoSize = true;
+            this.m_lblBackupStatus.Location = new System.Drawing.Point(836, 199);
+            this.m_lblBackupStatus.Name = "m_lblBackupStatus";
+            this.m_lblBackupStatus.Size = new System.Drawing.Size(38, 15);
+            this.m_lblBackupStatus.TabIndex = 3;
+            this.m_lblBackupStatus.Text = "label2";
+            // 
+            // m_prgBackup
+            // 
+            this.m_prgBackup.Location = new System.Drawing.Point(147, 191);
+            this.m_prgBackup.Name = "m_prgBackup";
+            this.m_prgBackup.Size = new System.Drawing.Size(660, 23);
+            this.m_prgBackup.TabIndex = 2;
+            // 
+            // m_btnBuaTilPakka
+            // 
+            this.m_btnBuaTilPakka.Location = new System.Drawing.Point(147, 239);
+            this.m_btnBuaTilPakka.Name = "m_btnBuaTilPakka";
+            this.m_btnBuaTilPakka.Size = new System.Drawing.Size(671, 23);
+            this.m_btnBuaTilPakka.TabIndex = 1;
+            this.m_btnBuaTilPakka.Text = "Búa til miðlunarpakka";
+            this.m_btnBuaTilPakka.UseVisualStyleBackColor = true;
+            this.m_btnBuaTilPakka.Click += new System.EventHandler(this.m_btnBuaTilPakka_Click);
+            // 
+            // m_lblKlasiVarslaValinn
+            // 
+            this.m_lblKlasiVarslaValinn.AutoSize = true;
+            this.m_lblKlasiVarslaValinn.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.m_lblKlasiVarslaValinn.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.m_lblKlasiVarslaValinn.Location = new System.Drawing.Point(147, 28);
+            this.m_lblKlasiVarslaValinn.Name = "m_lblKlasiVarslaValinn";
+            this.m_lblKlasiVarslaValinn.Size = new System.Drawing.Size(65, 25);
+            this.m_lblKlasiVarslaValinn.TabIndex = 0;
+            this.m_lblKlasiVarslaValinn.Text = "label2";
+            // 
+            // m_grbUtgafur
+            // 
+            this.m_grbUtgafur.Controls.Add(this.m_dgvUtafurKlasarVarsla);
+            this.m_grbUtgafur.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbUtgafur.Location = new System.Drawing.Point(0, 0);
+            this.m_grbUtgafur.Name = "m_grbUtgafur";
+            this.m_grbUtgafur.Size = new System.Drawing.Size(1377, 366);
+            this.m_grbUtgafur.TabIndex = 0;
+            this.m_grbUtgafur.TabStop = false;
+            this.m_grbUtgafur.Text = "Vörsluútgáfur";
+            // 
+            // m_dgvUtafurKlasarVarsla
+            // 
+            this.m_dgvUtafurKlasarVarsla.AllowUserToAddRows = false;
+            this.m_dgvUtafurKlasarVarsla.AllowUserToDeleteRows = false;
+            this.m_dgvUtafurKlasarVarsla.AllowUserToOrderColumns = true;
+            this.m_dgvUtafurKlasarVarsla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.m_dgvUtafurKlasarVarsla.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colAudkenni,
+            this.dataGridViewTextBoxColumn1,
+            this.colVorslustofun,
+            this.colGeymsluskra,
+            this.colVarslaSlod});
+            this.m_dgvUtafurKlasarVarsla.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_dgvUtafurKlasarVarsla.Location = new System.Drawing.Point(3, 19);
+            this.m_dgvUtafurKlasarVarsla.MultiSelect = false;
+            this.m_dgvUtafurKlasarVarsla.Name = "m_dgvUtafurKlasarVarsla";
+            this.m_dgvUtafurKlasarVarsla.ReadOnly = true;
+            this.m_dgvUtafurKlasarVarsla.RowHeadersVisible = false;
+            this.m_dgvUtafurKlasarVarsla.RowTemplate.Height = 25;
+            this.m_dgvUtafurKlasarVarsla.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.m_dgvUtafurKlasarVarsla.Size = new System.Drawing.Size(1371, 344);
+            this.m_dgvUtafurKlasarVarsla.TabIndex = 0;
+            this.m_dgvUtafurKlasarVarsla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvUtafurKlasarVarsla_CellClick);
+            // 
+            // colAudkenni
+            // 
+            this.colAudkenni.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colAudkenni.DataPropertyName = "vorsluutgafa";
+            this.colAudkenni.HeaderText = "Auðkenni vörslúgáfu";
+            this.colAudkenni.Name = "colAudkenni";
+            this.colAudkenni.ReadOnly = true;
+            this.colAudkenni.Width = 130;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "utgafa_titill";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Titill vörsluútgáfu";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // colVorslustofun
+            // 
+            this.colVorslustofun.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colVorslustofun.DataPropertyName = "varsla_heiti";
+            this.colVorslustofun.HeaderText = "Vörslustofnun";
+            this.colVorslustofun.Name = "colVorslustofun";
+            this.colVorslustofun.ReadOnly = true;
+            // 
+            // colGeymsluskra
+            // 
+            this.colGeymsluskra.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colGeymsluskra.HeaderText = "Geymsluskrá";
+            this.colGeymsluskra.Name = "colGeymsluskra";
+            this.colGeymsluskra.ReadOnly = true;
+            this.colGeymsluskra.Text = "Búa til skrá";
+            this.colGeymsluskra.UseColumnTextForButtonValue = true;
+            this.colGeymsluskra.Width = 80;
+            // 
+            // colVarslaSlod
+            // 
+            this.colVarslaSlod.DataPropertyName = "slod";
+            this.colVarslaSlod.HeaderText = "Slóð";
+            this.colVarslaSlod.Name = "colVarslaSlod";
+            this.colVarslaSlod.ReadOnly = true;
+            this.colVarslaSlod.Visible = false;
             // 
             // uscMidlun
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.m_tacMidlun);
             this.Name = "uscMidlun";
-            this.Size = new System.Drawing.Size(1540, 626);
+            this.Size = new System.Drawing.Size(1612, 684);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvUtgafur)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -514,6 +806,21 @@
             this.m_grbFyrirspurnir.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvFyrirSpurnir)).EndInit();
             this.m_grbVorsluutgafur.ResumeLayout(false);
+            this.m_tacMidlun.ResumeLayout(false);
+            this.m_tap_HRM_ACCESS.ResumeLayout(false);
+            this.m_tapVorslur.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            this.m_grbKlasar.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            this.m_grbUtgafur.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvUtafurKlasarVarsla)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -561,5 +868,28 @@
         private GroupBox m_grbStatus;
         private GroupBox m_grbFyrirspurnir;
         private GroupBox m_grbVorsluutgafur;
+        private TabControl m_tacMidlun;
+        private TabPage m_tap_HRM_ACCESS;
+        private TabPage m_tapVorslur;
+        private SplitContainer splitContainer3;
+        private TreeView m_trwKlasarVorslustonun;
+        private SplitContainer splitContainer2;
+        private GroupBox m_grbKlasar;
+        private GroupBox m_grbUtgafur;
+        private DataGridView m_dgvUtafurKlasarVarsla;
+        private Button m_btnBuaTilPakka;
+        private Label m_lblKlasiVarslaValinn;
+        private DataGridViewTextBoxColumn colAudkenni;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn colVorslustofun;
+        private DataGridViewButtonColumn colGeymsluskra;
+        private DataGridViewTextBoxColumn colVarslaSlod;
+        private ProgressBar m_prgBackup;
+        private Label m_lblBackupStatus;
+        private Label m_lblStatus;
+        private Label m_lblVorsluStofnunPrg;
+        private ProgressBar m_prgVorsluStofnun;
+        private Label label2;
+        private ProgressBar progressBar1;
     }
 }

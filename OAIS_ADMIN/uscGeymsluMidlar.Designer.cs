@@ -53,16 +53,18 @@
             this.m_lblSerial = new System.Windows.Forms.Label();
             this.m_grbDrif = new System.Windows.Forms.GroupBox();
             this.m_grbAfritun = new System.Windows.Forms.GroupBox();
-            this.m_lblBackupStatus = new System.Windows.Forms.Label();
-            this.m_lblHvadAfrita = new System.Windows.Forms.Label();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.m_comHvarGeymt = new System.Windows.Forms.ComboBox();
+            this.m_lblBackupStatus = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.m_lblHvadAfrita = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.m_btnTakaAfrit = new System.Windows.Forms.Button();
             this.m_comAfritDrif = new System.Windows.Forms.ComboBox();
-            this.m_prgBackup = new System.Windows.Forms.ProgressBar();
             this.m_grbAfritATH = new System.Windows.Forms.GroupBox();
             this.m_tboAfritATH = new System.Windows.Forms.TextBox();
-            this.m_btnTakaAfrit = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.m_prgBackup = new System.Windows.Forms.ProgressBar();
+            this.m_grbAfritunListi = new System.Windows.Forms.GroupBox();
             this.m_dgvBackup = new System.Windows.Forms.DataGridView();
             this.colBackID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colBackDrifID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -89,7 +91,12 @@
             this.m_grValinVel.SuspendLayout();
             this.m_grbDrif.SuspendLayout();
             this.m_grbAfritun.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
             this.m_grbAfritATH.SuspendLayout();
+            this.m_grbAfritunListi.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvBackup)).BeginInit();
             this.SuspendLayout();
             // 
@@ -117,7 +124,7 @@
             this.m_dgvDrif.ReadOnly = true;
             this.m_dgvDrif.RowHeadersVisible = false;
             this.m_dgvDrif.RowTemplate.Height = 25;
-            this.m_dgvDrif.Size = new System.Drawing.Size(918, 78);
+            this.m_dgvDrif.Size = new System.Drawing.Size(1290, 78);
             this.m_dgvDrif.TabIndex = 0;
             this.m_dgvDrif.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvDrif_CellClick);
             // 
@@ -238,18 +245,19 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1397, 743);
-            this.splitContainer1.SplitterDistance = 465;
+            this.splitContainer1.Size = new System.Drawing.Size(1521, 743);
+            this.splitContainer1.SplitterDistance = 217;
             this.splitContainer1.TabIndex = 2;
             // 
             // m_grbTolvur
             // 
             this.m_grbTolvur.Controls.Add(this.m_trwTolvur);
             this.m_grbTolvur.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbTolvur.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.m_grbTolvur.ForeColor = System.Drawing.SystemColors.ControlText;
             this.m_grbTolvur.Location = new System.Drawing.Point(0, 0);
             this.m_grbTolvur.Name = "m_grbTolvur";
-            this.m_grbTolvur.Size = new System.Drawing.Size(461, 739);
+            this.m_grbTolvur.Size = new System.Drawing.Size(213, 739);
             this.m_grbTolvur.TabIndex = 1;
             this.m_grbTolvur.TabStop = false;
             this.m_grbTolvur.Text = "Tölvubúnaður";
@@ -258,9 +266,9 @@
             // 
             this.m_trwTolvur.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_trwTolvur.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.m_trwTolvur.Location = new System.Drawing.Point(3, 19);
+            this.m_trwTolvur.Location = new System.Drawing.Point(3, 25);
             this.m_trwTolvur.Name = "m_trwTolvur";
-            this.m_trwTolvur.Size = new System.Drawing.Size(455, 717);
+            this.m_trwTolvur.Size = new System.Drawing.Size(207, 711);
             this.m_trwTolvur.TabIndex = 0;
             this.m_trwTolvur.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwTolvur_AfterSelect);
             // 
@@ -280,8 +288,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.m_grbAfritun);
-            this.splitContainer2.Size = new System.Drawing.Size(928, 743);
-            this.splitContainer2.SplitterDistance = 290;
+            this.splitContainer2.Size = new System.Drawing.Size(1300, 743);
+            this.splitContainer2.SplitterDistance = 230;
             this.splitContainer2.TabIndex = 2;
             // 
             // m_grValinVel
@@ -295,7 +303,7 @@
             this.m_grValinVel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.m_grValinVel.Location = new System.Drawing.Point(0, 0);
             this.m_grValinVel.Name = "m_grValinVel";
-            this.m_grValinVel.Size = new System.Drawing.Size(924, 180);
+            this.m_grValinVel.Size = new System.Drawing.Size(1296, 120);
             this.m_grValinVel.TabIndex = 12;
             this.m_grValinVel.TabStop = false;
             this.m_grValinVel.Text = "Upplýsingar um tölvu";
@@ -356,9 +364,9 @@
             this.m_grbDrif.Controls.Add(this.m_dgvDrif);
             this.m_grbDrif.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.m_grbDrif.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.m_grbDrif.Location = new System.Drawing.Point(0, 180);
+            this.m_grbDrif.Location = new System.Drawing.Point(0, 120);
             this.m_grbDrif.Name = "m_grbDrif";
-            this.m_grbDrif.Size = new System.Drawing.Size(924, 106);
+            this.m_grbDrif.Size = new System.Drawing.Size(1296, 106);
             this.m_grbDrif.TabIndex = 1;
             this.m_grbDrif.TabStop = false;
             this.m_grbDrif.Text = "Drif";
@@ -366,42 +374,42 @@
             // 
             // m_grbAfritun
             // 
-            this.m_grbAfritun.Controls.Add(this.m_lblBackupStatus);
-            this.m_grbAfritun.Controls.Add(this.m_lblHvadAfrita);
-            this.m_grbAfritun.Controls.Add(this.m_comHvarGeymt);
-            this.m_grbAfritun.Controls.Add(this.m_comAfritDrif);
-            this.m_grbAfritun.Controls.Add(this.m_prgBackup);
-            this.m_grbAfritun.Controls.Add(this.m_grbAfritATH);
-            this.m_grbAfritun.Controls.Add(this.m_btnTakaAfrit);
-            this.m_grbAfritun.Controls.Add(this.label2);
-            this.m_grbAfritun.Controls.Add(this.label1);
-            this.m_grbAfritun.Controls.Add(this.m_dgvBackup);
+            this.m_grbAfritun.Controls.Add(this.splitContainer3);
             this.m_grbAfritun.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbAfritun.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.m_grbAfritun.Location = new System.Drawing.Point(0, 0);
             this.m_grbAfritun.Name = "m_grbAfritun";
-            this.m_grbAfritun.Size = new System.Drawing.Size(924, 445);
+            this.m_grbAfritun.Size = new System.Drawing.Size(1296, 505);
             this.m_grbAfritun.TabIndex = 0;
             this.m_grbAfritun.TabStop = false;
             this.m_grbAfritun.Text = "Afritun (backup)";
             this.m_grbAfritun.Visible = false;
             // 
-            // m_lblBackupStatus
+            // splitContainer3
             // 
-            this.m_lblBackupStatus.AutoSize = true;
-            this.m_lblBackupStatus.Location = new System.Drawing.Point(786, 148);
-            this.m_lblBackupStatus.Name = "m_lblBackupStatus";
-            this.m_lblBackupStatus.Size = new System.Drawing.Size(74, 15);
-            this.m_lblBackupStatus.TabIndex = 12;
-            this.m_lblBackupStatus.Text = "Hvar geymt?";
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(3, 25);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // m_lblHvadAfrita
+            // splitContainer3.Panel1
             // 
-            this.m_lblHvadAfrita.AutoSize = true;
-            this.m_lblHvadAfrita.Location = new System.Drawing.Point(105, 122);
-            this.m_lblHvadAfrita.Name = "m_lblHvadAfrita";
-            this.m_lblHvadAfrita.Size = new System.Drawing.Size(67, 15);
-            this.m_lblHvadAfrita.TabIndex = 11;
-            this.m_lblHvadAfrita.Text = "Hvaða drif?";
+            this.splitContainer3.Panel1.Controls.Add(this.m_comHvarGeymt);
+            this.splitContainer3.Panel1.Controls.Add(this.m_lblBackupStatus);
+            this.splitContainer3.Panel1.Controls.Add(this.label1);
+            this.splitContainer3.Panel1.Controls.Add(this.m_lblHvadAfrita);
+            this.splitContainer3.Panel1.Controls.Add(this.label2);
+            this.splitContainer3.Panel1.Controls.Add(this.m_btnTakaAfrit);
+            this.splitContainer3.Panel1.Controls.Add(this.m_comAfritDrif);
+            this.splitContainer3.Panel1.Controls.Add(this.m_grbAfritATH);
+            this.splitContainer3.Panel1.Controls.Add(this.m_prgBackup);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.m_grbAfritunListi);
+            this.splitContainer3.Size = new System.Drawing.Size(1290, 477);
+            this.splitContainer3.SplitterDistance = 200;
+            this.splitContainer3.TabIndex = 13;
             // 
             // m_comHvarGeymt
             // 
@@ -412,33 +420,72 @@
             "HKOP",
             "HMOS",
             "HARN"});
-            this.m_comHvarGeymt.Location = new System.Drawing.Point(118, 66);
+            this.m_comHvarGeymt.Location = new System.Drawing.Point(237, 87);
             this.m_comHvarGeymt.Name = "m_comHvarGeymt";
-            this.m_comHvarGeymt.Size = new System.Drawing.Size(132, 23);
+            this.m_comHvarGeymt.Size = new System.Drawing.Size(308, 29);
             this.m_comHvarGeymt.TabIndex = 10;
+            // 
+            // m_lblBackupStatus
+            // 
+            this.m_lblBackupStatus.AutoSize = true;
+            this.m_lblBackupStatus.Location = new System.Drawing.Point(1027, 186);
+            this.m_lblBackupStatus.Name = "m_lblBackupStatus";
+            this.m_lblBackupStatus.Size = new System.Drawing.Size(105, 21);
+            this.m_lblBackupStatus.TabIndex = 12;
+            this.m_lblBackupStatus.Text = "Hvar geymt?";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(24, 87);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(189, 21);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Hvar verður afrit geymt";
+            // 
+            // m_lblHvadAfrita
+            // 
+            this.m_lblHvadAfrita.AutoSize = true;
+            this.m_lblHvadAfrita.Location = new System.Drawing.Point(109, 186);
+            this.m_lblHvadAfrita.Name = "m_lblHvadAfrita";
+            this.m_lblHvadAfrita.Size = new System.Drawing.Size(97, 21);
+            this.m_lblHvadAfrita.TabIndex = 11;
+            this.m_lblHvadAfrita.Text = "Hvaða drif?";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(24, 26);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(182, 21);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Drif sem afrit er vista á";
+            // 
+            // m_btnTakaAfrit
+            // 
+            this.m_btnTakaAfrit.Location = new System.Drawing.Point(1156, 171);
+            this.m_btnTakaAfrit.Name = "m_btnTakaAfrit";
+            this.m_btnTakaAfrit.Size = new System.Drawing.Size(114, 43);
+            this.m_btnTakaAfrit.TabIndex = 5;
+            this.m_btnTakaAfrit.Text = "Taka afrit";
+            this.m_btnTakaAfrit.UseVisualStyleBackColor = true;
+            this.m_btnTakaAfrit.Click += new System.EventHandler(this.m_btnTakaAfrit_Click);
             // 
             // m_comAfritDrif
             // 
             this.m_comAfritDrif.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_comAfritDrif.FormattingEnabled = true;
-            this.m_comAfritDrif.Location = new System.Drawing.Point(118, 34);
+            this.m_comAfritDrif.Location = new System.Drawing.Point(237, 23);
             this.m_comAfritDrif.Name = "m_comAfritDrif";
-            this.m_comAfritDrif.Size = new System.Drawing.Size(132, 23);
+            this.m_comAfritDrif.Size = new System.Drawing.Size(308, 29);
             this.m_comAfritDrif.TabIndex = 9;
-            // 
-            // m_prgBackup
-            // 
-            this.m_prgBackup.Location = new System.Drawing.Point(105, 140);
-            this.m_prgBackup.Name = "m_prgBackup";
-            this.m_prgBackup.Size = new System.Drawing.Size(666, 23);
-            this.m_prgBackup.TabIndex = 8;
             // 
             // m_grbAfritATH
             // 
             this.m_grbAfritATH.Controls.Add(this.m_tboAfritATH);
-            this.m_grbAfritATH.Location = new System.Drawing.Point(298, 22);
+            this.m_grbAfritATH.Location = new System.Drawing.Point(612, 14);
             this.m_grbAfritATH.Name = "m_grbAfritATH";
-            this.m_grbAfritATH.Size = new System.Drawing.Size(473, 100);
+            this.m_grbAfritATH.Size = new System.Drawing.Size(658, 151);
             this.m_grbAfritATH.TabIndex = 7;
             this.m_grbAfritATH.TabStop = false;
             this.m_grbAfritATH.Text = "Athugasemdir";
@@ -446,39 +493,29 @@
             // m_tboAfritATH
             // 
             this.m_tboAfritATH.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboAfritATH.Location = new System.Drawing.Point(3, 19);
+            this.m_tboAfritATH.Location = new System.Drawing.Point(3, 25);
             this.m_tboAfritATH.Multiline = true;
             this.m_tboAfritATH.Name = "m_tboAfritATH";
-            this.m_tboAfritATH.Size = new System.Drawing.Size(467, 78);
+            this.m_tboAfritATH.Size = new System.Drawing.Size(652, 123);
             this.m_tboAfritATH.TabIndex = 6;
             // 
-            // m_btnTakaAfrit
+            // m_prgBackup
             // 
-            this.m_btnTakaAfrit.Location = new System.Drawing.Point(801, 88);
-            this.m_btnTakaAfrit.Name = "m_btnTakaAfrit";
-            this.m_btnTakaAfrit.Size = new System.Drawing.Size(75, 23);
-            this.m_btnTakaAfrit.TabIndex = 5;
-            this.m_btnTakaAfrit.Text = "Taka afrit";
-            this.m_btnTakaAfrit.UseVisualStyleBackColor = true;
-            this.m_btnTakaAfrit.Click += new System.EventHandler(this.m_btnTakaAfrit_Click);
+            this.m_prgBackup.Location = new System.Drawing.Point(237, 186);
+            this.m_prgBackup.Name = "m_prgBackup";
+            this.m_prgBackup.Size = new System.Drawing.Size(745, 23);
+            this.m_prgBackup.TabIndex = 8;
             // 
-            // label2
+            // m_grbAfritunListi
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 37);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 15);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Hvaða drif?";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 66);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Hvar geymt?";
+            this.m_grbAfritunListi.Controls.Add(this.m_dgvBackup);
+            this.m_grbAfritunListi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbAfritunListi.Location = new System.Drawing.Point(0, 0);
+            this.m_grbAfritunListi.Name = "m_grbAfritunListi";
+            this.m_grbAfritunListi.Size = new System.Drawing.Size(1290, 273);
+            this.m_grbAfritunListi.TabIndex = 1;
+            this.m_grbAfritunListi.TabStop = false;
+            this.m_grbAfritunListi.Text = "Afrit tekinn";
             // 
             // m_dgvBackup
             // 
@@ -497,13 +534,13 @@
             this.colBackDags,
             this.colBackBtnRestore,
             this.colBackBtnOpna});
-            this.m_dgvBackup.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.m_dgvBackup.Location = new System.Drawing.Point(3, 169);
+            this.m_dgvBackup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_dgvBackup.Location = new System.Drawing.Point(3, 25);
             this.m_dgvBackup.Name = "m_dgvBackup";
             this.m_dgvBackup.ReadOnly = true;
             this.m_dgvBackup.RowHeadersVisible = false;
             this.m_dgvBackup.RowTemplate.Height = 25;
-            this.m_dgvBackup.Size = new System.Drawing.Size(918, 273);
+            this.m_dgvBackup.Size = new System.Drawing.Size(1284, 245);
             this.m_dgvBackup.TabIndex = 0;
             this.m_dgvBackup.DataSourceChanged += new System.EventHandler(this.m_dgvBackup_DataSourceChanged);
             this.m_dgvBackup.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvBackup_CellClick);
@@ -531,7 +568,7 @@
             this.colBackMerking.HeaderText = "Merking drifs";
             this.colBackMerking.Name = "colBackMerking";
             this.colBackMerking.ReadOnly = true;
-            this.colBackMerking.Width = 94;
+            this.colBackMerking.Width = 125;
             // 
             // colBackSlod
             // 
@@ -540,7 +577,7 @@
             this.colBackSlod.HeaderText = "Slóð á drifi";
             this.colBackSlod.Name = "colBackSlod";
             this.colBackSlod.ReadOnly = true;
-            this.colBackSlod.Width = 62;
+            this.colBackSlod.Width = 108;
             // 
             // colBackStaerd
             // 
@@ -549,7 +586,7 @@
             this.colBackStaerd.HeaderText = "Stærð";
             this.colBackStaerd.Name = "colBackStaerd";
             this.colBackStaerd.ReadOnly = true;
-            this.colBackStaerd.Width = 63;
+            this.colBackStaerd.Width = 79;
             // 
             // colBackGeymt
             // 
@@ -558,7 +595,7 @@
             this.colBackGeymt.HeaderText = "Hvar geymt";
             this.colBackGeymt.Name = "colBackGeymt";
             this.colBackGeymt.ReadOnly = true;
-            this.colBackGeymt.Width = 87;
+            this.colBackGeymt.Width = 114;
             // 
             // colbackAthugasemdir
             // 
@@ -575,7 +612,7 @@
             this.colBackHver.HeaderText = "Hver tók afrit";
             this.colBackHver.Name = "colBackHver";
             this.colBackHver.ReadOnly = true;
-            this.colBackHver.Width = 74;
+            this.colBackHver.Width = 96;
             // 
             // colBackDags
             // 
@@ -584,7 +621,7 @@
             this.colBackDags.HeaderText = "Dagsetning afritunar";
             this.colBackDags.Name = "colBackDags";
             this.colBackDags.ReadOnly = true;
-            this.colBackDags.Width = 128;
+            this.colBackDags.Width = 177;
             // 
             // colBackBtnRestore
             // 
@@ -596,7 +633,7 @@
             this.colBackBtnRestore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.colBackBtnRestore.Text = "Endurheimta";
             this.colBackBtnRestore.UseColumnTextForButtonValue = true;
-            this.colBackBtnRestore.Width = 134;
+            this.colBackBtnRestore.Width = 185;
             // 
             // colBackBtnOpna
             // 
@@ -608,7 +645,7 @@
             this.colBackBtnOpna.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.colBackBtnOpna.Text = "Opna";
             this.colBackBtnOpna.UseColumnTextForButtonValue = true;
-            this.colBackBtnOpna.Width = 79;
+            this.colBackBtnOpna.Width = 103;
             // 
             // uscGeymsluMidlar
             // 
@@ -616,7 +653,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
             this.Name = "uscGeymsluMidlar";
-            this.Size = new System.Drawing.Size(1397, 743);
+            this.Size = new System.Drawing.Size(1521, 743);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvDrif)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -631,9 +668,14 @@
             this.m_grValinVel.PerformLayout();
             this.m_grbDrif.ResumeLayout(false);
             this.m_grbAfritun.ResumeLayout(false);
-            this.m_grbAfritun.PerformLayout();
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel1.PerformLayout();
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             this.m_grbAfritATH.ResumeLayout(false);
             this.m_grbAfritATH.PerformLayout();
+            this.m_grbAfritunListi.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvBackup)).EndInit();
             this.ResumeLayout(false);
 
@@ -690,5 +732,7 @@
         private DataGridViewButtonColumn colBackBtnOpna;
         private FolderBrowserDialog folderBrowserDialog1;
         private GroupBox m_grValinVel;
+        private SplitContainer splitContainer3;
+        private GroupBox m_grbAfritunListi;
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
+using Org.BouncyCastle.Cms;
 
 namespace OAIS_ADMIN
 {
@@ -16,6 +17,7 @@ namespace OAIS_ADMIN
     {
         cVHS_files files = new cVHS_files();
         string m_strDrif = string.Empty;
+        DataTable m_dtFiles = new DataTable();
         public frmFileLoggur()
         {
             InitializeComponent();
@@ -26,6 +28,7 @@ namespace OAIS_ADMIN
             m_strDrif = strDrif;
 
             fyllaAr();
+            this.WindowState = FormWindowState.Maximized;
 
         }
 
@@ -114,9 +117,44 @@ namespace OAIS_ADMIN
         }
         private void fyllaFiles(string strDate)
         {
-            DataTable dt = files.getFiles(strDate, m_strDrif);
-            m_dgvFiles.DataSource = formatTable(dt);
-            m_lblFjoldi.Text = dt.Rows.Count + " hreyfingar skráðar";
+            m_dtFiles = files.getFiles(strDate, m_strDrif);
+            m_dgvFiles.DataSource = formatTable(m_dtFiles);
+            m_grbSkrar.Text = string.Format("{0}  hreyfingar skráðar", m_dtFiles.Rows.Count); // t + " hreyfingar skráðar";
+
+            //aðegerðir
+            DataView view = new DataView(m_dtFiles);
+            DataTable dtAdgerd = view.ToTable(true, "adgerd");
+            DataRow r = dtAdgerd.NewRow();
+            r["adgerd"] = "Veldu aðgerð";
+            dtAdgerd.Rows.InsertAt(r, 0);
+            m_comAdgerd.DisplayMember = "adgerd";
+            m_comAdgerd.ValueMember = "adgerd";
+            m_comAdgerd.DataSource = dtAdgerd;
+
+            DataTable dtTimi = new DataTable();
+            dtTimi.Columns.Add("klukkan");
+
+            string strTil = string.Empty;
+            foreach(DataRow row in m_dtFiles.Rows)
+            {
+                string[] strSplit = row["DATE"].ToString().Split(" ");
+                strSplit = strSplit[1].Split(":");
+                if(strTil != strSplit[0])
+                {
+                    DataRow rK = dtTimi.NewRow();
+                    rK["klukkan"] = strSplit[0] + ":00";    
+                    dtTimi.Rows.Add(rK);
+                    dtTimi.AcceptChanges();
+                    strTil = strSplit[0];   
+                }
+
+            }
+            DataRow rkk =dtTimi.NewRow();
+            rkk["klukkan"] = "Veldu tíma dags";
+            dtTimi.Rows.InsertAt(rkk, 0);
+            m_comKlukkan.DisplayMember = "klukkan";
+            m_comKlukkan.ValueMember = "klukkan";
+            m_comKlukkan.DataSource = dtTimi;
         }
         private void m_trwDate_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -125,14 +163,18 @@ namespace OAIS_ADMIN
                 if (e.Node.Level == 0)
                 {
                     fyllaManud(e.Node.Text, e.Node);
+                    m_grbLeita.Visible = false;
                 }
                 if (e.Node.Level == 1)
                 {
                     fyllaDaga(e.Node.Tag.ToString(), e.Node);
+                    m_grbLeita.Visible = false;
                 }
                 if (e.Node.Level == 2)
                 {
                     fyllaFiles(e.Node.Tag.ToString());
+                    m_grbLeita.Visible = true;
+                    m_grbLeita.Text = string.Format("Leita í skrám frá {0}", e.Node.Tag.ToString());
                 }
 
             }
@@ -169,6 +211,160 @@ namespace OAIS_ADMIN
             }
 
             return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+        }
+
+        private void m_btnLeita_Click(object sender, EventArgs e)
+        {
+            leita();
+        }
+        private void leita()
+        {
+            string strExpression = string.Empty;
+            DataTable dtClone = m_dtFiles.Clone();
+            m_dtFiles.Columns["DATE"].DataType = typeof(string);
+            if(m_tboLeitarOrd.Text != string.Empty)
+            {
+                strExpression += "slod like '%" + m_tboLeitarOrd.Text + "%'";
+            }
+            if(m_comAdgerd.SelectedIndex!= 0)
+            {
+                if(strExpression == string.Empty)
+                {
+                    strExpression += "adgerd ='" + m_comAdgerd.SelectedValue + "'";
+                }
+                else
+                {
+                    strExpression += " and adgerd ='" + m_comAdgerd.SelectedValue + "'";
+                }
+            }
+           if(m_comKlukkan.SelectedIndex!= 0) 
+            {
+                if(strExpression == string.Empty) 
+                {
+                    strExpression = "DATE like '%" + m_comKlukkan.SelectedValue.ToString().Replace(":00", "") + ":%'";
+
+                }
+                else
+                {
+                    strExpression += " and DATE like '%" + m_comKlukkan.SelectedValue.ToString().Replace(":00", "") + ":%'";
+                }
+            }
+
+            DataRow[] fRow = m_dtFiles.Select(strExpression);
+            foreach(DataRow fr in fRow)
+            {
+                dtClone.ImportRow(fr);
+            }
+            m_dgvFiles.DataSource = dtClone;
+            m_grbSkrar.Text = string.Format("{0} hreyfingar skráðar", dtClone.Rows.Count);
+        }
+
+        private void m_tboLeitarOrd_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode ==Keys.Enter) 
+            {
+                leita();
+            }
+        }
+
+        private void m_comAdgerd_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           ComboBox com = (ComboBox)sender;
+            if(com.Focused && com.SelectedIndex != -1) 
+            {
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                leita();
+            }
+        }
+
+        private void m_btnHreinsa_Click(object sender, EventArgs e)
+        {
+            m_tboLeitarOrd.Text = string.Empty;
+            m_comAdgerd.SelectedIndex = 0;
+            m_comKlukkan.SelectedIndex = 0;
+            m_dgvFiles.DataSource = m_dtFiles;
         }
     }
     }

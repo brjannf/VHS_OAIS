@@ -63,6 +63,11 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
+        public void uppfæraMD5(string strOld,string strNew) 
+        {
+            string strSQL = string.Format("UPDATE db_oais_admin.dt_md5 set MD5 = '{0}' WHERE MD5 ='{1}'", strNew,strOld);
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+        }
     }  
     
 }

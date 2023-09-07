@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using DocumentFormat.OpenXml.Office2016.Presentation.Command;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -92,6 +93,7 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@dags_skráð", this.dags_skráð);
             command.Parameters.AddWithValue("@hver_breytti", this.hver_breytti);
             command.Parameters.AddWithValue("@dags_breytt", this.dags_breytt);
+            
 
 
             if (this.ID != 0)
@@ -163,6 +165,13 @@ namespace cClassOAIS
             this.dags_skráð = string.Empty;
             this.hver_breytti = string.Empty;
             this.dags_breytt = string.Empty;
+        }
+        public DataTable getGeymsluSkra(string strAuðkenni)
+        {
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_isadg_skráningar` d where 3_1_1_auðkenni like '{0}%' order by  3_1_1_auðkenni asc;", strAuðkenni);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
         }
         public void getSkraning(string strAuðkenni)
         {
@@ -267,6 +276,42 @@ namespace cClassOAIS
             }
 
             return dt;
+        }
+        public string getTimabil(string strFlokkur, string strGrunnur)
+        {
+            string strRet = string.Empty;
+            string strSQL = string.Format("SELECT  concat(min(Year(lastwriten)),'-', max(Year(lastwriten))) as tímabil FROM {1} f where slod REGEXP '\\\\\\\\{0}'", strFlokkur ,strGrunnur + ".filesystem");
+            var timabil = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if(timabil != null)
+            {
+                strRet = timabil.ToString();
+            }
+            return strRet;
+        }
+        public string getSkjalFjoldi(string strFlokkur, string strGrunnur)
+        {
+            strGrunnur = strGrunnur.Replace(".", "_");
+
+            MySqlConnection conn = new MySqlConnection(m_strTenging);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+
+            command.Parameters.AddWithValue("@flokkur", strFlokkur);
+
+            string strRet = string.Empty;
+           command.CommandText = string.Format("SELECT count(*) FROM {1} f where slod REGEXP '\\\\\\\\{0}';", strFlokkur, strGrunnur + ".filesystem");
+            var timabil = command.ExecuteScalar(); // MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if (timabil != null)
+            {
+                strRet = timabil.ToString();
+            }
+            return strRet;
+        }
+
+        public void eydaGeymsluskra(string strAuðkenni)
+        {
+            string strSQL = string.Format("DELETE FROM db_oais_admin.`dt_isadg_skráningar`  where 3_1_1_auðkenni like '{0}-%';", strAuðkenni);
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);  
         }
 
         public DataTable getAdgengiENUM()

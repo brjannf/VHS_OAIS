@@ -199,7 +199,21 @@ namespace OAIS_ADMIN
             m_grbAfritun.Text = string.Format("Afritun af möppu {0} á vél {1}", drif.Nafn, comp.Name);
             fyllaBackuplista();
             string[] strDrives = System.IO.Directory.GetLogicalDrives();
-            m_comAfritDrif.DataSource = strDrives;
+            DataTable dtDrif = new DataTable();
+            dtDrif.Columns.Add("drif");
+            foreach (string strDrive in strDrives) 
+            {
+                DataRow row= dtDrif.NewRow();
+                row["drif"] = strDrive;
+                dtDrif.Rows.Add(row);
+                dtDrif.AcceptChanges();
+            }
+            DataRow rV= dtDrif.NewRow();
+            rV["drif"] = "Veldu drif";
+            dtDrif.Rows.InsertAt(rV, 0);
+            m_comAfritDrif.DisplayMember = "drif";
+            m_comAfritDrif.ValueMember = "drif";
+            m_comAfritDrif.DataSource = dtDrif;
             m_grbAfritun.Visible = true;
         }
 
@@ -207,6 +221,7 @@ namespace OAIS_ADMIN
         {
             DataTable dt = backup.getBackup(drif.ID);
             m_dgvBackup.DataSource = formatTableBackup(dt);
+            m_grbAfritunListi.Text = string.Format("Afrit tekinn ({0})", dt.Rows.Count);
             foreach (DataGridViewRow r in m_dgvBackup.Rows)
             {
                 string strDir = r.Cells["colBackSlod"].Value.ToString();

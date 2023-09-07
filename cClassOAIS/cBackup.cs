@@ -77,5 +77,12 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
+        public DataTable getDataFromTable(string strTable, string strIDCol, string strID)
+        {
+            string strSQL = string.Format("SELECT * FROM {0} WHERE {1} IN ({2});", strTable, strIDCol, strID);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
     }
 }
