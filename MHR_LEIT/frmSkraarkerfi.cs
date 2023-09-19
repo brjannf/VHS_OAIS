@@ -24,6 +24,7 @@ namespace MHR_LEIT
         cMIdlun midlun = new cMIdlun();
         cVHS_drives drive = new cVHS_drives();
         DataTable m_dtSkrar = new DataTable();
+        cNotandi virkurnotandi = new cNotandi();    
         string m_strGagnagrunnur = string.Empty;
         string m_strFileValinn = string.Empty;
         string m_strIdValinn = string.Empty;
@@ -37,9 +38,12 @@ namespace MHR_LEIT
             InitializeComponent();
            
         }
-        public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP, DataTable dtMal, DataTable dtGrunn)
+        public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP, DataTable dtMal, DataTable dtGrunn, cNotandi not)
         {
             InitializeComponent();
+            virkurnotandi = not;
+            midlun.m_bAfrit = virkurnotandi.m_bAfrit;
+            drive.m_bAfrit = virkurnotandi.m_bAfrit;
             m_dtValid = dtDIP.Clone();
             foreach(DataRow dr in dtDIP.Rows) 
             {
@@ -70,7 +74,15 @@ namespace MHR_LEIT
             m_strIdValinn = strValdi;
             m_strFileValinn = strValdi;
             m_strVorslutgafa = row["vorsluutgafa"].ToString();
-            m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
+            if(virkurnotandi.m_bAfrit)
+            {
+                m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorsluutgafa"];
+            }
+            else
+            {
+                m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
+            }
+        
             if (Directory.Exists(m_strRoot.Replace("AVID", "FRUM")))
             {
                 m_btnFrumRit.Enabled = true;
@@ -110,7 +122,7 @@ namespace MHR_LEIT
         private void fyllaFilesystem()
         {
             //sækja fyrirspurnina
-            string strFyrirspurn =  midlun.getFyrirspurn(m_strGagnagrunnur);
+            string strFyrirspurn =  midlun.getFyrirspurn(m_strGagnagrunnur, "Get_files_path");
             //keyra fyrirspurninga
             m_dtSkrar = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
             int i = 0;

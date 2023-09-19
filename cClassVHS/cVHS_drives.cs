@@ -23,7 +23,19 @@ namespace cClassVHS
         private int iVirk;
         private string driveframleitt;
 
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        private string m_strTenging = string.Empty; // "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        public bool m_bAfrit = false;
+        private void sækjaTengistreng()
+        {
+            if (m_bAfrit)
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+            }
+            else
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+            }
+        }
 
         /// <summary>
         /// smiður eftir að útfæra
@@ -88,6 +100,7 @@ namespace cClassVHS
 
         public void getDrif(int iID)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM dt_drives d where id = {0};", iID);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
@@ -123,6 +136,7 @@ namespace cClassVHS
 
         public void geraVirktOvirkt(int iVirkt, int iID)
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -136,6 +150,7 @@ namespace cClassVHS
 
         public void geraVirktOvirkt(int iVirkt, string strNafn)
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -148,6 +163,7 @@ namespace cClassVHS
 
         public void EyðaDrifi(int iID)
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -159,6 +175,7 @@ namespace cClassVHS
            
             public void saveDrive(string strDrive)
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -182,6 +199,7 @@ namespace cClassVHS
 
         public DataTable driveComputers(int comID)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_drives d where comID = {0} and virk = 1;", comID);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging,strSQL);
             DataTable dt = ds.Tables[0];
@@ -190,6 +208,7 @@ namespace cClassVHS
 
         public DataTable driveComputersAllt(int comID)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_drives d where comID = {0};", comID);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -198,6 +217,7 @@ namespace cClassVHS
 
         public DataTable driveOvirkComputers()
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_drives d where virk = 0;");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -206,10 +226,24 @@ namespace cClassVHS
 
         public string  driveVirkkComputers()
         {
+            sækjaTengistreng();
             string strRet = string.Empty;
             string strSQL = string.Format("SELECT nafn FROM dt_drives d where virk = 1;");
             strRet = MySqlHelper.ExecuteScalar(m_strTenging, strSQL).ToString();
             return strRet;
+        }
+
+        public void uppfæradrifAfrit(string strDrif)
+        {
+            sækjaTengistreng();
+            MySqlConnection conn = new MySqlConnection(m_strTenging);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+            strDrif = strDrif.Replace("\\", "\\\\");
+            command.CommandText = string.Format("update dt_drives set nafn = '{0}' where virk = 1;", strDrif);
+            command.ExecuteNonQuery();
+            conn.Dispose();
+            command.Dispose();
         }
     }
 }

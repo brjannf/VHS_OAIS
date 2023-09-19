@@ -18,6 +18,7 @@ namespace MHR_LEIT
         string m_strOrginal = string.Empty; 
         string m_strSQLpanta = string.Empty;
         string m_strLeitSkilyrdi  = string.Empty;
+        cNotandi virkurnotandi = new cNotandi();    
         
         DataTable m_dtFyrirspurnir = new DataTable();   
         cMIdlun mIdlun= new cMIdlun();
@@ -26,7 +27,7 @@ namespace MHR_LEIT
         {
             InitializeComponent();
         }
-        public frmGagnagrunnur(string strGagnagrunnur, string strOrginalHeiti, DataTable dtGrunnar, DataTable dtSkrar, DataTable dtMal)
+        public frmGagnagrunnur(string strGagnagrunnur, string strOrginalHeiti, DataTable dtGrunnar, DataTable dtSkrar, DataTable dtMal ,cNotandi not)
         {
             InitializeComponent();
             m_dtPantad = dtGrunnar.Clone();
@@ -36,6 +37,8 @@ namespace MHR_LEIT
             }
 
             this.WindowState = FormWindowState.Maximized;
+            virkurnotandi = not;
+            mIdlun.m_bAfrit = virkurnotandi.m_bAfrit;
             m_strGagnagrunnur = strGagnagrunnur;
             m_strOrginal = strOrginalHeiti;
             m_dtFyrirspurnir = mIdlun.getGagnagrunnaFyrirSpurnir(strGagnagrunnur);

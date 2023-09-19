@@ -13,7 +13,19 @@ namespace cClassOAIS
 
     public class cMD5
     {
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        private string m_strTenging = string.Empty; //"server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        public bool m_bAfrit = false;
+        private void sækjaTengistreng()
+        {
+            if (m_bAfrit)
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+            }
+            else
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+            }
+        }
         public int ID { get; set; }
         public string AIP { get; set; }
         public string slod { get; set; }
@@ -22,7 +34,7 @@ namespace cClassOAIS
 
         public void vista()
         {
-
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -41,11 +53,13 @@ namespace cClassOAIS
         }
         public void eyda(string strAIP)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("delete FROM db_oais_admin.dt_md5 d where AIP = '{0}';", strAIP);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }
         public string getMD5(string strSlod, string strUtgafa)
         {
+            sækjaTengistreng();
             string strRet = string.Empty;
             string strSQL = string.Format("SELECT MD5 FROM dt_md5 d where slod like '%{0}' and AIP = '{1}';", strSlod, strUtgafa);
             var tala = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
@@ -58,6 +72,7 @@ namespace cClassOAIS
 
         public DataTable getMD5(string strMD5)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT '' as titill, vorsluutgafa,utgafa_titill, d.slod,v.slod as mappa, d.MD5, d.file FROM dt_md5 d, dt_vörsluutgafur v where d.AIP= v.vorsluutgafa and d.MD5 = '{0}';", strMD5);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -65,6 +80,7 @@ namespace cClassOAIS
         }
         public void uppfæraMD5(string strOld,string strNew) 
         {
+            sækjaTengistreng();
             string strSQL = string.Format("UPDATE db_oais_admin.dt_md5 set MD5 = '{0}' WHERE MD5 ='{1}'", strNew,strOld);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }

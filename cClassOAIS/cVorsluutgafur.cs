@@ -11,12 +11,24 @@ namespace cClassOAIS
 {
     public class cVorsluutgafur
     {
-       
 
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+
+        private string m_strTenging = string.Empty; //"server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        public bool m_bAfrit = false;
+        private void sækjaTengistreng()
+        {
+            if (m_bAfrit)
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+            }
+            else
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+            }
+        }
 
         #region GET/SET
-       // id, vorsluutgafa, utgafa_titill, vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, hver_skradi, dags_skrad
+        // id, vorsluutgafa, utgafa_titill, vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, hver_skradi, dags_skrad
         public int ID { get; set; }
         public string vorsluutgafa { get; set; }
         public string utgafa_titill { get; set; }
@@ -46,6 +58,7 @@ namespace cClassOAIS
 
         public void vista()
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -86,7 +99,8 @@ namespace cClassOAIS
         }
         public void getVörsluútgáfu(string strAIP)
         {
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_vörsluutgafur` d where vorsluutgafa = '{0}'; ", strAIP);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where vorsluutgafa = '{0}'; ", strAIP);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
             DataTable dt = new DataTable();
@@ -114,17 +128,20 @@ namespace cClassOAIS
         }
         public void merkjaEYtt(string strAuðkenni, int iEytt)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("UPDATE dt_vörsluutgafur set eytt='{0}' WHERE vorsluutgafa='{1}'", iEytt, strAuðkenni);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }
 
         public void midlunEyda(string strAuðkenni)
         {
-            string strSQL = string.Format("delete FROM db_oais_admin.dt_midlun  where vorsluutgafa = '{0}';",  strAuðkenni);
+            sækjaTengistreng();
+            string strSQL = string.Format("delete FROM dt_midlun  where vorsluutgafa = '{0}';",  strAuðkenni);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }
         public void uppFaeraVegnaMidlun()
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -144,7 +161,8 @@ namespace cClassOAIS
 
         public DataTable  getVorsluUtgafurKlasa(string strAuðkenni)
         {
-            string strSQL = string.Format("SELECT id, vorsluutgafa, concat(utgafa_titill, ' ', afharnr) as utgafa_titill , vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, innihald, timabil, afharnr, MD5, hver_skradi, dags_skrad, adgangstakmarkanir, eytt, dags_eytt, hver_eytti, midlun, dags_midlad, hver_midladi, frumeintak  FROM db_oais_admin.`dt_vörsluutgafur` d where midlun = 1 and vorsluutgafa like 'AVID%' and vorslustofnun in({0});", strAuðkenni);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT id, vorsluutgafa, concat(utgafa_titill, ' ', afharnr) as utgafa_titill , vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, innihald, timabil, afharnr, MD5, hver_skradi, dags_skrad, adgangstakmarkanir, eytt, dags_eytt, hver_eytti, midlun, dags_midlad, hver_midladi, frumeintak, (SELECT distinct tegund_grunns FROM db_oais_admin.dt_midlun m where m.vorsluutgafa = d.vorsluutgafa) as tegund   FROM  `dt_vörsluutgafur` d where midlun = 1 and vorsluutgafa like 'AVID%' and vorslustofnun in({0});", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -152,7 +170,8 @@ namespace cClassOAIS
 
         public DataTable getVorsluUtgafurVorslu(string strAuðkenni)
         {
-            string strSQL = string.Format("SELECT id, vorsluutgafa, concat(utgafa_titill, ' ', afharnr) as utgafa_titill , vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, innihald, timabil, afharnr, MD5, hver_skradi, dags_skrad, adgangstakmarkanir, eytt, dags_eytt, hver_eytti, midlun, dags_midlad, hver_midladi, frumeintak  FROM db_oais_admin.`dt_vörsluutgafur` d where midlun = 1 and vorsluutgafa like 'AVID%' and vorslustofnun = '{0}';", strAuðkenni);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT id, vorsluutgafa, concat(utgafa_titill, ' ', afharnr) as utgafa_titill , vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, innihald, timabil, afharnr, MD5, hver_skradi, dags_skrad, adgangstakmarkanir, eytt, dags_eytt, hver_eytti, midlun, dags_midlad, hver_midladi, frumeintak, (SELECT distinct tegund_grunns FROM dt_midlun m where m.vorsluutgafa = d.vorsluutgafa) as tegund   FROM `dt_vörsluutgafur` d where midlun = 1 and vorsluutgafa like 'AVID%' and vorslustofnun = '{0}';", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

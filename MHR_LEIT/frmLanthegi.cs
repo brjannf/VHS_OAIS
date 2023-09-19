@@ -23,6 +23,7 @@ namespace MHR_LEIT
 
         private void m_btnVista_Click(object sender, EventArgs e)
         {
+            lanthegi.m_bAfrit = virkurnotandi.m_bAfrit;
             lanthegi.nafn = m_tboNafn.Text;
             lanthegi.kennitala = m_tboKennitala.Text.Replace("-", "");
             lanthegi.nafn_fyrirtaekis = m_tboHeit_fyrirtaekis.Text; ; 

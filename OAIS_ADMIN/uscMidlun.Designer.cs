@@ -90,6 +90,7 @@
             this.colAudkenni = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVorslustofun = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTegund = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGeymsluskra = new System.Windows.Forms.DataGridViewButtonColumn();
             this.colVarslaSlod = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvUtgafur)).BeginInit();
@@ -731,6 +732,7 @@
             this.colAudkenni,
             this.dataGridViewTextBoxColumn1,
             this.colVorslustofun,
+            this.colTegund,
             this.colGeymsluskra,
             this.colVarslaSlod});
             this.m_dgvUtafurKlasarVarsla.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -769,6 +771,15 @@
             this.colVorslustofun.HeaderText = "Vörslustofnun";
             this.colVorslustofun.Name = "colVorslustofun";
             this.colVorslustofun.ReadOnly = true;
+            // 
+            // colTegund
+            // 
+            this.colTegund.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colTegund.DataPropertyName = "tegund";
+            this.colTegund.HeaderText = "Tegund";
+            this.colTegund.Name = "colTegund";
+            this.colTegund.ReadOnly = true;
+            this.colTegund.Width = 71;
             // 
             // colGeymsluskra
             // 
@@ -879,11 +890,6 @@
         private DataGridView m_dgvUtafurKlasarVarsla;
         private Button m_btnBuaTilPakka;
         private Label m_lblKlasiVarslaValinn;
-        private DataGridViewTextBoxColumn colAudkenni;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn colVorslustofun;
-        private DataGridViewButtonColumn colGeymsluskra;
-        private DataGridViewTextBoxColumn colVarslaSlod;
         private ProgressBar m_prgBackup;
         private Label m_lblBackupStatus;
         private Label m_lblStatus;
@@ -891,5 +897,11 @@
         private ProgressBar m_prgVorsluStofnun;
         private Label label2;
         private ProgressBar progressBar1;
+        private DataGridViewTextBoxColumn colAudkenni;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn colVorslustofun;
+        private DataGridViewTextBoxColumn colTegund;
+        private DataGridViewButtonColumn colGeymsluskra;
+        private DataGridViewTextBoxColumn colVarslaSlod;
     }
 }

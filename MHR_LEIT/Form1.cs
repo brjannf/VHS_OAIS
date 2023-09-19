@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Data;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace MHR_LEIT
@@ -13,6 +14,9 @@ namespace MHR_LEIT
         DataTable m_dtDIPMal = new DataTable();
         DataTable m_dtDIPGrunn = new DataTable();
         DataSet m_dsDIPmal= new DataSet();
+
+        bool bAdmin = false;
+        bool bAfrit = false;
 
         DataTable m_dtLeitarNidurstodur = new DataTable();  
 
@@ -28,6 +32,31 @@ namespace MHR_LEIT
             m_pnlNotandi.Dock = DockStyle.Fill;
             this.Text = "MHR - LEIT";
             this.WindowState = FormWindowState.Maximized;
+           DataTable dt = virkurNotandi.getGrunnar();
+            foreach(DataRow r in dt.Rows)
+            {
+                if (r["Database (DB_OAIS%)"].ToString() == "db_oais_admin")
+                {
+                    bAdmin = true;  
+                }
+                if(r["Database (DB_OAIS%)"].ToString() == "db_oais_admin_afrit")
+                {
+                    bAfrit = true;
+                   
+                }
+            }
+            if(!bAdmin && ! bAfrit)
+            {
+                frmUppsetning frmUpp = new frmUppsetning();
+                frmUpp.ShowDialog();
+                bAfrit = true;
+                virkurNotandi.m_bAfrit = true;
+            }
+            if(bAdmin && bAfrit)
+            {
+                m_chbAfrit.Visible = true;  
+            }
+
             m_dtDIPSkra.Columns.Add("skjalID");
             m_dtDIPSkra.Columns.Add("titill");
             m_dtDIPSkra.Columns.Add("vorsluutgafa");
@@ -48,11 +77,11 @@ namespace MHR_LEIT
           
 
 
-            fyllaV0rslusstofnanir();
-            fyllaSkjalamyndara();
-            fyllaLanthega();
-            fyllaDIPLista();
-            fyllaGagnaGrunna();
+            //fyllaV0rslusstofnanir();
+            //fyllaSkjalamyndara();
+            //fyllaLanthega();
+            //fyllaDIPLista();
+            //fyllaGagnaGrunna();
 
 
 
@@ -60,6 +89,7 @@ namespace MHR_LEIT
         private void fyllaGagnaGrunna()
         {
             cMIdlun midlun= new cMIdlun();
+            midlun.m_bAfrit = virkurNotandi.m_bAfrit;
             DataTable dt = midlun.getGagnagrunna();
             DataRow r = dt.NewRow();
             r["orginal_heiti"] = "Veldu Gagnagrunn";
@@ -86,6 +116,7 @@ namespace MHR_LEIT
         private void fyllaLanthega()
         {
             cLanthegar lanthegi = new cLanthegar();
+            lanthegi.m_bAfrit = virkurNotandi.m_bAfrit;
             DataTable dt = lanthegi.getLanthegaLista();
             DataRow r = dt.NewRow();
             r["nafn"] = "Veldu lánþega";
@@ -98,6 +129,7 @@ namespace MHR_LEIT
         private void fyllaV0rslusstofnanir()
         {
             cVorslustofnun varsla = new cVorslustofnun();
+            varsla.m_bAfrit = virkurNotandi.m_bAfrit;
             DataTable dt = varsla.getAllVOrslustofnanir();
             DataRow r = dt.NewRow();
             r["varsla_heiti"] = "Veldu vörslustofnun";
@@ -109,6 +141,7 @@ namespace MHR_LEIT
         private void fyllaSkjalamyndara()
         {
             cSkjalamyndari skjalam = new cSkjalamyndari();
+            skjalam.m_bAfrit = virkurNotandi.m_bAfrit;
             DataTable dt = skjalam.getSkjalamyndaralista();
             DataRow r = dt.NewRow();
             r["5_1_2_opinbert_heiti"] = "Veldu skjalamyndara";
@@ -126,7 +159,7 @@ namespace MHR_LEIT
         private void leita()
         {
             cMIdlun midlun = new cMIdlun();
-
+            midlun.m_bAfrit = bAfrit;
             midlun.leitarord = m_tboLeitOrd.Text;
           
            
@@ -178,7 +211,7 @@ namespace MHR_LEIT
                  
                 if(strTegund == "Skráarkerfi")
                 {
-                    frmSkraarkerfi skrakerfi = new frmSkraarkerfi(strGagnagrunnur, strValid, row, m_tboLeitOrd.Text, m_dtDIPSkra, m_dtDIPMal,m_dtDIPGrunn);
+                    frmSkraarkerfi skrakerfi = new frmSkraarkerfi(strGagnagrunnur, strValid, row, m_tboLeitOrd.Text, m_dtDIPSkra, m_dtDIPMal,m_dtDIPGrunn, virkurNotandi);
                     skrakerfi.ShowDialog();
 
                     foreach (DataRow r in skrakerfi.m_dtValid.Rows)
@@ -195,7 +228,7 @@ namespace MHR_LEIT
                 if(strTegund == "Málakerfi")
                 {
                     DataTable dtMal = m_dsDIPmal.Tables[strGagnagrunnur];
-                    frmMalakerfi frmMala = new frmMalakerfi(strGagnagrunnur, row, m_dtDIPGrunn, m_dtDIPSkra, dtMal);
+                    frmMalakerfi frmMala = new frmMalakerfi(strGagnagrunnur, row, m_dtDIPGrunn, m_dtDIPSkra, dtMal, virkurNotandi);
                     frmMala.ShowDialog();
                     DataTable dt = frmMala.m_dtPontunMal;
                     if(dt.Rows.Count != 0)
@@ -289,6 +322,25 @@ namespace MHR_LEIT
             m_lblVillaInnSkraning.Visible = false;
             string strNotandi = m_tboNoterndaNafn.Text;
             string strLykilorð = m_tboLykilOrd.Text;
+          
+            if(m_chbAfrit.Visible) 
+            {
+                if (m_chbAfrit.Checked)
+                {
+                    bAfrit = true;
+                }
+                else
+                {
+                    bAfrit = false;
+                }
+            }
+           
+       
+            virkurNotandi.m_bAfrit = bAfrit;
+            if(!bAdmin && bAfrit) 
+            {
+                virkurNotandi.m_bAfrit = true;
+            }
             virkurNotandi.sækjaNotanda(strNotandi, strLykilorð);
             if (virkurNotandi.nafn != null)
             {
@@ -297,6 +349,14 @@ namespace MHR_LEIT
                 this.Text = "Velkominn " + virkurNotandi.nafn;
                 
                 this.WindowState = FormWindowState.Maximized;
+                karfa.m_bAfrit = virkurNotandi.m_bAfrit;
+                lanþegi.m_bAfrit = virkurNotandi.m_bAfrit;
+                fyllaV0rslusstofnanir();
+                fyllaSkjalamyndara();
+                fyllaLanthega();
+                fyllaDIPLista();
+                fyllaGagnaGrunna();
+               
 
             }
             else
@@ -354,6 +414,7 @@ namespace MHR_LEIT
                     karfa.vista();
                 }
                 cDIPkarfaItem karfa_item = new cDIPkarfaItem();
+                karfa_item.m_bAfrit = virkurNotandi.m_bAfrit;
 
                 string strVorsluutgafa = r["vorsluutgafa"].ToString();
                 string strID = r["skjalID"].ToString();
@@ -361,6 +422,7 @@ namespace MHR_LEIT
 
                 //finna vörsluútgáfurót
                 cVorsluutgafur utgafur = new cVorsluutgafur();
+                utgafur.m_bAfrit = virkurNotandi.m_bAfrit;
                 utgafur.getVörsluútgáfu(strVorsluutgafa);
                 string strSlod = utgafur.slod;
                 //er til frumeintak
@@ -378,7 +440,7 @@ namespace MHR_LEIT
                     dColl = 0;
                 }
                 dColl = dColl + 1;
-
+                
                 strSlod = strSlod + "\\Documents\\docCollection" + dColl.ToString() + "\\" + iID;
                 string[] strSkjal = Directory.GetFiles(strSlod);
                 if (strSkjal.Length > 0)
@@ -413,6 +475,7 @@ namespace MHR_LEIT
                     string strEndaSkjal = strDIPfolder + "\\" + strSplit[0] + fifo.Extension;
                     File.Copy(strSkjal[0], strEndaSkjal, true);
                     cMD5 md5 = new cMD5();
+                    md5.m_bAfrit = virkurNotandi.m_bAfrit;
                     strSplit = strSlod.Split("\\");
                     strID = "\\" + strSplit[strSplit.Length - 1];
                     string strMD5 = md5.getMD5(strID, utgafur.vorsluutgafa);
@@ -464,6 +527,7 @@ namespace MHR_LEIT
                         string strEndaSkjal = strDIPfolder + "\\" + strTitill;
                         File.Copy(strSkjal[0], strEndaSkjal, true);
                         cMD5 md5 = new cMD5();
+                        md5.m_bAfrit = virkurNotandi.m_bAfrit;
 
                         string[] strSplit = strSlod.Split("\\");
                         strID = "\\" + strSplit[strSplit.Length - 1];
@@ -524,6 +588,8 @@ namespace MHR_LEIT
                     string strVorsluutgafa = r["gagnagrunnur"].ToString().Replace("_", "."); 
                                                                                            
                     cVorsluutgafur utgafur = new cVorsluutgafur();
+                    utgafur.m_bAfrit = virkurNotandi.m_bAfrit;
+                    utgafur.m_bAfrit = virkurNotandi.m_bAfrit;
                     utgafur.getVörsluútgáfu(strVorsluutgafa);
                     string strSlod = utgafur.slod;
 
@@ -570,6 +636,7 @@ namespace MHR_LEIT
                     string strDest = strDIPfolder +"\\" + "Mál_" + iMal.ToString("00") + "\\Mál.xlsx";
                     //keyra út upplýsingar um málið
                     cMIdlun mIdlun = new cMIdlun();
+                    mIdlun.m_bAfrit = virkurNotandi.m_bAfrit;
                     string strSQL = r["sqlMal"].ToString();
                     DataTable dtUmMal = mIdlun.keyraFyrirspurn(strSQL, r["gagnagrunnur"].ToString());
                     exportExell(dtUmMal, "C:\\temp\\mal.xlsx");
@@ -591,7 +658,9 @@ namespace MHR_LEIT
                     dtExcellMal.AcceptChanges();
 
                     cDIPkarfaItem karfa_item = new cDIPkarfaItem();
+                    karfa_item.m_bAfrit = virkurNotandi.m_bAfrit;
                     cMD5 mD5= new cMD5();
+                    mD5.m_bAfrit = virkurNotandi.m_bAfrit;
                     string strMD5 = mD5.getMD5(strID, utgafur.vorsluutgafa);
                     karfa_item.karfa = karfa.karfa;
                     karfa_item.vorsluutgafa = r["gagnagrunnur"].ToString().Replace("_",".");
@@ -629,12 +698,14 @@ namespace MHR_LEIT
                 string strSQL = rr["sql"].ToString();
                 string strGagnagrunnur = rr["vorsluutgafa"].ToString().Replace(".", "_");
                 cMIdlun midlun = new cMIdlun();
+                midlun.m_bAfrit = virkurNotandi.m_bAfrit;
                 DataTable dt = midlun.keyraFyrirspurn(strSQL, strGagnagrunnur);
                 string strVorsluutgafa = rr["vorsluutgafa"].ToString();
               
 
                 //finna vörsluútgáfurót
                 cVorsluutgafur utgafur = new cVorsluutgafur();
+                utgafur.m_bAfrit = virkurNotandi.m_bAfrit;
                 utgafur.getVörsluútgáfu(strVorsluutgafa);
                 string strSlod = utgafur.slod;
 
@@ -688,6 +759,7 @@ namespace MHR_LEIT
                
 
                 cDIPkarfaItem karfa_item = new cDIPkarfaItem();
+                karfa_item.m_bAfrit = virkurNotandi.m_bAfrit;
                 karfa_item.karfa = karfa.karfa;
                 karfa_item.heiti= rr["heiti"].ToString();
                 karfa_item.leitarskilyrdi = rr["leitarskilyrði"].ToString();
@@ -889,6 +961,7 @@ namespace MHR_LEIT
         {
            string strKarfa = e.Node.Tag.ToString();
             cDIPkarfaItem items = new cDIPkarfaItem();
+            items.m_bAfrit = virkurNotandi.m_bAfrit;
             DataTable dt =  items.getKorfuItemDIP(strKarfa);
             m_dgvDIPList.DataSource = items.getKorfuItemDIP(strKarfa);
           
@@ -982,13 +1055,13 @@ namespace MHR_LEIT
                 {
                     string strGrunnur = m_comGagnagrunnar.SelectedValue.ToString();
                     string strHeiti = m_comGagnagrunnar.Text.ToString();
-                    frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti,m_dtDIPGrunn, m_dtDIPSkra, m_dtDIPMal);
+                    frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti,m_dtDIPGrunn, m_dtDIPSkra, m_dtDIPMal,virkurNotandi);
                     frmGagn.ShowDialog();
 
                     foreach (DataRow r in frmGagn.m_dtPantad.Rows)
                     {
                        string strLeitarskilyrði = r["leitarskilyrði"].ToString().Replace("'","\"");
-                        string strEXp = string.Format("vorsluutgafa='{0}' and leitarskilyrði='{1}'", r["vorsluutgafa"], strLeitarskilyrði);
+                        string strEXp = string.Format("vorsluutgafa='{0}' and leitarskilyrði='{1}'", r["vorsluutgafa"], strLeitarskilyrði, virkurNotandi);
                        DataRow[] frow = m_dtDIPGrunn.Select(strEXp);
                         if (frow.Length == 0)
                         {

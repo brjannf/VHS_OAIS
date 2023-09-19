@@ -35,6 +35,7 @@
             this.m_grbGeymsluSkrá = new System.Windows.Forms.GroupBox();
             this.m_trwGeymsluskrá = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.m_btnEyda = new System.Windows.Forms.Button();
             this.m_btnVista = new System.Windows.Forms.Button();
             this.m_btnBuaTil = new System.Windows.Forms.Button();
             this.m_lblAthSkjalaVard = new System.Windows.Forms.Label();
@@ -54,7 +55,8 @@
             this.m_tboTimablil = new System.Windows.Forms.TextBox();
             this.m_lblTitilill = new System.Windows.Forms.Label();
             this.m_tboTitill = new System.Windows.Forms.TextBox();
-            this.m_btnEyda = new System.Windows.Forms.Button();
+            this.m_btnAddSubSerites = new System.Windows.Forms.Button();
+            this.m_btnAddFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -165,6 +167,8 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.m_btnAddFile);
+            this.splitContainer2.Panel2.Controls.Add(this.m_btnAddSubSerites);
             this.splitContainer2.Panel2.Controls.Add(this.m_lblAthSkjalaVard);
             this.splitContainer2.Panel2.Controls.Add(this.m_tboAthSkjal);
             this.splitContainer2.Panel2.Controls.Add(this.m_btnDUStadfesta);
@@ -184,6 +188,16 @@
             this.splitContainer2.Size = new System.Drawing.Size(767, 753);
             this.splitContainer2.SplitterDistance = 188;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // m_btnEyda
+            // 
+            this.m_btnEyda.Location = new System.Drawing.Point(597, 88);
+            this.m_btnEyda.Name = "m_btnEyda";
+            this.m_btnEyda.Size = new System.Drawing.Size(75, 23);
+            this.m_btnEyda.TabIndex = 2;
+            this.m_btnEyda.Text = "Eyða";
+            this.m_btnEyda.UseVisualStyleBackColor = true;
+            this.m_btnEyda.Click += new System.EventHandler(this.m_btnEyda_Click);
             // 
             // m_btnVista
             // 
@@ -223,7 +237,7 @@
             // 
             // m_btnDUStadfesta
             // 
-            this.m_btnDUStadfesta.Location = new System.Drawing.Point(638, 17);
+            this.m_btnDUStadfesta.Location = new System.Drawing.Point(647, 17);
             this.m_btnDUStadfesta.Name = "m_btnDUStadfesta";
             this.m_btnDUStadfesta.Size = new System.Drawing.Size(75, 23);
             this.m_btnDUStadfesta.TabIndex = 13;
@@ -352,15 +366,23 @@
             this.m_tboTitill.Size = new System.Drawing.Size(333, 23);
             this.m_tboTitill.TabIndex = 0;
             // 
-            // m_btnEyda
+            // m_btnAddSubSerites
             // 
-            this.m_btnEyda.Location = new System.Drawing.Point(597, 88);
-            this.m_btnEyda.Name = "m_btnEyda";
-            this.m_btnEyda.Size = new System.Drawing.Size(75, 23);
-            this.m_btnEyda.TabIndex = 2;
-            this.m_btnEyda.Text = "Eyða";
-            this.m_btnEyda.UseVisualStyleBackColor = true;
-            this.m_btnEyda.Click += new System.EventHandler(this.m_btnEyda_Click);
+            this.m_btnAddSubSerites.Location = new System.Drawing.Point(647, 64);
+            this.m_btnAddSubSerites.Name = "m_btnAddSubSerites";
+            this.m_btnAddSubSerites.Size = new System.Drawing.Size(108, 23);
+            this.m_btnAddSubSerites.TabIndex = 16;
+            this.m_btnAddSubSerites.Text = "+Skjalaflokkur";
+            this.m_btnAddSubSerites.UseVisualStyleBackColor = true;
+            // 
+            // m_btnAddFile
+            // 
+            this.m_btnAddFile.Location = new System.Drawing.Point(647, 108);
+            this.m_btnAddFile.Name = "m_btnAddFile";
+            this.m_btnAddFile.Size = new System.Drawing.Size(108, 23);
+            this.m_btnAddFile.TabIndex = 17;
+            this.m_btnAddFile.Text = "+Örk";
+            this.m_btnAddFile.UseVisualStyleBackColor = true;
             // 
             // frmGeymsluskra
             // 
@@ -420,5 +442,7 @@
         private TextBox m_tboAthSkjal;
         private Button m_btnVista;
         private Button m_btnEyda;
+        private Button m_btnAddFile;
+        private Button m_btnAddSubSerites;
     }
 }

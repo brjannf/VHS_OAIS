@@ -10,8 +10,21 @@ namespace cClassOAIS
 {
     public class cDIPKarfa
     {
-    
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        private string m_strTenging = string.Empty; //"server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        public bool m_bAfrit = false;
+        private void sækjaTengistreng()
+        {
+            if (m_bAfrit)
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+            }
+            else
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+            }
+        }
+
+       
         //karfa, heiti, lanthegi, hver_skradi, dags_skrad
         public int karfa { get; set; }
         public string heiti { get; set; }
@@ -21,6 +34,7 @@ namespace cClassOAIS
 
         public void vista()
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -57,7 +71,8 @@ namespace cClassOAIS
 
         public DataTable getKorfurDIP()
         {
-            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, "SELECT * FROM db_oais_admin.dt_karfa_dip d order by karfa desc; ");
+            sækjaTengistreng();
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, "SELECT * FROM dt_karfa_dip d order by karfa desc; ");
             DataTable dt = ds.Tables[0];
             return dt;
         }

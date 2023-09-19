@@ -11,8 +11,19 @@ namespace cClassOAIS
 {
     public class cSkjalamyndari
     {
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
-
+        private string m_strTenging = string.Empty;//"server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        public bool m_bAfrit = false;
+        private void sækjaTengistreng()
+        {
+            if (m_bAfrit)
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+            }
+            else
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+            }
+        }
 
         #region GET/SET
         public int ID { get;set; }
@@ -80,6 +91,7 @@ namespace cClassOAIS
         }
         public void vista()
         {
+            sækjaTengistreng();
 
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
@@ -145,7 +157,16 @@ namespace cClassOAIS
         }
         public DataTable getENUM() 
         {
-            string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isaar_skjalamyndarar'AND COLUMN_NAME='5_1_1_gerð';");
+            string strSQL = string.Empty;
+            if(m_bAfrit)
+            {
+               strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isaar_skjalamyndarar'AND COLUMN_NAME='5_1_1_gerð';");
+            }
+            else
+            {
+                strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin_afrit' AND TABLE_NAME='dt_isaar_skjalamyndarar'AND COLUMN_NAME='5_1_1_gerð';");
+            }
+           
             var strengur = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
             DataTable dt = new DataTable();
@@ -168,6 +189,7 @@ namespace cClassOAIS
 
         public DataTable getENUMSkraningStaða()
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isaar_skjalamyndarar'AND COLUMN_NAME='5_4_4_skráningarstaða';");
             var strengur = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
@@ -191,7 +213,8 @@ namespace cClassOAIS
 
         public DataTable getSkjalamyndaralista()
         {
-            string strSQL = "SELECT d.`5_1_2_opinbert_heiti`, d.`id`, 5_1_6_auðkenni FROM db_oais_admin.dt_isaar_skjalamyndarar d order by 5_1_2_opinbert_heiti;";
+            sækjaTengistreng();
+            string strSQL = "SELECT d.`5_1_2_opinbert_heiti`, d.`id`, 5_1_6_auðkenni FROM dt_isaar_skjalamyndarar d order by 5_1_2_opinbert_heiti;";
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -199,6 +222,7 @@ namespace cClassOAIS
 
         public DataTable getSkjalamyndaralistaGU()
         {
+            sækjaTengistreng();
             string strSQL = "SELECT 5_1_6_auðkenni, 5_1_2_opinbert_heiti as heiti,5_1_1_gerð as gerd, 5_2_1_tímabil as timabil, hver_skráði, dags_skráð, 5_4_2_auðkenni_vörslustofnunar, '' as fullskra FROM db_oais_admin.dt_isaar_skjalamyndarar d order by 5_1_2_opinbert_heiti ;";
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -207,6 +231,7 @@ namespace cClassOAIS
 
         public DataTable getSkjalamyndaraVörslustofnun(string strVarsla)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT 5_1_1_auðkenni, 5_1_2_opinbert_heiti, klasar FROM db_oais_admin.`dt_isdiah_vörslustofnanir` d WHERE 5_1_1_auðkenni = '{0}';",strVarsla);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -215,6 +240,7 @@ namespace cClassOAIS
 
         public DataTable getENUMSkraningStig()
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE, 5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'db_oais_admin' AND TABLE_NAME = 'dt_isaar_skjalamyndarar'AND COLUMN_NAME = '5_4_5_skráningarstig'; ");
             var strengur = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
@@ -237,6 +263,7 @@ namespace cClassOAIS
         }
         public void getSkjalamyndara(string strHeiti)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_isaar_skjalamyndarar d where 5_1_2_opinbert_heiti = '{0}';", strHeiti);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging,strSQL);
             DataTable dt = ds.Tables[0];
@@ -284,6 +311,7 @@ namespace cClassOAIS
 
         public void getSkjalamyndaraByAuðkenni(string strAuðkenni)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_isaar_skjalamyndarar d where 5_1_6_auðkenni = '{0}';", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -331,6 +359,7 @@ namespace cClassOAIS
 
         public void getSkjalamyndara(int id)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_isaar_skjalamyndarar d where id = '{0}';", id);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -378,8 +407,9 @@ namespace cClassOAIS
 
         public string næstaAUðkenni()
         {
+            sækjaTengistreng();
             string strRet = string.Empty;
-            string strSQL = string.Format("SELECT max(id) FROM db_oais_admin.dt_isaar_skjalamyndarar d;");
+            string strSQL = string.Format("SELECT max(id) FROM dt_isaar_skjalamyndarar d;");
             var strID = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
             if(strID == DBNull.Value)
             {
@@ -403,8 +433,9 @@ namespace cClassOAIS
         }
         public int fjoldiVirkarUtgafna(string strAuðkenni)
         {
+            sækjaTengistreng();
             int iRet = 0;
-            string strSQL = string.Format("SELECT count(0) as fjoldi FROM db_oais_admin.`dt_vörsluutgafur` d where skjalamyndari = '{0}' and eytt = 0;", strAuðkenni);
+            string strSQL = string.Format("SELECT count(0) as fjoldi FROM `dt_vörsluutgafur` d where skjalamyndari = '{0}' and eytt = 0;", strAuðkenni);
             var Fjoldi = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
             if(Fjoldi != null)
             {
@@ -415,6 +446,7 @@ namespace cClassOAIS
 
         public void eyða(string strAuðkenni)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("DELETE from dt_isaar_skjalamyndarar WHERE 5_1_6_auðkenni= '{0}'", strAuðkenni);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }

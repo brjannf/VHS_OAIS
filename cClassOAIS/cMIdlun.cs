@@ -9,15 +9,27 @@ using IronOcr;
 using MySqlX.XDevAPI.Common;
 using System.Xml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 
 namespace cClassOAIS
 {
     public class cMIdlun
     {
         private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind;";
-        private string m_strTengingOAIS = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        private string m_strTengingOAIS = string.Empty; // "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        public bool m_bAfrit = false;
+        private void sækjaTengistreng()
+        {
+            if (m_bAfrit)
+            {
+                m_strTengingOAIS = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+            }
+            else
+            {
+                m_strTengingOAIS = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+            }
+        }
 
-      
 
         public int id { get; set; }
         public string vorsluutgafa { get; set; }
@@ -58,6 +70,7 @@ namespace cClassOAIS
 
         public void vista()
         {
+            sækjaTengistreng();
 
             MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
             conn.Open();
@@ -107,6 +120,7 @@ namespace cClassOAIS
 
         public void vistaGagnagrunn(string strOrginal)
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -123,7 +137,7 @@ namespace cClassOAIS
 
         public void createDatabase(string strNafn)
         {
-            
+            sækjaTengistreng();
             string strSQL = "DROP DATABASE IF EXISTS " + strNafn + ";" + Environment.NewLine;
             strSQL += "CREATE DATABASE " + strNafn + ";";
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
@@ -134,6 +148,7 @@ namespace cClassOAIS
         }
         public int instertYfirlit(string strVörsluNr, string strTitill)
         {
+            sækjaTengistreng();
             int ret = 0;
             string strSQL = string.Empty;
             MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
@@ -156,7 +171,7 @@ namespace cClassOAIS
         }
         public void insertToTable(string strColumns, DataRow rd, string strDatabase, string strTable, string strTime, string strMetaFunction, string strVörslunumer, string strSlod)
         {
-
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
 
@@ -345,6 +360,7 @@ namespace cClassOAIS
         }
         public string vistaFyrirSpurn(string strFyrirspurn, string strDatabase, string strNafn, string strLysing, string strID)
         {
+            sækjaTengistreng();
             string strREt = "0";
             MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
             conn.Open();
@@ -380,6 +396,7 @@ namespace cClassOAIS
 
         public DataTable leit(string strLeitarord)
         {
+            sækjaTengistreng();
             string strSQL = string.Empty;
            if(strLeitarord.Length != 0)
             {
@@ -475,6 +492,7 @@ namespace cClassOAIS
         }
         public string leitInnra(string strLeitarord, string strGagnagrunnur) 
         {
+            sækjaTengistreng();
             string strRet = string.Empty;
             string strSQL = string.Empty;
             if (strLeitarord.Length != 0)
@@ -524,6 +542,7 @@ namespace cClassOAIS
 
         public DataTable leitInnraDataTable(string strLeitarord, string strGagnagrunnur)
         {
+            sækjaTengistreng();
             string strRet = string.Empty;
             string strSQL = string.Empty;
             if (strLeitarord.Length != 0)
@@ -572,12 +591,23 @@ namespace cClassOAIS
 
 
         // private string str
-        public string getFyrirspurn(string strDatabase)
+        public string getFyrirspurn(string strDatabase, string strTegund)
         {
+            sækjaTengistreng();
             string strRet = string.Empty;
-            string strQL = string.Format("SELECT fyrirspurn FROM db_oais_admin.dt_fyrirspurnir d where gagnagrunnur = '{0}' and nafn = 'Get_files_path';", strDatabase);
+            string strQL = string.Empty;   
+          //  if(strTegund == "Málakerfi")
+            {
+
+                strQL = string.Format("SELECT fyrirspurn FROM dt_fyrirspurnir d where gagnagrunnur = '{0}' and nafn = '{1}';", strDatabase, strTegund);
+            }
+            //if(strTegund == "Skráarkerfi")
+            //{
+            //    strQL = string.Format("SELECT fyrirspurn FROM db_oais_admin.dt_fyrirspurnir d where gagnagrunnur = '{0}' and nafn = 'Get_files_path';", strDatabase);
+            //}
+           
             var fyrirspurn = MySqlHelper.ExecuteScalar(m_strTengingOAIS, strQL);
-            if(fyrirspurn != DBNull.Value)
+            if(fyrirspurn != null)
             {
                 strRet = fyrirspurn.ToString();
             }
@@ -586,6 +616,7 @@ namespace cClassOAIS
 
         public DataTable keyraFyrirspurn(string strSQL, string database)
         {
+            sækjaTengistreng();
             string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + database + "; allow user variables = True; character set = utf8";
 
             DataSet ds = MySqlHelper.ExecuteDataset(strTengistrengur, strSQL);
@@ -595,13 +626,15 @@ namespace cClassOAIS
 
         public DataTable getGagnagrunnaFyrirSpurnir(string strGagnagrunnur)
         {
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_fyrirspurnir d where gagnagrunnur = '{0}';", strGagnagrunnur);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_fyrirspurnir d where gagnagrunnur = '{0}';", strGagnagrunnur);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
         }
         public DataTable getGagnagrunnaFyrirSpurnirMidlun(string strGagnagrunnur)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT id, nafn as name, fyrirspurn as queryOriginal, lysing as description, gagnagrunnur as _database FROM db_oais_admin.dt_fyrirspurnir d where gagnagrunnur = '{0}';", strGagnagrunnur);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
             DataTable dt = ds.Tables[0];
@@ -609,13 +642,15 @@ namespace cClassOAIS
         }
         public DataTable getGagnagrunna()
         {
-            string strSQL = "SELECT * FROM db_oais_admin.ds_gagnagrunnar d;";
+            sækjaTengistreng();
+            string strSQL = "SELECT * FROM ds_gagnagrunnar d;";
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
         }
         public void eydaFyrirspurnum(string strGagnagrunnur)
         {
+            sækjaTengistreng();
             string strSQL = string.Empty;
             MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
             conn.Open();
@@ -632,6 +667,7 @@ namespace cClassOAIS
 
         public void dropDatabase(string strGagnagrunnur)
         {
+            sækjaTengistreng();
             try
             {
                 string strSQL = string.Empty;
@@ -652,6 +688,55 @@ namespace cClassOAIS
             }
 
         }
+
+        public void insertFyrirspurn(string strSQL, string strGagnagrunnur)
+        {
+            string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + strGagnagrunnur + "; allow user variables = True; character set = utf8";
+
+            MySqlCommand upgCommand = new MySqlCommand();
+            MySqlConnection conn = new MySqlConnection(strTengistrengur);
+            conn.Open();
+            upgCommand.Connection = conn;
+            upgCommand.CommandText = strSQL;
+            upgCommand.ExecuteNonQuery();
+          
+        }
+    
+        public void bulkLoad(string strFile)
+        {
+            string connStr = "server = localhost; user id = root; Password = ivarBjarkLind;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            MySqlBulkLoader bl = new MySqlBulkLoader(conn);
+            bl.Local = true;
+          //  bl.TableName = "Career";
+            bl.FieldTerminator = "\t";
+            bl.LineTerminator = "\n";
+            bl.FileName = strFile;
+            bl.Load();// bl.NumberOfLinesToSkip = 3;
+        }
+        public void scriptLoad(string strFile) 
+        {
+            string connStr = "server = localhost; user id = root; Password = ivarBjarkLind; database = db_oais_admin_afrit;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            conn.Open();
+            MySqlScript skript = new MySqlScript(conn, File.ReadAllText(strFile));
+            skript.Execute();
+           
+
+        }
+
+        public void insertAfritFromFile(string strFile)
+        { 
+            string constring = "server = localhost; user id = root; Password = ivarBjarkLind;";
+            MySqlCommand upgCommand = new MySqlCommand();
+            MySqlConnection conn = new MySqlConnection(constring);
+            conn.Open();
+            upgCommand.Connection = conn;
+            upgCommand.CommandText = File.ReadAllText(strFile);
+            upgCommand.ExecuteNonQuery();
+        }
+
+        
 
     }
 }

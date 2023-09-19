@@ -19,6 +19,7 @@ namespace MHR_LEIT
         public DataTable m_dtPontunMal = new DataTable();
         string m_strGagnagrunnur = string.Empty;
         cMIdlun midlun = new cMIdlun();
+        cNotandi virkurnotandi = new cNotandi();    
         DataTable m_dtFyrirspurnir = new DataTable();
         string  m_strIdValinn = string.Empty; //skjal sem er valið í niðurstöðum
         string m_strFileValinn = string.Empty;
@@ -32,7 +33,7 @@ namespace MHR_LEIT
         }
 
         
-        public frmMalakerfi(string strGagnagrunnur, DataRow row, DataTable dtGrunn, DataTable dtSkra, DataTable dtMalKerfi)
+        public frmMalakerfi(string strGagnagrunnur, DataRow row, DataTable dtGrunn, DataTable dtSkra, DataTable dtMalKerfi, cNotandi not)
         {
             InitializeComponent();
           
@@ -62,6 +63,9 @@ namespace MHR_LEIT
             setjaFoldaTaba();
             m_pibSkjal.Focus();
             m_strGagnagrunnur = strGagnagrunnur;
+            virkurnotandi = not;
+            midlun.m_bAfrit = virkurnotandi.m_bAfrit;
+            drive.m_bAfrit = virkurnotandi.m_bAfrit;
             m_dtFyrirspurnir = midlun.getGagnagrunnaFyrirSpurnir(m_strGagnagrunnur);
 
            if (dtMalKerfi == null)
@@ -73,7 +77,15 @@ namespace MHR_LEIT
      
 
             fyllaMalalykla();
-            m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
+            if(virkurnotandi.m_bAfrit)
+            {
+                m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorsluutgafa"];
+            }
+            else
+            {
+                m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
+            }
+
 
             m_strIdValinn = row["documentid"].ToString();
             string strValin = m_strIdValinn;
@@ -249,9 +261,9 @@ namespace MHR_LEIT
                 dColl = dColl + 1;
             }
 
-
-
             string strValid = m_strRoot + "\\Documents\\docCollection" + dColl.ToString() + "\\" + m_strIdValinn;
+          
+     
             string[] strFiles = Directory.GetFiles(strValid);
             m_strFileValinn = strFiles[0];
 

@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using DocumentFormat.OpenXml.Drawing;
+using MySql.Data.MySqlClient;
 using Mysqlx.Expr;
 using MySqlX.XDevAPI.Relational;
 using System.Data;
@@ -8,7 +9,8 @@ namespace cClassOAIS
 {
     public class cNotandi
     {
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        private string m_strTenging = string.Empty;
+        public bool m_bAfrit = false;
         #region GET/SET
         public string kennitala { get; set; }
         public string notendanafn { get;  set; }
@@ -28,9 +30,21 @@ namespace cClassOAIS
         public string simi { get; set; } 
         #endregion
 
+        private void sækjaTengistreng()
+        {
+            if (m_bAfrit)
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+            }
+            else
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+            }
+        }
         public void sækjaNotanda(string strNotandi, string strlykilord)
         {
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_notendur d where notendanafn = '{0}' and lykilorð ='{1}' and virkur = 1;", strNotandi, strlykilord);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_notendur d where notendanafn = '{0}' and lykilorð ='{1}' and virkur = 1;", strNotandi, strlykilord);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging,strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
             DataTable dt = new DataTable();
@@ -61,7 +75,8 @@ namespace cClassOAIS
 
         public void sækjaNotanda(string strKennitla)
         {
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_notendur d where kennitala = '{0}';", strKennitla);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_notendur d where kennitala = '{0}';", strKennitla);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
             DataTable dt = new DataTable();
@@ -89,9 +104,16 @@ namespace cClassOAIS
             }
 
         }
-
+        public DataTable getGrunnar()
+        {
+            m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind;";
+            string strSQL = string.Format("SHOW DATABASES like 'DB_OAIS%'; ");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            return ds.Tables[0];
+        }
         public void sækjaNotandaNot(string strKennitla, string strNotendanafn)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM dt_notendur d where notendanafn = '{0}' and kennitala != '{1}';", strNotendanafn,strKennitla);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
@@ -143,6 +165,7 @@ namespace cClassOAIS
 
         public void vista(string strKennitala)
         {
+            sækjaTengistreng();
 
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
@@ -199,6 +222,7 @@ namespace cClassOAIS
         }
         public DataTable notendaListi()
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM dt_notendur d order by nafn;");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -207,6 +231,7 @@ namespace cClassOAIS
 
         public void skraInnskra(string strKennitala)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("Update dt_notendur set síðasta_innskráning = NOW() where kennitala = '{0}'", strKennitala);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }

@@ -56,6 +56,7 @@
             this.colDocID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTegund_gagnagrunns = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_pnlNotandi = new System.Windows.Forms.Panel();
+            this.m_chbAfrit = new System.Windows.Forms.CheckBox();
             this.m_lblVillaInnSkraning = new System.Windows.Forms.Label();
             this.m_btnInnskra = new System.Windows.Forms.Button();
             this.m_lblLykilOrd = new System.Windows.Forms.Label();
@@ -403,16 +404,28 @@
             // 
             // m_pnlNotandi
             // 
+            this.m_pnlNotandi.Controls.Add(this.m_chbAfrit);
             this.m_pnlNotandi.Controls.Add(this.m_lblVillaInnSkraning);
             this.m_pnlNotandi.Controls.Add(this.m_btnInnskra);
             this.m_pnlNotandi.Controls.Add(this.m_lblLykilOrd);
             this.m_pnlNotandi.Controls.Add(this.m_tboLykilOrd);
             this.m_pnlNotandi.Controls.Add(this.m_lblNotendaNafn);
             this.m_pnlNotandi.Controls.Add(this.m_tboNoterndaNafn);
-            this.m_pnlNotandi.Location = new System.Drawing.Point(1352, 108);
+            this.m_pnlNotandi.Location = new System.Drawing.Point(592, 12);
             this.m_pnlNotandi.Name = "m_pnlNotandi";
             this.m_pnlNotandi.Size = new System.Drawing.Size(471, 437);
             this.m_pnlNotandi.TabIndex = 3;
+            // 
+            // m_chbAfrit
+            // 
+            this.m_chbAfrit.AutoSize = true;
+            this.m_chbAfrit.Location = new System.Drawing.Point(117, 284);
+            this.m_chbAfrit.Name = "m_chbAfrit";
+            this.m_chbAfrit.Size = new System.Drawing.Size(135, 19);
+            this.m_chbAfrit.TabIndex = 11;
+            this.m_chbAfrit.Text = "Opna afritunargrunn";
+            this.m_chbAfrit.UseVisualStyleBackColor = true;
+            this.m_chbAfrit.Visible = false;
             // 
             // m_lblVillaInnSkraning
             // 
@@ -894,5 +907,6 @@
         private DataGridView m_dgvDIPmal;
         private Label m_lblPontunstatus;
         private ProgressBar m_pgbPontun;
+        private CheckBox m_chbAfrit;
     }
 }

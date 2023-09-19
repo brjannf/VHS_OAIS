@@ -11,8 +11,20 @@ namespace cClassOAIS
 {
     public class cDIPkarfaItem
     {
-      
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+
+        private string m_strTenging = string.Empty; //"server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        public bool m_bAfrit = false;
+        private void sækjaTengistreng()
+        {
+            if (m_bAfrit)
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+            }
+            else
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+            }
+        }
         //id, karfa, skjalID, titill, vorsluutgafa, md5, slod
         public int id { get; set; }
         public int karfa { get; set; }
@@ -31,6 +43,7 @@ namespace cClassOAIS
 
         public void vista()
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -68,6 +81,7 @@ namespace cClassOAIS
 
         public void vistaGagnagrunn()
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -95,6 +109,7 @@ namespace cClassOAIS
 
         public void vistaMalaKerfi()
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -122,7 +137,8 @@ namespace cClassOAIS
 
         public DataTable getKorfuItemDIP(string strKarfa)
         {
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_item_korfu_dip d where karfa = {0};", strKarfa);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_item_korfu_dip d where karfa = {0};", strKarfa);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging,strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -130,7 +146,8 @@ namespace cClassOAIS
 
         public DataTable getKorfuItemDIPGagnagrunnur(string strKarfa)
         {
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_karfa_item_gagna_dip d where karfa = {0};", strKarfa);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_karfa_item_gagna_dip d where karfa = {0};", strKarfa);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -138,7 +155,8 @@ namespace cClassOAIS
 
         public DataTable getKorfuItemDIPMalakerfi(string strKarfa)
         {
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_item_korfu_mal_dip d where karfa = {0};", strKarfa);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_item_korfu_mal_dip d where karfa = {0};", strKarfa);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

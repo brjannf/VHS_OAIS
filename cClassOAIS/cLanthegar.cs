@@ -10,7 +10,19 @@ namespace cClassOAIS
 {
     public class cLanthegar
     {
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        private string m_strTenging = string.Empty; //"server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        public bool m_bAfrit = false;
+        private void sækjaTengistreng()
+        {
+            if (m_bAfrit)
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+            }
+            else
+            {
+                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+            }
+        }
         //id, nafn, kennitala, nafn_fyrirtaekis, kennitala_fyrirtaekis, simi, netfang, dags_skrad, skrad_af
         public int id { get; set; }
         public string nafn { get; set; }
@@ -24,6 +36,7 @@ namespace cClassOAIS
 
         public void vista()
         {
+            sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
@@ -52,6 +65,7 @@ namespace cClassOAIS
         }
         public DataTable getLanthegaLista()
         {
+            sækjaTengistreng();
             string strSQL = "SELECT * FROM dt_lanthegar d order by nafn;";
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -60,7 +74,8 @@ namespace cClassOAIS
 
         public void getaLanthega(string strID)
         {
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_lanthegar d where id = {0};", strID);
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_lanthegar d where id = {0};", strID);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
             DataTable dt = new DataTable();

@@ -280,3 +280,52 @@ CREATE TABLE  `db_oais_admin_afrit`.`ds_gagnagrunnar` (
   `orginal_heiti` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DROP TABLE IF EXISTS `db_oais_admin_afrit`.`dt_vörsluutgafur`;
+CREATE TABLE  `db_oais_admin_afrit`.`dt_vörsluutgafur` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `vorsluutgafa` varchar(45) NOT NULL,
+  `utgafa_titill` varchar(200) NOT NULL,
+  `vorslustofnun` varchar(45) NOT NULL,
+  `varsla_heiti` varchar(200) NOT NULL,
+  `skjalamyndari` varchar(45) NOT NULL,
+  `skjalm_heiti` varchar(200) NOT NULL,
+  `staerd` bigint unsigned NOT NULL,
+  `slod` varchar(300) NOT NULL,
+  `innihald` varchar(11000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `timabil` varchar(45) NOT NULL,
+  `afharnr` varchar(45) NOT NULL,
+  `MD5` varchar(32) NOT NULL,
+  `hver_skradi` varchar(45) NOT NULL,
+  `dags_skrad` varchar(100) NOT NULL,
+  `adgangstakmarkanir` varchar(200) NOT NULL,
+  `eytt` tinyint unsigned NOT NULL DEFAULT '0',
+  `dags_eytt` varchar(100) DEFAULT NULL,
+  `hver_eytti` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `midlun` tinyint unsigned NOT NULL DEFAULT '0',
+  `dags_midlad` varchar(100) DEFAULT NULL,
+  `hver_midladi` varchar(45) DEFAULT NULL,
+  `frumeintak` tinyint unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `utgafa_uniq` (`vorsluutgafa`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DROP TABLE IF EXISTS `db_oais_admin_afrit`.`dt_drives`;
+CREATE TABLE  `db_oais_admin_afrit`.`dt_drives` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `comID` int unsigned NOT NULL,
+  `nafn` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `format` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `laust` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `heild` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `tegund` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `framleitt` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `virk` tinyint unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DROP VIEW IF EXISTS `db_oais_admin_afrit`.`v_vorslustofnun`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW  `db_oais_admin_afrit`.`v_vorslustofnun` AS select `d`.`id` AS `id`,`d`.`vorsluutgafa` AS `vorsluutgafa`,`d`.`utgafa_titill` AS `utgafa_titill`,`d`.`vorslustofnun` AS `vorslustofnun`,`d`.`varsla_heiti` AS `varsla_heiti`,`d`.`skjalamyndari` AS `skjalamyndari`,`d`.`skjalm_heiti` AS `skjalm_heiti`,`d`.`staerd` AS `staerd`,`d`.`slod` AS `slod`,`d`.`innihald` AS `innihald`,`d`.`timabil` AS `timabil`,`d`.`afharnr` AS `afharnr`,`d`.`MD5` AS `MD5`,`d`.`hver_skradi` AS `hver_skradi`,`d`.`dags_skrad` AS `dags_skrad`,`d`.`adgangstakmarkanir` AS `adgangstakmarkanir`,'' AS `heild`,'' AS `verd` from `db_oais_admin_afrit`.`dt_vörsluutgafur` `d`;
+
+INSERT INTO `db_oais_admin_afrit`.`dt_notendur` SET  `kennitala`='0000000000',  `notendanafn`='mhr', `lykilorð`='mhr', `vörslustofnun`='mhr', `nafn`='MHR',`virkur`='1',`athugasemdir`='',`hver_skradi`='mhr',`hlutverk`='Umsjónarmaður',`email`='',`heimilisfang`='',`simi`='',`dags_skráð`=NOW();
