@@ -131,6 +131,7 @@ namespace cClassOAIS
 
         public DataTable getENUMKlasar()
         {
+            sækjaTengistreng();
             string strSQL = string.Empty;
             if (m_bAfrit)
             {

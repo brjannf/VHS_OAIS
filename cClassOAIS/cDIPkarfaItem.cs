@@ -2,6 +2,7 @@
 using SixLabors.ImageSharp.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -18,11 +19,11 @@ namespace cClassOAIS
         {
             if (m_bAfrit)
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_afrit"].ConnectionString;
             }
             else
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_admin"].ConnectionString;
             }
         }
         //id, karfa, skjalID, titill, vorsluutgafa, md5, slod

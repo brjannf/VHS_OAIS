@@ -1,7 +1,10 @@
 ﻿using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 using Mysqlx.Expr;
 using MySqlX.XDevAPI.Relational;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics.Metrics;
 
@@ -32,13 +35,14 @@ namespace cClassOAIS
 
         private void sækjaTengistreng()
         {
+                       
             if (m_bAfrit)
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_afrit"].ConnectionString; 
             }
             else
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_admin"].ConnectionString;
             }
         }
         public void sækjaNotanda(string strNotandi, string strlykilord)
@@ -227,6 +231,16 @@ namespace cClassOAIS
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
+        }
+        public void hostRoot()
+        {
+            sækjaTengistreng();
+            string strSQL = "UPDATE mysql.user SET host = '%' WHERE user = 'root'";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+            strSQL = "FLUSH PRIVILEGES;";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+
+            
         }
 
         public void skraInnskra(string strKennitala)

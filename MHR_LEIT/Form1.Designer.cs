@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label6 = new System.Windows.Forms.Label();
+            this.m_lblGagangrunnar = new System.Windows.Forms.Label();
             this.m_comGagnagrunnar = new System.Windows.Forms.ComboBox();
             this.m_lblLeitarnidurstodur = new System.Windows.Forms.Label();
             this.m_btnHreinsa = new System.Windows.Forms.Button();
@@ -91,6 +91,13 @@
             this.m_dgvDIPmal = new System.Windows.Forms.DataGridView();
             this.m_tapPontunGagnagrunnar = new System.Windows.Forms.TabPage();
             this.m_dgvDIPGagnagrunnar = new System.Windows.Forms.DataGridView();
+            this.m_tapUmsjon = new System.Windows.Forms.TabPage();
+            this.m_tacUmsjon = new System.Windows.Forms.TabControl();
+            this.m_tapNotendur = new System.Windows.Forms.TabPage();
+            this.uscNotendur1 = new MHR_LEIT.uscNotendur();
+            this.m_tapLanthegar = new System.Windows.Forms.TabPage();
+            this.m_tapUppfæra = new System.Windows.Forms.TabPage();
+            this.usclanthegar1 = new MHR_LEIT.usclanthegar();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -116,6 +123,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvDIPmal)).BeginInit();
             this.m_tapPontunGagnagrunnar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvDIPGagnagrunnar)).BeginInit();
+            this.m_tapUmsjon.SuspendLayout();
+            this.m_tacUmsjon.SuspendLayout();
+            this.m_tapNotendur.SuspendLayout();
+            this.m_tapLanthegar.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -127,7 +138,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.label6);
+            this.splitContainer1.Panel1.Controls.Add(this.m_lblGagangrunnar);
             this.splitContainer1.Panel1.Controls.Add(this.m_comGagnagrunnar);
             this.splitContainer1.Panel1.Controls.Add(this.m_lblLeitarnidurstodur);
             this.splitContainer1.Panel1.Controls.Add(this.m_btnHreinsa);
@@ -149,14 +160,14 @@
             this.splitContainer1.SplitterDistance = 101;
             this.splitContainer1.TabIndex = 0;
             // 
-            // label6
+            // m_lblGagangrunnar
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1187, 68);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(83, 15);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "Gagnagrunnar";
+            this.m_lblGagangrunnar.AutoSize = true;
+            this.m_lblGagangrunnar.Location = new System.Drawing.Point(1187, 68);
+            this.m_lblGagangrunnar.Name = "m_lblGagangrunnar";
+            this.m_lblGagangrunnar.Size = new System.Drawing.Size(83, 15);
+            this.m_lblGagangrunnar.TabIndex = 14;
+            this.m_lblGagangrunnar.Text = "Gagnagrunnar";
             // 
             // m_comGagnagrunnar
             // 
@@ -488,6 +499,7 @@
             // 
             this.m_tacMain.Controls.Add(this.m_tapLeit);
             this.m_tacMain.Controls.Add(this.m_tapAfgreidsla);
+            this.m_tacMain.Controls.Add(this.m_tapUmsjon);
             this.m_tacMain.Location = new System.Drawing.Point(12, 61);
             this.m_tacMain.Name = "m_tacMain";
             this.m_tacMain.SelectedIndex = 0;
@@ -802,6 +814,77 @@
             this.m_dgvDIPGagnagrunnar.Size = new System.Drawing.Size(884, 292);
             this.m_dgvDIPGagnagrunnar.TabIndex = 0;
             // 
+            // m_tapUmsjon
+            // 
+            this.m_tapUmsjon.Controls.Add(this.m_tacUmsjon);
+            this.m_tapUmsjon.Location = new System.Drawing.Point(4, 24);
+            this.m_tapUmsjon.Name = "m_tapUmsjon";
+            this.m_tapUmsjon.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapUmsjon.Size = new System.Drawing.Size(1363, 529);
+            this.m_tapUmsjon.TabIndex = 2;
+            this.m_tapUmsjon.Text = "Umsjón";
+            this.m_tapUmsjon.UseVisualStyleBackColor = true;
+            // 
+            // m_tacUmsjon
+            // 
+            this.m_tacUmsjon.Controls.Add(this.m_tapNotendur);
+            this.m_tacUmsjon.Controls.Add(this.m_tapLanthegar);
+            this.m_tacUmsjon.Controls.Add(this.m_tapUppfæra);
+            this.m_tacUmsjon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_tacUmsjon.Location = new System.Drawing.Point(3, 3);
+            this.m_tacUmsjon.Name = "m_tacUmsjon";
+            this.m_tacUmsjon.SelectedIndex = 0;
+            this.m_tacUmsjon.Size = new System.Drawing.Size(1357, 523);
+            this.m_tacUmsjon.TabIndex = 0;
+            // 
+            // m_tapNotendur
+            // 
+            this.m_tapNotendur.Controls.Add(this.uscNotendur1);
+            this.m_tapNotendur.Location = new System.Drawing.Point(4, 24);
+            this.m_tapNotendur.Name = "m_tapNotendur";
+            this.m_tapNotendur.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapNotendur.Size = new System.Drawing.Size(1349, 495);
+            this.m_tapNotendur.TabIndex = 0;
+            this.m_tapNotendur.Text = "Notendur";
+            this.m_tapNotendur.UseVisualStyleBackColor = true;
+            // 
+            // uscNotendur1
+            // 
+            this.uscNotendur1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uscNotendur1.Location = new System.Drawing.Point(3, 3);
+            this.uscNotendur1.Name = "uscNotendur1";
+            this.uscNotendur1.Size = new System.Drawing.Size(1343, 489);
+            this.uscNotendur1.TabIndex = 0;
+            // 
+            // m_tapLanthegar
+            // 
+            this.m_tapLanthegar.Controls.Add(this.usclanthegar1);
+            this.m_tapLanthegar.Location = new System.Drawing.Point(4, 24);
+            this.m_tapLanthegar.Name = "m_tapLanthegar";
+            this.m_tapLanthegar.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapLanthegar.Size = new System.Drawing.Size(1349, 495);
+            this.m_tapLanthegar.TabIndex = 1;
+            this.m_tapLanthegar.Text = "Lánþegar";
+            this.m_tapLanthegar.UseVisualStyleBackColor = true;
+            // 
+            // m_tapUppfæra
+            // 
+            this.m_tapUppfæra.Location = new System.Drawing.Point(4, 24);
+            this.m_tapUppfæra.Name = "m_tapUppfæra";
+            this.m_tapUppfæra.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapUppfæra.Size = new System.Drawing.Size(1349, 495);
+            this.m_tapUppfæra.TabIndex = 2;
+            this.m_tapUppfæra.Text = "Færa inn gögn";
+            this.m_tapUppfæra.UseVisualStyleBackColor = true;
+            // 
+            // usclanthegar1
+            // 
+            this.usclanthegar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.usclanthegar1.Location = new System.Drawing.Point(3, 3);
+            this.usclanthegar1.Name = "usclanthegar1";
+            this.usclanthegar1.Size = new System.Drawing.Size(1343, 489);
+            this.usclanthegar1.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -839,6 +922,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvDIPmal)).EndInit();
             this.m_tapPontunGagnagrunnar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvDIPGagnagrunnar)).EndInit();
+            this.m_tapUmsjon.ResumeLayout(false);
+            this.m_tacUmsjon.ResumeLayout(false);
+            this.m_tapNotendur.ResumeLayout(false);
+            this.m_tapLanthegar.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -886,7 +973,7 @@
         private GroupBox m_grbDIP;
         private Label m_lblLanthegi;
         private Button m_btnTæma;
-        private Label label6;
+        private Label m_lblGagangrunnar;
         private ComboBox m_comGagnagrunnar;
         private TabControl m_tacPontun;
         private TabPage m_tapPontunSkra;
@@ -908,5 +995,12 @@
         private Label m_lblPontunstatus;
         private ProgressBar m_pgbPontun;
         private CheckBox m_chbAfrit;
+        private TabPage m_tapUmsjon;
+        private TabControl m_tacUmsjon;
+        private TabPage m_tapNotendur;
+        private TabPage m_tapLanthegar;
+        private TabPage m_tapUppfæra;
+        private uscNotendur uscNotendur1;
+        private usclanthegar usclanthegar1;
     }
 }

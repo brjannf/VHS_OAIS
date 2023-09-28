@@ -1,6 +1,8 @@
-﻿using MySql.Data.MySqlClient;
+﻿using DocumentFormat.OpenXml.Office2016.Presentation.Command;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -16,11 +18,11 @@ namespace cClassOAIS
         {
             if (m_bAfrit)
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_afrit"].ConnectionString; ;
             }
             else
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_admin"].ConnectionString;
             }
         }
         //id, nafn, kennitala, nafn_fyrirtaekis, kennitala_fyrirtaekis, simi, netfang, dags_skrad, skrad_af
@@ -56,7 +58,7 @@ namespace cClassOAIS
             }
             else
             {
-               // command.CommandText = string.Format("UPDATE `dt_notendur` SET  `kennitala`=@kennitala,  `notendanafn`=@notendanafn, `lykilorð`=@lykilorð, `vörslustofnun`=@vörslustofnun, `nafn`=@nafn,`virkur`=@virkur,`athugasemdir`=@athugasemdir,`hver_breytti`=@hver_breytti,`hlutverk`=@hlutverk,`email`=@email,`heimilisfang`=@heimilisfang,`simi`=@simi,`dags_breytt`=NOW() WHERE kennitala ={0};", strKennitala);
+               command.CommandText = string.Format("UPDATE `dt_lanthegar` SET  `nafn`=@nafn,  `kennitala`=@kennitala, `nafn_fyrirtaekis`=@nafn_fyrirtaekis, `kennitala_fyrirtaekis`=@kennitala_fyrirtaekis, `simi`=@simi,`netfang`=@netfang WHERE id ={0};", this.id);
             }
             command.ExecuteNonQuery();
             conn.Dispose();
@@ -70,6 +72,31 @@ namespace cClassOAIS
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
+        }
+        public int maxDummyKennitala()
+        {
+            sækjaTengistreng();
+            int iRet = 0;
+            string strSQL = "SELECT max(kennitala) FROM dt_lanthegar d where kennitala like '000000%';";
+            var kenni = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if(kenni != DBNull.Value)
+            {
+                iRet = Convert.ToInt32(kenni.ToString());   
+            }
+            return iRet;
+        }
+
+        public int maxDummyKennitalFyrirTaeki()
+        {
+            sækjaTengistreng();
+            int iRet = 0;
+            string strSQL = "SELECT max(kennitala_fyrirtaekis) FROM dt_lanthegar d where kennitala_fyrirtaekis like '000000%';";
+            var kenni = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if (kenni !=  DBNull.Value)
+            {
+                iRet = Convert.ToInt32(kenni.ToString());
+            }
+            return iRet;
         }
 
         public void getaLanthega(string strID)
@@ -93,6 +120,32 @@ namespace cClassOAIS
                 this.dags_skrad = r["dags_skrad"].ToString();
                 this.skrad_af = r["skrad_af"].ToString();
                
+
+            }
+
+        }
+
+        public void getaLanthegaKennitala(string strKennitala)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_lanthegar d where kennitala = '{0}';", strKennitala);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            foreach (DataRow r in dt.Rows)
+            {
+                //id, nafn, kennitala, nafn_fyrirtaekis, kennitala_fyrirtaekis, simi, netfang, dags_skrad, skrad_af
+                this.id = Convert.ToInt32(r["id"]);
+                this.kennitala = r["kennitala"].ToString();
+                this.nafn_fyrirtaekis = r["nafn_fyrirtaekis"].ToString();
+                this.kennitala_fyrirtaekis = r["kennitala_fyrirtaekis"].ToString();
+                this.nafn = r["nafn"].ToString();
+                this.simi = r["simi"].ToString();
+                this.netfang = r["netfang"].ToString();
+                this.dags_skrad = r["dags_skrad"].ToString();
+                this.skrad_af = r["skrad_af"].ToString();
+
 
             }
 

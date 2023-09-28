@@ -382,7 +382,7 @@ namespace OAIS_ADMIN
         {
             //1.
 
-            string strDest = m_comAfritDrif.SelectedItem.ToString() + "\\MHR_BACKUP_" + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + "_" + backup.getNextBackupID(); //má bæta við síðar
+            string strDest = m_comAfritDrif.SelectedValue.ToString() + "\\MHR_BACKUP_" + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year + "_" + backup.getNextBackupID(); //má bæta við síðar
 
             if (!Directory.Exists(strDest))
             {
@@ -398,7 +398,7 @@ namespace OAIS_ADMIN
           //  flytjaAIPafrit(strAip, drif.Nafn, "Afrita");
 
             //id, drifid, merking, slodAfrit, steard, hvar_geymt, athugasemdir, hvar_afritadi, dagsetning
-            DriveInfo drivo = new DriveInfo(m_comAfritDrif.SelectedItem.ToString());
+            DriveInfo drivo = new DriveInfo(m_comAfritDrif.SelectedValue.ToString());
             backup.drifid = drif.ID;
             backup.merking =drivo.VolumeLabel;
             backup.slodAfrit = strDest;

@@ -10,27 +10,27 @@ using MySqlX.XDevAPI.Common;
 using System.Xml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using System.Configuration;
 
 namespace cClassOAIS
 {
     public class cMIdlun
     {
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind;";
+        private string m_strTenging = ConfigurationManager.ConnectionStrings["connection_allt"].ConnectionString; 
         private string m_strTengingOAIS = string.Empty; // "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
         public bool m_bAfrit = false;
         private void sækjaTengistreng()
         {
             if (m_bAfrit)
             {
-                m_strTengingOAIS = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+                m_strTengingOAIS = ConfigurationManager.ConnectionStrings["connection_afrit"].ConnectionString;
             }
             else
             {
-                m_strTengingOAIS = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+                m_strTengingOAIS = ConfigurationManager.ConnectionStrings["connection_admin"].ConnectionString;
             }
+
         }
-
-
         public int id { get; set; }
         public string vorsluutgafa { get; set; }
         public string titill_vorsluutgafu { get; set; }
@@ -284,9 +284,18 @@ namespace cClassOAIS
                                             Ocr.Language = OcrLanguage.Icelandic;
                                             using (var Input = new OcrInput())
                                             {
-                                                Input.AddImage(strFile[0]);
-                                                var Result = Ocr.Read(Input);
-                                                this.docInnihald = Result.Text;
+                                               // if (strFile[0] != "D:\\AIP\\HKOP\\00003\\AVID.HKOP.2023024.1\\Documents\\docCollection1\\4\\1.tif") //vegna náttúrufræðistofu Kópabogs 2023_24
+                                                {
+                                                    Input.AddImage(strFile[0]);
+                                                    var Result = Ocr.Read(Input);
+                                                    this.docInnihald = Result.Text;
+                                                }
+                                                //else
+                                                //{
+                                                //    this.docInnihald = "Of langur texti fyrir OCR-lestur";
+                                                //}
+
+                                                
 
                                             }
                                         }

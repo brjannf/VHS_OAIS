@@ -91,13 +91,22 @@ namespace MHR_LEIT
             cMIdlun midlun= new cMIdlun();
             midlun.m_bAfrit = virkurNotandi.m_bAfrit;
             DataTable dt = midlun.getGagnagrunna();
-            DataRow r = dt.NewRow();
-            r["orginal_heiti"] = "Veldu Gagnagrunn";
-            dt.Rows.InsertAt(r, 0);
-          //  id, vorsluutgafa, heiti_gagnagrunns, orgina_heiti
-            m_comGagnagrunnar.ValueMember = "heiti_gagnagrunns";
-            m_comGagnagrunnar.DisplayMember = "orginal_heiti";
-            m_comGagnagrunnar.DataSource = dt;
+            if(dt.Rows.Count > 0 ) 
+            {
+                DataRow r = dt.NewRow();
+                r["orginal_heiti"] = "Veldu Gagnagrunn";
+                dt.Rows.InsertAt(r, 0);
+                //  id, vorsluutgafa, heiti_gagnagrunns, orgina_heiti
+                m_comGagnagrunnar.ValueMember = "heiti_gagnagrunns";
+                m_comGagnagrunnar.DisplayMember = "orginal_heiti";
+                m_comGagnagrunnar.DataSource = dt;
+            }
+            else
+            {
+                m_comGagnagrunnar.Visible = false;
+                m_lblGagangrunnar.Visible = false;  
+            }
+         
         }
         private void fyllaDIPLista()
         {
@@ -308,7 +317,11 @@ namespace MHR_LEIT
             m_dtEnd.Checked = false;
             m_dtpStart.Checked = false;
             m_dtLeitarNidurstodur.Rows.Clear();
-            m_comGagnagrunnar.SelectedIndex = 0;
+            if(m_comGagnagrunnar.Visible)
+            {
+                m_comGagnagrunnar.SelectedIndex = 0;
+            }
+           
             
 
         }
@@ -351,6 +364,11 @@ namespace MHR_LEIT
                 this.WindowState = FormWindowState.Maximized;
                 karfa.m_bAfrit = virkurNotandi.m_bAfrit;
                 lanþegi.m_bAfrit = virkurNotandi.m_bAfrit;
+                uscNotendur1.virkurnotandi.m_bAfrit = virkurNotandi.m_bAfrit;
+                uscNotendur1.virkurnotandi = virkurNotandi;
+                usclanthegar1.virkurnotandi = virkurNotandi;
+                uscNotendur1.fyllaNotendaLista();
+                usclanthegar1.fyllaLanthega();
                 fyllaV0rslusstofnanir();
                 fyllaSkjalamyndara();
                 fyllaLanthega();

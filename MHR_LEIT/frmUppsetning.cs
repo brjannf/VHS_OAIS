@@ -139,8 +139,12 @@ namespace MHR_LEIT
                 m_lblAfrita4.BackColor = Color.LightGreen;
                 m_lblUppfæra5.BackColor = Color.LightYellow;
                 Application.DoEvents();
+                
                 //4 uppfæra slóðir gagnagrunns
                 //a. upphafsdrif
+                cNotandi not = new cNotandi();
+                not.m_bAfrit = true;
+                not.hostRoot();
                 cClassVHS.cVHS_drives drive = new cClassVHS.cVHS_drives();
                 drive.m_bAfrit = true;
                 drive.uppfæradrifAfrit(m_strEnda + "\\AIP");
@@ -163,8 +167,8 @@ namespace MHR_LEIT
                 m_btnKeyra.BackColor = Color.LightGreen;
                 Application.DoEvents();
 
-                DialogResult result = MessageBox.Show("Aðgerð lokið, loka glugga og opna forrit", "Aðgerð lokið");
-                if(result == DialogResult.OK)
+                DialogResult result = MessageBox.Show("Aðgerð lokið, loka glugga og opna forrit", "Aðgerð lokið", MessageBoxButtons.YesNo);
+                if(result == DialogResult.Yes)
                 {
                     this.Close();
                 }

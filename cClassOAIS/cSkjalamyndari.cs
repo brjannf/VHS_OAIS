@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -11,17 +12,17 @@ namespace cClassOAIS
 {
     public class cSkjalamyndari
     {
-        private string m_strTenging = string.Empty;//"server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        private string m_strTenging = string.Empty;
         public bool m_bAfrit = false;
         private void sækjaTengistreng()
         {
             if (m_bAfrit)
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_afrit"].ConnectionString;
             }
             else
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_admin"].ConnectionString; 
             }
         }
 
@@ -157,14 +158,15 @@ namespace cClassOAIS
         }
         public DataTable getENUM() 
         {
+            sækjaTengistreng();
             string strSQL = string.Empty;
             if(m_bAfrit)
             {
-               strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isaar_skjalamyndarar'AND COLUMN_NAME='5_1_1_gerð';");
+               strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin_afrit' AND TABLE_NAME='dt_isaar_skjalamyndarar'AND COLUMN_NAME='5_1_1_gerð';");
             }
             else
             {
-                strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin_afrit' AND TABLE_NAME='dt_isaar_skjalamyndarar'AND COLUMN_NAME='5_1_1_gerð';");
+                strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as gerð FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isaar_skjalamyndarar'AND COLUMN_NAME='5_1_1_gerð';");
             }
            
             var strengur = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);

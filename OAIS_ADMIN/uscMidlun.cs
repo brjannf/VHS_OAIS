@@ -593,7 +593,8 @@ namespace OAIS_ADMIN
                     string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colAudkenni"].Value.ToString();
                     string strSlod = senderGrid.Rows[e.RowIndex].Cells["colVarslaSlod"].Value.ToString();
                     string strTegund = senderGrid.Rows[e.RowIndex].Cells["colTegund"].Value.ToString();
-                    frmGeymsluskra frmgeymsla= new frmGeymsluskra(strAuðkenni, strSlod, strTegund, virkurnotandi);
+                    string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorsluID"].Value.ToString();
+                    frmGeymsluskra frmgeymsla= new frmGeymsluskra(strAuðkenni, strSlod, strTegund, virkurnotandi, strVarsla);
                     frmgeymsla.ShowDialog();
                 }
             }
@@ -634,6 +635,7 @@ namespace OAIS_ADMIN
             string strVarslaStofnun = string.Empty;
             string strStofnanir = string.Empty;
             string strVarslaTitill = string.Empty;
+            string strVorslustofnun = string.Empty;
             foreach (DataRow r in dtVarsla.Rows)
             {
                 m_prgVorsluStofnun.Maximum = dtVarsla.Rows.Count;
@@ -643,6 +645,7 @@ namespace OAIS_ADMIN
                 strVarslAuðkenni = r["vorsluutgafa"].ToString();
                 strAuðkenni += "'" + strVarslAuðkenni + "',";
                 strVarslaTitill = r["utgafa_titill"].ToString().Replace(" / ", "_");
+                strVorslustofnun = r["vorslustofnun"].ToString();
                 string strBackup = string.Empty;
                 if (r["vorslustofnun"].ToString() != strVarslaStofnun)
                 {
@@ -918,23 +921,48 @@ namespace OAIS_ADMIN
 
                 }
                 DataTable dtFilemaker = new DataTable();
-                dtFilemaker.Columns.Add("tegund");
-                dtFilemaker.Columns.Add("Skjalamyndari");
-                dtFilemaker.Columns.Add("Sveitarfélag");
-                dtFilemaker.Columns.Add("Sveitarnr.");
-                dtFilemaker.Columns.Add("Afh. ár.");
-                dtFilemaker.Columns.Add("skjalaflokkur");
-                dtFilemaker.Columns.Add("kassanúmer");
-                dtFilemaker.Columns.Add("Örk");
-                dtFilemaker.Columns.Add("frá ár");
-                dtFilemaker.Columns.Add("til ár");
-                dtFilemaker.Columns.Add("L.1");
-                dtFilemaker.Columns.Add("Efni");
-                dtFilemaker.Columns.Add("Heiti skjalafl.");
-                dtFilemaker.Columns.Add("Geymsla");
-                dtFilemaker.Columns.Add("Yfirskjalafl");
-                dtFilemaker.Columns.Add("Ath.");
-                dtFilemaker.Columns.Add("Afhnúmer");
+
+
+                if (strVorslustofnun == "HARN")
+                {
+                    dtFilemaker.Columns.Add("tegund");
+                    dtFilemaker.Columns.Add("Skjalamyndari");
+                    dtFilemaker.Columns.Add("Sveitarfélag");
+                    dtFilemaker.Columns.Add("Sveitarnr.");
+                    dtFilemaker.Columns.Add("Afh. ár.");
+                    dtFilemaker.Columns.Add("skjalaflokkur");
+                    dtFilemaker.Columns.Add("kassanúmer");
+                    dtFilemaker.Columns.Add("Örk");
+                    dtFilemaker.Columns.Add("frá ár");
+                    dtFilemaker.Columns.Add("til ár");
+                    dtFilemaker.Columns.Add("L.1");
+                    dtFilemaker.Columns.Add("Efni");
+                    dtFilemaker.Columns.Add("Heiti skjalafl.");
+                    dtFilemaker.Columns.Add("Geymsla");
+                    dtFilemaker.Columns.Add("Yfirskjalafl");
+                    dtFilemaker.Columns.Add("Ath.");
+                    dtFilemaker.Columns.Add("Afhnúmer");
+                }
+                if (strVorslustofnun == "HMOS")
+                {
+                    //Skjalamyndari	Afh. ár	Afhnúmer	skjalaflokkur	kassanúmer	Örk	frá ár	til ár	Málalykill	Efni	Geymsla	Yfirskjalafl	Heiti skjalafl.	Ath.
+                    dtFilemaker.Columns.Add("Skjalamyndari");
+                    dtFilemaker.Columns.Add("Afh. ár");
+                    dtFilemaker.Columns.Add("Afhnúmer");
+                    dtFilemaker.Columns.Add("skjalaflokkur");
+                    dtFilemaker.Columns.Add("kassanúmer");
+
+                    dtFilemaker.Columns.Add("Örk");
+                    dtFilemaker.Columns.Add("frá ár");
+                    dtFilemaker.Columns.Add("til ár");
+                    dtFilemaker.Columns.Add("Málalykill");
+                    dtFilemaker.Columns.Add("Efni");
+                    dtFilemaker.Columns.Add("Geymsla");
+                    dtFilemaker.Columns.Add("Yfirskjalafl");
+                    dtFilemaker.Columns.Add("Heiti skjalafl.");
+                    dtFilemaker.Columns.Add("Ath.");
+                }
+
 
                 string strSeries = string.Empty;
                 string strSubSeries = string.Empty;
@@ -960,32 +988,63 @@ namespace OAIS_ADMIN
                     }
                     if (r["upplysingastig"].ToString() == "Örk")
                     {
-                        DataRow row = dtFilemaker.NewRow();
-                        row["tegund"] = string.Empty;
-                        row["skjalamyndari"] = fond.heiti_skjalamyndara_3_2_1;
-                        row["Sveitarfélag"] = string.Empty;
-                        row["Sveitarnr."] = string.Empty;
-                        row["Afh. ár."] = fond.afhendingar_tilfærslur_3_2_4;
-                        string[] strSplit = strSeries.Split("-");
-                        row["skjalaflokkur"] = strSplit[0];
-                        row["kassanúmer"] = "1"; //þarf líklega ekki að breyta þessu
-                        row["Örk"] = "1"; //þyrfti að breyta þessu ef fleiri en ein örk verður sett inn
-                        strSplit = r["timabil"].ToString().Split("-");
-                        if (strSplit.Length == 2)
+                        if (strVorslustofnun == "HARN")
                         {
-                            row["frá ár"] = strSplit[0];
-                            row["til ár"] = strSplit[1];
-                        }
+                            DataRow row = dtFilemaker.NewRow();
+                            row["tegund"] = string.Empty;
+                            row["skjalamyndari"] = fond.heiti_skjalamyndara_3_2_1;
+                            row["Sveitarfélag"] = string.Empty;
+                            row["Sveitarnr."] = string.Empty;
+                            row["Afh. ár"] = fond.afhendingar_tilfærslur_3_2_4;
+                            string[] strSplit = strSeries.Split("-");
+                            row["skjalaflokkur"] = strSplit[0];
+                            row["kassanúmer"] = "1"; //þarf líklega ekki að breyta þessu
+                            row["Örk"] = "1"; //þyrfti að breyta þessu ef fleiri en ein örk verður sett inn
+                            strSplit = r["timabil"].ToString().Split("-");
+                            if (strSplit.Length == 2)
+                            {
+                                row["frá ár"] = strSplit[0];
+                                row["til ár"] = strSplit[1];
+                            }
 
-                        row["L.1"] = string.Empty;
-                        row["Efni"] = r["innihald"];
-                        row["Heiti skjalafl."] = strSubSeries;
-                        row["Geymsla"] = string.Empty;
-                        row["Yfirskjalafl"] = strSeries;
-                        row["Ath."] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
-                        row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
-                        dtFilemaker.Rows.Add(row);
-                        dtFilemaker.AcceptChanges();
+                            row["L.1"] = string.Empty;
+                            row["Efni"] = r["innihald"];
+                            row["Heiti skjalafl."] = strSubSeries;
+                            row["Geymsla"] = string.Empty;
+                            row["Yfirskjalafl"] = strSeries;
+                            row["Ath."] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
+                            row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
+                            dtFilemaker.Rows.Add(row);
+                            dtFilemaker.AcceptChanges();
+                        }
+                        if (strVorslustofnun == "HMOS")
+                        {
+                            DataRow row = dtFilemaker.NewRow();
+                            row["skjalamyndari"] = fond.heiti_skjalamyndara_3_2_1;
+                            string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
+                            row["Afh. ár"] = strSplit[0];
+                            row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
+                            strSplit = strSeries.Split("-");
+                            row["skjalaflokkur"] = strSplit[0];
+                            row["kassanúmer"] = "1"; //þarf líklega ekki að breyta þessu
+                            row["Örk"] = "1"; //þyrfti að breyta þessu ef fleiri en ein örk verður sett inn
+                            strSplit = r["timabil"].ToString().Split("-");
+                            if (strSplit.Length == 2)
+                            {
+                                row["frá ár"] = strSplit[0];
+                                row["til ár"] = strSplit[1];
+                            }
+
+                            row["Málalykill"] = string.Empty;
+                            row["Efni"] = r["innihald"];
+                            row["Heiti skjalafl."] = strSubSeries;
+                            row["Geymsla"] = string.Empty;
+                            row["Yfirskjalafl"] = strSeries;
+                            row["Ath."] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
+                            row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
+                            dtFilemaker.Rows.Add(row);
+                            dtFilemaker.AcceptChanges();
+                        }
                     }
 
                 }

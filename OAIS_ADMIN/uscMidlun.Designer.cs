@@ -93,6 +93,7 @@
             this.colTegund = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGeymsluskra = new System.Windows.Forms.DataGridViewButtonColumn();
             this.colVarslaSlod = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colVorsluID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvUtgafur)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -734,7 +735,8 @@
             this.colVorslustofun,
             this.colTegund,
             this.colGeymsluskra,
-            this.colVarslaSlod});
+            this.colVarslaSlod,
+            this.colVorsluID});
             this.m_dgvUtafurKlasarVarsla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_dgvUtafurKlasarVarsla.Location = new System.Drawing.Point(3, 19);
             this.m_dgvUtafurKlasarVarsla.MultiSelect = false;
@@ -798,6 +800,14 @@
             this.colVarslaSlod.Name = "colVarslaSlod";
             this.colVarslaSlod.ReadOnly = true;
             this.colVarslaSlod.Visible = false;
+            // 
+            // colVorsluID
+            // 
+            this.colVorsluID.DataPropertyName = "vorslustofnun";
+            this.colVorsluID.HeaderText = "Vörslustofnun auðkenni";
+            this.colVorsluID.Name = "colVorsluID";
+            this.colVorsluID.ReadOnly = true;
+            this.colVorsluID.Visible = false;
             // 
             // uscMidlun
             // 
@@ -903,5 +913,6 @@
         private DataGridViewTextBoxColumn colTegund;
         private DataGridViewButtonColumn colGeymsluskra;
         private DataGridViewTextBoxColumn colVarslaSlod;
+        private DataGridViewTextBoxColumn colVorsluID;
     }
 }

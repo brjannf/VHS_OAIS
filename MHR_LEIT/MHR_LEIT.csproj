@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\cClassOAIS\cClassOAIS.csproj" />
     <ProjectReference Include="..\cClassVHS\cClassVHS.csproj" />
+    <ProjectReference Include="..\OAIS_ADMIN\OAIS_ADMIN.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,8 @@ namespace cClassOAIS
 {
     public class cBackup
     {
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+      
+        private string m_strTenging = ConfigurationManager.ConnectionStrings["connection_admin"].ConnectionString;
         public int ID { get; set; }
         public int drifid { get; set; }
         public string  merking { get; set; }

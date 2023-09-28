@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -16,11 +17,11 @@ namespace cClassOAIS
         {
             if (m_bAfrit)
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin_afrit; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_afrit"].ConnectionString; 
             }
             else
             {
-                m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_admin"].ConnectionString;
             }
         }
 
@@ -75,6 +76,15 @@ namespace cClassOAIS
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, "SELECT * FROM dt_karfa_dip d order by karfa desc; ");
             DataTable dt = ds.Tables[0];
             return dt;
+        }
+        public DataTable getKorfuLanthega(string strLan)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_karfa_dip d where lanthegi = {0};", strLan);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging,strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+
         }
         public void hreinsahlut()
         {

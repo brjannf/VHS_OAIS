@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,21 @@ namespace cClassOAIS
 {
     public class cSkjalaskra
     {
-        private string m_strTenging = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
+        private string m_strTenging = string.Empty;
+        public bool m_bAfrit = false;
+        private void sækjaTengistreng()
+        {
+
+            if (m_bAfrit)
+            {
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_afrit"].ConnectionString;
+            }
+            else
+            {
+                m_strTenging = ConfigurationManager.ConnectionStrings["connection_admin"].ConnectionString;
+            }
+        }
+
         #region GET/SET
         public int ID { get; set; }
         public string vörslustofnun { get; set; }
@@ -168,6 +183,7 @@ namespace cClassOAIS
         }
         public DataTable getGeymsluSkra(string strAuðkenni)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_isadg_skráningar` d where 3_1_1_auðkenni like '{0}%' order by  3_1_1_auðkenni asc;", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -175,6 +191,7 @@ namespace cClassOAIS
         }
         public void getSkraning(string strAuðkenni)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_isadg_skráningar` d where 3_1_1_auðkenni = '{0}'; ", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -227,6 +244,7 @@ namespace cClassOAIS
 
         public DataTable getKvittun(string strAuðkenni) 
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where vorsluutgafa = '{0}';", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -235,6 +253,7 @@ namespace cClassOAIS
 
         public DataTable getVörsluútgáfur()
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -243,6 +262,7 @@ namespace cClassOAIS
 
         public DataTable getVörsluútgáfurGU()
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_vörsluutgafur` d where vorsluutgafa not like 'frum%';");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -250,6 +270,7 @@ namespace cClassOAIS
         }
         public DataTable getVörsluútgáfurMidlun()
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where eytt = 0");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
@@ -257,6 +278,7 @@ namespace cClassOAIS
         }
         public DataTable getUpplysingastigENUM()
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as stig FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isadg_skráningar'AND COLUMN_NAME='3_1_4_upplýsingastig';");
             var strengur = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
@@ -279,6 +301,7 @@ namespace cClassOAIS
         }
         public string getTimabil(string strFlokkur, string strGrunnur)
         {
+            sækjaTengistreng();
             string strRet = string.Empty;
             string strSQL = string.Format("SELECT  concat(min(Year(lastwriten)),'-', max(Year(lastwriten))) as tímabil FROM {1} f where slod REGEXP '\\\\\\\\{0}'", strFlokkur ,strGrunnur + ".filesystem");
             var timabil = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
@@ -290,6 +313,7 @@ namespace cClassOAIS
         }
         public string getSkjalFjoldi(string strFlokkur, string strGrunnur)
         {
+            sækjaTengistreng();
             strGrunnur = strGrunnur.Replace(".", "_");
 
             MySqlConnection conn = new MySqlConnection(m_strTenging);
@@ -310,12 +334,14 @@ namespace cClassOAIS
 
         public void eydaGeymsluskra(string strAuðkenni)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("DELETE FROM db_oais_admin.`dt_isadg_skráningar`  where 3_1_1_auðkenni like '{0}-%';", strAuðkenni);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);  
         }
 
         public DataTable getAdgengiENUM()
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT SUBSTRING(COLUMN_TYPE,5) as adgengi FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='db_oais_admin' AND TABLE_NAME='dt_isadg_skráningar'AND COLUMN_NAME='3_4_1_skilyrði_aðgengi';");
             var strengur = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
