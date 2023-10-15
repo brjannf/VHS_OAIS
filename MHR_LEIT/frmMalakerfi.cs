@@ -21,6 +21,10 @@ namespace MHR_LEIT
         cMIdlun midlun = new cMIdlun();
         cNotandi virkurnotandi = new cNotandi();    
         DataTable m_dtFyrirspurnir = new DataTable();
+        DataTable m_dtSkra = new DataTable();
+
+        DataTable m_dtGrunn = new DataTable();
+        DataSet m_dsMal = new DataSet();
         string  m_strIdValinn = string.Empty; //skjal sem er valið í niðurstöðum
         string m_strFileValinn = string.Empty;
         string m_strRoot = string.Empty;
@@ -33,9 +37,13 @@ namespace MHR_LEIT
         }
 
         
-        public frmMalakerfi(string strGagnagrunnur, DataRow row, DataTable dtGrunn, DataTable dtSkra, DataTable dtMalKerfi, cNotandi not)
+        public frmMalakerfi(string strGagnagrunnur, DataRow row, DataTable dtGrunn, DataTable dtSkra, DataTable dtMalKerfi, cNotandi not, DataSet dsMal)
         {
             InitializeComponent();
+
+            m_dtSkra = dtSkra;
+            m_dtGrunn = dtGrunn;
+            m_dsMal = dsMal;
           
             if(dtMalKerfi != null)
             {
@@ -585,6 +593,22 @@ namespace MHR_LEIT
             //}
             //finnaDoc();
             //fyllaMyndSkjal(Convert.ToInt32(strID), 1);
+        }
+
+        private void m_btnLjukaPontun_Click(object sender, EventArgs e)
+        {
+           if( m_dsMal.Tables.Count == 0)
+            {
+                DataTable dtMalTemp = m_dtPontunMal.Clone();
+                foreach (DataRow r in m_dtPontunMal.Rows)
+                {
+                    dtMalTemp.ImportRow(r);
+                }
+                m_dsMal.Tables.Add(dtMalTemp);
+            }
+          
+            frmAfgreidsla frmAfgreidsla = new frmAfgreidsla(virkurnotandi, m_dtSkra, m_dtPontunMal, m_dtGrunn, m_dsMal);
+            frmAfgreidsla.ShowDialog();
         }
     }
     

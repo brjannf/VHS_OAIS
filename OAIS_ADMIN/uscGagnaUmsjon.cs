@@ -422,6 +422,8 @@ namespace OAIS_ADMIN
                         }
                     }
                 }
+                
+                fyllaVörsluUtgafur();
 
                 LeitaVörsluÚgafur();
                 fyllaLeitVorsluutgafu();

@@ -224,6 +224,10 @@ namespace cClassVHS
             return dt;
         }
 
+        /// <summary>
+        /// nær í virka drifið
+        /// </summary>
+        /// <returns></returns>
         public string  driveVirkkComputers()
         {
             sækjaTengistreng();

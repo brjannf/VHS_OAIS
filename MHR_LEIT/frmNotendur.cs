@@ -30,7 +30,21 @@ namespace MHR_LEIT
             breytanota.m_bAfrit = virkurnotandi.m_bAfrit;
             m_strrKennitala = breytanota.kennitala;
             fyllaNotanda();
+            fyllaVorsluStofnun();
 
+        }
+
+        private void fyllaVorsluStofnun()
+        {
+            cVorslustofnun varsla = new cVorslustofnun();
+            varsla.m_bAfrit = virkurnotandi.m_bAfrit;
+            DataTable dt = varsla.getAllVOrslustofnanir();
+            DataRow r = dt.NewRow();
+            r["varsla_heiti"] = "Veldu vörslustofnun";
+            dt.Rows.InsertAt(r, 0);
+            m_comVörslustofnun.ValueMember = "vorslustofnun";
+            m_comVörslustofnun.DisplayMember = "varsla_heiti";
+            m_comVörslustofnun.DataSource = dt;
         }
 
         private void fyllaNotanda()
@@ -130,7 +144,7 @@ namespace MHR_LEIT
             breytanota.heimilisfang = m_tboHeimilsfang.Text;
             breytanota.simi = m_tboSimi.Text;
             breytanota.hlutverk = m_comHlutverk.Text;
-            breytanota.vörslustofnun = m_comVörslustofnun.Text;
+            breytanota.vörslustofnun = m_comVörslustofnun.SelectedValue.ToString(); ;
             breytanota.hver_skradi = virkurnotandi.nafn;
             breytanota.athugasemdir = m_tboAthugasemdir.Text;
             if (m_chbVirkur.Checked)

@@ -1,7 +1,9 @@
 using cClassOAIS;
+using cClassVHS;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -213,76 +215,476 @@ namespace MHR_LEIT
                 string strGagnagrunnur = senderGrid.Rows[e.RowIndex].Cells["colGagnaGrunnur"].Value.ToString();
                 string strTegund = senderGrid.Rows[e.RowIndex].Cells["colTegund_gagnagrunns"].Value.ToString();
                 string strValid = senderGrid.Rows[e.RowIndex].Cells["colDocID"].Value.ToString();
+                
+                string strInnhald = senderGrid.Rows[e.RowIndex].Cells["colInnhaldSkjals"].Value.ToString();
+                string strVorslustofnun = senderGrid.Rows[e.RowIndex].Cells["colVorslustsofnun"].Value.ToString();
+                string strTitill = senderGrid.Rows[e.RowIndex].Cells["colDocTitel"].Value.ToString();
+                string strHeitiVorslu = senderGrid.Rows[e.RowIndex].Cells["coltitillvorsluUtgafu"].Value.ToString();
+                string strSkjalamyndari= senderGrid.Rows[e.RowIndex].Cells["colSkjalamyndari"].Value.ToString();
+                string strSkjalID = senderGrid.Rows[e.RowIndex].Cells["colDocID"].Value.ToString();
+                string strVarslaID = senderGrid.Rows[e.RowIndex].Cells["colDocVarslaID"].Value.ToString();
+                string strVorsluStofnunID = senderGrid.Rows[e.RowIndex].Cells["colVarslaStofnunID"].Value.ToString();
+                string strSkjalmyndaraID = senderGrid.Rows[e.RowIndex].Cells["colSkjalMyndID"].Value.ToString();
+                string strMalID = senderGrid.Rows[e.RowIndex].Cells["colDocMalID"].Value.ToString();
+
+
+                
 
                 DataTable table = (DataTable) m_dgvLeit.DataSource;
                 DataRow row = table.NewRow();
                 row = ((DataRowView)m_dgvLeit.Rows[e.RowIndex].DataBoundItem).Row;
-                 
-                if(strTegund == "Skráarkerfi")
+                if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
                 {
-                    frmSkraarkerfi skrakerfi = new frmSkraarkerfi(strGagnagrunnur, strValid, row, m_tboLeitOrd.Text, m_dtDIPSkra, m_dtDIPMal,m_dtDIPGrunn, virkurNotandi);
-                    skrakerfi.ShowDialog();
-
-                    foreach (DataRow r in skrakerfi.m_dtValid.Rows)
+                    //pantanir
+                    if (senderGrid.Columns["colDocPanta"].Index == e.ColumnIndex)
                     {
-                        string strEXp = string.Format("skjalID='{0}' and vorsluutgafa='{1}'", r["skjalID"], r["vorsluutgafa"]);
-                        DataRow[] frow = m_dtDIPSkra.Select(strEXp);
-                        if (frow.Length == 0)
+                        if (strTegund == "Skráarkerfi")
                         {
-                            m_dtDIPSkra.ImportRow(r);
-                        }
+                            string strExp = "skjalID = '" + strSkjalID + "' AND vorsluutgafa='" + strVarslaID + "'";
 
-                    }
-                }
-                if(strTegund == "Málakerfi")
-                {
-                    DataTable dtMal = m_dsDIPmal.Tables[strGagnagrunnur];
-                    frmMalakerfi frmMala = new frmMalakerfi(strGagnagrunnur, row, m_dtDIPGrunn, m_dtDIPSkra, dtMal, virkurNotandi);
-                    frmMala.ShowDialog();
-                    DataTable dt = frmMala.m_dtPontunMal;
-                    if(dt.Rows.Count != 0)
-                    {
-                        dt.TableName = strGagnagrunnur;
-                        if (m_dsDIPmal.Tables.Contains(strGagnagrunnur))
-                        {
-                            m_dsDIPmal.Tables.Remove(dt.TableName);
-                            m_dsDIPmal.Tables.Add(dt);
-                            foreach (DataRow dr in dt.Rows)
+                            DataRow[] fRow = m_dtDIPSkra.Select(strExp);
+                            if(fRow.Length == 0)
                             {
+                                DataRow pRow = m_dtDIPSkra.NewRow();
+                                pRow["skjalID"] = strSkjalID;
+                                pRow["titill"] = strTitill;
+                                pRow["vorsluutgafa"] = strVarslaID;
+                                pRow["md5"] = string.Empty;
+                                pRow["slod"] = string.Empty;
+                                m_dtDIPSkra.Rows.Add(pRow);
+
+                                senderGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.Color.LightYellow;
+                                var btn = (DataGridViewButtonCell)senderGrid.Rows[e.RowIndex].Cells["colDocPanta"];
+                                btn.UseColumnTextForButtonValue = false;
+                                btn.Value = "Afpanta";
+                            }
+                            else
+                            {
+                                fRow[0].Delete();
+                                m_dtDIPSkra.AcceptChanges();
+                                var btn = (DataGridViewButtonCell)senderGrid.Rows[e.RowIndex].Cells["colDocPanta"];
+                                btn.UseColumnTextForButtonValue = true;
+                                senderGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.Color.White;
+                                //btn.Value = "Afpanta";
+
+                            }
+
+                           
+                        }
+                        if (strTegund == "Málakerfi")
+                        {
+                          
+                            string strEXP = "vorsluutgafa ='" + strVarslaID + "' AND Skrar ='" + strValid + "'";
+                            DataRow[] fROW = m_dtDIPMal.Select(strEXP);
+                            if (fROW.Length != 0)
+                            {
+                                fROW = m_dtDIPMal.Select(strEXP);
+                                if (fROW.Length != 0)
+                                {
+                                    fROW[0].Delete();
+                                    m_dtDIPMal.AcceptChanges();
+                                }
+                                var btnAfPant = (DataGridViewButtonCell)senderGrid.Rows[e.RowIndex].Cells["colDocPanta"];
+                                senderGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.Color.White;
+                                strEXP = "vorsluutgafa ='" + strVarslaID + "' AND Skrar ='" + strValid + "'";
+                                btnAfPant.Value = "Panta";
+                                //    MessageBox.Show("Skjal komið í pöntun");
+                                m_dgvDIPList.DataSource = m_dtDIPSkra;
+                                m_dgvDIPmal.DataSource = m_dtDIPMal;
+                                foreach (DataGridViewColumn col in m_dgvDIPmal.Columns)
+                                {
+                                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                                }
+
+
+                                m_tapPontunSkra.Text = string.Format("Skáarkerfi ({0})", m_dtDIPSkra.Rows.Count);
+                                m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", m_dtDIPMal.Rows.Count);
+                                m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
+                                int iMagn = m_dtDIPGrunn.Rows.Count + m_dtDIPSkra.Rows.Count + m_dtDIPMal.Rows.Count;
+                                m_grbDIP.Text = string.Format("Óafgreitt ({0})", iMagn);
+                                m_tapAfgreidsla.Text = string.Format("Afgreiðsla: {0} skrár óafgreiddar", iMagn);
+
+                                m_dgvLeit.DataSource = table;
+                                Application.DoEvents();
+                                return;
+                            }
+
+                                if (strMalID == string.Empty)
+                            {
+                                MessageBox.Show("Sorrý danskurinn hafði ekkert mál á þetta skjal!!!!");
+                                return;
+                            }
+                            
+                            DataTable dtPant = new DataTable();
+                            dtPant.Columns.Add("gagnagrunnur");
+                            dtPant.Columns.Add("slod");
+                            dtPant.Columns.Add("sqlMal");
+
+                          
+                            cMIdlun midlun = new cMIdlun();
+                            midlun.m_bAfrit = virkurNotandi.m_bAfrit;
+                            DataTable dtFyrirSpurnir = midlun.getGagnagrunnaFyrirSpurnir(strGagnagrunnur);
+
+                            string  strExp = "nafn='mal_doc'";
+                            DataRow[] fRow = dtFyrirSpurnir.Select(strExp);
+                            string strSQL = fRow[0]["fyrirspurn"].ToString();
+                            strSQL = strSQL.Replace("{malID}", strMalID);
+                            DataTable dtSkjol = midlun.keyraFyrirspurn(strSQL, strGagnagrunnur);
+                            if (dtPant.Columns.Count == 3)
+                            {
+                                foreach (DataColumn col in dtSkjol.Columns)
+                                {
+                                    dtPant.Columns.Add(col.ColumnName);
+                                   
+
+                                }
+                            }
+                            strExp = "nafn='mal_malID'";
+                            fRow = dtFyrirSpurnir.Select(strExp);
+                            strSQL = fRow[0]["fyrirspurn"].ToString();
+
+                            strSQL = strSQL.Replace("{malID}", strMalID);
+
+                           
+
+                            if (!m_dsDIPmal.Tables.Contains(strGagnagrunnur))
+                            {
+                                DataRow r = dtPant.NewRow();
+                                r["gagnagrunnur"] = strGagnagrunnur;
+
+                                r["sqlMal"] = strSQL;
+
+                                int iID = Convert.ToInt32(strValid); //þarf að breyta og setja fast lykilheiti
+                                double dColl = iID / 10000;
+                                if (iID == 1)
+                                {
+                                    dColl = 1;
+                                }
+                                else
+                                {
+                                    dColl = dColl + 1;
+                                }
+                                cVHS_drives drive = new cVHS_drives();
+                                drive.m_bAfrit = virkurNotandi.m_bAfrit;
+                                string strDRif = drive.driveVirkkComputers();
+                                string strSlod = strDRif + "\\" + strVorsluStofnunID + "\\" + strSkjalmyndaraID + "\\" + strVarslaID + "\\Documents"; //docCollection1//4//1.tif";
+
+                                strSlod = strSlod + "\\docCollection" + dColl.ToString() + "\\" + strValid;
+                                r["slod"] = strSlod;
+
+
+
+
+                                int j = 3;
+                                foreach (DataColumn col in dtSkjol.Columns)
+                                { //  if(j-2 < dt.Columns.Count)
+                                    {
+                                        string strBLA = dtSkjol.Rows[0][j - 3].ToString();
+                                        r[j] = dtSkjol.Rows[0][j - 3];
+                                        j++;
+                                    }
+
+                                }
+
+                                dtPant.Rows.Add(r);
+
                                 DataRow rMal = m_dtDIPMal.NewRow();
                                 rMal["vorsluutgafa"] = strGagnagrunnur.Replace("_", ".");
-                                rMal["Skrar"] = dt.Rows.Count;
+                                rMal["Skrar"] = strValid;
 
                                 m_dtDIPMal.Rows.Add(rMal);
                                 m_dtDIPMal.AcceptChanges();
+                                dtPant.TableName = strGagnagrunnur;
+                                m_dsDIPmal.Tables.Add(dtPant);
                             }
-                            //vantar að uppfæra töflu M_dtDIPMal
+                            else
+                            {
+                                DataRow r = m_dsDIPmal.Tables[strGagnagrunnur].NewRow();
+                                r["gagnagrunnur"] = strGagnagrunnur;
 
+                                r["sqlMal"] = strSQL;
+
+                                int iID = Convert.ToInt32(strValid); //þarf að breyta og setja fast lykilheiti
+                                double dColl = iID / 10000;
+                                if (iID == 1)
+                                {
+                                    dColl = 1;
+                                }
+                                else
+                                {
+                                    dColl = dColl + 1;
+                                }
+                                cVHS_drives drive = new cVHS_drives();
+                                drive.m_bAfrit = virkurNotandi.m_bAfrit;
+                                string strDRif = drive.driveVirkkComputers();
+                                string strSlod = strDRif + "\\" + strVorsluStofnunID + "\\" + strSkjalmyndaraID + "\\" + strVarslaID + "\\Documents"; //docCollection1//4//1.tif";
+
+                                strSlod = strSlod + "\\docCollection" + dColl.ToString() + "\\" + strValid;
+                                r["slod"] = strSlod;
+
+
+
+
+                                int j = 3;
+                                foreach (DataColumn col in dtSkjol.Columns)
+                                { //  if(j-2 < dt.Columns.Count)
+                                    {
+                                        string strBLA = dtSkjol.Rows[0][j - 3].ToString();
+                                        r[j] = dtSkjol.Rows[0][j - 3];
+                                        j++;
+                                    }
+
+                                }
+
+                                m_dsDIPmal.Tables[strGagnagrunnur].Rows.Add(r);
+
+                                DataRow rMal = m_dtDIPMal.NewRow();
+                                rMal["vorsluutgafa"] = strGagnagrunnur.Replace("_", ".");
+                                rMal["Skrar"] =strValid;
+
+                                m_dtDIPMal.Rows.Add(rMal);
+                                m_dtDIPMal.AcceptChanges();
+                               // dtPant.TableName = strGagnagrunnur;
+                               // m_dsDIPmal.Tables.Add(dtPant);
+                            }
+                          
+                            var btn = (DataGridViewButtonCell)senderGrid.Rows[e.RowIndex].Cells["colDocPanta"];
+                           
+                            if(btn.Value == "Panta")
+                            {
+                                btn.UseColumnTextForButtonValue = false;
+                               
+                              
+                                senderGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.Color.LightYellow;
+                                btn.Value = "Afpanta";
+                            }
+                           //else
+                           // {
+                               
+                           //     fROW = m_dtDIPMal.Select(strEXP);
+                           //     if (fRow.Length != 0)
+                           //     {
+                           //         fROW[0].Delete();
+                           //     }
+                           //     senderGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.Color.White;
+                           //     strEXP = "vorsluutgafa ='" + strVarslaID + "' AND Skrar ='" + strValid + "'";
+                           //     btn.Value = "Panta";
+                           // }
+
+
+                            //if(m_dsDIPmal.Tables.Contains(strGagnagrunnur))
+                            //{
+                            //   m_dsDIPmal.Tables[strGagnagrunnur].ImportRow(rMal);
+
+                            //}
+                            //else
+                            //{
+                            //    m_dtDIPMal.Rows.Add(rMal);
+                            //    m_dtDIPMal.AcceptChanges();
+                            //    dtPant.TableName = strGagnagrunnur;
+                            //    m_dsDIPmal.Tables.Add(dtPant);
+                            //}
+
+
+                            //    m_dtPontunMal.Rows.Add(r);
+
+                            //    m_dtPontunMal.AcceptChanges();
+                            //    m_dgvPontunMalaKerfi.DataSource = m_dtPontunMal;
+                            //    setjaFoldaTaba();
+                            //    foreach (DataGridViewColumn col in m_dgvPontunMalaKerfi.Columns)
+                            //    {
+                            //        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                            //    }
+                            //}
+
+                            //private void setjaFoldaTaba()
+                            //{
+                            //    DataTable dt = (DataTable)m_dgvPontunMalaKerfi.DataSource;
+                            //    int iFjold = dt.Rows.Count;
+                            //    m_tapMalkerfi.Text = string.Format("Málakerfi ({0})", dt.Rows.Count);
+
+                            //    dt = (DataTable)m_dgvPontunGagnagrunnar.DataSource;
+                            //    iFjold = iFjold + dt.Rows.Count;
+                            //    m_tapGagnagrunnar.Text = string.Format("Gagnagrunnur ({0})", dt.Rows.Count);
+
+                            //    dt = (DataTable)m_dgvPontunSkraarKerfi.DataSource;
+                            //    iFjold = iFjold + dt.Rows.Count;
+                            //    m_tapSkraakerfi.Text = string.Format("SKráakerfi ({0})", dt.Rows.Count);
+
+                            //    m_grbPantanir.Text = string.Format("Óafgreitt ({0})", iFjold);
+                        }
+                        //útfæra pöntun fyrir skrá og mála
+
+                    }
+                    //innhald
+                    if (senderGrid.Columns["colDocInnihald"].Index == e.ColumnIndex)
+                    {
+                        frmInnhald innhald = new frmInnhald(strInnhald, strVorslustofnun, strTitill, strSkjalamyndari,strHeitiVorslu);
+                        innhald.ShowDialog();
+                        //útfæra pöntun
+                    }
+                    if (senderGrid.Columns["colDocFrum"].Index == e.ColumnIndex)
+                    {
+                        var p = new Process();
+                        string strSlod = string.Empty;
+                        cVHS_drives drive = new cVHS_drives();
+                        drive.m_bAfrit = virkurNotandi.m_bAfrit;
+                        string strDRif = drive.driveVirkkComputers();
+
+                        if (virkurNotandi.m_bAfrit)
+                        {
+                            strSlod = strDRif + "\\" + strVarslaID.Replace("AVID", "FRUM") + "\\Documents"; //docCollection1//4//1.tif";
                         }
                         else
                         {
-                            m_dsDIPmal.Tables.Add(dt);
-                            foreach(DataRow dr in dt.Rows) 
+                            strSlod = strDRif + "\\" + strVorsluStofnunID + "\\" + strSkjalmyndaraID + "\\" + strVarslaID.Replace("AVID", "FRUM") + "\\Documents"; //docCollection1//4//1.tif";
+                        }
+                    
+                        double dColl = Convert.ToInt32(strValid) / 10000;
+                        int iID = Convert.ToInt32(strValid);
+                        if (iID == 1)
+                        {
+                            dColl = 1;
+                        }
+                        else
+                        {
+                            dColl = dColl + 1;
+                        }
+                        strSlod = strSlod + "\\docCollection" + dColl.ToString() + "\\" + strValid;
+                        if(Directory.Exists(strSlod))
+                        {
+                            string[] strFiles = Directory.GetFiles(strSlod);
+                            if (strFiles.Length == 1)
                             {
-                                DataRow rMal = m_dtDIPMal.NewRow();
-                                rMal["vorsluutgafa"] = strGagnagrunnur.Replace("_", ".");
-                                rMal["Skrar"] = dt.Rows.Count;
+                                strSlod = strFiles[0];
 
-                                m_dtDIPMal.Rows.Add(rMal);
-                                m_dtDIPMal.AcceptChanges();
+                                p.StartInfo = new ProcessStartInfo(strSlod)
+                                {
+                                    UseShellExecute = true
+                                };
+                                p.Start();
+
                             }
-                            
+                            else
+                            {
+                                MessageBox.Show("Frumeintak ekki til");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Frumeintak ekki til");
+                        }
+                       
+                     
+                    }
+                    if (senderGrid.Columns["colDocOpnaAfrit"].Index == e.ColumnIndex)
+                    {
+                        var p = new Process();
+                        string strSlod = string.Empty;
+                        cVHS_drives drive = new cVHS_drives();
+                        drive.m_bAfrit = virkurNotandi.m_bAfrit;
+                        string strDRif = drive.driveVirkkComputers();
+                        if(virkurNotandi.m_bAfrit)
+                        {
+                            strSlod = strDRif + "\\"  + strVarslaID + "\\Documents"; //docCollection1//4//1.tif";
+                        }
+                        else
+                        {
+                            strSlod = strDRif + "\\" + strVorsluStofnunID + "\\" + strSkjalmyndaraID + "\\" + strVarslaID + "\\Documents"; //docCollection1//4//1.tif";
+                        }
+                       
+                        double dColl = Convert.ToInt32(strValid) / 10000;
+                        int iID = Convert.ToInt32(strValid);    
+                        if (iID == 1)
+                        {
+                            dColl = 1;
+                        }
+                        else
+                        {
+                            dColl = dColl + 1;
+                        }
+                        strSlod = strSlod + "\\docCollection" + dColl.ToString() + "\\" + strValid;
 
-                            //m_dtDIPMal.Columns.Add("karfa");
-                            //m_dtDIPMal.Columns.Add("md5");
-                            //m_dtDIPMal.Columns.Add("vorsluutgafa");
-                            //m_dtDIPMal.Columns.Add("Skrar");
+                        string[] strFiles = Directory.GetFiles(strSlod);
+                        strSlod = strFiles[0];
+
+                        p.StartInfo = new ProcessStartInfo(strSlod)
+                        {
+                            UseShellExecute = true
+                        };
+                        p.Start();
+                    }
+                }
+                else
+                {
+                    if (strTegund == "Skráarkerfi")
+                    {
+                        frmSkraarkerfi skrakerfi = new frmSkraarkerfi(strGagnagrunnur, strValid, row, m_tboLeitOrd.Text, m_dtDIPSkra, m_dtDIPMal, m_dtDIPGrunn, virkurNotandi, m_dsDIPmal);
+                        skrakerfi.ShowDialog();
+
+                        foreach (DataRow r in skrakerfi.m_dtValid.Rows)
+                        {
+                            string strEXp = string.Format("skjalID='{0}' and vorsluutgafa='{1}'", r["skjalID"], r["vorsluutgafa"]);
+                            DataRow[] frow = m_dtDIPSkra.Select(strEXp);
+                            if (frow.Length == 0)
+                            {
+                                m_dtDIPSkra.ImportRow(r);
+                            }
 
                         }
                     }
-                
-                 
+                    if (strTegund == "Málakerfi")
+                    {
+                        DataTable dtMal = m_dsDIPmal.Tables[strGagnagrunnur];
+                        frmMalakerfi frmMala = new frmMalakerfi(strGagnagrunnur, row, m_dtDIPGrunn, m_dtDIPSkra, dtMal, virkurNotandi, m_dsDIPmal);
+                        frmMala.ShowDialog();
+                        DataTable dt = frmMala.m_dtPontunMal;
+                        if (dt.Rows.Count != 0)
+                        {
+                            dt.TableName = strGagnagrunnur;
+                            if (m_dsDIPmal.Tables.Contains(strGagnagrunnur))
+                            {
+                                m_dsDIPmal.Tables.Remove(dt.TableName);
+                                m_dsDIPmal.Tables.Add(dt);
+                                foreach (DataRow dr in dt.Rows)
+                                {
+                                    DataRow rMal = m_dtDIPMal.NewRow();
+                                    rMal["vorsluutgafa"] = strGagnagrunnur.Replace("_", ".");
+                                    rMal["Skrar"] = dr["dokumentID"];
+
+                                    m_dtDIPMal.Rows.Add(rMal);
+                                    m_dtDIPMal.AcceptChanges();
+                                }
+                                //vantar að uppfæra töflu M_dtDIPMal
+
+                            }
+                            else
+                            {
+                                m_dsDIPmal.Tables.Add(dt);
+                                foreach (DataRow dr in dt.Rows)
+                                {
+                                    DataRow rMal = m_dtDIPMal.NewRow();
+                                    rMal["vorsluutgafa"] = strGagnagrunnur.Replace("_", ".");
+                                    rMal["Skrar"] = dr["dokumentID"];
+
+                                    m_dtDIPMal.Rows.Add(rMal);
+                                    m_dtDIPMal.AcceptChanges();
+                                }
+
+
+                                //m_dtDIPMal.Columns.Add("karfa");
+                                //m_dtDIPMal.Columns.Add("md5");
+                                //m_dtDIPMal.Columns.Add("vorsluutgafa");
+                                //m_dtDIPMal.Columns.Add("Skrar");
+
+                            }
+                        }
+
+
+                    }
+
                 }
+               
          
             
               //  m_dgvDIPList.AutoGenerateColumns = false;
@@ -574,6 +976,7 @@ namespace MHR_LEIT
                 m_lblPontunstatus.Text = string.Format("{0}/{1}", m_pgbPontun.Value, m_pgbPontun.Maximum);
                 m_pgbPontun.Visible = true;
                 m_lblPontunstatus.Visible = true;
+             
                 Application.DoEvents();
             }
 
@@ -861,6 +1264,8 @@ namespace MHR_LEIT
             m_dsDIPmal.Tables.Clear();
             karfa.hreinsahlut();
             MessageBox.Show("DIP tilbúið");
+            int Fjoldi = m_dtDIPSkra.Rows.Count + m_dtDIPGrunn.Rows.Count + m_dtDIPMal.Rows.Count;
+            m_tapAfgreidsla.Text = string.Format("Afgreiðsla: {0} skrár óafgreiddar", Fjoldi);
             m_pgbPontun.Visible = false;
             m_lblPontunstatus.Visible = false;  
         }
@@ -1062,6 +1467,7 @@ namespace MHR_LEIT
             m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", m_dtDIPMal.Rows.Count);
             int iFjoldi = m_dtDIPSkra.Rows.Count + m_dtDIPGrunn.Rows.Count + m_dtDIPMal.Rows.Count;
             m_grbDIP.Text = string.Format("Óafgreitt {0}", iFjoldi);
+            m_tapAfgreidsla.Text  = string.Format("Afgreiðsla: {0} skrár óafgreiddar", iFjoldi);
 
         }
 
@@ -1073,7 +1479,7 @@ namespace MHR_LEIT
                 {
                     string strGrunnur = m_comGagnagrunnar.SelectedValue.ToString();
                     string strHeiti = m_comGagnagrunnar.Text.ToString();
-                    frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti,m_dtDIPGrunn, m_dtDIPSkra, m_dtDIPMal,virkurNotandi);
+                    frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti,m_dtDIPGrunn, m_dtDIPSkra, m_dtDIPMal,virkurNotandi, m_dsDIPmal);
                     frmGagn.ShowDialog();
 
                     foreach (DataRow r in frmGagn.m_dtPantad.Rows)

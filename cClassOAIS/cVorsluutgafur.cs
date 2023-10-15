@@ -51,7 +51,8 @@ namespace cClassOAIS
         public string midlun { get; set; }
         public string dags_midlad { get; set; }
         public string hver_midladi { get; set; }
- 
+        public int frumeintak { get; set; }
+
 
 
         #endregion
@@ -80,15 +81,16 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@MD5", this.MD5);
             command.Parameters.AddWithValue("@hver_skradi", this.hver_skradi);
             command.Parameters.AddWithValue("@adgangstakmarkanir", this.adgangstakmarkanir);
+            command.Parameters.AddWithValue("@frumeintak", this.frumeintak);
 
             // command.Parameters.AddWithValue("@dags_skrad", this.dags_skrad);
             if (this.ID == 0)
             {
-                command.CommandText = "INSERT INTO `dt_vörsluutgafur` SET  `vorsluutgafa`=@vorsluutgafa,`utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir, `dags_skrad`=NOW()";
+                command.CommandText = "INSERT INTO `dt_vörsluutgafur` SET  `vorsluutgafa`=@vorsluutgafa,`utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir,`frumeintak`=@frumeintak, `dags_skrad`=NOW()";
             }
             else
             {
-                command.CommandText = string.Format("UPDATE `dt_vörsluutgafur` SET `utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir, `dags_skrad`=NOW() WHERE vorsluutgafa='{0}'", this.vorsluutgafa);
+                command.CommandText = string.Format("UPDATE `dt_vörsluutgafur` SET `utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir,`frumeintak`=@frumeintak, `dags_skrad`=NOW() WHERE vorsluutgafa='{0}'", this.vorsluutgafa);
             }
             
 
@@ -123,6 +125,7 @@ namespace cClassOAIS
                 this.midlun = r["midlun"].ToString();
                 this.hver_skradi = r["hver_skradi"].ToString();
                 this.adgangstakmarkanir = r["adgangstakmarkanir"].ToString();
+                this.frumeintak = Convert.ToInt32(r["frumeintak"].ToString());
 
             }
         }

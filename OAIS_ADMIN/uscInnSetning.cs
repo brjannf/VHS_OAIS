@@ -769,6 +769,10 @@ namespace OAIS_ADMIN
             varsla.MD5 = CreateMd5ForFolder(varsla.slod).ToUpper();
             varsla.hver_skradi = virkurnotandi.nafn;
             varsla.adgangstakmarkanir = skrá.skilyrði_aðgengi_3_4_1;
+            if(strSlodFRUM != string.Empty)
+            {
+                varsla.frumeintak = 1;
+            }
             DataTable dtTil = skrá.getKvittun(skrá.auðkenni_3_1_1);
             bool bErEytt  = false;
             if (dtTil.Rows.Count != 0 && dtTil.Rows[0]["eytt"].ToString() == "1")
@@ -801,6 +805,7 @@ namespace OAIS_ADMIN
                 varsla.MD5 = CreateMd5ForFolder(varsla.slod).ToUpper();
                 varsla.hver_skradi = virkurnotandi.nafn;
                 varsla.adgangstakmarkanir = skrá.skilyrði_aðgengi_3_4_1;
+                varsla.frumeintak = 1;
                 if(bErEytt)
                 {
                     varsla.merkjaEYtt(varsla.vorsluutgafa, 0);

@@ -63,6 +63,7 @@
             this.m_dgvPontunSkraarKerfi = new System.Windows.Forms.DataGridView();
             this.m_tapGagnagrunnar = new System.Windows.Forms.TabPage();
             this.m_dgvPontunGagnagrunnar = new System.Windows.Forms.DataGridView();
+            this.m_btnLjukaPontun = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -303,6 +304,7 @@
             // 
             // splitContainer6.Panel1
             // 
+            this.splitContainer6.Panel1.Controls.Add(this.m_btnLjukaPontun);
             this.splitContainer6.Panel1.Controls.Add(this.m_btnAlltKarfa);
             // 
             // splitContainer6.Panel2
@@ -544,6 +546,16 @@
             this.m_dgvPontunGagnagrunnar.Size = new System.Drawing.Size(495, 747);
             this.m_dgvPontunGagnagrunnar.TabIndex = 0;
             // 
+            // m_btnLjukaPontun
+            // 
+            this.m_btnLjukaPontun.Location = new System.Drawing.Point(598, 16);
+            this.m_btnLjukaPontun.Name = "m_btnLjukaPontun";
+            this.m_btnLjukaPontun.Size = new System.Drawing.Size(114, 23);
+            this.m_btnLjukaPontun.TabIndex = 1;
+            this.m_btnLjukaPontun.Text = "Ljúka pöntun";
+            this.m_btnLjukaPontun.UseVisualStyleBackColor = true;
+            this.m_btnLjukaPontun.Click += new System.EventHandler(this.m_btnLjukaPontun_Click);
+            // 
             // frmMalakerfi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -639,5 +651,6 @@
         private DataGridView m_dgvLeitarNidurstodur;
         private DataGridViewTextBoxColumn colID;
         private DataGridViewTextBoxColumn colTitill;
+        private Button m_btnLjukaPontun;
     }
 }

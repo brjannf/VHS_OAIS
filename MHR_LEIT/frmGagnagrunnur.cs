@@ -20,6 +20,11 @@ namespace MHR_LEIT
         string m_strLeitSkilyrdi  = string.Empty;
         cNotandi virkurnotandi = new cNotandi();    
         
+        DataTable m_dtSkra = new DataTable();
+        DataTable m_dtMal  = new DataTable();
+        DataSet m_dsMal = new DataSet();    
+         
+        
         DataTable m_dtFyrirspurnir = new DataTable();   
         cMIdlun mIdlun= new cMIdlun();
         public DataTable m_dtPantad = new DataTable();
@@ -27,9 +32,14 @@ namespace MHR_LEIT
         {
             InitializeComponent();
         }
-        public frmGagnagrunnur(string strGagnagrunnur, string strOrginalHeiti, DataTable dtGrunnar, DataTable dtSkrar, DataTable dtMal ,cNotandi not)
+        public frmGagnagrunnur(string strGagnagrunnur, string strOrginalHeiti, DataTable dtGrunnar, DataTable dtSkrar, DataTable dtMal ,cNotandi not, DataSet ds_mal)
         {
             InitializeComponent();
+
+            m_dtSkra = dtSkrar;
+            m_dtMal = dtMal;
+            m_dsMal = ds_mal;   
+
             m_dtPantad = dtGrunnar.Clone();
             foreach(DataRow r in dtGrunnar.Rows)
             {
@@ -276,6 +286,12 @@ namespace MHR_LEIT
             
 
             }
+        }
+
+        private void m_btnLjukaPontun_Click(object sender, EventArgs e)
+        {
+            frmAfgreidsla afgreidsla = new frmAfgreidsla(virkurnotandi, m_dtSkra, m_dtMal, m_dtPantad, m_dsMal);
+            afgreidsla.ShowDialog();
         }
     }
 }

@@ -284,7 +284,7 @@ namespace cClassOAIS
                                             Ocr.Language = OcrLanguage.Icelandic;
                                             using (var Input = new OcrInput())
                                             {
-                                               // if (strFile[0] != "D:\\AIP\\HKOP\\00003\\AVID.HKOP.2023024.1\\Documents\\docCollection1\\4\\1.tif") //vegna náttúrufræðistofu Kópabogs 2023_24
+                                              //  if (strFile[0] != "D:\\AIP\\HKOP\\00082\\AVID.HKOP.2023024.1\\Documents\\docCollection1\\4\\1.tif") //vegna náttúrufræðistofu Kópabogs 2023_24
                                                 {
                                                     Input.AddImage(strFile[0]);
                                                     var Result = Ocr.Read(Input);
@@ -294,8 +294,6 @@ namespace cClassOAIS
                                                 //{
                                                 //    this.docInnihald = "Of langur texti fyrir OCR-lestur";
                                                 //}
-
-                                                
 
                                             }
                                         }

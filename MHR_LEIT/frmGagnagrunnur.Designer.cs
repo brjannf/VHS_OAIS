@@ -48,6 +48,7 @@
             this.m_dgvPantMalaKerfi = new System.Windows.Forms.DataGridView();
             this.m_grbNidurstodur = new System.Windows.Forms.GroupBox();
             this.m_dgvNidurstodur = new System.Windows.Forms.DataGridView();
+            this.m_btnLjukaPontun = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvFyrirspurnir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -177,6 +178,7 @@
             // 
             // splitContainer3.Panel2
             // 
+            this.splitContainer3.Panel2.Controls.Add(this.m_btnLjukaPontun);
             this.splitContainer3.Panel2.Controls.Add(this.m_btnSetjaIkorfu);
             this.splitContainer3.Size = new System.Drawing.Size(1094, 288);
             this.splitContainer3.SplitterDistance = 185;
@@ -184,7 +186,7 @@
             // 
             // m_btnSetjaIkorfu
             // 
-            this.m_btnSetjaIkorfu.Location = new System.Drawing.Point(838, 33);
+            this.m_btnSetjaIkorfu.Location = new System.Drawing.Point(691, 31);
             this.m_btnSetjaIkorfu.Name = "m_btnSetjaIkorfu";
             this.m_btnSetjaIkorfu.Size = new System.Drawing.Size(147, 23);
             this.m_btnSetjaIkorfu.TabIndex = 0;
@@ -317,6 +319,16 @@
             this.m_dgvNidurstodur.TabIndex = 0;
             this.m_dgvNidurstodur.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.keyrafyrirspurn_CellClick);
             // 
+            // m_btnLjukaPontun
+            // 
+            this.m_btnLjukaPontun.Location = new System.Drawing.Point(923, 31);
+            this.m_btnLjukaPontun.Name = "m_btnLjukaPontun";
+            this.m_btnLjukaPontun.Size = new System.Drawing.Size(147, 23);
+            this.m_btnLjukaPontun.TabIndex = 1;
+            this.m_btnLjukaPontun.Text = "Ljúka pöntun";
+            this.m_btnLjukaPontun.UseVisualStyleBackColor = true;
+            this.m_btnLjukaPontun.Click += new System.EventHandler(this.m_btnLjukaPontun_Click);
+            // 
             // frmGagnagrunnur
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -374,5 +386,6 @@
         private TabPage m_tapMalakrefi;
         private DataGridView m_dgvPantSkraarkerfi;
         private DataGridView m_dgvPantMalaKerfi;
+        private Button m_btnLjukaPontun;
     }
 }

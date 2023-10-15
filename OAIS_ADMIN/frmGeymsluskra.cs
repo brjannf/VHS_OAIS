@@ -371,7 +371,12 @@ namespace OAIS_ADMIN
             string strFyrirspurn = string.Empty;
             if(m_strTegund == "Skráarkerfi")
             {
+
                 strFyrirspurn = midlun.getFyrirspurn(m_strGagnagrunnur, "Get_files_path");
+                if (strFyrirspurn == string.Empty) //vegna nafnabreytinga AV 
+                {
+                    strFyrirspurn = midlun.getFyrirspurn(m_strGagnagrunnur, "AV_Get_files_path");
+                }
             }
             if (m_strTegund == "Málakerfi")
             {

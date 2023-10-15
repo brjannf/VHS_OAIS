@@ -24,6 +24,7 @@ namespace MHR_LEIT
         {
             InitializeComponent();
             virkurnotandi = not;
+            lanthegi.m_bAfrit = virkurnotandi.m_bAfrit;
             lanthegi.getaLanthega(strID);
             fyllaLanthega();
         }

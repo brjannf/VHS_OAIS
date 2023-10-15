@@ -96,7 +96,7 @@
             this.label3.Location = new System.Drawing.Point(3, 60);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(80, 15);
-            this.label3.TabIndex = 3;
+            this.label3.TabIndex = 4;
             this.label3.Text = "Vörslustofnun";
             // 
             // label4
@@ -105,7 +105,7 @@
             this.label4.Location = new System.Drawing.Point(3, 90);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(77, 15);
-            this.label4.TabIndex = 4;
+            this.label4.TabIndex = 6;
             this.label4.Text = "Notendanafn";
             // 
             // label5
@@ -114,7 +114,7 @@
             this.label5.Location = new System.Drawing.Point(3, 120);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(48, 15);
-            this.label5.TabIndex = 5;
+            this.label5.TabIndex = 8;
             this.label5.Text = "Lykilorð";
             // 
             // label9
@@ -123,7 +123,7 @@
             this.label9.Location = new System.Drawing.Point(3, 150);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(52, 15);
-            this.label9.TabIndex = 9;
+            this.label9.TabIndex = 10;
             this.label9.Text = "Hlutverk";
             // 
             // m_tboNotendaNafn
@@ -131,7 +131,7 @@
             this.m_tboNotendaNafn.Location = new System.Drawing.Point(210, 93);
             this.m_tboNotendaNafn.Name = "m_tboNotendaNafn";
             this.m_tboNotendaNafn.Size = new System.Drawing.Size(580, 23);
-            this.m_tboNotendaNafn.TabIndex = 12;
+            this.m_tboNotendaNafn.TabIndex = 4;
             // 
             // m_tboLykilord
             // 
@@ -139,7 +139,7 @@
             this.m_tboLykilord.Name = "m_tboLykilord";
             this.m_tboLykilord.PasswordChar = '*';
             this.m_tboLykilord.Size = new System.Drawing.Size(580, 23);
-            this.m_tboLykilord.TabIndex = 13;
+            this.m_tboLykilord.TabIndex = 5;
             // 
             // label7
             // 
@@ -147,7 +147,7 @@
             this.label7.Location = new System.Drawing.Point(3, 180);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(50, 15);
-            this.label7.TabIndex = 7;
+            this.label7.TabIndex = 12;
             this.label7.Text = "Netfang";
             // 
             // label6
@@ -156,7 +156,7 @@
             this.label6.Location = new System.Drawing.Point(3, 210);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(74, 15);
-            this.label6.TabIndex = 6;
+            this.label6.TabIndex = 14;
             this.label6.Text = "Heimilisfang";
             // 
             // label8
@@ -165,7 +165,7 @@
             this.label8.Location = new System.Drawing.Point(3, 240);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(58, 15);
-            this.label8.TabIndex = 8;
+            this.label8.TabIndex = 16;
             this.label8.Text = "Sími/gsm";
             // 
             // m_tboNetfang
@@ -173,21 +173,21 @@
             this.m_tboNetfang.Location = new System.Drawing.Point(210, 183);
             this.m_tboNetfang.Name = "m_tboNetfang";
             this.m_tboNetfang.Size = new System.Drawing.Size(580, 23);
-            this.m_tboNetfang.TabIndex = 14;
+            this.m_tboNetfang.TabIndex = 7;
             // 
             // m_tboHeimilsfang
             // 
             this.m_tboHeimilsfang.Location = new System.Drawing.Point(210, 213);
             this.m_tboHeimilsfang.Name = "m_tboHeimilsfang";
             this.m_tboHeimilsfang.Size = new System.Drawing.Size(580, 23);
-            this.m_tboHeimilsfang.TabIndex = 15;
+            this.m_tboHeimilsfang.TabIndex = 8;
             // 
             // m_tboSimi
             // 
             this.m_tboSimi.Location = new System.Drawing.Point(210, 243);
             this.m_tboSimi.Name = "m_tboSimi";
             this.m_tboSimi.Size = new System.Drawing.Size(580, 23);
-            this.m_tboSimi.TabIndex = 16;
+            this.m_tboSimi.TabIndex = 9;
             // 
             // m_comVörslustofnun
             // 
@@ -202,7 +202,7 @@
             this.m_comVörslustofnun.Location = new System.Drawing.Point(210, 63);
             this.m_comVörslustofnun.Name = "m_comVörslustofnun";
             this.m_comVörslustofnun.Size = new System.Drawing.Size(580, 23);
-            this.m_comVörslustofnun.TabIndex = 17;
+            this.m_comVörslustofnun.TabIndex = 3;
             // 
             // m_comHlutverk
             // 
@@ -215,7 +215,7 @@
             this.m_comHlutverk.Location = new System.Drawing.Point(210, 153);
             this.m_comHlutverk.Name = "m_comHlutverk";
             this.m_comHlutverk.Size = new System.Drawing.Size(580, 23);
-            this.m_comHlutverk.TabIndex = 18;
+            this.m_comHlutverk.TabIndex = 6;
             // 
             // label10
             // 
@@ -232,7 +232,7 @@
             this.m_chbVirkur.Location = new System.Drawing.Point(210, 303);
             this.m_chbVirkur.Name = "m_chbVirkur";
             this.m_chbVirkur.Size = new System.Drawing.Size(15, 14);
-            this.m_chbVirkur.TabIndex = 19;
+            this.m_chbVirkur.TabIndex = 21;
             this.m_chbVirkur.UseVisualStyleBackColor = true;
             // 
             // label11
@@ -241,7 +241,7 @@
             this.label11.Location = new System.Drawing.Point(3, 270);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(82, 15);
-            this.label11.TabIndex = 21;
+            this.label11.TabIndex = 18;
             this.label11.Text = "Athugasemdir";
             // 
             // m_tboAthugasemdir
@@ -251,7 +251,7 @@
             this.m_tboAthugasemdir.Multiline = true;
             this.m_tboAthugasemdir.Name = "m_tboAthugasemdir";
             this.m_tboAthugasemdir.Size = new System.Drawing.Size(719, 24);
-            this.m_tboAthugasemdir.TabIndex = 22;
+            this.m_tboAthugasemdir.TabIndex = 10;
             // 
             // m_tboKennitala
             // 
@@ -260,14 +260,14 @@
             this.m_tboKennitala.Mask = "000000-0000";
             this.m_tboKennitala.Name = "m_tboKennitala";
             this.m_tboKennitala.Size = new System.Drawing.Size(719, 23);
-            this.m_tboKennitala.TabIndex = 23;
+            this.m_tboKennitala.TabIndex = 2;
             // 
             // m_btnVista
             // 
             this.m_btnVista.Location = new System.Drawing.Point(500, 635);
             this.m_btnVista.Name = "m_btnVista";
             this.m_btnVista.Size = new System.Drawing.Size(75, 23);
-            this.m_btnVista.TabIndex = 3;
+            this.m_btnVista.TabIndex = 11;
             this.m_btnVista.Text = "vista";
             this.m_btnVista.UseVisualStyleBackColor = true;
             this.m_btnVista.Click += new System.EventHandler(this.m_btnVista_Click);
@@ -320,7 +320,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1036, 497);
-            this.tableLayoutPanel1.TabIndex = 2;
+            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // frmNotendur
             // 
@@ -330,7 +330,7 @@
             this.Controls.Add(this.m_btnVista);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "frmNotendur";
-            this.Text = "frmNotendur";
+            this.Text = "2";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

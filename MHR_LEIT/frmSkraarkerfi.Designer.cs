@@ -29,7 +29,11 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.m_tacStrukturLeit = new System.Windows.Forms.TabControl();
+            this.m_tapMoppuStruct = new System.Windows.Forms.TabPage();
             this.m_trwFileSystem = new System.Windows.Forms.TreeView();
+            this.m_tapLeitNiðutstöður = new System.Windows.Forms.TabPage();
+            this.m_trwLeit = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -39,6 +43,7 @@
             this.m_lblLeitarNidurstodur = new System.Windows.Forms.Label();
             this.m_tobLeitarord = new System.Windows.Forms.TextBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.m_btnAfgreida = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.m_lblSidaValinn = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -49,20 +54,23 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.m_pibSkjal = new System.Windows.Forms.PictureBox();
             this.m_grbValdinnSkjol = new System.Windows.Forms.GroupBox();
+            this.m_tacPantanir = new System.Windows.Forms.TabControl();
+            this.m_tapSkraarkerfi = new System.Windows.Forms.TabPage();
             this.m_dgvValdarSkrar = new System.Windows.Forms.DataGridView();
             this.colAudkenniSkjals = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTitillSkjals = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVorsluutgafa = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_tacPantanir = new System.Windows.Forms.TabControl();
-            this.m_tapSkraarkerfi = new System.Windows.Forms.TabPage();
             this.m_tapMalakerfi = new System.Windows.Forms.TabPage();
-            this.m_tapGagnagrunnar = new System.Windows.Forms.TabPage();
             this.m_dgvMalakerfi = new System.Windows.Forms.DataGridView();
+            this.m_tapGagnagrunnar = new System.Windows.Forms.TabPage();
             this.m_dgvGagnaGrunnar = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.m_tacStrukturLeit.SuspendLayout();
+            this.m_tapMoppuStruct.SuspendLayout();
+            this.m_tapLeitNiðutstöður.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -78,12 +86,12 @@
             this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_pibSkjal)).BeginInit();
             this.m_grbValdinnSkjol.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvValdarSkrar)).BeginInit();
             this.m_tacPantanir.SuspendLayout();
             this.m_tapSkraarkerfi.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvValdarSkrar)).BeginInit();
             this.m_tapMalakerfi.SuspendLayout();
-            this.m_tapGagnagrunnar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvMalakerfi)).BeginInit();
+            this.m_tapGagnagrunnar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvGagnaGrunnar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,7 +103,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.m_trwFileSystem);
+            this.splitContainer1.Panel1.Controls.Add(this.m_tacStrukturLeit);
             // 
             // splitContainer1.Panel2
             // 
@@ -104,16 +112,58 @@
             this.splitContainer1.SplitterDistance = 324;
             this.splitContainer1.TabIndex = 0;
             // 
+            // m_tacStrukturLeit
+            // 
+            this.m_tacStrukturLeit.Controls.Add(this.m_tapMoppuStruct);
+            this.m_tacStrukturLeit.Controls.Add(this.m_tapLeitNiðutstöður);
+            this.m_tacStrukturLeit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_tacStrukturLeit.Location = new System.Drawing.Point(0, 0);
+            this.m_tacStrukturLeit.Name = "m_tacStrukturLeit";
+            this.m_tacStrukturLeit.SelectedIndex = 0;
+            this.m_tacStrukturLeit.Size = new System.Drawing.Size(324, 931);
+            this.m_tacStrukturLeit.TabIndex = 1;
+            // 
+            // m_tapMoppuStruct
+            // 
+            this.m_tapMoppuStruct.Controls.Add(this.m_trwFileSystem);
+            this.m_tapMoppuStruct.Location = new System.Drawing.Point(4, 24);
+            this.m_tapMoppuStruct.Name = "m_tapMoppuStruct";
+            this.m_tapMoppuStruct.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapMoppuStruct.Size = new System.Drawing.Size(316, 903);
+            this.m_tapMoppuStruct.TabIndex = 0;
+            this.m_tapMoppuStruct.Text = "Möppur/skrár";
+            this.m_tapMoppuStruct.UseVisualStyleBackColor = true;
+            // 
             // m_trwFileSystem
             // 
             this.m_trwFileSystem.CheckBoxes = true;
             this.m_trwFileSystem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_trwFileSystem.Location = new System.Drawing.Point(0, 0);
+            this.m_trwFileSystem.Location = new System.Drawing.Point(3, 3);
             this.m_trwFileSystem.Name = "m_trwFileSystem";
-            this.m_trwFileSystem.Size = new System.Drawing.Size(324, 931);
+            this.m_trwFileSystem.Size = new System.Drawing.Size(310, 897);
             this.m_trwFileSystem.TabIndex = 0;
             this.m_trwFileSystem.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.m_trwFileSystem_AfterCheck);
             this.m_trwFileSystem.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwFileSystem_AfterSelect);
+            // 
+            // m_tapLeitNiðutstöður
+            // 
+            this.m_tapLeitNiðutstöður.Controls.Add(this.m_trwLeit);
+            this.m_tapLeitNiðutstöður.Location = new System.Drawing.Point(4, 24);
+            this.m_tapLeitNiðutstöður.Name = "m_tapLeitNiðutstöður";
+            this.m_tapLeitNiðutstöður.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapLeitNiðutstöður.Size = new System.Drawing.Size(316, 903);
+            this.m_tapLeitNiðutstöður.TabIndex = 1;
+            this.m_tapLeitNiðutstöður.Text = "Leitarniðurstöður";
+            this.m_tapLeitNiðutstöður.UseVisualStyleBackColor = true;
+            // 
+            // m_trwLeit
+            // 
+            this.m_trwLeit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_trwLeit.Location = new System.Drawing.Point(3, 3);
+            this.m_trwLeit.Name = "m_trwLeit";
+            this.m_trwLeit.Size = new System.Drawing.Size(310, 897);
+            this.m_trwLeit.TabIndex = 0;
+            this.m_trwLeit.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwLeit_AfterSelect);
             // 
             // splitContainer2
             // 
@@ -214,6 +264,7 @@
             // 
             // splitContainer3.Panel1
             // 
+            this.splitContainer3.Panel1.Controls.Add(this.m_btnAfgreida);
             this.splitContainer3.Panel1.Controls.Add(this.label2);
             this.splitContainer3.Panel1.Controls.Add(this.m_lblSidaValinn);
             this.splitContainer3.Panel1.Controls.Add(this.label1);
@@ -228,6 +279,16 @@
             this.splitContainer3.Size = new System.Drawing.Size(1494, 763);
             this.splitContainer3.SplitterDistance = 83;
             this.splitContainer3.TabIndex = 1;
+            // 
+            // m_btnAfgreida
+            // 
+            this.m_btnAfgreida.Location = new System.Drawing.Point(755, 26);
+            this.m_btnAfgreida.Name = "m_btnAfgreida";
+            this.m_btnAfgreida.Size = new System.Drawing.Size(159, 23);
+            this.m_btnAfgreida.TabIndex = 6;
+            this.m_btnAfgreida.Text = "Ljúka pöntun";
+            this.m_btnAfgreida.UseVisualStyleBackColor = true;
+            this.m_btnAfgreida.Click += new System.EventHandler(this.m_btnAfgreida_Click);
             // 
             // label2
             // 
@@ -332,6 +393,29 @@
             this.m_grbValdinnSkjol.TabStop = false;
             this.m_grbValdinnSkjol.Text = "Skjöl valinn";
             // 
+            // m_tacPantanir
+            // 
+            this.m_tacPantanir.Controls.Add(this.m_tapSkraarkerfi);
+            this.m_tacPantanir.Controls.Add(this.m_tapMalakerfi);
+            this.m_tacPantanir.Controls.Add(this.m_tapGagnagrunnar);
+            this.m_tacPantanir.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_tacPantanir.Location = new System.Drawing.Point(3, 19);
+            this.m_tacPantanir.Name = "m_tacPantanir";
+            this.m_tacPantanir.SelectedIndex = 0;
+            this.m_tacPantanir.Size = new System.Drawing.Size(762, 654);
+            this.m_tacPantanir.TabIndex = 1;
+            // 
+            // m_tapSkraarkerfi
+            // 
+            this.m_tapSkraarkerfi.Controls.Add(this.m_dgvValdarSkrar);
+            this.m_tapSkraarkerfi.Location = new System.Drawing.Point(4, 24);
+            this.m_tapSkraarkerfi.Name = "m_tapSkraarkerfi";
+            this.m_tapSkraarkerfi.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapSkraarkerfi.Size = new System.Drawing.Size(754, 626);
+            this.m_tapSkraarkerfi.TabIndex = 0;
+            this.m_tapSkraarkerfi.Text = "Skráarkerfi";
+            this.m_tapSkraarkerfi.UseVisualStyleBackColor = true;
+            // 
             // m_dgvValdarSkrar
             // 
             this.m_dgvValdarSkrar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -370,29 +454,6 @@
             this.colVorsluutgafa.Name = "colVorsluutgafa";
             this.colVorsluutgafa.Width = 98;
             // 
-            // m_tacPantanir
-            // 
-            this.m_tacPantanir.Controls.Add(this.m_tapSkraarkerfi);
-            this.m_tacPantanir.Controls.Add(this.m_tapMalakerfi);
-            this.m_tacPantanir.Controls.Add(this.m_tapGagnagrunnar);
-            this.m_tacPantanir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tacPantanir.Location = new System.Drawing.Point(3, 19);
-            this.m_tacPantanir.Name = "m_tacPantanir";
-            this.m_tacPantanir.SelectedIndex = 0;
-            this.m_tacPantanir.Size = new System.Drawing.Size(762, 654);
-            this.m_tacPantanir.TabIndex = 1;
-            // 
-            // m_tapSkraarkerfi
-            // 
-            this.m_tapSkraarkerfi.Controls.Add(this.m_dgvValdarSkrar);
-            this.m_tapSkraarkerfi.Location = new System.Drawing.Point(4, 24);
-            this.m_tapSkraarkerfi.Name = "m_tapSkraarkerfi";
-            this.m_tapSkraarkerfi.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapSkraarkerfi.Size = new System.Drawing.Size(754, 626);
-            this.m_tapSkraarkerfi.TabIndex = 0;
-            this.m_tapSkraarkerfi.Text = "Skráarkerfi";
-            this.m_tapSkraarkerfi.UseVisualStyleBackColor = true;
-            // 
             // m_tapMalakerfi
             // 
             this.m_tapMalakerfi.Controls.Add(this.m_dgvMalakerfi);
@@ -403,17 +464,6 @@
             this.m_tapMalakerfi.TabIndex = 1;
             this.m_tapMalakerfi.Text = "Málakerfi";
             this.m_tapMalakerfi.UseVisualStyleBackColor = true;
-            // 
-            // m_tapGagnagrunnar
-            // 
-            this.m_tapGagnagrunnar.Controls.Add(this.m_dgvGagnaGrunnar);
-            this.m_tapGagnagrunnar.Location = new System.Drawing.Point(4, 24);
-            this.m_tapGagnagrunnar.Name = "m_tapGagnagrunnar";
-            this.m_tapGagnagrunnar.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapGagnagrunnar.Size = new System.Drawing.Size(754, 626);
-            this.m_tapGagnagrunnar.TabIndex = 2;
-            this.m_tapGagnagrunnar.Text = "Gagnagrunnar";
-            this.m_tapGagnagrunnar.UseVisualStyleBackColor = true;
             // 
             // m_dgvMalakerfi
             // 
@@ -428,6 +478,17 @@
             this.m_dgvMalakerfi.RowTemplate.Height = 25;
             this.m_dgvMalakerfi.Size = new System.Drawing.Size(748, 620);
             this.m_dgvMalakerfi.TabIndex = 0;
+            // 
+            // m_tapGagnagrunnar
+            // 
+            this.m_tapGagnagrunnar.Controls.Add(this.m_dgvGagnaGrunnar);
+            this.m_tapGagnagrunnar.Location = new System.Drawing.Point(4, 24);
+            this.m_tapGagnagrunnar.Name = "m_tapGagnagrunnar";
+            this.m_tapGagnagrunnar.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapGagnagrunnar.Size = new System.Drawing.Size(754, 626);
+            this.m_tapGagnagrunnar.TabIndex = 2;
+            this.m_tapGagnagrunnar.Text = "Gagnagrunnar";
+            this.m_tapGagnagrunnar.UseVisualStyleBackColor = true;
             // 
             // m_dgvGagnaGrunnar
             // 
@@ -452,6 +513,9 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.m_tacStrukturLeit.ResumeLayout(false);
+            this.m_tapMoppuStruct.ResumeLayout(false);
+            this.m_tapLeitNiðutstöður.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -469,12 +533,12 @@
             this.splitContainer4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_pibSkjal)).EndInit();
             this.m_grbValdinnSkjol.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvValdarSkrar)).EndInit();
             this.m_tacPantanir.ResumeLayout(false);
             this.m_tapSkraarkerfi.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.m_dgvValdarSkrar)).EndInit();
             this.m_tapMalakerfi.ResumeLayout(false);
-            this.m_tapGagnagrunnar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvMalakerfi)).EndInit();
+            this.m_tapGagnagrunnar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvGagnaGrunnar)).EndInit();
             this.ResumeLayout(false);
 
@@ -513,5 +577,10 @@
         private DataGridView m_dgvMalakerfi;
         private TabPage m_tapGagnagrunnar;
         private DataGridView m_dgvGagnaGrunnar;
+        private Button m_btnAfgreida;
+        private TabControl m_tacStrukturLeit;
+        private TabPage m_tapMoppuStruct;
+        private TabPage m_tapLeitNiðutstöður;
+        private TreeView m_trwLeit;
     }
 }

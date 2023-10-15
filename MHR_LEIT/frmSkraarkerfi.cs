@@ -24,6 +24,11 @@ namespace MHR_LEIT
         cMIdlun midlun = new cMIdlun();
         cVHS_drives drive = new cVHS_drives();
         DataTable m_dtSkrar = new DataTable();
+        DataTable m_dtMal = new DataTable();
+        DataTable m_dtGrunn = new DataTable(); 
+        DataSet m_dsDIPmal = new DataSet(); 
+        
+
         cNotandi virkurnotandi = new cNotandi();    
         string m_strGagnagrunnur = string.Empty;
         string m_strFileValinn = string.Empty;
@@ -38,9 +43,14 @@ namespace MHR_LEIT
             InitializeComponent();
            
         }
-        public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP, DataTable dtMal, DataTable dtGrunn, cNotandi not)
+        public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP, DataTable dtMal, DataTable dtGrunn, cNotandi not, DataSet dsDIPmal)
         {
             InitializeComponent();
+
+            m_dtMal = dtMal;
+            m_dtGrunn = dtGrunn;
+            m_dsDIPmal = dsDIPmal;
+
             virkurnotandi = not;
             midlun.m_bAfrit = virkurnotandi.m_bAfrit;
             drive.m_bAfrit = virkurnotandi.m_bAfrit;
@@ -123,6 +133,10 @@ namespace MHR_LEIT
         {
             //sækja fyrirspurnina
             string strFyrirspurn =  midlun.getFyrirspurn(m_strGagnagrunnur, "Get_files_path");
+            if(strFyrirspurn == string.Empty) //vegna nafnabreytinga AV 
+            {
+               strFyrirspurn =  midlun.getFyrirspurn(m_strGagnagrunnur, "AV_Get_files_path");
+            }
             //keyra fyrirspurninga
             m_dtSkrar = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
             int i = 0;
@@ -404,6 +418,7 @@ namespace MHR_LEIT
         }
         private void leitInnra()
         {
+            m_trwLeit.Nodes.Clear();
             if(arr.Count> 0) 
             {
                 foreach (TreeNode n in arr)
@@ -433,12 +448,19 @@ namespace MHR_LEIT
                 string strExp = "skjalid in(" + strIDS + ")"; // "skjalid in(2051,3496)";
                 DataRow[] frow = m_dtSkrar.Select(strExp);
                 m_lblLeitarNidurstodur.Text = frow.Length.ToString();
+                m_tacStrukturLeit.SelectedTab = m_tapLeitNiðutstöður;
+                m_tapLeitNiðutstöður.Text = string.Format("Leitarniðurstöður ({0})", frow.Length);
                 foreach (DataRow r in frow)
                 {
                     dt.ImportRow(r);
+                    string[] strSplit = r["mappa"].ToString().Split("\\");
+                    TreeNode n = new TreeNode(strSplit[strSplit.Length-1]);
+                    n.Tag = r["skjalID"].ToString();
+                    m_trwLeit.Nodes.Add(n);
+                  
                 }
                 
-            
+             
              
                 
                     foreach(DataRow f in frow)
@@ -450,13 +472,17 @@ namespace MHR_LEIT
                       TreeNode[] tNode = m_trwFileSystem.Nodes.Find(strID, true);
                         if( tNode.Length != 0)
                         {
-                            TreeNode nn = new TreeNode(strSpit[strSpit.Length - 1]);
-                            nn.Tag = f["skjalID"].ToString();
-                            nn.BackColor = Color.LightGreen;
-                            tNode[0].Nodes.Add(nn);
-                            
-                            tNode[0].Expand();
-                            arr.Add(nn);
+                            if (f["skjalID"].ToString() != m_strIdValinn)
+                            {
+                                TreeNode nn = new TreeNode(strSpit[strSpit.Length - 1]);
+                                nn.Tag = f["skjalID"].ToString();
+                                nn.BackColor = Color.LightGreen;
+                                tNode[0].Nodes.Add(nn);
+
+                                tNode[0].Expand();
+                                arr.Add(nn);
+                            }
+                           
 
                         }
 
@@ -659,6 +685,107 @@ namespace MHR_LEIT
                 {
                     this.CheckTreeViewNode(item, isChecked);
                 }
+            }
+        }
+
+        private void m_btnAfgreida_Click(object sender, EventArgs e)
+        {
+            
+            frmAfgreidsla frmAfgreida = new frmAfgreidsla(virkurnotandi,m_dtValid, m_dtMal, m_dtGrunn, m_dsDIPmal);
+            frmAfgreida.ShowDialog();
+
+        }
+
+        private void m_trwLeit_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (m_trwLeit.Focused)
+            {
+                if (e.Node.Tag != null)
+                {
+                    label2.Text = e.Node.Tag.ToString();
+                    if (e.Node.Tag.ToString().Contains("\\"))
+                    {
+                        //   MessageBox.Show("gaman");
+
+                        string strSkra = e.Node.Tag.ToString();
+                        string strMappa = e.Node.Text;
+                        string[] strSplit = strSkra.Split('\\');
+                        string strLeitMappa = string.Empty;
+                        bool bBuid = false;
+                        foreach (string str in strSplit)
+                        {
+                            if (!bBuid)
+                            {
+                                strLeitMappa += str + "\\";
+                                if (str == strMappa)
+                                {
+                                    bBuid = true;
+                                }
+                            }
+                        }
+                        string strExp = "mappa like '" + strLeitMappa + "%'";
+                        DataTable dtRest = new DataTable();
+                        DataRow[] fRows = m_dtSkrar.Select(strExp);
+
+                        foreach (DataRow r in fRows)
+                        {
+
+                            strSplit = r["mappa"].ToString().Split("\\");
+                            foreach (string str in strSplit)
+                            {
+                                if (bBuid)
+                                {
+                                    if (str == strMappa)
+                                    {
+                                        bBuid = false;
+                                    }
+                                }
+                                else
+                                {
+                                    if (r["mappa"].ToString().Contains(strMappa + "\\" + str))
+                                    {
+                                        if (str.Contains("."))
+                                        {
+                                            TreeNode n = new TreeNode(str);
+                                            n.Tag = r["skjalID"].ToString();
+                                            Boolean b = false;
+                                            foreach (TreeNode thisNode in e.Node.Nodes)
+                                            {
+                                                if (thisNode.Text == n.Text)
+                                                {
+                                                    b = true;
+                                                }
+                                            }
+                                            if (!b)
+                                            {
+                                                e.Node.Nodes.Add(n);
+                                                n.BackColor = Color.LightGray;
+                                                e.Node.Expand();
+                                            }
+                                            else
+                                            {
+
+                                            }
+
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                    }
+                    else
+                    {
+
+                        int iID = Convert.ToInt32(e.Node.Tag);
+                        fyllaMyndSkjal(iID, 1);
+
+                    }
+
+                }
+
             }
         }
     }
