@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using cClassOAIS;
 using cClassVHS;
 using DocumentFormat.OpenXml.EMMA;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 //using DocumentFormat.OpenXml.Drawing.Charts;
 //using DocumentFormat.OpenXml.EMMA;
 
@@ -144,7 +145,8 @@ namespace MHR_LEIT
             foreach (DataRow r in m_dtSkrar.Rows)
             {
                 PopulateTreeView(m_trwFileSystem, m_dtSkrar.Rows[i]["mappa"].ToString().Split('\\'), '\\', r["skjalID"].ToString(), m_dtSkrar.Rows[i]["mappa"].ToString());
-                if(r["skjalID"].ToString() == m_strIdValinn)
+            //    PopulateTreeView2(m_trwFileSystem, m_dtSkrar.Rows[i]["mappa"].ToString().Split('\\'), '\\');
+                if (r["skjalID"].ToString() == m_strIdValinn)
                 {
                     string[] strSplit = m_dtSkrar.Rows[i]["mappa"].ToString().Split('\\');
                     //   m_tobLeitarord.Text = m_dtSkrar.Rows[i]["mappa"].ToString();
@@ -153,17 +155,48 @@ namespace MHR_LEIT
                 i++;
             }
            TreeNode[] nodues =  m_trwFileSystem.Nodes.Find(strSkra + "\\", true);
-            m_trwFileSystem.SelectedNode = nodues[0];
+            if (m_trwFileSystem.SelectedNode != null)
+            {
+                Point p = new Point(m_trwFileSystem.SelectedNode.Bounds.X, m_trwFileSystem.SelectedNode.Bounds.Y);
+           //     m_trwFileSystem.PointToClient(p);
+             //   m_trwFileSystem.SelectedNode = nodues[0];
+            }
+               
         }
+
+        private static void PopulateTreeView2(TreeView treeView, string[] paths, char pathSeparator)
+        {
+            TreeNode lastNode = new TreeNode();
+            string subPathAgg;
+            foreach (string path in paths)
+            {
+                subPathAgg = string.Empty;
+                foreach (string subPath in path.Split(pathSeparator))
+                {
+                    subPathAgg += subPath + pathSeparator;
+                    TreeNode[] nodes = treeView.Nodes.Find(subPathAgg, true);
+                    if (nodes.Length == 0)
+                        if (lastNode != null)
+                            lastNode = treeView.Nodes.Add(subPathAgg, subPath);
+                        else
+                            lastNode = lastNode.Nodes.Add(subPathAgg, subPath);
+                    else
+                        lastNode = nodes[0];
+                }
+                lastNode = null; // This is the place code was changed
+
+            }
+        }
+     
 
         public void PopulateTreeView(TreeView treeView, string[] paths, char pathSeparator, string strTag, string strSlod)
         {
             TreeNode lastNode = null;
-            string subPathAgg;
+            string subPathAgg = string.Empty;
             int i = 0;
             foreach (string path in paths)
             {
-                subPathAgg = string.Empty;
+             //   subPathAgg = string.Empty;
                 i++;
                 bool bSkjal = false;
                 if(i == paths.Length)
@@ -180,12 +213,16 @@ namespace MHR_LEIT
                     foreach (string subPath in path.Split(pathSeparator))
                     {
                         subPathAgg += subPath + pathSeparator;
-                        TreeNode[] nodes = treeView.Nodes.Find(subPathAgg, true);
+                        //var nodus = m_trwFileSystem.FlattenTree()
+                        // .Where(nn => nn.Tag == lastNode.Tag)
+                        //.ToList();
+                        TreeNode[] nodes = treeView.Nodes.Find(subPathAgg, true);  //leitar bara að nafni og finnur oft vitlaust og setur í
                         if (nodes.Length == 0)
                         {
                             if (lastNode == null)
                             {
                                 lastNode = treeView.Nodes.Add(subPathAgg, subPath);
+                                lastNode.Expand();
 
                             }
 
@@ -199,6 +236,7 @@ namespace MHR_LEIT
                                     if(m_strIdValinn == strTag)
                                     {
                                         lastNode.BackColor = Color.LightGreen;
+                                        m_trwFileSystem.SelectedNode = lastNode;
                                     }
                                 }
                                else
@@ -213,6 +251,11 @@ namespace MHR_LEIT
                         else
                         {
                             lastNode = nodes[0];
+                            if(lastNode.IsSelected)
+                            {
+                                lastNode.Expand();
+                            }
+                           
                            
                         }
 
@@ -254,13 +297,16 @@ namespace MHR_LEIT
         {
             if(m_trwFileSystem.Focused)
             {
+               
                 if(e.Node.Tag != null)
                 {
+                
                     label2.Text = e.Node.Tag.ToString();    
                     if (e.Node.Tag.ToString().Contains("\\"))
                     {
                      //   MessageBox.Show("gaman");
 
+                        
                         string strSkra = e.Node.Tag.ToString();
                         string strMappa = e.Node.Text;
                         string[] strSplit = strSkra.Split('\\');
@@ -283,7 +329,12 @@ namespace MHR_LEIT
                        
                         foreach(DataRow r in fRows)
                         {
-                           
+                          //string strValid =  e.Node.Tag.ToString();
+                          //string strMappaTest = r["mappa"].ToString();
+                          //  if(strValid == strMappaTest)
+                          //  {
+
+                          //  }
                            strSplit = r["mappa"].ToString().Split("\\");
                             foreach(string str in strSplit)
                             {
@@ -312,13 +363,40 @@ namespace MHR_LEIT
                                             }
                                             if(!b)
                                             {
-                                                e.Node.Nodes.Add(n);
-                                                n.BackColor = Color.LightGray;
-                                                e.Node.Expand();
+                                                n.Tag = r["skjalID"].ToString();
+                                                var nodus = m_trwFileSystem.FlattenTree()
+                                                 .Where(nn => nn.Tag == n.Tag)
+                                                .ToList();
+                                                //TreeNode[] nodes = m_trwFileSystem.Nodes.Find(n.Tag.ToString(), true);
+                                                if (nodus.Count == 0)
+                                                {
+                                                    e.Node.Nodes.Add(n);
+                                                    n.BackColor = Color.LightGray;
+                                                    e.Node.Expand();
+                                                  
+
+                                                }
+                                             
                                             }
                                             else
                                             {
 
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            TreeNode n = new TreeNode(str);
+                                            n.Tag = strLeitMappa; // + str;
+                                            //var nodus = m_trwFileSystem.FlattenTree()
+                                            // .Where(nn => nn.Tag == n.Tag)
+                                            //.ToList();
+                                            TreeNode[] nodes = m_trwFileSystem.Nodes.Find(n.Tag.ToString(), true);
+                                            
+                                            if (nodes[0] == null)
+                                            {
+                                                e.Node.Nodes.Add(n);
+                                                e.Node.Expand();
                                             }
 
                                         }
@@ -488,7 +566,11 @@ namespace MHR_LEIT
 
                     }
                 m_trwFileSystem.ExpandAll();
-                m_trwFileSystem.SelectedNode = (TreeNode)arr[0];
+                if(arr.Count != 0)
+                {
+                    m_trwFileSystem.SelectedNode = (TreeNode)arr[0];
+
+                }
             }
             else
             {
@@ -609,39 +691,49 @@ namespace MHR_LEIT
             CheckTreeViewNode(e.Node, e.Node.Checked);
             if(e.Node.Checked )
             {
-                if(!e.Node.Tag.ToString().Contains("\\"))
+                if(e.Node.Tag != null)
                 {
-                    DataRow r = m_dtValid.NewRow();
-                    r["skjalID"] = e.Node.Tag;
-                    r["titill"] = e.Node.Text;
-                    r["vorsluutgafa"] = m_strVorslutgafa;
-                    string strExpr = "skjaliD = '" + e.Node.Tag.ToString() + "'";
-                    DataRow[] fRow = m_dtValid.Select(strExpr);
-                    if (fRow.Length == 0)
+                    if (!e.Node.Tag.ToString().Contains("\\"))
                     {
-                        m_dtValid.Rows.Add(r);
-                        m_dtValid.AcceptChanges();
+                        DataRow r = m_dtValid.NewRow();
+                        r["skjalID"] = e.Node.Tag;
+                        r["titill"] = e.Node.Text;
+                        r["vorsluutgafa"] = m_strVorslutgafa;
+                        string strExpr = "skjaliD = '" + e.Node.Tag.ToString() + "'";
+                        DataRow[] fRow = m_dtValid.Select(strExpr);
+                        if (fRow.Length == 0)
+                        {
+                            m_dtValid.Rows.Add(r);
+                            m_dtValid.AcceptChanges();
+
+                        }
 
                     }
-                     
+
                 }
-             
+
 
             }
             else
             {
-                string strExpr = "skjaliD = '" + e.Node.Tag.ToString() + "'";
-                DataRow[] fRow = m_dtValid.Select(strExpr);
-                if(fRow.Length != 0 ) 
+                if (e.Node.Tag != null)
                 {
-                    int iLength = fRow.Length;
-                    for(int i = 0;i < iLength; i++) 
+                    string strExpr = "skjaliD = '" + e.Node.Tag.ToString() + "'";
+                    DataRow[] fRow = m_dtValid.Select(strExpr);
+                    if (fRow.Length != 0)
                     {
-                        fRow[i].Delete();
+                        int iLength = fRow.Length;
+                        for (int i = 0; i < iLength; i++)
+                        {
+                            fRow[i].Delete();
+                        }
+
+                        m_dtValid.AcceptChanges();
                     }
-                    
-                    m_dtValid.AcceptChanges();
+
                 }
+               
+            
             }
             m_dgvValdarSkrar.DataSource = m_dtValid;
             m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
@@ -787,6 +879,20 @@ namespace MHR_LEIT
                 }
 
             }
+        }
+    }
+    public static class SOExtension
+    {
+        public static IEnumerable<TreeNode> FlattenTree(this TreeView tv)
+        {
+            return FlattenTree(tv.Nodes);
+        }
+
+        public static IEnumerable<TreeNode> FlattenTree(this TreeNodeCollection coll)
+        {
+            return coll.Cast<TreeNode>()
+                        .Concat(coll.Cast<TreeNode>()
+                                    .SelectMany(x => FlattenTree(x.Nodes)));
         }
     }
 }

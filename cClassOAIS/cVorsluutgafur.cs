@@ -171,6 +171,24 @@ namespace cClassOAIS
             return dt;
         }
 
+        public DataTable getVorsluUtgafurLista()
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT distinct d.vorsluutgafa, d.utgafa_titill  FROM db_oais_admin.`dt_vörsluutgafur` d, dt_midlun m where d.vorsluutgafa = m.vorsluutgafa and d.vorsluutgafa like 'AVID%' order by d.utgafa_titill;");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getVorsluUtgafurLista(string strSkjalam)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT distinct d.vorsluutgafa, d.utgafa_titill  FROM db_oais_admin.`dt_vörsluutgafur` d, dt_midlun m where d.vorsluutgafa = m.vorsluutgafa and d.vorsluutgafa like 'AVID%' and skjalamyndari = '{0}' order by d.utgafa_titill;", strSkjalam);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+
         public DataTable getVorsluUtgafurVorslu(string strAuðkenni)
         {
             sækjaTengistreng();

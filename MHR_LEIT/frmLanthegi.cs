@@ -44,6 +44,7 @@ namespace MHR_LEIT
             {
                 errorProvider1.SetError(m_tboKennitala, "Vantar kennitölu");
             }
+            testLan.m_bAfrit = virkurnotandi.m_bAfrit;
             testLan.getaLanthegaKennitala(m_tboKennitala.Text.Replace("-", ""));
             if(testLan.kennitala != null)
             {
@@ -107,6 +108,7 @@ namespace MHR_LEIT
             else
             {
                 //næ í hæstu dummy
+                lanthegi.m_bAfrit = virkurnotandi.m_bAfrit;
                 int iMax = lanthegi.maxDummyKennitala() + 1;
                 string strKenni = "000000" + iMax.ToString("0000");
                 m_tboKennitala.Text = strKenni;

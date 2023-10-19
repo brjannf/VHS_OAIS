@@ -38,6 +38,8 @@
             this.m_btnEyda = new System.Windows.Forms.Button();
             this.m_btnVista = new System.Windows.Forms.Button();
             this.m_btnBuaTil = new System.Windows.Forms.Button();
+            this.m_btnAddFile = new System.Windows.Forms.Button();
+            this.m_btnAddSubSerites = new System.Windows.Forms.Button();
             this.m_lblAthSkjalaVard = new System.Windows.Forms.Label();
             this.m_tboAthSkjal = new System.Windows.Forms.TextBox();
             this.m_btnDUStadfesta = new System.Windows.Forms.Button();
@@ -45,7 +47,6 @@
             this.m_tboUpplýsingastig = new System.Windows.Forms.TextBox();
             this.m_grbYfirlitInnihald = new System.Windows.Forms.GroupBox();
             this.m_tboYfirilInnihald = new System.Windows.Forms.TextBox();
-            this.m_lblAfharNr = new System.Windows.Forms.Label();
             this.m_tboAfhendingaarNr = new System.Windows.Forms.TextBox();
             this.m_lblAðgengi = new System.Windows.Forms.Label();
             this.m_tboSkilyrðiAðgengi = new System.Windows.Forms.TextBox();
@@ -55,8 +56,6 @@
             this.m_tboTimablil = new System.Windows.Forms.TextBox();
             this.m_lblTitilill = new System.Windows.Forms.Label();
             this.m_tboTitill = new System.Windows.Forms.TextBox();
-            this.m_btnAddSubSerites = new System.Windows.Forms.Button();
-            this.m_btnAddFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -175,7 +174,6 @@
             this.splitContainer2.Panel2.Controls.Add(this.m_lblUpplysingastig);
             this.splitContainer2.Panel2.Controls.Add(this.m_tboUpplýsingastig);
             this.splitContainer2.Panel2.Controls.Add(this.m_grbYfirlitInnihald);
-            this.splitContainer2.Panel2.Controls.Add(this.m_lblAfharNr);
             this.splitContainer2.Panel2.Controls.Add(this.m_tboAfhendingaarNr);
             this.splitContainer2.Panel2.Controls.Add(this.m_lblAðgengi);
             this.splitContainer2.Panel2.Controls.Add(this.m_tboSkilyrðiAðgengi);
@@ -218,6 +216,26 @@
             this.m_btnBuaTil.Text = "Búa til geymsluskrá";
             this.m_btnBuaTil.UseVisualStyleBackColor = true;
             this.m_btnBuaTil.Click += new System.EventHandler(this.m_btnBuaTil_Click);
+            // 
+            // m_btnAddFile
+            // 
+            this.m_btnAddFile.Location = new System.Drawing.Point(647, 108);
+            this.m_btnAddFile.Name = "m_btnAddFile";
+            this.m_btnAddFile.Size = new System.Drawing.Size(108, 23);
+            this.m_btnAddFile.TabIndex = 17;
+            this.m_btnAddFile.Text = "+Örk";
+            this.m_btnAddFile.UseVisualStyleBackColor = true;
+            this.m_btnAddFile.Click += new System.EventHandler(this.m_btnAddFile_Click);
+            // 
+            // m_btnAddSubSerites
+            // 
+            this.m_btnAddSubSerites.Location = new System.Drawing.Point(647, 64);
+            this.m_btnAddSubSerites.Name = "m_btnAddSubSerites";
+            this.m_btnAddSubSerites.Size = new System.Drawing.Size(108, 23);
+            this.m_btnAddSubSerites.TabIndex = 16;
+            this.m_btnAddSubSerites.Text = "+Skjalaflokkur";
+            this.m_btnAddSubSerites.UseVisualStyleBackColor = true;
+            this.m_btnAddSubSerites.Click += new System.EventHandler(this.m_btnAddSubSerites_Click);
             // 
             // m_lblAthSkjalaVard
             // 
@@ -281,15 +299,6 @@
             this.m_tboYfirilInnihald.Size = new System.Drawing.Size(473, 143);
             this.m_tboYfirilInnihald.TabIndex = 0;
             // 
-            // m_lblAfharNr
-            // 
-            this.m_lblAfharNr.AutoSize = true;
-            this.m_lblAfharNr.Location = new System.Drawing.Point(137, 235);
-            this.m_lblAfharNr.Name = "m_lblAfharNr";
-            this.m_lblAfharNr.Size = new System.Drawing.Size(122, 15);
-            this.m_lblAfharNr.TabIndex = 9;
-            this.m_lblAfharNr.Text = "Afhendingaár/nr 3.2.4";
-            // 
             // m_tboAfhendingaarNr
             // 
             this.m_tboAfhendingaarNr.Location = new System.Drawing.Point(283, 232);
@@ -305,7 +314,6 @@
             this.m_lblAðgengi.Size = new System.Drawing.Size(118, 15);
             this.m_lblAðgengi.TabIndex = 7;
             this.m_lblAðgengi.Text = "Skilyrði aðgengi 3.4.1";
-            this.m_lblAðgengi.Click += new System.EventHandler(this.m_lblAðgengi_Click);
             // 
             // m_tboSkilyrðiAðgengi
             // 
@@ -322,7 +330,6 @@
             this.m_lblAuðkenni.Size = new System.Drawing.Size(85, 15);
             this.m_lblAuðkenni.TabIndex = 5;
             this.m_lblAuðkenni.Text = "Auðkenni 3.1.1";
-            this.m_lblAuðkenni.Click += new System.EventHandler(this.m_lblAuðkenni_Click);
             // 
             // m_tboAuðkenni
             // 
@@ -340,7 +347,6 @@
             this.m_lblTimabil.Size = new System.Drawing.Size(73, 15);
             this.m_lblTimabil.TabIndex = 3;
             this.m_lblTimabil.Text = "Timabil 3.1.3";
-            this.m_lblTimabil.Click += new System.EventHandler(this.m_lblTimabil_Click);
             // 
             // m_tboTimablil
             // 
@@ -357,7 +363,6 @@
             this.m_lblTitilill.Size = new System.Drawing.Size(56, 15);
             this.m_lblTitilill.TabIndex = 1;
             this.m_lblTitilill.Text = "Titill 3.1.2";
-            this.m_lblTitilill.Click += new System.EventHandler(this.m_lblTitilill_Click);
             // 
             // m_tboTitill
             // 
@@ -365,24 +370,6 @@
             this.m_tboTitill.Name = "m_tboTitill";
             this.m_tboTitill.Size = new System.Drawing.Size(333, 23);
             this.m_tboTitill.TabIndex = 0;
-            // 
-            // m_btnAddSubSerites
-            // 
-            this.m_btnAddSubSerites.Location = new System.Drawing.Point(647, 64);
-            this.m_btnAddSubSerites.Name = "m_btnAddSubSerites";
-            this.m_btnAddSubSerites.Size = new System.Drawing.Size(108, 23);
-            this.m_btnAddSubSerites.TabIndex = 16;
-            this.m_btnAddSubSerites.Text = "+Skjalaflokkur";
-            this.m_btnAddSubSerites.UseVisualStyleBackColor = true;
-            // 
-            // m_btnAddFile
-            // 
-            this.m_btnAddFile.Location = new System.Drawing.Point(647, 108);
-            this.m_btnAddFile.Name = "m_btnAddFile";
-            this.m_btnAddFile.Size = new System.Drawing.Size(108, 23);
-            this.m_btnAddFile.TabIndex = 17;
-            this.m_btnAddFile.Text = "+Örk";
-            this.m_btnAddFile.UseVisualStyleBackColor = true;
             // 
             // frmGeymsluskra
             // 
@@ -433,7 +420,6 @@
         private TextBox m_tboTimablil;
         private GroupBox m_grbYfirlitInnihald;
         private TextBox m_tboYfirilInnihald;
-        private Label m_lblAfharNr;
         private TextBox m_tboAfhendingaarNr;
         private Label m_lblUpplysingastig;
         private TextBox m_tboUpplýsingastig;

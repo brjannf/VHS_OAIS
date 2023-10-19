@@ -440,7 +440,19 @@ namespace cClassOAIS
                 }
 
             }
-            if(this.Upphafsdags != null || this.Endadags != null) 
+            if (this.vorsluutgafa != null)
+            {
+                if(!strSQL.Contains("WHERE"))  //if (strLeitarord.Length == 0 && this.vorslustofnun_audkenni == null)
+                {
+                    strSQL += " WHERE vorsluutgafa = '" + this.vorsluutgafa + "' ";
+                }
+                else
+                {
+                    strSQL += " AND vorsluutgafa = '" + this.vorsluutgafa + "' ";
+                }
+
+            }
+            if (this.Upphafsdags != null || this.Endadags != null) 
             {
                 if(this.Upphafsdags == null && this.Endadags !=null)
                 {

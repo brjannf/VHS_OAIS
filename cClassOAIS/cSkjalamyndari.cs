@@ -221,7 +221,15 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
-
+        //SELECT  d.`5_1_2_opinbert_heiti`, d.`id`, 5_1_6_auðkenni FROM dt_isaar_skjalamyndarar d  where 5_4_2_auðkenni_vörslustofnunar = 'HAKU'order by 5_1_2_opinbert_heiti;
+        public DataTable getSkjalamyndaralista(string strVarsla)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT  d.`5_1_2_opinbert_heiti`, d.`id`, 5_1_6_auðkenni FROM dt_isaar_skjalamyndarar d  where 5_4_2_auðkenni_vörslustofnunar = '{0}'order by 5_1_2_opinbert_heiti;", strVarsla);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
         public DataTable getSkjalamyndaralistaGU()
         {
             sækjaTengistreng();
@@ -428,6 +436,7 @@ namespace cClassOAIS
 
         public DataTable utgafurSkjalamyndara(string strAuðkenni)
         {
+            sækjaTengistreng();
             string strSQL = string.Format("SELECT * FROM v_vorslustofnun v where skjalamyndari = '{0}';", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];

@@ -922,6 +922,20 @@ namespace OAIS_ADMIN
                 }
                 DataTable dtFilemaker = new DataTable();
 
+                if (strVorslustofnun == "HAKU")
+                {
+                    dtFilemaker.Columns.Add("Stofnun/deild");
+                    dtFilemaker.Columns.Add("Skjalaflokkur");
+                    dtFilemaker.Columns.Add("Kassanúmer");
+                    dtFilemaker.Columns.Add("Örk");
+                    dtFilemaker.Columns.Add("Frá ár");
+                    dtFilemaker.Columns.Add("Til ár");
+                    dtFilemaker.Columns.Add("Málalykill");
+                    dtFilemaker.Columns.Add("Efni");
+                    dtFilemaker.Columns.Add("Auðkenni og heiti skjalaflokks");
+                    dtFilemaker.Columns.Add("Yfirskjalafl");
+                    dtFilemaker.Columns.Add("Athugasemdir");
+                }
 
                 if (strVorslustofnun == "HARN")
                 {
@@ -1042,6 +1056,28 @@ namespace OAIS_ADMIN
                             row["Yfirskjalafl"] = strSeries;
                             row["Ath."] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
                             row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
+                            dtFilemaker.Rows.Add(row);
+                            dtFilemaker.AcceptChanges();
+                        }
+                        if (strVorslustofnun == "HAKU")
+                        {
+                            DataRow row = dtFilemaker.NewRow();
+                            row["Stofnun/deild"] = fond.heiti_skjalamyndara_3_2_1;
+                            string[] strSplit = strSeries.Split("-");
+                            row["Skjalaflokkur"] = strSplit[0];
+                            row["Kassanúmer"] = "1";
+                            row["Örk"] = "1";
+                            strSplit = r["timabil"].ToString().Split("-");
+                            if (strSplit.Length == 2)
+                            {
+                                row["Frá ár"] = strSplit[0];
+                                row["Til ár"] = strSplit[1];
+                            }
+                            row["Málalykill"] = string.Empty;
+                            row["Efni"] = r["innihald"];
+                            row["Auðkenni og heiti skjalaflokks"] = strSubSeries;
+                            row["Yfirskjalafl"] = strSeries;
+                            row["Athugasemdir"] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
                             dtFilemaker.Rows.Add(row);
                             dtFilemaker.AcceptChanges();
                         }

@@ -174,7 +174,22 @@ namespace OAIS_ADMIN
             //búa til töflu sem er einsog filemaker taflan og keyra gögn inn í þessi gildir fyrir harn
             DataTable dtFilemaker = new DataTable();
 
-            if(m_strVorsluAudkenni == "HARN")
+            if(m_strVorsluAudkenni == "HAKU")
+            {
+                dtFilemaker.Columns.Add("Stofnun/deild");
+                dtFilemaker.Columns.Add("Skjalaflokkur");
+                dtFilemaker.Columns.Add("Kassanúmer");
+                dtFilemaker.Columns.Add("Örk");
+                dtFilemaker.Columns.Add("Frá ár");
+                dtFilemaker.Columns.Add("Til ár");
+                dtFilemaker.Columns.Add("Málalykill");
+                dtFilemaker.Columns.Add("Efni");
+                dtFilemaker.Columns.Add("Auðkenni og heiti skjalaflokks");
+                dtFilemaker.Columns.Add("Yfirskjalafl");
+                dtFilemaker.Columns.Add("Athugasemdir");
+            }
+
+           if(m_strVorsluAudkenni == "HARN")
             {
                 dtFilemaker.Columns.Add("tegund");
                 dtFilemaker.Columns.Add("Skjalamyndari");
@@ -296,7 +311,29 @@ namespace OAIS_ADMIN
                         dtFilemaker.Rows.Add(row);
                         dtFilemaker.AcceptChanges();
                     }
-                   
+                    if (m_strVorsluAudkenni == "HAKU")
+                    {
+                        DataRow row = dtFilemaker.NewRow();
+                        row["Stofnun/deild"] = fond.heiti_skjalamyndara_3_2_1;
+                        string[] strSplit = strSeries.Split("-");
+                        row["Skjalaflokkur"] = strSplit[0];
+                        row["Kassanúmer"] = "1";
+                        row["Örk"] = "1";
+                        strSplit = r["timabil"].ToString().Split("-");
+                        if (strSplit.Length == 2)
+                        {
+                            row["Frá ár"] = strSplit[0];
+                            row["Til ár"] = strSplit[1];
+                        }
+                        row["Málalykill"] = string.Empty;
+                        row["Efni"] = r["innihald"];
+                        row["Auðkenni og heiti skjalaflokks"] = strSubSeries;
+                        row["Yfirskjalafl"] = strSeries;
+                        row["Athugasemdir"] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
+                        dtFilemaker.Rows.Add(row);
+                        dtFilemaker.AcceptChanges();
+                    }
+
                 }
                 
             }
@@ -639,38 +676,19 @@ namespace OAIS_ADMIN
           
         }
 
-       private void m_lblAuðkenni_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void m_lblAðgengi_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void m_lblTimabil_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void m_lblTitilill_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void m_btnDUStadfesta_Click(object sender, EventArgs e)
         {
             //uppfæra node ef breytt ásamt töflu
             string strTitill = m_trwGeymsluskrá.SelectedNode.Text;
+            string strAuðkenni = m_trwGeymsluskrá.SelectedNode.Tag.ToString();
 
             var nodes = m_trwGeymsluskrá.FlattenTree()
-                     .Where(nn => nn.Text == strTitill)
+                     .Where(nn => nn.Tag.ToString() == strAuðkenni)
                      .ToList();
             if (nodes.Count != 0)
             {
                 nodes[0].Text = m_tboTitill.Text;
-                string strExp = "titill='" + strTitill + "'";
+                string strExp = "auðkenni='" + strAuðkenni + "'";
                 DataRow[] fRow = m_dtGEYMSLUSKRA.Select(strExp);
                 if(fRow.Length != 0)
                 {
@@ -768,6 +786,38 @@ namespace OAIS_ADMIN
                 skjal.eydaGeymsluskra(m_strAuðkenni);
                 fyllaSkjalaSkra();
             }
+        }
+
+        private void m_btnAddSubSerites_Click(object sender, EventArgs e)
+        {
+            string strTitill = m_trwGeymsluskrá.SelectedNode.Text;
+            TreeNode subNode = new TreeNode(strTitill);
+           
+            var nodes = m_trwGeymsluskrá.FlattenTree()
+                     .Where(nn => nn.Text == strTitill)
+                     .ToList();
+            subNode.Tag = nodes[0].Parent.Index.ToString("000") + "-" + nodes[0].Index.ToString("000") + "-000"; 
+            m_trwGeymsluskrá.SelectedNode.Nodes.Add(subNode);
+            m_trwGeymsluskrá.ExpandAll();
+            skjal.auðkenni_3_1_1 = subNode.Tag.ToString();
+            //temp.auðkenni_3_1_1 = nodes[0].Parent.Parent.Index.ToString("000") + "-" + nodes[0].Parent.Index.ToString("000") + "-" + nodes[0].Index.ToString("000") + "-001";
+
+            //orkNode.Tag = temp.auðkenni_3_1_1;
+
+            //nodes[0].Nodes.Add(orkNode);
+            //nodes[0].Expand();
+            //if (m_strTegund == "Skráarkerfi")
+            //{
+            //    temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodes[0].Text, temp.getSkjalFjoldi(temp.athugasemdir_skjalavarðar_3_7_1, m_strAuðkenni));
+            //}
+
+            //skjal = temp;
+            fyllaGeymsluskraTöflu("Skjalaflokkur", "asdfaf");
+        }
+
+        private void m_btnAddFile_Click(object sender, EventArgs e)
+        {
+
         }
     }
     public static class SOExtension
