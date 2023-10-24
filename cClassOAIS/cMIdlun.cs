@@ -63,6 +63,7 @@ namespace cClassOAIS
         public string dalkur_malTitill { get; set; }
         public string maltitill { get; set; }
         public string docInnihald { get; set; }
+        public string extension { get; set; }
         public string leitarord { get; set; }
         public string Upphafsdags { get; set; }
         public string Endadags { get; set; }
@@ -93,6 +94,7 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@skjalaskra_adgengi", this.skjalaskra_adgengi);
             command.Parameters.AddWithValue("@skjalaskra_afharnr", this.skjalaskra_afharnr);
             command.Parameters.AddWithValue("@skjalaskra_innihald", this.skjalaskra_innihald);
+            command.Parameters.AddWithValue("@extension", this.extension);
             command.Parameters.AddWithValue("@hver_skradi", this.hver_skradi);
             command.Parameters.AddWithValue("@dags_skrad", this.dags_skrad);
             command.Parameters.AddWithValue("@dalkur_documentid", this.dalkur_documentid);
@@ -109,7 +111,7 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@maltitill", this.maltitill);
             command.Parameters.AddWithValue("@docInnihald", this.docInnihald);
 
-            command.CommandText = "INSERT INTO `dt_midlun` SET  `vorsluutgafa`=@vorsluutgafa,  `titill_vorsluutgafu`=@titill_vorsluutgafu, heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  hver_skradi=@hver_skradi, dags_skrad=NOW();";
+            command.CommandText = "INSERT INTO `dt_midlun` SET  `vorsluutgafa`=@vorsluutgafa,  `titill_vorsluutgafu`=@titill_vorsluutgafu, heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  extension=@extension,   hver_skradi=@hver_skradi, dags_skrad=NOW();";
             //dalkur_documentid, documentid, dalkur_doctitill, doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald
             // heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  hver_skradi=@hver_skradi, dags_skrad=NOW();";
 
@@ -277,6 +279,22 @@ namespace cClassOAIS
                                     string[] strFile = Directory.GetFiles(strSlod);
                                     try
                                     {
+                                        //bætti hér við extension
+                                        string strSlodExt = strSlod.Replace("AVID", "FRUM");
+                                        if(Directory.Exists(strSlodExt))
+                                        {
+                                            strFile = Directory.GetFiles(strSlodExt);
+                                            FileInfo fifo = new FileInfo(strFile[0]);
+                                            string strExtension = fifo.Extension;
+                                            this.extension = strExtension;
+                                        } 
+                                        else
+                                        {
+                                            FileInfo fifo = new FileInfo(strFile[0]);
+                                            string strExtension = fifo.Extension;
+                                            this.extension = strExtension;
+                                        }
+                                       
                                         if (strFile[0].EndsWith(".tif"))
                                         {
                                             IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
@@ -303,7 +321,7 @@ namespace cClassOAIS
 
                                         //throw;
                                     }
-                                   
+                                  
                                 }
                                
 
@@ -413,9 +431,10 @@ namespace cClassOAIS
             {
                 strSQL = "SELECT * FROM dt_midlun d ";
             }
+
            
 
-            if(this.vorslustofnun_audkenni != null)
+            if (this.vorslustofnun_audkenni != null)
             {
                 if (strLeitarord.Length == 0)
                 {
@@ -452,6 +471,9 @@ namespace cClassOAIS
                 }
 
             }
+
+          
+
             if (this.Upphafsdags != null || this.Endadags != null) 
             {
                 if(this.Upphafsdags == null && this.Endadags !=null)
@@ -498,8 +520,20 @@ namespace cClassOAIS
                         strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' AND DATE(docLastWriten) <= '" + strEnd + "' ";
                     }
                 }
+               
             }
+            if (this.extension != null)
+            {
+                if (!strSQL.Contains("WHERE"))
+                {
+                    strSQL += " WHERE extension = '" + this.extension + "' ";
+                }
+                else
+                {
+                    strSQL += " AND extension = '" + this.extension + "' ";
+                }
 
+            }
             if (strLeitarord!= string.Empty) 
             {
                 strSQL += "order by score desc;";
@@ -550,6 +584,10 @@ namespace cClassOAIS
                     strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' AND DATE(docLastWriten) <= '" + strEnd + "' ";
                    
                 }
+            }
+            if(this.extension != null)
+            {
+                strSQL += " AND extension = '" + this.extension + "'";
             }
             var strIDS = MySqlHelper.ExecuteScalar(m_strTengingOAIS,strSQL);
             if(strIDS != null)
@@ -651,6 +689,24 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
+        public DataTable getMidlunarToflu()
+        {
+            sækjaTengistreng();
+           string strSQL = string.Format("SELECT id, vorsluutgafa, documentid, vorslustofnun_audkenni, skjalamyndari_audkenni FROM dt_midlun d;");
+         //   string strSQL = "SELECT * FROM dt_midlun where extension is null;";
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public void uppfæraExtension(string strExtension, string strID)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("UPDATE dt_midlun set extension = '{0}' where id = '{1}';", strExtension, strID);
+            MySqlHelper.ExecuteNonQuery(m_strTengingOAIS, strSQL);
+                 
+        }
+
         public DataTable getGagnagrunnaFyrirSpurnirMidlun(string strGagnagrunnur)
         {
             sækjaTengistreng();
@@ -663,6 +719,14 @@ namespace cClassOAIS
         {
             sækjaTengistreng();
             string strSQL = "SELECT * FROM ds_gagnagrunnar d;";
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getExtensions()
+        {
+            sækjaTengistreng();
+            string strSQL = "SELECt distinct extension FROM dt_midlun d  order by extension;";
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

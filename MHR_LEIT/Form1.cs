@@ -110,6 +110,27 @@ namespace MHR_LEIT
             }
 
         }
+        private void fyllaExtensions()
+        {
+            cMIdlun midlun = new cMIdlun();
+            midlun.m_bAfrit = virkurNotandi.m_bAfrit;
+            DataTable dt = midlun.getExtensions();
+            if (dt.Rows.Count > 0)
+            {
+                DataRow r = dt.NewRow();
+                r["extension"] = "Veldu skráaendingu";
+                dt.Rows.InsertAt(r, 0);
+                //  id, vorsluutgafa, heiti_gagnagrunns, orgina_heiti
+                m_comExtensions.ValueMember = "extension";
+                m_comExtensions.DisplayMember = "extension";
+                m_comExtensions.DataSource = dt;
+            }
+            else
+            {
+                m_comGagnagrunnar.Visible = false;
+                m_lblGagangrunnar.Visible = false;
+            }
+        }
         private void fyllaDIPLista()
         {
             DataTable dt = karfa.getKorfurDIP();
@@ -204,6 +225,11 @@ namespace MHR_LEIT
             midlun.m_bAfrit = bAfrit;
             midlun.leitarord = m_tboLeitOrd.Text;
 
+
+            if (m_comExtensions.SelectedIndex != 0)
+            {
+                midlun.extension = m_comExtensions.SelectedValue.ToString();
+            }
 
             if (m_comVorslustofnun.SelectedIndex != 0)
             {
@@ -749,6 +775,7 @@ namespace MHR_LEIT
             fyllaSkjalamyndara("");
             fyllaV0rslusstofnanir();
             fyllaVörsluutgafur("");
+            fyllaExtensions();
 
 
             m_dtpStart.Value = DateTime.Now;
@@ -814,6 +841,7 @@ namespace MHR_LEIT
                 fyllaLanthega();
                 fyllaDIPLista();
                 fyllaGagnaGrunna();
+                fyllaExtensions();
 
 
             }
@@ -1587,6 +1615,91 @@ namespace MHR_LEIT
                 }
             }
            
+        }
+
+        private void m_btnLagaToflur_Click(object sender, EventArgs e)
+        {
+            //nota þetta til að bæta við, breyta eða eyða töflum úr miðlunargrunni
+            // 1. bæta við extensiondálki í midlunartöflu
+
+            try
+            {
+                virkurNotandi.addExtensionDalk();
+            }
+            catch (Exception x)
+            {
+
+              
+            }
+            //sækja alla midlunartöfluna
+
+            cMIdlun midlun = new cMIdlun();
+            midlun.m_bAfrit = virkurNotandi.m_bAfrit;
+            cVHS_drives drive = new cVHS_drives();
+            drive.m_bAfrit = virkurNotandi.m_bAfrit;
+           string strDRif = drive.driveVirkkComputers();
+          
+
+           DataTable dt = midlun.getMidlunarToflu();
+            //rúlla yfir töfluna og finna extensionið
+            //SELECT id, vorsluutgafa, documentid, vorslustofnun_audkenni, skjalamyndari_audkenni FROM dt_midlun d;
+            foreach (DataRow r in dt.Rows)
+            {
+                string strID = r["id"].ToString();
+                string strVarslaID = r["vorsluutgafa"].ToString();
+                string strDocID = r["documentid"].ToString();
+                string strVorsluStofnunID = r["vorslustofnun_audkenni"].ToString();
+                string strSkjalmyndaraID = r["skjalamyndari_audkenni"].ToString();
+                string strSlod = string.Empty;
+                //finnaskjalið
+                if (virkurNotandi.m_bAfrit)
+                {
+                    strSlod = strDRif + "\\" + strVarslaID.Replace("AVID", "FRUM") + "\\Documents"; //docCollection1//4//1.tif";
+                    if (!Directory.Exists(strSlod))
+                    {
+                        strSlod = strDRif + "\\" + strVarslaID + "\\Documents";
+                    }
+                }
+                else
+                {
+                    strSlod = strDRif + "\\" + strVorsluStofnunID + "\\" + strSkjalmyndaraID + "\\" + strVarslaID.Replace("AVID", "FRUM") + "\\Documents"; //docCollection1//4//1.tif";
+                    if(!Directory.Exists(strSlod))
+                    {
+                        strSlod = strDRif + "\\" + strVorsluStofnunID + "\\" + strSkjalmyndaraID + "\\" + strVarslaID + "\\Documents";
+                    }
+                }
+
+                double dColl = Convert.ToInt32(strDocID) / 10000;
+                int iID = Convert.ToInt32(strDocID);
+                if (iID == 1)
+                {
+                    dColl = 1;
+                }
+                else
+                {
+                    dColl = dColl + 1;
+                }
+                if (iID == 10000)
+                {
+                    dColl = 0;
+                    dColl = dColl + 1;
+                }
+              
+                strSlod = strSlod + "\\docCollection" + dColl.ToString() + "\\" + strDocID;
+                if (Directory.Exists(strSlod))
+                {
+                    string[] strFiles = Directory.GetFiles(strSlod);
+                    if (strFiles.Length == 1)
+                    {
+                        FileInfo fifo = new FileInfo(strFiles[0]);
+                        string strExtension = fifo.Extension;
+                        midlun.uppfæraExtension(strExtension, strID);
+                    }
+
+                }
+            }
+
+            MessageBox.Show("Búið");
         }
     }
 }

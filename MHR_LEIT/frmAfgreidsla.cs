@@ -15,6 +15,7 @@ namespace MHR_LEIT
     public partial class frmAfgreidsla : Form
     {
         cNotandi not = new cNotandi();
+         
         public frmAfgreidsla()
         {
             InitializeComponent();
@@ -26,5 +27,6 @@ namespace MHR_LEIT
             this.Controls.Add(pantanir);
             pantanir.Dock = DockStyle.Fill;
         }
+
     }
 }

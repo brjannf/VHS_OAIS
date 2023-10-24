@@ -243,6 +243,20 @@ namespace cClassOAIS
             
         }
 
+        /// <summary>
+        /// Bæti hér við eða breytum dálkum
+        /// </summary>
+        /// <param name="strKennitala"></param>
+        /// 
+        public void addExtensionDalk()
+        {
+            sækjaTengistreng();
+            string strSQL = "ALTER TABLE `dt_midlun` ADD COLUMN `extension` VARCHAR(45) AFTER `docinnihald`;";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+        
+
+        }
+
         public void skraInnskra(string strKennitala)
         {
             sækjaTengistreng();
