@@ -136,6 +136,8 @@ namespace MHR_LEIT
             string[] strFiles = Directory.GetFiles(strValid);
             m_strFileValinn = strFiles[0];
 
+           
+
 
             //Image image = Image.FromFile(m_strFileValinn);
             //m_pibSkjal.Image = image;
@@ -197,6 +199,8 @@ namespace MHR_LEIT
                     string[] strSplit = m_dtSkrar.Rows[i]["mappa"].ToString().Split('\\');
                     //   m_tobLeitarord.Text = m_dtSkrar.Rows[i]["mappa"].ToString();
                     strSkra = strSplit[strSplit.Length - 1]; // r["skjalID"].ToString();
+                    m_lilSlod.Text = string.Format("Slóð: {0}", m_dtSkrar.Rows[i]["mappa"].ToString().Replace(strSkra, ""));
+                    m_lblSlodFile.Text = string.Format("Titill: {0}{1}{2}", strSkra, Environment.NewLine, m_strIdValinn);
                 }
                 i++;
             }
@@ -350,16 +354,17 @@ namespace MHR_LEIT
                     {
                         string[] strSplit = e.Node.Tag.ToString().Split("\\");
                         string strSlod = e.Node.Tag.ToString().Replace(strSplit[strSplit.Length - 1], "");
-                        m_lblSlodFile.Text = string.Format("Slóð {0}{1}", strSlod, Environment.NewLine);
+                        m_lilSlod.Text = string.Format("Slóð {0}{1}", strSlod, Environment.NewLine);
                         m_lblDagsetning.Text = string.Empty;
+                        m_lblSlodFile.Text = string.Empty;
                     }
                     else
                     {
                         string[] strSplit = e.Node.Parent.Tag.ToString().Split("\\");
                         string strSlod = e.Node.Parent.Tag.ToString().Replace(strSplit[strSplit.Length - 1], "");
-                        m_lblSlodFile.Text = string.Format("Slóð {0}{1}", strSlod, Environment.NewLine);
+                        m_lilSlod.Text = string.Format("Slóð {0}{1}", strSlod, Environment.NewLine);
 
-                        m_lblSlodFile.Text += string.Format("Titill: {0}{1}Auðkenni skjals: {2}", e.Node.Text, Environment.NewLine, e.Node.Tag);
+                        m_lblSlodFile.Text = string.Format("Titill: {0}{1}Auðkenni skjals: {2}", e.Node.Text, Environment.NewLine, e.Node.Tag);
                     }
                   
                     if (e.Node.Tag.ToString().Contains("\\"))
@@ -908,9 +913,9 @@ namespace MHR_LEIT
                         strSlod = strSlod.Replace(strSplit[strSplit.Length - 1], "");
                     }
 
-                    m_lblSlodFile.Text = string.Format("Slóð {0}{1}", strSlod, Environment.NewLine);
+                    m_lilSlod.Text = string.Format("Slóð {0}{1}", strSlod, Environment.NewLine);
 
-                    m_lblSlodFile.Text += string.Format("Titill: {0}{1}Auðkenni skjals: {2}", e.Node.Text, Environment.NewLine, e.Node.Tag);
+                    m_lblSlodFile.Text = string.Format("Titill: {0}{1}Auðkenni skjals: {2}", e.Node.Text, Environment.NewLine, e.Node.Tag);
                   //  m_lblSlodFile.Text = string.Format("Slóð skjals {0}{1}", e.Node.Tag.ToString(), Environment.NewLine);
                      int iID = Convert.ToInt32(e.Node.Tag);
                     fyllaMyndSkjal(iID, 1);
@@ -1021,7 +1026,160 @@ namespace MHR_LEIT
                     }
                 }
             }
-        } 
+        }
+
+        private void m_lilSlod_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string strSlod = m_lilSlod.Text.Replace("Slóð ", "").Trim();
+           
+
+            string strMappa = string.Empty;
+            string[] strSplit = strSlod.Split('\\');
+            string strLeitMappa = string.Empty;
+            bool bBuid = false;
+            string strSkjalID = string.Empty;
+            if (m_tacStrukturLeit.SelectedTab == m_tapMoppuStruct)
+            {
+                strSkjalID = m_trwFileSystem.SelectedNode.Tag.ToString();
+            }
+            else
+            {
+                if(m_trwLeit.SelectedNode is  null)
+                {
+                    strSkjalID = m_trwFileSystem.SelectedNode.Tag.ToString();
+                }
+                else
+                {
+                    strSkjalID = m_trwLeit.SelectedNode.Tag.ToString();
+                }
+                
+            }
+            m_tacStrukturLeit.SelectedTab = m_tapMoppuStruct;
+            foreach (string str in strSplit)
+            {
+                if(str != string.Empty)
+                {
+                    if (!bBuid)
+                    {
+                        strLeitMappa += str + "\\";
+                        TreeNode[] node = m_trwFileSystem.Nodes.Find(strLeitMappa, true);
+                        if (node.Length == 0)
+                        {
+                            strMappa = str;
+                            bBuid = true;
+                        }
+                    }
+                }
+                
+            }
+            string strExp = "mappa like '" + strLeitMappa + "%'";
+            DataTable dtRest = new DataTable();
+            DataRow[] fRows = m_dtSkrar.Select(strExp);
+
+            foreach (DataRow r in fRows)
+            {
+                //string strValid =  e.Node.Tag.ToString();
+                //string strMappaTest = r["mappa"].ToString();
+                //  if(strValid == strMappaTest)
+                //  {
+
+                //  }
+                strSplit = r["mappa"].ToString().Split("\\");
+                int i = 1;
+                foreach (string str in strSplit)
+                {
+                    if (bBuid)
+                    {
+                        if (str == strMappa)
+                        {
+                            bBuid = false;
+                        }
+                    }
+                    else
+                    {
+                        if (r["mappa"].ToString().Contains(strMappa + "\\" + str))
+                        {
+                            if (str.Contains(".") && i == strSplit.Length)
+                            {
+                                TreeNode[] nodes = m_trwFileSystem.Nodes.Find(strLeitMappa, true);
+                                TreeNode n = new TreeNode(str);
+                                n.Tag = r["skjalID"].ToString();
+                                Boolean b = false;
+                                //foreach (TreeNode thisNode in e.Node.Nodes)
+                                //{
+                                //    if (thisNode.Text == n.Text)
+                                //    {
+                                //        b = true;
+                                //    }
+                                //}
+                         //       if (!b)
+                                {
+                                    n.Tag = r["skjalID"].ToString();
+                                    var nodus = m_trwFileSystem.FlattenTree()
+                                     .Where(nn => nn.Tag == n.Tag)
+                                    .ToList();
+                                   // TreeNode[] nodesX = m_trwFileSystem.Nodes.Find(n.Tag.ToString(), true);
+                                    if (nodus.Count == 0)
+                                    {
+                                        if (n.Tag.ToString() == strSkjalID)
+                                        {
+                                            TreeNodeCollection colNode = nodes[0].Nodes;
+                                            bool bErTil = false;
+                                            foreach(TreeNode nx in colNode)
+                                            {
+                                                if(nx.Text == n.Text)
+                                                {
+                                                    nx.BackColor = Color.LightBlue;
+                                                    nodes[0].Expand();
+                                                    m_trwFileSystem.SelectedNode = nx;
+                                                    //Point p = new Point(nx.Bounds.X, nx.Bounds.Y);
+                                                    //m_trwFileSystem.AutoScrollOffset = p;
+                                                    bErTil = true;
+                                                }
+                                            }
+                                            if(!bErTil)
+                                            {
+                                                nodes[0].Nodes.Add(n);
+                                                n.BackColor = Color.LightBlue;
+                                                nodes[0].Expand();
+                                                m_trwFileSystem.SelectedNode = n;
+                                                //Point p = new Point(n.Bounds.X, n.Bounds.Y);
+                                               // m_trwFileSystem.AutoScrollOffset = p;
+                                            }
+                                          
+                                        }
+                                       
+                                    }
+
+                                }
+                                
+
+                            }
+                            else
+                            {
+                                //TreeNode n = new TreeNode(str);
+                                //n.Tag = strLeitMappa; // + str;
+                                //                      //var nodus = m_trwFileSystem.FlattenTree()
+                                //                      // .Where(nn => nn.Tag == n.Tag)
+                                //                      //.ToList();
+                                //TreeNode[] nodes = m_trwFileSystem.Nodes.Find(n.Tag.ToString(), true);
+
+                                //if (nodes[0] == null)
+                                //{
+                                //    e.Node.Nodes.Add(n);
+                                //    e.Node.Expand();
+                                //}
+
+                            }
+                           
+                        }
+
+                    }
+                    i++;
+                }
+
+            }
+        }
     }
     public static class SOExtension
     {

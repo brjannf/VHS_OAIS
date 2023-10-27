@@ -52,6 +52,7 @@
             this.m_lblLeitarNidurstodur = new System.Windows.Forms.Label();
             this.m_tobLeitarord = new System.Windows.Forms.TextBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.m_lilSlod = new System.Windows.Forms.LinkLabel();
             this.m_lblDagsetning = new System.Windows.Forms.Label();
             this.m_btnAfgreida = new System.Windows.Forms.Button();
             this.m_lblSlodFile = new System.Windows.Forms.Label();
@@ -363,6 +364,7 @@
             // 
             // splitContainer3.Panel1
             // 
+            this.splitContainer3.Panel1.Controls.Add(this.m_lilSlod);
             this.splitContainer3.Panel1.Controls.Add(this.m_lblDagsetning);
             this.splitContainer3.Panel1.Controls.Add(this.m_btnAfgreida);
             this.splitContainer3.Panel1.Controls.Add(this.m_lblSlodFile);
@@ -378,6 +380,17 @@
             this.splitContainer3.Size = new System.Drawing.Size(1494, 763);
             this.splitContainer3.SplitterDistance = 114;
             this.splitContainer3.TabIndex = 1;
+            // 
+            // m_lilSlod
+            // 
+            this.m_lilSlod.AutoSize = true;
+            this.m_lilSlod.Location = new System.Drawing.Point(19, 29);
+            this.m_lilSlod.Name = "m_lilSlod";
+            this.m_lilSlod.Size = new System.Drawing.Size(55, 15);
+            this.m_lilSlod.TabIndex = 8;
+            this.m_lilSlod.TabStop = true;
+            this.m_lilSlod.Text = "m_lilSlod";
+            this.m_lilSlod.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_lilSlod_LinkClicked);
             // 
             // m_lblDagsetning
             // 
@@ -402,7 +415,7 @@
             // m_lblSlodFile
             // 
             this.m_lblSlodFile.AutoSize = true;
-            this.m_lblSlodFile.Location = new System.Drawing.Point(19, 30);
+            this.m_lblSlodFile.Location = new System.Drawing.Point(19, 47);
             this.m_lblSlodFile.Name = "m_lblSlodFile";
             this.m_lblSlodFile.Size = new System.Drawing.Size(38, 15);
             this.m_lblSlodFile.TabIndex = 5;
@@ -649,5 +662,6 @@
         private DataGridViewTextBoxColumn colMD5;
         private DataGridViewTextBoxColumn colSlod;
         private DataGridViewButtonColumn colSkraEyda;
+        private LinkLabel m_lilSlod;
     }
 }

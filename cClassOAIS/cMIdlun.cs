@@ -294,7 +294,9 @@ namespace cClassOAIS
                                             string strExtension = fifo.Extension;
                                             this.extension = strExtension;
                                         }
-                                       
+                                        strSlod = strSlod.Replace("FRUM", "AVID");
+                                        strFile = Directory.GetFiles(strSlod);
+
                                         if (strFile[0].EndsWith(".tif"))
                                         {
                                             IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
@@ -550,7 +552,7 @@ namespace cClassOAIS
             string strSQL = string.Empty;
             if (strLeitarord.Length != 0)
             {
-                strSQL = string.Format("Select group_concat(documentid) as ids FROM dt_midlun m WHERE MATCH (doctitill,docLastWriten,maltitill, docInnihald)AGAINST ('{0}' IN BOOLEAN MODE) and heiti_gagangrunns = '{1}';", strLeitarord, strGagnagrunnur);
+                strSQL = string.Format("Select group_concat(documentid) as ids FROM dt_midlun m WHERE MATCH (doctitill,docLastWriten,maltitill, docInnihald) AGAINST ('{0}' IN BOOLEAN MODE) and heiti_gagangrunns = '{1}' ", strLeitarord, strGagnagrunnur);
             }
             else
             {
