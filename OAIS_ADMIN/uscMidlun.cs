@@ -38,6 +38,7 @@ namespace OAIS_ADMIN
         public void fyllaVorsluUtgafur()
         {
             cSkjalaskra skrá = new cSkjalaskra();
+            skrá.m_bAfrit = virkurnotandi.m_bAfrit;
             DataTable dt = skrá.getVörsluútgáfurMidlun();
 
             m_dgvUtgafur.AutoGenerateColumns = false;
@@ -572,6 +573,7 @@ namespace OAIS_ADMIN
             {
                 string strAuðkenni = dRow.Cells["colAudkenni"].Value.ToString();
                 cSkjalaskra skra = new cSkjalaskra();
+                skra.m_bAfrit = virkurnotandi.m_bAfrit;
                 DataTable dtSkra = skra.getGeymsluSkra(strAuðkenni);
                 if (dtSkra.Rows.Count > 1)
                 {

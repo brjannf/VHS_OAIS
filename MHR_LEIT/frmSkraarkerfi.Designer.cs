@@ -52,6 +52,10 @@
             this.m_lblLeitarNidurstodur = new System.Windows.Forms.Label();
             this.m_tobLeitarord = new System.Windows.Forms.TextBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.m_grbMeta = new System.Windows.Forms.GroupBox();
+            this.m_btnSkjalamyndari = new System.Windows.Forms.Button();
+            this.m_btnSkjalaskrá = new System.Windows.Forms.Button();
+            this.m_btnVorslustofnun = new System.Windows.Forms.Button();
             this.m_lilSlod = new System.Windows.Forms.LinkLabel();
             this.m_lblDagsetning = new System.Windows.Forms.Label();
             this.m_btnAfgreida = new System.Windows.Forms.Button();
@@ -86,6 +90,7 @@
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.m_grbMeta.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_numUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -364,6 +369,7 @@
             // 
             // splitContainer3.Panel1
             // 
+            this.splitContainer3.Panel1.Controls.Add(this.m_grbMeta);
             this.splitContainer3.Panel1.Controls.Add(this.m_lilSlod);
             this.splitContainer3.Panel1.Controls.Add(this.m_lblDagsetning);
             this.splitContainer3.Panel1.Controls.Add(this.m_btnAfgreida);
@@ -380,6 +386,48 @@
             this.splitContainer3.Size = new System.Drawing.Size(1494, 763);
             this.splitContainer3.SplitterDistance = 114;
             this.splitContainer3.TabIndex = 1;
+            // 
+            // m_grbMeta
+            // 
+            this.m_grbMeta.Controls.Add(this.m_btnSkjalamyndari);
+            this.m_grbMeta.Controls.Add(this.m_btnSkjalaskrá);
+            this.m_grbMeta.Controls.Add(this.m_btnVorslustofnun);
+            this.m_grbMeta.Location = new System.Drawing.Point(1122, 10);
+            this.m_grbMeta.Name = "m_grbMeta";
+            this.m_grbMeta.Size = new System.Drawing.Size(239, 101);
+            this.m_grbMeta.TabIndex = 9;
+            this.m_grbMeta.TabStop = false;
+            this.m_grbMeta.Text = "Lýsigögn";
+            // 
+            // m_btnSkjalamyndari
+            // 
+            this.m_btnSkjalamyndari.Location = new System.Drawing.Point(33, 63);
+            this.m_btnSkjalamyndari.Name = "m_btnSkjalamyndari";
+            this.m_btnSkjalamyndari.Size = new System.Drawing.Size(90, 23);
+            this.m_btnSkjalamyndari.TabIndex = 2;
+            this.m_btnSkjalamyndari.Text = "Skjalamyndari";
+            this.m_btnSkjalamyndari.UseVisualStyleBackColor = true;
+            this.m_btnSkjalamyndari.Click += new System.EventHandler(this.m_btnSkjalamyndari_Click);
+            // 
+            // m_btnSkjalaskrá
+            // 
+            this.m_btnSkjalaskrá.Location = new System.Drawing.Point(138, 22);
+            this.m_btnSkjalaskrá.Name = "m_btnSkjalaskrá";
+            this.m_btnSkjalaskrá.Size = new System.Drawing.Size(75, 23);
+            this.m_btnSkjalaskrá.TabIndex = 1;
+            this.m_btnSkjalaskrá.Text = "Skjalaskrá";
+            this.m_btnSkjalaskrá.UseVisualStyleBackColor = true;
+            this.m_btnSkjalaskrá.Click += new System.EventHandler(this.m_btnSkjalaskrá_Click);
+            // 
+            // m_btnVorslustofnun
+            // 
+            this.m_btnVorslustofnun.Location = new System.Drawing.Point(33, 22);
+            this.m_btnVorslustofnun.Name = "m_btnVorslustofnun";
+            this.m_btnVorslustofnun.Size = new System.Drawing.Size(90, 23);
+            this.m_btnVorslustofnun.TabIndex = 0;
+            this.m_btnVorslustofnun.Text = "Vörslustofnun";
+            this.m_btnVorslustofnun.UseVisualStyleBackColor = true;
+            this.m_btnVorslustofnun.Click += new System.EventHandler(this.m_btnVorslustofnun_Click);
             // 
             // m_lilSlod
             // 
@@ -404,7 +452,7 @@
             // m_btnAfgreida
             // 
             this.m_btnAfgreida.Enabled = false;
-            this.m_btnAfgreida.Location = new System.Drawing.Point(1061, 84);
+            this.m_btnAfgreida.Location = new System.Drawing.Point(933, 84);
             this.m_btnAfgreida.Name = "m_btnAfgreida";
             this.m_btnAfgreida.Size = new System.Drawing.Size(150, 23);
             this.m_btnAfgreida.TabIndex = 6;
@@ -424,7 +472,7 @@
             // m_lblSidaValinn
             // 
             this.m_lblSidaValinn.AutoSize = true;
-            this.m_lblSidaValinn.Location = new System.Drawing.Point(641, 92);
+            this.m_lblSidaValinn.Location = new System.Drawing.Point(678, 88);
             this.m_lblSidaValinn.Name = "m_lblSidaValinn";
             this.m_lblSidaValinn.Size = new System.Drawing.Size(29, 15);
             this.m_lblSidaValinn.TabIndex = 3;
@@ -433,7 +481,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(517, 92);
+            this.label1.Location = new System.Drawing.Point(554, 88);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 15);
             this.label1.TabIndex = 2;
@@ -441,7 +489,7 @@
             // 
             // m_btnAfrit
             // 
-            this.m_btnAfrit.Location = new System.Drawing.Point(1061, 39);
+            this.m_btnAfrit.Location = new System.Drawing.Point(933, 47);
             this.m_btnAfrit.Name = "m_btnAfrit";
             this.m_btnAfrit.Size = new System.Drawing.Size(150, 23);
             this.m_btnAfrit.TabIndex = 1;
@@ -451,7 +499,7 @@
             // 
             // m_numUpDown
             // 
-            this.m_numUpDown.Location = new System.Drawing.Point(576, 88);
+            this.m_numUpDown.Location = new System.Drawing.Point(613, 84);
             this.m_numUpDown.Name = "m_numUpDown";
             this.m_numUpDown.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.m_numUpDown.Size = new System.Drawing.Size(40, 23);
@@ -460,7 +508,7 @@
             // 
             // m_btnFrumRit
             // 
-            this.m_btnFrumRit.Location = new System.Drawing.Point(1061, 10);
+            this.m_btnFrumRit.Location = new System.Drawing.Point(933, 10);
             this.m_btnFrumRit.Name = "m_btnFrumRit";
             this.m_btnFrumRit.Size = new System.Drawing.Size(150, 23);
             this.m_btnFrumRit.TabIndex = 0;
@@ -602,6 +650,7 @@
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.m_grbMeta.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_numUpDown)).EndInit();
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
@@ -663,5 +712,9 @@
         private DataGridViewTextBoxColumn colSlod;
         private DataGridViewButtonColumn colSkraEyda;
         private LinkLabel m_lilSlod;
+        private GroupBox m_grbMeta;
+        private Button m_btnSkjalamyndari;
+        private Button m_btnSkjalaskrá;
+        private Button m_btnVorslustofnun;
     }
 }

@@ -41,8 +41,12 @@ namespace OAIS_ADMIN
         public frmGeymsluskra(string strAuðkenni, string strSlod,string strTegund, cNotandi not, string strVarsla)
         {
             InitializeComponent();
-
+        
             virkurnotandi = not;
+            temp.m_bAfrit = virkurnotandi.m_bAfrit; 
+            midlun.m_bAfrit = virkurnotandi.m_bAfrit;
+            skjal.m_bAfrit = virkurnotandi.m_bAfrit;
+            fond.m_bAfrit = virkurnotandi.m_bAfrit;
             m_dtGEYMSLUSKRA.Columns.Add("tilheyrir_skráningu");
             m_dtGEYMSLUSKRA.Columns.Add("upplysingastig");
             m_dtGEYMSLUSKRA.Columns.Add("auðkenni");
@@ -66,6 +70,7 @@ namespace OAIS_ADMIN
 
         private void fyllaSkjalaSkra()
         {
+            
             DataTable dt = skjal.getGeymsluSkra(m_strAuðkenni);
             m_trwGeymsluskrá.Nodes.Clear();
             TreeNode node = new TreeNode();

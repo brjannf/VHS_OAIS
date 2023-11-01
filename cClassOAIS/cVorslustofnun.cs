@@ -67,6 +67,7 @@ namespace cClassOAIS
         #endregion
         public DataTable getENUMSkraningStaða()
         {
+            sækjaTengistreng();
             string strSQL = string.Empty;
             if (m_bAfrit)
             {
@@ -205,7 +206,7 @@ namespace cClassOAIS
         public  void getVörslustofnun(string strAuðkenni)
         {
             sækjaTengistreng();
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_isdiah_vörslustofnanir` d where 5_1_1_auðkenni = '{0}';", strAuðkenni);
+            string strSQL = string.Format("SELECT * FROM `dt_isdiah_vörslustofnanir` d where 5_1_1_auðkenni = '{0}';", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
             DataTable dt = new DataTable();

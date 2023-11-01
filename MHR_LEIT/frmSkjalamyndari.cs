@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using cClassOAIS;
+using OAIS_ADMIN;
+
+namespace MHR_LEIT
+{
+    public partial class frmSkjalamyndari : Form
+    {
+        public frmSkjalamyndari(cSkjalamyndari skjalamyndari, cNotandi virkur)
+        {
+            InitializeComponent();
+            this.Text = "Skjalamyndari - " + skjalamyndari.opinbert_heiti_5_1_2;
+            uscSkjalamyndari skjalM = new uscSkjalamyndari(skjalamyndari, virkur);
+            this.Controls.Add(skjalM);
+            skjalM.Dock = DockStyle.Fill;
+            this.WindowState = FormWindowState.Maximized;
+        }
+    }
+}

@@ -38,6 +38,9 @@ namespace MHR_LEIT
         string m_strIdValinn = string.Empty;
         string m_strRoot = string.Empty;
         string m_strVorslutgafa = string.Empty;
+        string m_strVorsluSofnunID = string.Empty;
+        string m_strSkjalamID = string.Empty;
+       
         ArrayList arr = new ArrayList();
         public DataTable m_dtValid = new DataTable();
 
@@ -49,6 +52,9 @@ namespace MHR_LEIT
         public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP, DataTable dtMal, DataTable dtGrunn, cNotandi not, DataSet dsDIPmal)
         {
             InitializeComponent();
+
+            m_strVorsluSofnunID = row["vorslustofnun_audkenni"].ToString();
+            m_strSkjalamID = row["skjalamyndari_audkenni"].ToString(); 
 
             this.Text = row["titill_vorsluutgafu"].ToString();   
 
@@ -1179,6 +1185,35 @@ namespace MHR_LEIT
                 }
 
             }
+        }
+
+        private void m_btnVorslustofnun_Click(object sender, EventArgs e)
+        {
+           
+            
+            frmVorslustofnun frmVorslu = new frmVorslustofnun(m_strVorsluSofnunID, virkurnotandi);
+            frmVorslu.ShowDialog();
+        }
+
+        private void m_btnSkjalamyndari_Click(object sender, EventArgs e)
+        {
+            cSkjalamyndari skjalamyndari = new cSkjalamyndari();
+            skjalamyndari.m_bAfrit = virkurnotandi.m_bAfrit;
+            skjalamyndari.getSkjalamyndaraByAuðkenni(m_strSkjalamID);
+            frmSkjalamyndari frmSkjalm = new frmSkjalamyndari(skjalamyndari, virkurnotandi);
+            frmSkjalm.ShowDialog();
+        }
+
+        private void m_btnSkjalaskrá_Click(object sender, EventArgs e)
+        {
+            //string strAuðkenni, string strSlod,string strTegund, cNotandi not, string strVarsla
+            string strAuðkenni = m_strVorslutgafa; // senderGrid.Rows[e.RowIndex].Cells["colAudkenni"].Value.ToString();
+            //string strSlod = senderGrid.Rows[e.RowIndex].Cells["colVarslaSlod"].Value.ToString();
+            string strTegund = "Skráarkerfi"; // senderGrid.Rows[e.RowIndex].Cells["colTegund"].Value.ToString();
+            //string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorsluID"].Value.ToString();
+           
+            frmGeymsluskra frmgeymsla = new frmGeymsluskra(m_strVorslutgafa, m_strRoot, strTegund, virkurnotandi, m_strVorsluSofnunID);
+            frmgeymsla.ShowDialog();
         }
     }
     public static class SOExtension

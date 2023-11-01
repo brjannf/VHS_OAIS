@@ -184,7 +184,7 @@ namespace cClassOAIS
         public DataTable getGeymsluSkra(string strAuðkenni)
         {
             sækjaTengistreng();
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_isadg_skráningar` d where 3_1_1_auðkenni like '{0}%' order by  3_1_1_auðkenni asc;", strAuðkenni);
+            string strSQL = string.Format("SELECT * FROM `dt_isadg_skráningar` d where 3_1_1_auðkenni like '{0}%' order by  3_1_1_auðkenni asc;", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -192,7 +192,7 @@ namespace cClassOAIS
         public void getSkraning(string strAuðkenni)
         {
             sækjaTengistreng();
-            string strSQL = string.Format("SELECT * FROM db_oais_admin.`dt_isadg_skráningar` d where 3_1_1_auðkenni = '{0}'; ", strAuðkenni);
+            string strSQL = string.Format("SELECT * FROM `dt_isadg_skráningar` d where 3_1_1_auðkenni = '{0}'; ", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
 
@@ -335,7 +335,7 @@ namespace cClassOAIS
         public void eydaGeymsluskra(string strAuðkenni)
         {
             sækjaTengistreng();
-            string strSQL = string.Format("DELETE FROM db_oais_admin.`dt_isadg_skráningar`  where 3_1_1_auðkenni like '{0}-%';", strAuðkenni);
+            string strSQL = string.Format("DELETE FROM `dt_isadg_skráningar`  where 3_1_1_auðkenni like '{0}-%';", strAuðkenni);
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);  
         }
 
