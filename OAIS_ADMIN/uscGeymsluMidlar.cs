@@ -29,7 +29,7 @@ namespace OAIS_ADMIN
         {
             InitializeComponent();
             fyllaComputer();
-             getSize();
+            getSize();
          
 
 
@@ -43,7 +43,7 @@ namespace OAIS_ADMIN
                 if (dirInfo.Exists)
                 {
 
-                 //  m_lNotad = await Task.Run(() => dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length));
+                  m_lNotad = await Task.Run(() => dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length));
                 }
             }
             catch (Exception x)

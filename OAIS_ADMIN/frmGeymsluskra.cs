@@ -475,11 +475,11 @@ namespace OAIS_ADMIN
         public void PopulateTreeView(TreeView treeView, string[] paths, char pathSeparator, string strTag, string strSlod)
         {
             TreeNode lastNode = null;
-            string subPathAgg;
+            string subPathAgg = string.Empty;
             int i = 0;
             foreach (string path in paths)
             {
-                subPathAgg = string.Empty;
+                //   subPathAgg = string.Empty;
                 i++;
                 bool bSkjal = false;
                 if (i == paths.Length)
@@ -496,13 +496,17 @@ namespace OAIS_ADMIN
                     foreach (string subPath in path.Split(pathSeparator))
                     {
                         subPathAgg += subPath + pathSeparator;
-                        TreeNode[] nodes = treeView.Nodes.Find(subPathAgg, true);
+                        //var nodus = m_trwFileSystem.FlattenTree()
+                        // .Where(nn => nn.Tag == lastNode.Tag)
+                        //.ToList();
+                        TreeNode[] nodes = treeView.Nodes.Find(subPathAgg, true);  //leitar bara að nafni og finnur oft vitlaust og setur í
                         if (nodes.Length == 0)
                         {
                             if (lastNode == null)
                             {
                                 lastNode = treeView.Nodes.Add(subPathAgg, subPath);
-                                lastNode.ExpandAll();
+                                lastNode.Expand();
+
                             }
 
                             else
@@ -512,10 +516,11 @@ namespace OAIS_ADMIN
                                 if (bSkjal) //if (lastNode.Text.Contains('.'))
                                 {
                                     lastNode.Tag = strTag;
-                                  //  if (m_strIdValinn == strTag)
-                                    {
-                                        lastNode.BackColor = Color.LightGreen;
-                                    }
+                                    //if (m_strIdValinn == strTag)
+                                    //{
+                                    //    lastNode.BackColor = Color.LightGreen;
+                                    //    m_trwFileSystem.SelectedNode = lastNode;
+                                    //}
                                 }
                                 else
                                 {
@@ -529,6 +534,11 @@ namespace OAIS_ADMIN
                         else
                         {
                             lastNode = nodes[0];
+                            if (lastNode.IsSelected)
+                            {
+                                lastNode.Expand();
+                            }
+
 
                         }
 

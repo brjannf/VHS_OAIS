@@ -220,29 +220,7 @@ namespace MHR_LEIT
                
         }
 
-        private static void PopulateTreeView2(TreeView treeView, string[] paths, char pathSeparator)
-        {
-            TreeNode lastNode = new TreeNode();
-            string subPathAgg;
-            foreach (string path in paths)
-            {
-                subPathAgg = string.Empty;
-                foreach (string subPath in path.Split(pathSeparator))
-                {
-                    subPathAgg += subPath + pathSeparator;
-                    TreeNode[] nodes = treeView.Nodes.Find(subPathAgg, true);
-                    if (nodes.Length == 0)
-                        if (lastNode != null)
-                            lastNode = treeView.Nodes.Add(subPathAgg, subPath);
-                        else
-                            lastNode = lastNode.Nodes.Add(subPathAgg, subPath);
-                    else
-                        lastNode = nodes[0];
-                }
-                lastNode = null; // This is the place code was changed
-
-            }
-        }
+      
      
 
         public void PopulateTreeView(TreeView treeView, string[] paths, char pathSeparator, string strTag, string strSlod)

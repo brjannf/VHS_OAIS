@@ -179,7 +179,7 @@ namespace OAIS_ADMIN
             utgafa.getVörsluútgáfu(skrá.auðkenni_3_1_1);
             utgafa.midlun = "1";
             utgafa.hver_midladi = virkurnotandi.nafn;
-            utgafa.uppFaeraVegnaMidlun();
+         //   utgafa.uppFaeraVegnaMidlun();
             //1. búa til gagnagrunninn
             string strDataBase = skrá.auðkenni_3_1_1;
             strDataBase = strDataBase.Replace(".", "_");
@@ -254,8 +254,8 @@ namespace OAIS_ADMIN
                                 strTime += rr["name"] + ":::";
                                 rr["type"] = "datetime";
                             }
-                            //ríkiskaup
-                            if (rr["type"].ToString().ToUpper().StartsWith("NATIONAL CHARACTER VARYING") && rr["name"].ToString() != "ID")
+                            //get ekki haft Text ef þetta er primerlykill
+                            if (rr["type"].ToString().ToUpper().StartsWith("NATIONAL CHARACTER VARYING") &&  rr["name"].ToString() != "ID" && rr["name"].ToString() != "SagID" && rr["name"].ToString() != "DocumentID" && rr["name"].ToString() != "JournalKeyID" && rr["name"].ToString() != "AbbreviationId" && rr["name"].ToString() != "ExcludedListId")
                             {
                                 rr["type"] = "TEXT";
                             }
@@ -415,7 +415,7 @@ namespace OAIS_ADMIN
                         midlun.skjalaskra_timabil = skrá.tímabil_3_1_3;
                         midlun.hver_skradi = virkurnotandi.nafn;
                         //   midlun
-                        midlun.insertToTable(strColumn, rd, strDataBase, strTableName, strTime, strMetadataFunc, skrá.auðkenni_3_1_1, strSlod);
+                        midlun.insertToTable(strColumn, rd, strDataBase, strTableName, strTime, strMetadataFunc, skrá.auðkenni_3_1_1, strSlod, m_chbOCR.Checked);
                         m_prbGogn.PerformStep();
                         m_lblGognStatus.Text = string.Format("Vista röð {0}/{1}", m_prbGogn.Value, m_prbGogn.Maximum);
                         Application.DoEvents();
@@ -499,6 +499,13 @@ namespace OAIS_ADMIN
                 }
                 m_grbStatus.Visible = true;
                 midla(m_strSlod);
+                //þarf að fara neðar
+                cVorsluutgafur utgafa = new cVorsluutgafur();
+                utgafa.getVörsluútgáfu(skrá.auðkenni_3_1_1);
+                utgafa.midlun = "1";
+                utgafa.hver_midladi = virkurnotandi.nafn;
+                utgafa.uppFaeraVegnaMidlun();
+
                 fyllaVorsluUtgafur();
             }
             else

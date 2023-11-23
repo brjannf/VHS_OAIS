@@ -106,10 +106,10 @@ namespace MHR_LEIT
             string strMalID = dtMal.Rows[0][0].ToString();
 
             //ná í skjöl máls fyllaskjalatöflu
-            strExp = "nafn='mal_doc'";
+            strExp = "nafn='mal_gogn'";
             fRow = m_dtFyrirspurnir.Select(strExp);
             strSQL = fRow[0]["fyrirspurn"].ToString();
-            strSQL = strSQL.Replace("{malID}", strMalID);
+            strSQL = strSQL.Replace("'{docid}'", strMalID);
             DataTable dtSkjol = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
             m_dgvSkjol.DataSource = dtSkjol;
             m_grbSkjol.Text = string.Format("Skjöl ({0})", dtSkjol.Rows.Count);
@@ -221,7 +221,7 @@ namespace MHR_LEIT
                     splitContainer5.Visible = false;
                     string strMalID = e.Node.Tag.ToString();
                    
-                    string strExp = "nafn='eitt_mal'";
+                    string strExp = "nafn='mal_malID'";
                     DataRow[] fRow = m_dtFyrirspurnir.Select(strExp);
                     string strSQL = fRow[0]["fyrirspurn"].ToString();
                     strSQL = strSQL.Replace("{malID}", strMalID);
@@ -229,13 +229,36 @@ namespace MHR_LEIT
                     DataTable dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
                     m_strSQLMAL = strSQL;
                     fyllaInfoMall(dtMal);
-
+                    // ná í document, email og memo
                     strExp = "nafn='mal_gogn'";
                     fRow = m_dtFyrirspurnir.Select(strExp);
                     strSQL = fRow[0]["fyrirspurn"].ToString();
                     strSQL = strSQL.Replace("{docid}", strMalID);
-
                     DataTable dtSkjol = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                    //ná í það sem er í attachments 
+                    strExp = "nafn='mal_attachment'";
+                    fRow = m_dtFyrirspurnir.Select(strExp);
+                    if(fRow.Length == 1)
+                    {
+                        strSQL = fRow[0]["fyrirspurn"].ToString();
+                        strSQL = strSQL.Replace("{malID}", strMalID);
+                        DataTable dtAtt = dtSkjol.Clone();
+                        dtAtt = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                        foreach (DataRow r in dtAtt.Rows)
+                        {
+                            strExp = "dokumentid='" + r["dokumentid"].ToString() + "'";
+                            fRow = dtSkjol.Select(strExp);
+                            if (fRow.Length == 0)
+                            {
+                                dtSkjol.ImportRow(r);
+                            }
+
+                        }
+                    }
+                   
+
                     m_dgvSkjol.DataSource = dtSkjol;
                     m_grbSkjol.Text = string.Format("Skjöl ({0})", dtSkjol.Rows.Count);
                     foreach (DataGridViewColumn col in m_dgvSkjol.Columns)
@@ -321,7 +344,7 @@ namespace MHR_LEIT
         {     
             if(m_dgvSkjol.SelectedRows.Count == 1 && m_dgvSkjol.Focused)
             {
-                string strDocID = m_dgvSkjol.Rows[m_dgvSkjol.SelectedRows[0].Index].Cells["DokumentID"].Value.ToString();
+                string strDocID = m_dgvSkjol.Rows[m_dgvSkjol.SelectedRows[0].Index].Cells["colDokumentID"].Value.ToString();
                 fyllaMyndSkjal(Convert.ToInt32(strDocID), 1);
             }
            

@@ -171,7 +171,7 @@ namespace cClassOAIS
             }
             return ret;
         }
-        public void insertToTable(string strColumns, DataRow rd, string strDatabase, string strTable, string strTime, string strMetaFunction, string strVörslunumer, string strSlod)
+        public void insertToTable(string strColumns, DataRow rd, string strDatabase, string strTable, string strTime, string strMetaFunction, string strVörslunumer, string strSlod, bool bOCR)
         {
             sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
@@ -257,13 +257,14 @@ namespace cClassOAIS
                     
                     foreach (string str in strSplitFunk)
                     {
-                        if (str != string.Empty)
+                        if (str != string.Empty || str != null)
                         {
                             // try
                             {
                                 strSplit = str.Split('~');
                                 if (strSplit[0] == "Dokumentidentifikation")
                                 {
+                                   
                                     this.documentid = strSplit[1];
                                     this.dalkur_documentid = strSplit[2];
                                     int iID = Convert.ToInt32(strSplit[1]);
@@ -297,23 +298,23 @@ namespace cClassOAIS
                                         strSlod = strSlod.Replace("FRUM", "AVID");
                                         strFile = Directory.GetFiles(strSlod);
 
-                                        if (strFile[0].EndsWith(".tif"))
+                                        if (strFile[0].EndsWith(".tif") && bOCR)
                                         {
                                             IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
                                             var Ocr = new IronTesseract();
                                             Ocr.Language = OcrLanguage.Icelandic;
                                             using (var Input = new OcrInput())
                                             {
-                                              //  if (strFile[0] != "D:\\AIP\\HKOP\\00082\\AVID.HKOP.2023024.1\\Documents\\docCollection1\\4\\1.tif") //vegna náttúrufræðistofu Kópabogs 2023_24
+                                               if (!strFile[0].EndsWith("AVID.HKOP.2023024.1\\Documents\\docCollection1\\4\\1.tif")) //vegna náttúrufræðistofu Kópabogs 2023_24
                                                 {
                                                     Input.AddImage(strFile[0]);
                                                     var Result = Ocr.Read(Input);
                                                     this.docInnihald = Result.Text;
                                                 }
-                                                //else
-                                                //{
-                                                //    this.docInnihald = "Of langur texti fyrir OCR-lestur";
-                                                //}
+                                                else
+                                                {
+                                                    this.docInnihald = "Of langur texti fyrir OCR-lestur";
+                                                }
 
                                             }
                                         }
@@ -340,8 +341,17 @@ namespace cClassOAIS
 
                                 if (strSplit[0] == "Dokumenttitel")
                                 {
-                                    this.doctitill = strSplit[1];
-                                    this.dalkur_doctitill= strSplit[2];
+                                    if(strSplit.Length == 2)
+                                    {   //eitthvað bogið við titlana eru skrítinn tákn í þeim sem ruglar þetta
+                                        this.doctitill = strSplit[0];
+                                        this.dalkur_doctitill = strSplit[1];
+                                    }
+                                    else
+                                    {
+                                        this.doctitill = strSplit[1];
+                                        this.dalkur_doctitill = strSplit[2];
+                                    }
+                                   
                                 }
                                 if (strSplit[0] == "Dokumentdato")
                                 {

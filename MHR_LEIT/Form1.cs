@@ -825,6 +825,18 @@ namespace MHR_LEIT
             {
                 m_tacMain.BringToFront();
                 m_tacMain.Dock = DockStyle.Fill;
+                if(this.virkurNotandi.hlutverk == "Skjalavörður")
+                {
+                    m_tacMain.TabPages.Remove(m_tapUmsjon);
+                }
+                else
+                {
+                    if (!m_tacMain.Contains(m_tapUmsjon))
+                    {
+                        m_tacMain.TabPages.Add(m_tapUmsjon);
+                    }
+                }
+                m_tomUtskra.Visible = true;
                 this.Text = "Velkominn " + virkurNotandi.nafn;
 
                 this.WindowState = FormWindowState.Maximized;
@@ -1700,6 +1712,17 @@ namespace MHR_LEIT
             }
 
             MessageBox.Show("Búið");
+        }
+
+        private void m_tomUtskra_Click(object sender, EventArgs e)
+        {
+            m_pnlNotandi.BringToFront();
+            m_pnlNotandi.Dock = DockStyle.Fill;
+            m_tboNoterndaNafn.Text = string.Empty;
+            m_tboLykilOrd.Text = string.Empty;
+            virkurNotandi.hreinsaHlut();
+            m_tomUtskra.Visible = false;
+
         }
     }
 }
