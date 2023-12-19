@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using cClassOAIS;
 using cClassVHS;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Google.Protobuf.WellKnownTypes;
 using MySql.Data.MySqlClient;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -26,6 +28,7 @@ namespace OAIS_ADMIN
         private string m_strSlod = string.Empty;
         private string m_strGrunnur = string.Empty;
         private DataTable m_dtKlasar = new DataTable();
+        private string m_strHeitiKerfis = string.Empty;
         public uscMidlun()
         {
             InitializeComponent();
@@ -46,9 +49,9 @@ namespace OAIS_ADMIN
             m_dgvUtgafur.DataSource = dtFormat;
             foreach (DataGridViewRow r in m_dgvUtgafur.Rows)
             {
-              if (r.Cells["colMidlad"].Value.ToString() == "1")
+                if (r.Cells["colMidlad"].Value.ToString() == "1")
                 {
-                    r.DefaultCellStyle.BackColor = Color.LightGreen;
+                    r.DefaultCellStyle.BackColor = System.Drawing.Color.LightGreen;
                 }
             }
         }
@@ -59,7 +62,7 @@ namespace OAIS_ADMIN
             DataView view = new DataView(m_dtKlasar);
             DataTable klasar = view.ToTable(true, "klasar");
 
-            foreach(DataRow r in klasar.Rows)
+            foreach (DataRow r in klasar.Rows)
             {
                 TreeNode n = new TreeNode(r["klasar"].ToString());
                 m_trwKlasarVorslustonun.Nodes.Add(n);
@@ -111,7 +114,7 @@ namespace OAIS_ADMIN
                     m_strSlod = senderGrid.Rows[e.RowIndex].Cells["colSlod"].Value.ToString();
                     //1. auðkenni vörsluútgáfu
                     string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colVorsluutgafu"].Value.ToString();
-                    skrá.getSkraning(strAuðkenni.Replace("FRUM","AVID"));
+                    skrá.getSkraning(strAuðkenni.Replace("FRUM", "AVID"));
                     m_strGrunnur = skrá.auðkenni_3_1_1.Replace(".", "_");
                     //2. auðkenni vörslustofnunar
                     string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorslustofnun"].Value.ToString();
@@ -121,6 +124,34 @@ namespace OAIS_ADMIN
                     skjalamyndari.getSkjalamyndaraByAuðkenni(strSkjalam);
                     m_lblValinVorsluutgafa.Text = senderGrid.Rows[e.RowIndex].Cells["colTitill"].Value.ToString();
                     m_lblValinVorsluutgafa.Visible = true;
+
+
+                    DataSet ds = new DataSet();
+                    ds.ReadXml(m_strSlod + "\\Indices\\tableIndex.xml");
+                    string bla = ds.Tables[0].TableName;
+                    if (ds.Tables.Contains("siardDiark"))
+                    {
+                        DataColumnCollection columns = ds.Tables["siardDiark"].Columns;
+                        if (columns.Contains("dbName"))
+                        {
+                            m_strHeitiKerfis = ds.Tables["siardDiark"].Rows[0]["dbName"].ToString();
+                        }
+                        else
+                        {
+                            m_strHeitiKerfis = ds.Tables["table"].Rows[0]["name"].ToString();
+                        }
+                        if (m_strHeitiKerfis != "GoPro" && m_strHeitiKerfis != "Filesystem")
+                        {
+                            m_strHeitiKerfis = "Gagnagrunnur";
+                        }
+                        if (m_strHeitiKerfis == "Filesystem")
+                        {
+                            m_strHeitiKerfis = "Skráakerfi";
+                        }
+                        m_lblTegundVorslu.Text = m_strHeitiKerfis;
+                    }
+
+
 
                     // midla(strslod);
                 }
@@ -132,16 +163,16 @@ namespace OAIS_ADMIN
                     DataTable dtFyrirspurnir = midlun.getGagnagrunnaFyrirSpurnirMidlun(skrá.auðkenni_3_1_1.Replace(".", "_"));
                     m_dgvUtgafur.AutoGenerateColumns = false;
                     m_dgvFyrirSpurnir.DataSource = dtFyrirspurnir;
-                    foreach(DataGridViewRow r in m_dgvFyrirSpurnir.Rows)
+                    foreach (DataGridViewRow r in m_dgvFyrirSpurnir.Rows)
                     {
-                        if(r.Cells["colID"].Value != null)
+                        if (r.Cells["colID"].Value != null)
                         {
                             if (r.Cells["colID"].Value.ToString() != "0")
                             {
-                                r.DefaultCellStyle.BackColor = Color.LightGreen;
+                                r.DefaultCellStyle.BackColor = System.Drawing.Color.LightGreen;
                             }
                         }
-                        
+
                     }
                 }
                 else
@@ -155,13 +186,13 @@ namespace OAIS_ADMIN
                         dt.Columns.Add("database");
                         foreach (DataRow dr in dt.Rows)
                         {
-                           // dr["database"] = strDataBase;
+                            // dr["database"] = strDataBase;
                         }
                         m_dgvUtgafur.AutoGenerateColumns = false;
                         m_dgvFyrirSpurnir.DataSource = ds.Tables["view"];
                     }
                 }
-           
+
                 //uppfæra vorsluutgafu
                 //cVorsluutgafur utgafa = new cVorsluutgafur();
                 //utgafa.getVörsluútgáfu(skrá.auðkenni_3_1_1);
@@ -179,14 +210,15 @@ namespace OAIS_ADMIN
             utgafa.getVörsluútgáfu(skrá.auðkenni_3_1_1);
             utgafa.midlun = "1";
             utgafa.hver_midladi = virkurnotandi.nafn;
-         //   utgafa.uppFaeraVegnaMidlun();
+            //   utgafa.uppFaeraVegnaMidlun();
             //1. búa til gagnagrunninn
             string strDataBase = skrá.auðkenni_3_1_1;
             strDataBase = strDataBase.Replace(".", "_");
             midlun.createDatabase(strDataBase);
-            midlun.tegund_grunns = m_comTegundVörslu.Text;
+
+            midlun.tegund_grunns = m_lblTegundVorslu.Text;
             //2. skrá í yfirlitsgrunn
-           //midlun.instertYfirlit(skrá.auðkenni_3_1_1, skrá.titill_3_1_2);
+            //midlun.instertYfirlit(skrá.auðkenni_3_1_1, skrá.titill_3_1_2);
             //3. búa til töflur - fiska á sama tíma eftir functiondescription
             string strTableIndex = strSlod + "\\Indices\\tableIndex.xml";
             DataSet ds = new DataSet();
@@ -204,7 +236,7 @@ namespace OAIS_ADMIN
             DataColumnCollection columnsus = ds.Tables[0].Columns;
             if (columnsus.Contains("dbName")) //*****************tek þetta út nafn á gagangrunni************************
             {
-              //  strDataBase = ds.Tables[0].Rows[0]["dbName"].ToString().Replace("\"", "").Replace(" ", "_"); 
+                //  strDataBase = ds.Tables[0].Rows[0]["dbName"].ToString().Replace("\"", "").Replace(" ", "_"); 
             }
             else
             {
@@ -218,7 +250,7 @@ namespace OAIS_ADMIN
             m_prbToflur.Maximum = ds.Tables["table"].Rows.Count;
             foreach (DataRow r in ds.Tables["table"].Rows)
             {
-               
+
                 string strMetadataFunc = string.Empty;
                 string strTableName = r["name"].ToString();
                 strTableName = strTableName.Replace("\"", "");
@@ -255,7 +287,7 @@ namespace OAIS_ADMIN
                                 rr["type"] = "datetime";
                             }
                             //get ekki haft Text ef þetta er primerlykill
-                            if (rr["type"].ToString().ToUpper().StartsWith("NATIONAL CHARACTER VARYING") &&  rr["name"].ToString() != "ID" && rr["name"].ToString() != "SagID" && rr["name"].ToString() != "DocumentID" && rr["name"].ToString() != "JournalKeyID" && rr["name"].ToString() != "AbbreviationId" && rr["name"].ToString() != "ExcludedListId")
+                            if (rr["type"].ToString().ToUpper().StartsWith("NATIONAL CHARACTER VARYING") && rr["name"].ToString() != "ID" && rr["name"].ToString() != "SagID" && rr["name"].ToString() != "DocumentID" && rr["name"].ToString() != "JournalKeyID" && rr["name"].ToString() != "AbbreviationId" && rr["name"].ToString() != "ExcludedListId")
                             {
                                 rr["type"] = "TEXT";
                             }
@@ -408,27 +440,30 @@ namespace OAIS_ADMIN
                         midlun.skjalamyndari_audkenni = skjalamyndari.auðkenni_5_1_6;
                         midlun.skjalamyndari_heiti = skjalamyndari.opinbert_heiti_5_1_2;
                         midlun.tafla_grunns = strTableName;
-                        midlun.tegund_grunns = m_comTegundVörslu.Text; //þarf að finna betur úr þessu eða láta notanda velja.
+                        if(m_strHeitiKerfis == "GoPro")
+                        {
+                            midlun.tegund_grunns = "Málakerfi"; //þarf að finna betur úr þessu eða láta notanda velja.
+                        }
+                      
                         midlun.skjalaskra_adgengi = skrá.skilyrði_aðgengi_3_4_1;
                         midlun.skjalaskra_afharnr = skrá.afhendingar_tilfærslur_3_2_4;
                         midlun.skjalaskra_innihald = skrá.yfirlit_innihald_3_3_1;
                         midlun.skjalaskra_timabil = skrá.tímabil_3_1_3;
                         midlun.hver_skradi = virkurnotandi.nafn;
                         //   midlun
-                        midlun.insertToTable(strColumn, rd, strDataBase, strTableName, strTime, strMetadataFunc, skrá.auðkenni_3_1_1, strSlod, m_chbOCR.Checked);
+                        midlun.insertToTable(strColumn, rd, strDataBase, strTableName, strTime, strMetadataFunc, skrá.auðkenni_3_1_1, strSlod, m_chbOCR.Checked, m_strHeitiKerfis);
                         m_prbGogn.PerformStep();
                         m_lblGognStatus.Text = string.Format("Vista röð {0}/{1}", m_prbGogn.Value, m_prbGogn.Maximum);
                         Application.DoEvents();
                     }
-                   
+
                     //4. skrá í yfirlit_dálkar
-                  
+
                     //5. skrá niður view
                 }
-               
+
             }
-            MessageBox.Show("Búið");
-            m_grbStatus.Visible = false;
+          
         }
 
         private void m_dgvFyrirSpurnir_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -440,11 +475,11 @@ namespace OAIS_ADMIN
             {
                 if (senderGrid.Columns["colBtnPrófa"].Index == e.ColumnIndex)
                 {
-                  
-                    
+
+
                     //0. ná í stlóð á vörsluútgáfu
                     string strFyrirspurn = senderGrid.Rows[e.RowIndex].Cells["colFyrirFyrirspurn"].Value.ToString();
-                   // string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
+                    // string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
                     frmFyrirspurnProfa frmTest = new frmFyrirspurnProfa(strFyrirspurn, m_strGrunnur);
                     frmTest.ShowDialog();
                     senderGrid.Rows[e.RowIndex].Cells["colFyrirFyrirspurn"].Value = frmTest.m_strFyrirspurn;
@@ -461,29 +496,188 @@ namespace OAIS_ADMIN
                         strID = "0";
                     }
                     string strFyrirspurn = senderGrid.Rows[e.RowIndex].Cells["colFyrirFyrirspurn"].Value.ToString();
-                  
-                  // string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
+
+                    // string strDatabase = senderGrid.Rows[e.RowIndex].Cells["colFyrirDatabase"].Value.ToString();
                     string strNafn = senderGrid.Rows[e.RowIndex].Cells["colFyrirNafn"].Value.ToString();
                     string strLysing = senderGrid.Rows[e.RowIndex].Cells["colFyrirLýsing"].Value.ToString();
-                     strID =  midlun.vistaFyrirSpurn(strFyrirspurn, m_strGrunnur, strNafn, strLysing, strID);
+                    strID = midlun.vistaFyrirSpurn(strFyrirspurn, m_strGrunnur, strNafn, strLysing, strID);
                     MessageBox.Show("Fyrirspurn vistuð");
-                    senderGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+                    senderGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.Color.LightGreen;
                     senderGrid.Rows[e.RowIndex].Cells["colID"].Value = strID;
                 }
             }
-           
+
         }
 
         private void m_btnEndurHressa_Click(object sender, EventArgs e)
         {
             fyllaVorsluUtgafur();
         }
+        private void midlunGoPro()
+        {
+            //***********************************hér er rútína til að laga fyrir GoPro þarf að fara inn í innsetninguu*******************************
 
+            DataTable dt = midlun.málaTitillGOPRO_redding(m_strGrunnur.Replace("_", "."));
+
+            m_prbGogn.Maximum = dt.Rows.Count;
+            m_prbGogn.Value = 0;
+            m_prbGogn.Visible = true;
+            m_lblGognStatus.Visible = true;
+            m_grbStatus.Visible = true;
+
+            foreach (DataRow r in dt.Rows)
+            {
+
+
+
+                string strID = r["documentid"].ToString();
+                //ná í máltitill
+                //    string strMalitill = midlun.getTitillMalsGOPRO(strID, m_strGrunnur);
+                //   midlun.uppFæraMálHeitiGOPRO(strID, strMalitill, m_strGrunnur);
+                //Uppfæra dates
+                //1. ná í færslu úr attachments
+                DataTable dtAtt = midlun.getAttachmentFraDocID(strID, m_strGrunnur);
+                string strCreated = string.Empty;
+                string strModified = string.Empty;
+                DateTime dDate;
+                if (dtAtt.Rows[0]["MailIDByAttachments"] != DBNull.Value)
+                {
+                    //er viðhengi finna tölvupóst og ná í datee
+                    string strMod = dtAtt.Rows[0]["MailIDByAttachments"].ToString();
+                    dtAtt = midlun.getDatesFromEmail(strMod, m_strGrunnur);
+
+                    if (dtAtt.Rows.Count == 1)
+                    {
+
+                        strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+                        if (DateTime.TryParse(strCreated, out dDate))
+                        {
+
+                            DateTime datCreated = Convert.ToDateTime(strCreated);
+                            strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                        }
+                        strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+                        if (DateTime.TryParse(strModified, out dDate))
+                        {
+                            // if (r["doccreated"] is not null)
+                            {
+                                DateTime datCreated = Convert.ToDateTime(strModified);
+                                strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                            }
+                        }
+                    }
+
+                }
+                dtAtt = midlun.getDaatesFromCases(strID, m_strGrunnur);
+                if (dtAtt.Rows.Count == 1)
+                {
+                    //er yfirskjal
+                    strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+                    strModified = dtAtt.Rows[0]["LastModifiedDate"].ToString();
+                    strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+                    if (DateTime.TryParse(strCreated, out dDate))
+                    {
+
+                        DateTime datCreated = Convert.ToDateTime(strCreated);
+                        strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                    }
+                    strModified = dtAtt.Rows[0]["LastModifiedDate"].ToString();
+                    if (DateTime.TryParse(strModified, out dDate))
+                    {
+                        // if (r["doccreated"] is not null)
+                        {
+                            DateTime datCreated = Convert.ToDateTime(strModified);
+                            strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                        }
+                    }
+                }
+                dtAtt = midlun.getDaatesFromDocuments(strID, m_strGrunnur);
+                if (dtAtt.Rows.Count == 1)
+                {
+
+                    strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+                    strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+                    if (DateTime.TryParse(strCreated, out dDate))
+                    {
+
+                        DateTime datCreated = Convert.ToDateTime(strCreated);
+                        strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                    }
+                    strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+                    if (DateTime.TryParse(strModified, out dDate))
+                    {
+                        // if (r["doccreated"] is not null)
+                        {
+                            DateTime datCreated = Convert.ToDateTime(strModified);
+                            strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                        }
+                    }
+                }
+                dtAtt = midlun.getDatesFromEmail(strID, m_strGrunnur);
+
+                if (dtAtt.Rows.Count == 1)
+                {
+
+                    strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+                    strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+                    if (DateTime.TryParse(strCreated, out dDate))
+                    {
+
+                        DateTime datCreated = Convert.ToDateTime(strCreated);
+                        strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                    }
+                    strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+                    if (DateTime.TryParse(strModified, out dDate))
+                    {
+                        // if (r["doccreated"] is not null)
+                        {
+                            DateTime datCreated = Convert.ToDateTime(strModified);
+                            strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                        }
+                    }
+                }
+                dtAtt = midlun.getDatesFromMemol(strID, m_strGrunnur);
+                if (dtAtt.Rows.Count == 1)
+                {
+
+                    strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+                    strModified = dtAtt.Rows[0]["ModificationDate"].ToString();
+                    if (DateTime.TryParse(strCreated, out dDate))
+                    {
+
+                        DateTime datCreated = Convert.ToDateTime(strCreated);
+                        strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                    }
+                    strModified = dtAtt.Rows[0]["ModificationDate"].ToString();
+                    if (DateTime.TryParse(strModified, out dDate))
+                    {
+                        // if (r["doccreated"] is not null)
+                        {
+                            DateTime datCreated = Convert.ToDateTime(strModified);
+                            strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+                        }
+                    }
+                }
+                if (strCreated != string.Empty && strModified != string.Empty)
+                {
+                    midlun.uppFæraDateGOPRO(strID, strCreated, strModified, m_strGrunnur);
+
+                }
+                DataTable dtMal = midlun.getTitillMalsGOPRO(strID, m_strGrunnur);
+                string strMalTitill = dtMal.Rows[0]["maltitill"].ToString();
+                string strSagID = dtMal.Rows[0]["sagid"].ToString();
+                midlun.uppFæraMálHeitiGOPRO(strID, strMalTitill, strSagID, m_strGrunnur);
+
+                m_prbGogn.PerformStep();
+                m_lblGognStatus.Text = string.Format("{0}/{1}", m_prbGogn.Value, m_prbGogn.Maximum);
+                Application.DoEvents();
+            }
+        }
         private void m_btnkeyra_Click(object sender, EventArgs e)
         {
-            if(m_comTegundVörslu.Text != "")
+            if (m_strHeitiKerfis != "")
             {
-                if (m_comTegundVörslu.Text == "Gagnagrunnur")
+                if (m_strHeitiKerfis == "Gagnagrunnur")
                 {
                     cMIdlun midlun = new cMIdlun();
                     midlun.heiti_gagangrunns = m_strGrunnur;
@@ -505,19 +699,27 @@ namespace OAIS_ADMIN
                 utgafa.midlun = "1";
                 utgafa.hver_midladi = virkurnotandi.nafn;
                 utgafa.uppFaeraVegnaMidlun();
+                if (m_strHeitiKerfis == "GoPro")
+                {
+                    midlunGoPro();
+                }
+                //setja inn fyrirspurnir
+                DataTable dt = midlun.getFyrirspurnTemplate(m_strHeitiKerfis);
+                foreach (DataRow r in dt.Rows)
+                {
 
+                    midlun.vistaFyrirSpurn(r["fyrirspurn"].ToString(), m_strGrunnur, r["nafn"].ToString(), r["lysing"].ToString(), "0");
+                }
                 fyllaVorsluUtgafur();
             }
-            else
-            {
-                MessageBox.Show("Veldu tegund");
-            }
-       
+          
+            MessageBox.Show("Búið");
+            m_grbStatus.Visible = false;
         }
 
         private void m_trwKlasarVorslustonun_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if(e.Node.Level == 0) 
+            if (e.Node.Level == 0)
             {
                 string strExpr = string.Empty;
                 strExpr = "klasar='" + e.Node.Text + "'";
@@ -543,8 +745,8 @@ namespace OAIS_ADMIN
                     e.Node.Expand();
                 }
                 cVorsluutgafur utgafur = new cVorsluutgafur();
-                DataTable dtKlasar = utgafur.getVorsluUtgafurKlasa(strVorslur.Remove(strVorslur.Length-1));
-                foreach(DataRow row in dtKlasar.Rows)
+                DataTable dtKlasar = utgafur.getVorsluUtgafurKlasa(strVorslur.Remove(strVorslur.Length - 1));
+                foreach (DataRow row in dtKlasar.Rows)
                 {
                     if (row["tegund"].ToString() == DBNull.Value.ToString())
                     {
@@ -552,12 +754,12 @@ namespace OAIS_ADMIN
                     }
                 }
                 m_dgvUtafurKlasarVarsla.AutoGenerateColumns = false;
-      
+
                 m_dgvUtafurKlasarVarsla.DataSource = dtKlasar;
                 m_dgvUtafurKlasarVarsla.ClearSelection();
                 m_lblKlasiVarslaValinn.Text = string.Format("Klasi {0} valinn", e.Node.Text);
                 m_btnBuaTilPakka.Text = string.Format("Búa til miðlunarpakka fyrir {0} klasa", e.Node.Text);
-                
+
             }
             if (e.Node.Level == 1)
             {
@@ -584,7 +786,7 @@ namespace OAIS_ADMIN
                 DataTable dtSkra = skra.getGeymsluSkra(strAuðkenni);
                 if (dtSkra.Rows.Count > 1)
                 {
-                    dRow.DefaultCellStyle.BackColor = Color.LightGreen;
+                    dRow.DefaultCellStyle.BackColor = System.Drawing.Color.LightGreen;
                 }
             }
 
@@ -598,12 +800,12 @@ namespace OAIS_ADMIN
             {
                 if (senderGrid.Columns["colGeymsluskra"].Index == e.ColumnIndex)
                 {
-                    
+
                     string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colAudkenni"].Value.ToString();
                     string strSlod = senderGrid.Rows[e.RowIndex].Cells["colVarslaSlod"].Value.ToString();
                     string strTegund = senderGrid.Rows[e.RowIndex].Cells["colTegund"].Value.ToString();
                     string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorsluID"].Value.ToString();
-                    frmGeymsluskra frmgeymsla= new frmGeymsluskra(strAuðkenni, strSlod, strTegund, virkurnotandi, strVarsla);
+                    frmGeymsluskra frmgeymsla = new frmGeymsluskra(strAuðkenni, strSlod, strTegund, virkurnotandi, strVarsla);
                     frmgeymsla.ShowDialog();
                 }
             }
@@ -611,7 +813,7 @@ namespace OAIS_ADMIN
 
         private void m_dgvFyrirSpurnir_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-          
+
         }
 
         private void m_btnBuaTilPakka_Click(object sender, EventArgs e)
@@ -624,10 +826,10 @@ namespace OAIS_ADMIN
                 Directory.CreateDirectory("D:\\AIP-Afrit");
             }
             string strAfritunarMappa = string.Empty;
-            string strDags = DateTime.Now.Day.ToString() + "_" + DateTime.Now.Month.ToString() + "_" + DateTime.Now.Year.ToString(); 
+            string strDags = DateTime.Now.Day.ToString() + "_" + DateTime.Now.Month.ToString() + "_" + DateTime.Now.Year.ToString();
             if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
             {
-               strAfritunarMappa = string.Format("D:\\AIP-Afrit\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags) ;
+                strAfritunarMappa = string.Format("D:\\AIP-Afrit\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
             }
             else
             {
@@ -690,7 +892,7 @@ namespace OAIS_ADMIN
                     string strSlod = r["slod"].ToString().Replace("AVID", "FRUM");
                     if (Directory.Exists(strSlod))
                     {
-                     
+
                         strFrum = strFrum + "\\" + strVarslAuðkenni.Replace("AVID", "FRUM");
                         m_lblStatus.Text = m_lblStatus.Text + " " + strFrum;
                         Application.DoEvents();
@@ -699,15 +901,15 @@ namespace OAIS_ADMIN
                     m_lblStatus.Text = m_lblStatus.Text + " " + strVarslaMappa;
                     Application.DoEvents();
                     CopyFolder(r["slod"].ToString(), strVarslaMappa);
-                    
+
                 }
                 m_prgVorsluStofnun.PerformStep();
                 m_lblVorsluStofnunPrg.Text = string.Format("{0}/{1}", m_prgVorsluStofnun.Value, m_prgVorsluStofnun.Maximum);
                 //2. Taka  sql-afrit afhverri útgáfu AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{gagnagrunnsheiti.sql}
                 string strDest = strBackup + "\\SQL";
-                if (!Directory.Exists(strDest)) 
+                if (!Directory.Exists(strDest))
                 {
-                    Directory.CreateDirectory(strDest); 
+                    Directory.CreateDirectory(strDest);
                 }
                 strDest = strDest + "\\" + strVarslAuðkenni.Replace(".", "_") + ".Sql";
                 m_lblStatus.Text = "Tek afrit af grunni " + strVarslAuðkenni.Replace(".", "_");
@@ -719,7 +921,7 @@ namespace OAIS_ADMIN
             //A. ná í schemað
             m_lblStatus.Text = "Bý til INSERT";
             Application.DoEvents();
-           
+
             if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
             {
                 strAfritunarMappa = string.Format("D:\\AIP-Afrit\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
@@ -742,14 +944,14 @@ namespace OAIS_ADMIN
             cBackup back = new cBackup();
             DataTable dtGogn = new DataTable();
             //  string[] strTöflur = { "dt_fyrirspurnir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_isdiah_vörslustofnanir", "dt_item_korfu_dip", "dt_item_korfu_mal_dip", "dt_karfa_dip", "dt_karfa_item_gagna_dip", "dt_lanthegar", "dt_md5", "dt_midlun", "dt_notendur" };
-            string[] strTöflur = { "dt_isdiah_vörslustofnanir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_fyrirspurnir",  "dt_md5", "dt_midlun", "ds_gagnagrunnar", "dt_vörsluutgafur", "dt_drives" };
+            string[] strTöflur = { "dt_isdiah_vörslustofnanir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_fyrirspurnir", "dt_md5", "dt_midlun", "ds_gagnagrunnar", "dt_vörsluutgafur", "dt_drives" };
             string strSQLTEXT = string.Empty;
-           // m_prgBackup.Value = 1;
+            // m_prgBackup.Value = 1;
             m_prgBackup.Maximum = strTöflur.Length;
             m_prgBackup.Step = 1;
-            foreach (string str in strTöflur) 
+            foreach (string str in strTöflur)
             {
-                m_lblBackupStatus.Text = string.Format("{0}/{1} {2}", m_prgBackup.Value, m_prgBackup.Maximum, str);   
+                m_lblBackupStatus.Text = string.Format("{0}/{1} {2}", m_prgBackup.Value, m_prgBackup.Maximum, str);
                 if (str == "dt_isdiah_vörslustofnanir")
                 {
                     //þarf að búa til nýtt fall ef allt á að komast
@@ -773,19 +975,19 @@ namespace OAIS_ADMIN
                 }
                 if (str == "dt_fyrirspurnir")
                 {
-                    string strID = strAuðkenni.Replace(".", "_").Remove(strAuðkenni.Length-1);
+                    string strID = strAuðkenni.Replace(".", "_").Remove(strAuðkenni.Length - 1);
                     dtGogn = back.getDataFromTable(str, "gagnagrunnur", strID);
                     strSQLTEXT += createInsert(dtGogn, "dt_fyrirspurnir"); //vantar að laga slaufusviga {}
                 }
-                
-               
+
+
                 //if (str == "dt_isadg_skráningar")
                 //{
                 //    //þarf að búa til nýtt fall ef allt á að komast
                 //    string strID = strStofnanir.Remove(strStofnanir.Length - 1);
                 //    dtGogn = back.getDataFromTable(str, "vörslustofnun", strID);
                 //}
-              
+
                 if (str == "dt_md5")
                 {
                     //þarf að búa til nýtt fall ef allt á að komast
@@ -800,7 +1002,7 @@ namespace OAIS_ADMIN
                     dtGogn = back.getDataFromTable(str, "vorsluutgafa", strID);
                     strSQLTEXT += createInsert(dtGogn, "dt_midlun");
                 }
-                if(str == "ds_gagnagrunnar")
+                if (str == "ds_gagnagrunnar")
                 {
                     //þarf að búa til nýtt fall ef allt á að komast
                     string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
@@ -1098,7 +1300,7 @@ namespace OAIS_ADMIN
                 {
                     Directory.CreateDirectory(strGeymsluskra);
                 }
-                strGeymsluskra = strGeymsluskra + "\\" + rVarsla["utgafa_titill"].ToString().Replace("/","_") + ".xlsx";
+                strGeymsluskra = strGeymsluskra + "\\" + rVarsla["utgafa_titill"].ToString().Replace("/", "_") + ".xlsx";
                 exportExell(dtFilemaker, strGeymsluskra);
             }
             //5. gera EAD
@@ -1144,7 +1346,7 @@ namespace OAIS_ADMIN
                     {
                         workSheet.SaveAs(excelFilePath);
                         excelApp.Quit();
-                       // MessageBox.Show(String.Format("Exelskjal skráð í VINNUSKJÖL{0}{1}", Environment.NewLine, excelFilePath));
+                        // MessageBox.Show(String.Format("Exelskjal skráð í VINNUSKJÖL{0}{1}", Environment.NewLine, excelFilePath));
                     }
                     catch (Exception ex)
                     {
@@ -1171,8 +1373,8 @@ namespace OAIS_ADMIN
         {
             string strRet = string.Empty;
             string strClolumns = string.Empty;
-            
-            foreach(DataRow dr in dt.Rows) 
+
+            foreach (DataRow dr in dt.Rows)
             {
                 strRet += "INSERT INTO db_oais_admin_afrit." + strTafla + "  VALUES (";
                 foreach (DataColumn col in dt.Columns)
@@ -1187,11 +1389,11 @@ namespace OAIS_ADMIN
         }
         private string mysqlESCAPE(string strTexti)
         {
-                strTexti = strTexti.Replace("\\", "\\\\");
-                strTexti = strTexti.Replace("'", "\\'");
-                strTexti = strTexti.Replace("{", "\\{");
-                strTexti = strTexti.Replace("}", "\\}");
-               
+            strTexti = strTexti.Replace("\\", "\\\\");
+            strTexti = strTexti.Replace("'", "\\'");
+            strTexti = strTexti.Replace("{", "\\{");
+            strTexti = strTexti.Replace("}", "\\}");
+
 
 
             return strTexti;
@@ -1239,7 +1441,7 @@ namespace OAIS_ADMIN
             string[] folders = Directory.GetDirectories(sourceFolder);
             m_prgBackup.Maximum = folders.Length;
             m_prgBackup.Step = 1;
-           m_prgBackup.Value = 0;
+            m_prgBackup.Value = 0;
             foreach (string folder in folders)
             {
                 string name = Path.GetFileName(folder);
@@ -1250,5 +1452,205 @@ namespace OAIS_ADMIN
                 Application.DoEvents();
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //******************skrá fyrirsprunir úr templet
+
+            DataTable dt = midlun.getFyrirspurnTemplate(m_strHeitiKerfis);
+   
+            foreach(DataRow r in dt.Rows)
+            {
+             
+                midlun.vistaFyrirSpurn(r["fyrirspurn"].ToString(), m_strGrunnur, r["nafn"].ToString(), r["lysing"].ToString(),"0");
+            }
+
+            //****************laga dagsetningar á forminu yyyy-mm-dd
+            //DataTable dt = midlun.getDagSetningAll();
+            //foreach (DataRow r in dt.Rows)
+            //{
+            //    string strCreate = string.Empty;
+            //    string strLastWriten = string.Empty;
+            //    DateTime dDate;
+            //    if (DateTime.TryParse(r["doccreated"].ToString(), out dDate))
+            //    {
+            //        if (r["doccreated"] is not null)
+            //        {
+            //            DateTime datCreated = Convert.ToDateTime(r["doccreated"]);
+            //            strCreate = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //        }
+
+
+            //    }
+
+            //    if (DateTime.TryParse(r["doclastwriten"].ToString(), out dDate))
+            //    {
+            //        string strbla = r["doclastwriten"].ToString();
+            //        DateTime datLaseWriten = Convert.ToDateTime(r["doclastwriten"]);
+            //        strLastWriten = datLaseWriten.Year.ToString() + "-" + datLaseWriten.Month.ToString("00") + "-" + datLaseWriten.Day.ToString("00");
+            //    }
+            //    string strID = r["id"].ToString();
+
+            //    midlun.uppFæraDateGALLT(strID, strCreate, strLastWriten);
+            //}
+
+            //***********************************hér er rútína til að laga fyrir GoPR þarf að fara inn í innsetninguu*******************************
+
+            //DataTable dt = midlun.málaTitillGOPRO_redding(m_strGrunnur.Replace("_",".");
+
+            //m_prbGogn.Maximum = dt.Rows.Count;
+            //m_prbGogn.Value = 0;
+            //m_prbGogn.Visible = true;
+            //m_lblGognStatus.Visible = true;
+            //m_grbStatus.Visible = true;
+
+            //foreach (DataRow r in dt.Rows)
+            //{
+
+
+
+            //    string strID = r["documentid"].ToString();
+            //    //ná í máltitill
+            //    //    string strMalitill = midlun.getTitillMalsGOPRO(strID, m_strGrunnur);
+            //    //   midlun.uppFæraMálHeitiGOPRO(strID, strMalitill, m_strGrunnur);
+            //    //Uppfæra dates
+            //    //1. ná í færslu úr attachments
+            //    DataTable dtAtt = midlun.getAttachmentFraDocID(strID, m_strGrunnur);
+            //    string strCreated = string.Empty;
+            //    string strModified = string.Empty;
+            //    DateTime dDate;
+            //    if (dtAtt.Rows[0]["MailIDByAttachments"] != DBNull.Value)
+            //    {
+            //        //er viðhengi finna tölvupóst og ná í datee
+            //        string strMod = dtAtt.Rows[0]["MailIDByAttachments"].ToString();
+            //        dtAtt = midlun.getDatesFromEmail(strMod, m_strGrunnur);
+
+            //        if (dtAtt.Rows.Count == 1)
+            //        {
+
+            //            strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+            //            if (DateTime.TryParse(strCreated, out dDate))
+            //            {
+
+            //                    DateTime datCreated = Convert.ToDateTime(strCreated);
+            //                    strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //            }
+            //            strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+            //            if (DateTime.TryParse(strModified, out dDate))
+            //            {
+            //                // if (r["doccreated"] is not null)
+            //                {
+            //                    DateTime datCreated = Convert.ToDateTime(strModified);
+            //                    strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //                }
+            //            }
+            //        }
+
+            //    }
+            //    dtAtt = midlun.getDaatesFromCases(strID, m_strGrunnur);
+            //    if (dtAtt.Rows.Count == 1)
+            //    {
+            //        //er yfirskjal
+            //        strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+            //        strModified = dtAtt.Rows[0]["LastModifiedDate"].ToString();
+            //        strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+            //        if (DateTime.TryParse(strCreated, out dDate))
+            //        {
+
+            //            DateTime datCreated = Convert.ToDateTime(strCreated);
+            //            strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //        }
+            //        strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+            //        if (DateTime.TryParse(strModified, out dDate))
+            //        {
+            //            // if (r["doccreated"] is not null)
+            //            {
+            //                DateTime datCreated = Convert.ToDateTime(strModified);
+            //                strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //            }
+            //        }
+            //    }
+            //    dtAtt = midlun.getDaatesFromDocuments(strID, m_strGrunnur);
+            //    if (dtAtt.Rows.Count == 1)
+            //    {
+
+            //        strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+            //        strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+            //        if (DateTime.TryParse(strCreated, out dDate))
+            //        {
+
+            //            DateTime datCreated = Convert.ToDateTime(strCreated);
+            //            strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //        }
+            //        strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+            //        if (DateTime.TryParse(strModified, out dDate))
+            //        {
+            //            // if (r["doccreated"] is not null)
+            //            {
+            //                DateTime datCreated = Convert.ToDateTime(strModified);
+            //                strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //            }
+            //        }
+            //    }
+            //    dtAtt = midlun.getDatesFromEmail(strID, m_strGrunnur);
+
+            //    if (dtAtt.Rows.Count == 1)
+            //    {
+
+            //        strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+            //        strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+            //        if (DateTime.TryParse(strCreated, out dDate))
+            //        {
+
+            //            DateTime datCreated = Convert.ToDateTime(strCreated);
+            //            strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //        }
+            //        strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+            //        if (DateTime.TryParse(strModified, out dDate))
+            //        {
+            //            // if (r["doccreated"] is not null)
+            //            {
+            //                DateTime datCreated = Convert.ToDateTime(strModified);
+            //                strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //            }
+            //        }
+            //    }
+            //    dtAtt = midlun.getDatesFromMemol(strID, m_strGrunnur);
+            //    if (dtAtt.Rows.Count == 1)
+            //    {
+
+            //        strCreated = dtAtt.Rows[0]["CreationDate"].ToString();
+            //        strModified = dtAtt.Rows[0]["ModificationDate"].ToString();
+            //        if (DateTime.TryParse(strCreated, out dDate))
+            //        {
+
+            //            DateTime datCreated = Convert.ToDateTime(strCreated);
+            //            strCreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //        }
+            //        strModified = dtAtt.Rows[0]["MotificationDate"].ToString();
+            //        if (DateTime.TryParse(strModified, out dDate))
+            //        {
+            //            // if (r["doccreated"] is not null)
+            //            {
+            //                DateTime datCreated = Convert.ToDateTime(strModified);
+            //                strModified = datCreated.Year.ToString() + "-" + datCreated.Month.ToString("00") + "-" + datCreated.Day.ToString("00");
+            //            }
+            //        }
+            //    }
+            //    if (strCreated != string.Empty && strModified != string.Empty)
+            //    {
+            //        midlun.uppFæraDateGOPRO(strID, strCreated, strModified, m_strGrunnur);
+
+            //    }
+            //    string strMalTitill = midlun.getTitillMalsGOPRO(strID, m_strGrunnur);
+            //    midlun.uppFæraMálHeitiGOPRO(strID, strMalTitill, m_strGrunnur);
+
+            //    m_prbGogn.PerformStep();
+            //    m_lblGognStatus.Text = string.Format("{0}/{1}", m_prbGogn.Value, m_prbGogn.Maximum);
+            //    Application.DoEvents();
+        }
+
+        //   MessageBox.Show("Búið");
     }
+   
 }

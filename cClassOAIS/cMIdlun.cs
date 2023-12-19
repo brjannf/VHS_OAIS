@@ -11,6 +11,7 @@ using System.Xml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 using System.Configuration;
+using K4os.Compression.LZ4.Internal;
 
 namespace cClassOAIS
 {
@@ -171,7 +172,7 @@ namespace cClassOAIS
             }
             return ret;
         }
-        public void insertToTable(string strColumns, DataRow rd, string strDatabase, string strTable, string strTime, string strMetaFunction, string strVörslunumer, string strSlod, bool bOCR)
+        public void insertToTable(string strColumns, DataRow rd, string strDatabase, string strTable, string strTime, string strMetaFunction, string strVörslunumer, string strSlod, bool bOCR, string strHeitiKerfis)
         {
             sækjaTengistreng();
             MySqlConnection conn = new MySqlConnection(m_strTenging);
@@ -259,6 +260,14 @@ namespace cClassOAIS
                     {
                         if (str != string.Empty || str != null)
                         {
+                            //********************gera hér undanþágu fyrir gopro**************
+                            if(strHeitiKerfis == "GoPro")
+                            {
+                                if(strTable != "ATTACHMENTS")
+                                {
+                                    return;
+                                }
+                            }
                             // try
                             {
                                 strSplit = str.Split('~');
@@ -357,16 +366,19 @@ namespace cClassOAIS
                                 {
                                     if (strSplit[2] == "date_created")
                                     {
+                                        //formatta string í yyyy-mm-dd
                                         this.docCreated = strSplit[1];
                                         this.dalkur_docCreated = strSplit[2];
                                     }
                                     if (strSplit[2] == "lastwriten")
                                     {
+                                        //formatta string í yyyy-mm-dd
                                         this.docLastWriten = strSplit[1];
                                         this.dalkur_docLastWriten = strSplit[2];
                                     }
                                     if ((strSplit[2] != "date_created" || strSplit[2] == "lastwriten"))
                                     {
+                                        //formatta string í yyyy-mm-dd
                                         this.docLastWriten = strSplit[1];
                                         this.dalkur_docLastWriten = strSplit[2];
                                     }
@@ -493,7 +505,7 @@ namespace cClassOAIS
                     DateTime dtEnd = Convert.ToDateTime(this.Endadags);
                     string strEnd = dtEnd.Year.ToString() + "-" + dtEnd.Month.ToString() + "-" + dtEnd.Day.ToString();
 
-                    if (strLeitarord.Length == 0 && this.skjalamyndari_audkenni == null && this.vorslustofnun_audkenni == null)
+                    if (!strSQL.Contains("WHERE"))
                     {
                         strSQL += " WHERE DATE(docLastWriten) <= '" + strEnd + "' ";
                     }
@@ -506,7 +518,7 @@ namespace cClassOAIS
                 {
                     DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
                     string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
-                    if (strLeitarord.Length == 0 && this.skjalamyndari_audkenni == null && this.vorslustofnun_audkenni == null)
+                    if (!strSQL.Contains("WHERE")) // (strLeitarord.Length == 0 && this.skjalamyndari_audkenni == null && this.vorslustofnun_audkenni == null)
                     {
                         strSQL += " WHERE DATE(docLastWriten) >= '" + strStart + "' ";
                     }
@@ -523,7 +535,7 @@ namespace cClassOAIS
                     DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
                     string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
 
-                    if (strLeitarord.Length == 0 && this.skjalamyndari_audkenni == null && this.vorslustofnun_audkenni == null)
+                    if (!strSQL.Contains("WHERE"))
                     {
                         strSQL += " WHERE DATE(docLastWriten) >= '" + strStart + "' AND DATE(docLastWriten) <= '" + strEnd + "' ";
                     }
@@ -620,7 +632,7 @@ namespace cClassOAIS
             }
             else
             {
-                strSQL = string.Format("SELECT group_concat(documentid) , d.* FROM dt_midlun d WHERE  heiti_gagangrunns = '{0}' ", strGagnagrunnur);
+                strSQL = string.Format("SELECT distinct documentid , d.* FROM dt_midlun d WHERE  heiti_gagangrunns = '{0}' ", strGagnagrunnur);
             }
             if (this.Upphafsdags != null || this.Endadags != null)
             {
@@ -681,6 +693,17 @@ namespace cClassOAIS
                 strRet = fyrirspurn.ToString();
             }
             return strRet;
+        }
+
+        public DataTable getFyrirspurnTemplate(string strKerfi)
+        {
+            sækjaTengistreng();
+            string strRet = string.Empty;
+            string strQL = string.Empty;
+           strQL = string.Format("SELECT * FROM dt_fyrirspurnir_templet d where kerfi = '{0}';", strKerfi);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strQL);
+            DataTable dt = ds.Tables[0];
+            return dt; 
         }
 
         public DataTable keyraFyrirspurn(string strSQL, string database)
@@ -831,7 +854,121 @@ namespace cClassOAIS
             upgCommand.ExecuteNonQuery();
         }
 
-        
+        public DataTable getDagSetningAll()
+        {
+            sækjaTengistreng();
+            string strSQL = "SELECT id, doccreated, doclastwriten FROM db_oais_admin.dt_midlun d;;";
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
 
+        public DataTable málaTitillGOPRO_redding(string strUtgafa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_midlun d where vorsluutgafa ='AVID.HARN.2023067.1' and documentid is not  null order by documentid;", strUtgafa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getAttachmentFraDocID(string strID, string strGagnagrunnur)
+        {
+          //  sækjaTengistreng();
+            string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + strGagnagrunnur + "; allow user variables = True; character set = utf8";
+            string strSQL = string.Format("SELECT *  FROM attachments a where documentid = {0};", strID);
+            DataSet ds = MySqlHelper.ExecuteDataset(strTengistrengur, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getDaatesFromCases(string strID, string strGagnagrunnur)
+        {
+            string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + strGagnagrunnur + "; allow user variables = True; character set = utf8";
+            string strSQL = string.Format("SELECT LastModifiedDate, CreationDate FROM cases c where sagid = {0};", strID);
+            DataSet ds = MySqlHelper.ExecuteDataset(strTengistrengur, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getDaatesFromDocuments(string strID, string strGagnagrunnur)
+        {
+            string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + strGagnagrunnur + "; allow user variables = True; character set = utf8"; sækjaTengistreng();
+            string strSQL = string.Format("SELECT CreationDate,MotificationDate From documents d where documentid = {0};", strID);
+            DataSet ds = MySqlHelper.ExecuteDataset(strTengistrengur, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getDatesFromEmail(string strID, string strGagnagrunnur)
+        {
+            string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + strGagnagrunnur + "; allow user variables = True; character set = utf8";
+            string strSQL = string.Format("SELECT CreationDate,MotificationDate From email d where documentid = {0};", strID);
+            DataSet ds = MySqlHelper.ExecuteDataset(strTengistrengur, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getDatesFromMemol(string strID, string strGagnagrunnur)
+        {
+            string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + strGagnagrunnur + "; allow user variables = True; character set = utf8";
+            string strSQL = string.Format("SELECT CreationDate, ModificationDate FROM memo m where documentid = {0}; ", strID);
+            DataSet ds = MySqlHelper.ExecuteDataset(strTengistrengur, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getTitillMalsGOPRO(string strID, string strGagnagrunnur)
+        {
+            string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + strGagnagrunnur + "; allow user variables = True; character set = utf8";
+            string strSQL = string.Format("SELECT concat(Casenumber, ' ', c.subject) as maltitill, c.sagid FROM attachments a, cases c where a.sagid=c.sagid and documentid = {0};", strID);
+            DataSet ds = MySqlHelper.ExecuteDataset(strTengistrengur, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+         
+        }
+
+        public void uppFæraMálHeitiGOPRO(string strID, string strTexti,string strSagID, string strGagnaGrunnur)
+        {
+            sækjaTengistreng();
+            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+            //  id, vorsluutgafa, heiti_gagnagrunns, orgina_heiti
+            command.Parameters.AddWithValue("@strTexti", strTexti);
+
+            command.CommandText = string.Format("update  db_oais_admin.dt_midlun set maltitill = @strTexti, malID= '{3}' where documentid = '{1}' and heiti_gagangrunns = '{2}';", strTexti,strID, strGagnaGrunnur, strSagID);
+
+            command.ExecuteNonQuery();
+            conn.Dispose();
+            command.Dispose();
+        }
+        public void uppFæraDateGOPRO(string strID, string strCreated, string strModifiet, string strGagnaGrunnur)
+        {
+            sækjaTengistreng();
+            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+            //  id, vorsluutgafa, heiti_gagnagrunns, orgina_heiti
+            command.Parameters.AddWithValue("@created", strCreated);
+            command.Parameters.AddWithValue("@modified", strModifiet);
+
+            command.CommandText = string.Format("update  db_oais_admin.dt_midlun set docCreated =  '{2}' , docLastWriten=  '{3}' where documentid = '{0}' and heiti_gagangrunns = '{1}';", strID, strGagnaGrunnur, strCreated, strModifiet);
+
+            command.ExecuteNonQuery();
+            conn.Dispose();
+            command.Dispose();
+        }
+        public void uppFæraDateGALLT(string strID, string strCreated, string strModifiet)
+        {
+            sækjaTengistreng();
+            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+            //  id, vorsluutgafa, heiti_gagnagrunns, orgina_heiti
+            command.Parameters.AddWithValue("@created", strCreated);
+            command.Parameters.AddWithValue("@modified", strModifiet);
+
+            command.CommandText = string.Format("update  db_oais_admin.dt_midlun set docCreated =  '{0}' , docLastWriten=  '{1}' where id = '{2}' ;",  strCreated, strModifiet, strID);
+
+            command.ExecuteNonQuery();
+            conn.Dispose();
+            command.Dispose();
+        }
     }
 }

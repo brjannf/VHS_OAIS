@@ -29,18 +29,22 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.m_tacMalaLykillLeit = new System.Windows.Forms.TabControl();
+            this.m_tapMalaLykill = new System.Windows.Forms.TabPage();
+            this.splitContainer8 = new System.Windows.Forms.SplitContainer();
+            this.m_rdbInnheldurAllt = new System.Windows.Forms.RadioButton();
+            this.m_rdbInnheldlurMal = new System.Windows.Forms.RadioButton();
             this.m_trwMalalykill = new System.Windows.Forms.TreeView();
+            this.m_tapLeit = new System.Windows.Forms.TabPage();
+            this.m_trwLeit = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.m_grbMalInfo = new System.Windows.Forms.GroupBox();
-            this.m_lblMalInfo = new System.Windows.Forms.Label();
-            this.m_dgvLeitarNidurstodur = new System.Windows.Forms.DataGridView();
-            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTitill = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.m_grbLeit = new System.Windows.Forms.GroupBox();
             this.m_btnLeita = new System.Windows.Forms.Button();
             this.m_tboLeita = new System.Windows.Forms.TextBox();
-            this.m_lblLeitNidurstsodur = new System.Windows.Forms.Label();
+            this.m_grbMalInfo = new System.Windows.Forms.GroupBox();
+            this.m_libMalInfo = new System.Windows.Forms.ListBox();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.m_btnLjukaPontun = new System.Windows.Forms.Button();
@@ -70,6 +74,13 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.m_tacMalaLykillLeit.SuspendLayout();
+            this.m_tapMalaLykill.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).BeginInit();
+            this.splitContainer8.Panel1.SuspendLayout();
+            this.splitContainer8.Panel2.SuspendLayout();
+            this.splitContainer8.SuspendLayout();
+            this.m_tapLeit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -82,8 +93,8 @@
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.Panel2.SuspendLayout();
             this.splitContainer7.SuspendLayout();
+            this.m_grbLeit.SuspendLayout();
             this.m_grbMalInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvLeitarNidurstodur)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
@@ -115,37 +126,126 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.m_trwMalalykill);
+            this.splitContainer1.Panel1.Controls.Add(this.m_tacMalaLykillLeit);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1854, 1061);
-            this.splitContainer1.SplitterDistance = 379;
-            this.splitContainer1.SplitterWidth = 5;
+            this.splitContainer1.Size = new System.Drawing.Size(1622, 796);
+            this.splitContainer1.SplitterDistance = 331;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // m_tacMalaLykillLeit
+            // 
+            this.m_tacMalaLykillLeit.Controls.Add(this.m_tapMalaLykill);
+            this.m_tacMalaLykillLeit.Controls.Add(this.m_tapLeit);
+            this.m_tacMalaLykillLeit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_tacMalaLykillLeit.Location = new System.Drawing.Point(0, 0);
+            this.m_tacMalaLykillLeit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_tacMalaLykillLeit.Name = "m_tacMalaLykillLeit";
+            this.m_tacMalaLykillLeit.SelectedIndex = 0;
+            this.m_tacMalaLykillLeit.Size = new System.Drawing.Size(331, 796);
+            this.m_tacMalaLykillLeit.TabIndex = 1;
+            // 
+            // m_tapMalaLykill
+            // 
+            this.m_tapMalaLykill.Controls.Add(this.splitContainer8);
+            this.m_tapMalaLykill.Location = new System.Drawing.Point(4, 24);
+            this.m_tapMalaLykill.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_tapMalaLykill.Name = "m_tapMalaLykill";
+            this.m_tapMalaLykill.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_tapMalaLykill.Size = new System.Drawing.Size(323, 768);
+            this.m_tapMalaLykill.TabIndex = 0;
+            this.m_tapMalaLykill.Text = "Málalykill";
+            this.m_tapMalaLykill.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer8
+            // 
+            this.splitContainer8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer8.Location = new System.Drawing.Point(3, 2);
+            this.splitContainer8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitContainer8.Name = "splitContainer8";
+            this.splitContainer8.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer8.Panel1
+            // 
+            this.splitContainer8.Panel1.Controls.Add(this.m_rdbInnheldurAllt);
+            this.splitContainer8.Panel1.Controls.Add(this.m_rdbInnheldlurMal);
+            // 
+            // splitContainer8.Panel2
+            // 
+            this.splitContainer8.Panel2.Controls.Add(this.m_trwMalalykill);
+            this.splitContainer8.Size = new System.Drawing.Size(317, 764);
+            this.splitContainer8.SplitterDistance = 55;
+            this.splitContainer8.SplitterWidth = 3;
+            this.splitContainer8.TabIndex = 1;
+            // 
+            // m_rdbInnheldurAllt
+            // 
+            this.m_rdbInnheldurAllt.AutoSize = true;
+            this.m_rdbInnheldurAllt.Location = new System.Drawing.Point(32, 32);
+            this.m_rdbInnheldurAllt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_rdbInnheldurAllt.Name = "m_rdbInnheldurAllt";
+            this.m_rdbInnheldurAllt.Size = new System.Drawing.Size(98, 19);
+            this.m_rdbInnheldurAllt.TabIndex = 1;
+            this.m_rdbInnheldurAllt.Text = "Sýna alla lykla";
+            this.m_rdbInnheldurAllt.UseVisualStyleBackColor = true;
+            this.m_rdbInnheldurAllt.CheckedChanged += new System.EventHandler(this.m_rdbInnheldlurMal_CheckedChanged);
+            // 
+            // m_rdbInnheldlurMal
+            // 
+            this.m_rdbInnheldlurMal.AutoSize = true;
+            this.m_rdbInnheldlurMal.Checked = true;
+            this.m_rdbInnheldlurMal.Location = new System.Drawing.Point(32, 9);
+            this.m_rdbInnheldlurMal.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_rdbInnheldlurMal.Name = "m_rdbInnheldlurMal";
+            this.m_rdbInnheldlurMal.Size = new System.Drawing.Size(200, 19);
+            this.m_rdbInnheldlurMal.TabIndex = 0;
+            this.m_rdbInnheldlurMal.TabStop = true;
+            this.m_rdbInnheldlurMal.Text = "Sýna bara lykla sem innhalda mál";
+            this.m_rdbInnheldlurMal.UseVisualStyleBackColor = true;
+            this.m_rdbInnheldlurMal.CheckedChanged += new System.EventHandler(this.m_rdbInnheldlurMal_CheckedChanged);
             // 
             // m_trwMalalykill
             // 
             this.m_trwMalalykill.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_trwMalalykill.Location = new System.Drawing.Point(0, 0);
-            this.m_trwMalalykill.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_trwMalalykill.Name = "m_trwMalalykill";
-            this.m_trwMalalykill.Size = new System.Drawing.Size(379, 1061);
+            this.m_trwMalalykill.Size = new System.Drawing.Size(317, 706);
             this.m_trwMalalykill.TabIndex = 0;
             this.m_trwMalalykill.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.m_trwMalalykill_BeforeSelect);
             this.m_trwMalalykill.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwMalalykill_AfterSelect);
+            // 
+            // m_tapLeit
+            // 
+            this.m_tapLeit.Controls.Add(this.m_trwLeit);
+            this.m_tapLeit.Location = new System.Drawing.Point(4, 24);
+            this.m_tapLeit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_tapLeit.Name = "m_tapLeit";
+            this.m_tapLeit.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_tapLeit.Size = new System.Drawing.Size(323, 768);
+            this.m_tapLeit.TabIndex = 1;
+            this.m_tapLeit.Text = "Leit";
+            this.m_tapLeit.UseVisualStyleBackColor = true;
+            // 
+            // m_trwLeit
+            // 
+            this.m_trwLeit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_trwLeit.Location = new System.Drawing.Point(3, 2);
+            this.m_trwLeit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_trwLeit.Name = "m_trwLeit";
+            this.m_trwLeit.Size = new System.Drawing.Size(317, 764);
+            this.m_trwLeit.TabIndex = 0;
+            this.m_trwLeit.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwLeit_AfterSelect);
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -155,16 +255,14 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.m_grbPantanir);
-            this.splitContainer2.Size = new System.Drawing.Size(1470, 1061);
-            this.splitContainer2.SplitterDistance = 1154;
-            this.splitContainer2.SplitterWidth = 5;
+            this.splitContainer2.Size = new System.Drawing.Size(1287, 796);
+            this.splitContainer2.SplitterDistance = 1010;
             this.splitContainer2.TabIndex = 4;
             // 
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -175,100 +273,46 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(1154, 1061);
-            this.splitContainer3.SplitterDistance = 279;
-            this.splitContainer3.SplitterWidth = 5;
+            this.splitContainer3.Size = new System.Drawing.Size(1010, 796);
+            this.splitContainer3.SplitterDistance = 209;
             this.splitContainer3.TabIndex = 4;
             // 
             // splitContainer7
             // 
             this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer7.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.splitContainer7.Name = "splitContainer7";
             // 
             // splitContainer7.Panel1
             // 
-            this.splitContainer7.Panel1.Controls.Add(this.m_grbMalInfo);
+            this.splitContainer7.Panel1.Controls.Add(this.m_grbLeit);
             // 
             // splitContainer7.Panel2
             // 
-            this.splitContainer7.Panel2.Controls.Add(this.m_dgvLeitarNidurstodur);
-            this.splitContainer7.Panel2.Controls.Add(this.m_btnLeita);
-            this.splitContainer7.Panel2.Controls.Add(this.m_tboLeita);
-            this.splitContainer7.Panel2.Controls.Add(this.m_lblLeitNidurstsodur);
-            this.splitContainer7.Size = new System.Drawing.Size(1154, 279);
-            this.splitContainer7.SplitterDistance = 441;
-            this.splitContainer7.SplitterWidth = 5;
+            this.splitContainer7.Panel2.Controls.Add(this.m_grbMalInfo);
+            this.splitContainer7.Size = new System.Drawing.Size(1010, 209);
+            this.splitContainer7.SplitterDistance = 483;
             this.splitContainer7.TabIndex = 4;
             // 
-            // m_grbMalInfo
+            // m_grbLeit
             // 
-            this.m_grbMalInfo.Controls.Add(this.m_lblMalInfo);
-            this.m_grbMalInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_grbMalInfo.Location = new System.Drawing.Point(0, 0);
-            this.m_grbMalInfo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_grbMalInfo.Name = "m_grbMalInfo";
-            this.m_grbMalInfo.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_grbMalInfo.Size = new System.Drawing.Size(441, 279);
-            this.m_grbMalInfo.TabIndex = 3;
-            this.m_grbMalInfo.TabStop = false;
-            this.m_grbMalInfo.Text = "Upplýsingar um mál";
-            // 
-            // m_lblMalInfo
-            // 
-            this.m_lblMalInfo.AutoSize = true;
-            this.m_lblMalInfo.Location = new System.Drawing.Point(26, 25);
-            this.m_lblMalInfo.Name = "m_lblMalInfo";
-            this.m_lblMalInfo.Size = new System.Drawing.Size(50, 20);
-            this.m_lblMalInfo.TabIndex = 2;
-            this.m_lblMalInfo.Text = "label1";
-            // 
-            // m_dgvLeitarNidurstodur
-            // 
-            this.m_dgvLeitarNidurstodur.AllowUserToAddRows = false;
-            this.m_dgvLeitarNidurstodur.AllowUserToDeleteRows = false;
-            this.m_dgvLeitarNidurstodur.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.m_dgvLeitarNidurstodur.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colID,
-            this.colTitill});
-            this.m_dgvLeitarNidurstodur.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.m_dgvLeitarNidurstodur.Location = new System.Drawing.Point(0, 126);
-            this.m_dgvLeitarNidurstodur.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_dgvLeitarNidurstodur.Name = "m_dgvLeitarNidurstodur";
-            this.m_dgvLeitarNidurstodur.ReadOnly = true;
-            this.m_dgvLeitarNidurstodur.RowHeadersVisible = false;
-            this.m_dgvLeitarNidurstodur.RowTemplate.Height = 25;
-            this.m_dgvLeitarNidurstodur.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.m_dgvLeitarNidurstodur.Size = new System.Drawing.Size(708, 153);
-            this.m_dgvLeitarNidurstodur.TabIndex = 3;
-            this.m_dgvLeitarNidurstodur.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvLeitarNidurstodur_CellClick);
-            this.m_dgvLeitarNidurstodur.SelectionChanged += new System.EventHandler(this.m_dgvLeitarNidurstodur_SelectionChanged);
-            this.m_dgvLeitarNidurstodur.SizeChanged += new System.EventHandler(this.m_dgvLeitarNidurstodur_SizeChanged);
-            // 
-            // colID
-            // 
-            this.colID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colID.DataPropertyName = "documentid";
-            this.colID.HeaderText = "ID";
-            this.colID.Name = "colID";
-            this.colID.ReadOnly = true;
-            this.colID.Width = 49;
-            // 
-            // colTitill
-            // 
-            this.colTitill.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colTitill.DataPropertyName = "doctitill";
-            this.colTitill.HeaderText = "Titill skjals";
-            this.colTitill.Name = "colTitill";
-            this.colTitill.ReadOnly = true;
+            this.m_grbLeit.Controls.Add(this.m_btnLeita);
+            this.m_grbLeit.Controls.Add(this.m_tboLeita);
+            this.m_grbLeit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbLeit.Location = new System.Drawing.Point(0, 0);
+            this.m_grbLeit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_grbLeit.Name = "m_grbLeit";
+            this.m_grbLeit.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_grbLeit.Size = new System.Drawing.Size(483, 209);
+            this.m_grbLeit.TabIndex = 3;
+            this.m_grbLeit.TabStop = false;
+            this.m_grbLeit.Text = "Leit";
             // 
             // m_btnLeita
             // 
-            this.m_btnLeita.Location = new System.Drawing.Point(401, 24);
-            this.m_btnLeita.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_btnLeita.Location = new System.Drawing.Point(364, 17);
             this.m_btnLeita.Name = "m_btnLeita";
-            this.m_btnLeita.Size = new System.Drawing.Size(86, 31);
+            this.m_btnLeita.Size = new System.Drawing.Size(75, 23);
             this.m_btnLeita.TabIndex = 2;
             this.m_btnLeita.Text = "Leita";
             this.m_btnLeita.UseVisualStyleBackColor = true;
@@ -276,28 +320,39 @@
             // 
             // m_tboLeita
             // 
-            this.m_tboLeita.Location = new System.Drawing.Point(18, 25);
-            this.m_tboLeita.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_tboLeita.Location = new System.Drawing.Point(7, 20);
             this.m_tboLeita.Name = "m_tboLeita";
-            this.m_tboLeita.Size = new System.Drawing.Size(338, 27);
+            this.m_tboLeita.Size = new System.Drawing.Size(296, 23);
             this.m_tboLeita.TabIndex = 1;
             this.m_tboLeita.KeyUp += new System.Windows.Forms.KeyEventHandler(this.m_tboLeita_KeyUp);
             // 
-            // m_lblLeitNidurstsodur
+            // m_grbMalInfo
             // 
-            this.m_lblLeitNidurstsodur.AutoSize = true;
-            this.m_lblLeitNidurstsodur.Location = new System.Drawing.Point(18, 73);
-            this.m_lblLeitNidurstsodur.Name = "m_lblLeitNidurstsodur";
-            this.m_lblLeitNidurstsodur.Size = new System.Drawing.Size(50, 20);
-            this.m_lblLeitNidurstsodur.TabIndex = 0;
-            this.m_lblLeitNidurstsodur.Text = "label1";
-            this.m_lblLeitNidurstsodur.Visible = false;
+            this.m_grbMalInfo.Controls.Add(this.m_libMalInfo);
+            this.m_grbMalInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_grbMalInfo.Location = new System.Drawing.Point(0, 0);
+            this.m_grbMalInfo.Name = "m_grbMalInfo";
+            this.m_grbMalInfo.Size = new System.Drawing.Size(523, 209);
+            this.m_grbMalInfo.TabIndex = 3;
+            this.m_grbMalInfo.TabStop = false;
+            this.m_grbMalInfo.Text = "Upplýsingar um mál";
+            // 
+            // m_libMalInfo
+            // 
+            this.m_libMalInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_libMalInfo.FormattingEnabled = true;
+            this.m_libMalInfo.ItemHeight = 15;
+            this.m_libMalInfo.Location = new System.Drawing.Point(3, 19);
+            this.m_libMalInfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.m_libMalInfo.Name = "m_libMalInfo";
+            this.m_libMalInfo.Size = new System.Drawing.Size(517, 187);
+            this.m_libMalInfo.TabIndex = 3;
+            this.m_libMalInfo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_libMalInfo_KeyDown);
             // 
             // splitContainer4
             // 
             this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.splitContainer4.Name = "splitContainer4";
             this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -308,16 +363,14 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.splitContainer5);
-            this.splitContainer4.Size = new System.Drawing.Size(1154, 777);
-            this.splitContainer4.SplitterDistance = 244;
-            this.splitContainer4.SplitterWidth = 5;
+            this.splitContainer4.Size = new System.Drawing.Size(1010, 583);
+            this.splitContainer4.SplitterDistance = 183;
             this.splitContainer4.TabIndex = 4;
             // 
             // splitContainer6
             // 
             this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer6.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.splitContainer6.Name = "splitContainer6";
             this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -329,17 +382,15 @@
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.m_grbSkjol);
-            this.splitContainer6.Size = new System.Drawing.Size(1154, 244);
-            this.splitContainer6.SplitterDistance = 82;
-            this.splitContainer6.SplitterWidth = 5;
+            this.splitContainer6.Size = new System.Drawing.Size(1010, 183);
+            this.splitContainer6.SplitterDistance = 61;
             this.splitContainer6.TabIndex = 1;
             // 
             // m_btnLjukaPontun
             // 
-            this.m_btnLjukaPontun.Location = new System.Drawing.Point(683, 21);
-            this.m_btnLjukaPontun.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_btnLjukaPontun.Location = new System.Drawing.Point(598, 16);
             this.m_btnLjukaPontun.Name = "m_btnLjukaPontun";
-            this.m_btnLjukaPontun.Size = new System.Drawing.Size(130, 31);
+            this.m_btnLjukaPontun.Size = new System.Drawing.Size(114, 23);
             this.m_btnLjukaPontun.TabIndex = 1;
             this.m_btnLjukaPontun.Text = "Ljúka pöntun";
             this.m_btnLjukaPontun.UseVisualStyleBackColor = true;
@@ -347,10 +398,9 @@
             // 
             // m_btnAlltKarfa
             // 
-            this.m_btnAlltKarfa.Location = new System.Drawing.Point(211, 27);
-            this.m_btnAlltKarfa.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_btnAlltKarfa.Location = new System.Drawing.Point(185, 20);
             this.m_btnAlltKarfa.Name = "m_btnAlltKarfa";
-            this.m_btnAlltKarfa.Size = new System.Drawing.Size(359, 31);
+            this.m_btnAlltKarfa.Size = new System.Drawing.Size(314, 23);
             this.m_btnAlltKarfa.TabIndex = 0;
             this.m_btnAlltKarfa.Text = "Setja öll skjöl máls í körfu";
             this.m_btnAlltKarfa.UseVisualStyleBackColor = true;
@@ -361,10 +411,8 @@
             this.m_grbSkjol.Controls.Add(this.m_dgvSkjol);
             this.m_grbSkjol.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbSkjol.Location = new System.Drawing.Point(0, 0);
-            this.m_grbSkjol.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_grbSkjol.Name = "m_grbSkjol";
-            this.m_grbSkjol.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_grbSkjol.Size = new System.Drawing.Size(1154, 157);
+            this.m_grbSkjol.Size = new System.Drawing.Size(1010, 118);
             this.m_grbSkjol.TabIndex = 1;
             this.m_grbSkjol.TabStop = false;
             this.m_grbSkjol.Text = "Skjöl";
@@ -378,23 +426,23 @@
             this.colDokumentID,
             this.colSagsID});
             this.m_dgvSkjol.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvSkjol.Location = new System.Drawing.Point(3, 24);
-            this.m_dgvSkjol.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_dgvSkjol.Location = new System.Drawing.Point(3, 19);
             this.m_dgvSkjol.Name = "m_dgvSkjol";
             this.m_dgvSkjol.ReadOnly = true;
             this.m_dgvSkjol.RowHeadersVisible = false;
             this.m_dgvSkjol.RowTemplate.Height = 25;
             this.m_dgvSkjol.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.m_dgvSkjol.Size = new System.Drawing.Size(1148, 129);
+            this.m_dgvSkjol.Size = new System.Drawing.Size(1004, 96);
             this.m_dgvSkjol.TabIndex = 0;
-            this.m_dgvSkjol.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvSkjol_CellContentClick);
+            this.m_dgvSkjol.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.m_dgvSkjol_DataBindingComplete);
             this.m_dgvSkjol.SelectionChanged += new System.EventHandler(this.m_dgvSkjol_SelectionChanged);
+            this.m_dgvSkjol.Paint += new System.Windows.Forms.PaintEventHandler(this.m_dgvSkjol_Paint);
+            this.m_dgvSkjol.Leave += new System.EventHandler(this.m_dgvSkjol_Leave);
             // 
             // splitContainer5
             // 
             this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer5.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.splitContainer5.Name = "splitContainer5";
             this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -407,26 +455,24 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.m_grbSkjalValid);
-            this.splitContainer5.Size = new System.Drawing.Size(1154, 528);
-            this.splitContainer5.SplitterDistance = 81;
-            this.splitContainer5.SplitterWidth = 5;
+            this.splitContainer5.Size = new System.Drawing.Size(1010, 396);
+            this.splitContainer5.SplitterDistance = 60;
             this.splitContainer5.TabIndex = 3;
             // 
             // m_lblSidaValinn
             // 
             this.m_lblSidaValinn.AutoSize = true;
-            this.m_lblSidaValinn.Location = new System.Drawing.Point(389, 23);
+            this.m_lblSidaValinn.Location = new System.Drawing.Point(340, 17);
             this.m_lblSidaValinn.Name = "m_lblSidaValinn";
-            this.m_lblSidaValinn.Size = new System.Drawing.Size(50, 20);
+            this.m_lblSidaValinn.Size = new System.Drawing.Size(38, 15);
             this.m_lblSidaValinn.TabIndex = 4;
             this.m_lblSidaValinn.Text = "label1";
             // 
             // m_btnEittKara
             // 
-            this.m_btnEittKara.Location = new System.Drawing.Point(607, 23);
-            this.m_btnEittKara.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_btnEittKara.Location = new System.Drawing.Point(531, 17);
             this.m_btnEittKara.Name = "m_btnEittKara";
-            this.m_btnEittKara.Size = new System.Drawing.Size(189, 31);
+            this.m_btnEittKara.Size = new System.Drawing.Size(165, 23);
             this.m_btnEittKara.TabIndex = 1;
             this.m_btnEittKara.Text = "Setja skjal í körfu";
             this.m_btnEittKara.UseVisualStyleBackColor = true;
@@ -434,10 +480,9 @@
             // 
             // m_numUpDown
             // 
-            this.m_numUpDown.Location = new System.Drawing.Point(321, 17);
-            this.m_numUpDown.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_numUpDown.Location = new System.Drawing.Point(281, 13);
             this.m_numUpDown.Name = "m_numUpDown";
-            this.m_numUpDown.Size = new System.Drawing.Size(46, 27);
+            this.m_numUpDown.Size = new System.Drawing.Size(40, 23);
             this.m_numUpDown.TabIndex = 3;
             // 
             // m_grbSkjalValid
@@ -445,10 +490,8 @@
             this.m_grbSkjalValid.Controls.Add(this.m_pibSkjal);
             this.m_grbSkjalValid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbSkjalValid.Location = new System.Drawing.Point(0, 0);
-            this.m_grbSkjalValid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_grbSkjalValid.Name = "m_grbSkjalValid";
-            this.m_grbSkjalValid.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_grbSkjalValid.Size = new System.Drawing.Size(1154, 442);
+            this.m_grbSkjalValid.Size = new System.Drawing.Size(1010, 332);
             this.m_grbSkjalValid.TabIndex = 3;
             this.m_grbSkjalValid.TabStop = false;
             this.m_grbSkjalValid.Text = "Skjal valið";
@@ -456,10 +499,9 @@
             // m_pibSkjal
             // 
             this.m_pibSkjal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_pibSkjal.Location = new System.Drawing.Point(3, 24);
-            this.m_pibSkjal.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_pibSkjal.Location = new System.Drawing.Point(3, 19);
             this.m_pibSkjal.Name = "m_pibSkjal";
-            this.m_pibSkjal.Size = new System.Drawing.Size(1148, 414);
+            this.m_pibSkjal.Size = new System.Drawing.Size(1004, 310);
             this.m_pibSkjal.TabIndex = 2;
             this.m_pibSkjal.TabStop = false;
             this.m_pibSkjal.DoubleClick += new System.EventHandler(this.m_pibSkjal_DoubleClick);
@@ -469,10 +511,8 @@
             this.m_grbPantanir.Controls.Add(this.m_tacPantanir);
             this.m_grbPantanir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbPantanir.Location = new System.Drawing.Point(0, 0);
-            this.m_grbPantanir.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_grbPantanir.Name = "m_grbPantanir";
-            this.m_grbPantanir.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_grbPantanir.Size = new System.Drawing.Size(311, 1061);
+            this.m_grbPantanir.Size = new System.Drawing.Size(273, 796);
             this.m_grbPantanir.TabIndex = 1;
             this.m_grbPantanir.TabStop = false;
             this.m_grbPantanir.Text = "Skjöl valin";
@@ -483,22 +523,20 @@
             this.m_tacPantanir.Controls.Add(this.m_tapSkraakerfi);
             this.m_tacPantanir.Controls.Add(this.m_tapGagnagrunnar);
             this.m_tacPantanir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tacPantanir.Location = new System.Drawing.Point(3, 24);
-            this.m_tacPantanir.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_tacPantanir.Location = new System.Drawing.Point(3, 19);
             this.m_tacPantanir.Name = "m_tacPantanir";
             this.m_tacPantanir.SelectedIndex = 0;
-            this.m_tacPantanir.Size = new System.Drawing.Size(305, 1033);
+            this.m_tacPantanir.Size = new System.Drawing.Size(267, 774);
             this.m_tacPantanir.TabIndex = 0;
             this.m_tacPantanir.TabStop = false;
             // 
             // m_tapMalkerfi
             // 
             this.m_tapMalkerfi.Controls.Add(this.m_dgvPontunMalaKerfi);
-            this.m_tapMalkerfi.Location = new System.Drawing.Point(4, 29);
-            this.m_tapMalkerfi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_tapMalkerfi.Location = new System.Drawing.Point(4, 24);
             this.m_tapMalkerfi.Name = "m_tapMalkerfi";
-            this.m_tapMalkerfi.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapMalkerfi.Size = new System.Drawing.Size(297, 1000);
+            this.m_tapMalkerfi.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapMalkerfi.Size = new System.Drawing.Size(259, 746);
             this.m_tapMalkerfi.TabIndex = 0;
             this.m_tapMalkerfi.Text = "Málakerfi";
             this.m_tapMalkerfi.UseVisualStyleBackColor = true;
@@ -513,13 +551,12 @@
             this.colSlod,
             this.colSQL});
             this.m_dgvPontunMalaKerfi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvPontunMalaKerfi.Location = new System.Drawing.Point(3, 4);
-            this.m_dgvPontunMalaKerfi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_dgvPontunMalaKerfi.Location = new System.Drawing.Point(3, 3);
             this.m_dgvPontunMalaKerfi.Name = "m_dgvPontunMalaKerfi";
             this.m_dgvPontunMalaKerfi.ReadOnly = true;
             this.m_dgvPontunMalaKerfi.RowHeadersVisible = false;
             this.m_dgvPontunMalaKerfi.RowTemplate.Height = 25;
-            this.m_dgvPontunMalaKerfi.Size = new System.Drawing.Size(291, 992);
+            this.m_dgvPontunMalaKerfi.Size = new System.Drawing.Size(253, 740);
             this.m_dgvPontunMalaKerfi.TabIndex = 0;
             // 
             // colGagn
@@ -549,11 +586,10 @@
             // m_tapSkraakerfi
             // 
             this.m_tapSkraakerfi.Controls.Add(this.m_dgvPontunSkraarKerfi);
-            this.m_tapSkraakerfi.Location = new System.Drawing.Point(4, 29);
-            this.m_tapSkraakerfi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_tapSkraakerfi.Location = new System.Drawing.Point(4, 24);
             this.m_tapSkraakerfi.Name = "m_tapSkraakerfi";
-            this.m_tapSkraakerfi.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapSkraakerfi.Size = new System.Drawing.Size(297, 1000);
+            this.m_tapSkraakerfi.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapSkraakerfi.Size = new System.Drawing.Size(259, 746);
             this.m_tapSkraakerfi.TabIndex = 1;
             this.m_tapSkraakerfi.Text = "Skráakerfi";
             this.m_tapSkraakerfi.UseVisualStyleBackColor = true;
@@ -564,23 +600,21 @@
             this.m_dgvPontunSkraarKerfi.AllowUserToDeleteRows = false;
             this.m_dgvPontunSkraarKerfi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_dgvPontunSkraarKerfi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvPontunSkraarKerfi.Location = new System.Drawing.Point(3, 4);
-            this.m_dgvPontunSkraarKerfi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_dgvPontunSkraarKerfi.Location = new System.Drawing.Point(3, 3);
             this.m_dgvPontunSkraarKerfi.Name = "m_dgvPontunSkraarKerfi";
             this.m_dgvPontunSkraarKerfi.ReadOnly = true;
             this.m_dgvPontunSkraarKerfi.RowHeadersVisible = false;
             this.m_dgvPontunSkraarKerfi.RowTemplate.Height = 25;
-            this.m_dgvPontunSkraarKerfi.Size = new System.Drawing.Size(291, 992);
+            this.m_dgvPontunSkraarKerfi.Size = new System.Drawing.Size(253, 740);
             this.m_dgvPontunSkraarKerfi.TabIndex = 0;
             // 
             // m_tapGagnagrunnar
             // 
             this.m_tapGagnagrunnar.Controls.Add(this.m_dgvPontunGagnagrunnar);
-            this.m_tapGagnagrunnar.Location = new System.Drawing.Point(4, 29);
-            this.m_tapGagnagrunnar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_tapGagnagrunnar.Location = new System.Drawing.Point(4, 24);
             this.m_tapGagnagrunnar.Name = "m_tapGagnagrunnar";
-            this.m_tapGagnagrunnar.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapGagnagrunnar.Size = new System.Drawing.Size(297, 1000);
+            this.m_tapGagnagrunnar.Padding = new System.Windows.Forms.Padding(3);
+            this.m_tapGagnagrunnar.Size = new System.Drawing.Size(259, 746);
             this.m_tapGagnagrunnar.TabIndex = 2;
             this.m_tapGagnagrunnar.Text = "Gagnagrunnar";
             this.m_tapGagnagrunnar.UseVisualStyleBackColor = true;
@@ -591,13 +625,12 @@
             this.m_dgvPontunGagnagrunnar.AllowUserToDeleteRows = false;
             this.m_dgvPontunGagnagrunnar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.m_dgvPontunGagnagrunnar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvPontunGagnagrunnar.Location = new System.Drawing.Point(3, 4);
-            this.m_dgvPontunGagnagrunnar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.m_dgvPontunGagnagrunnar.Location = new System.Drawing.Point(3, 3);
             this.m_dgvPontunGagnagrunnar.Name = "m_dgvPontunGagnagrunnar";
             this.m_dgvPontunGagnagrunnar.ReadOnly = true;
             this.m_dgvPontunGagnagrunnar.RowHeadersVisible = false;
             this.m_dgvPontunGagnagrunnar.RowTemplate.Height = 25;
-            this.m_dgvPontunGagnagrunnar.Size = new System.Drawing.Size(291, 992);
+            this.m_dgvPontunGagnagrunnar.Size = new System.Drawing.Size(253, 740);
             this.m_dgvPontunGagnagrunnar.TabIndex = 0;
             // 
             // colDokumentID
@@ -618,17 +651,24 @@
             // 
             // frmMalakerfi
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1854, 1061);
+            this.ClientSize = new System.Drawing.Size(1622, 796);
             this.Controls.Add(this.splitContainer1);
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmMalakerfi";
             this.Text = "frmMalakerfi";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.m_tacMalaLykillLeit.ResumeLayout(false);
+            this.m_tapMalaLykill.ResumeLayout(false);
+            this.splitContainer8.Panel1.ResumeLayout(false);
+            this.splitContainer8.Panel1.PerformLayout();
+            this.splitContainer8.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).EndInit();
+            this.splitContainer8.ResumeLayout(false);
+            this.m_tapLeit.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -639,12 +679,11 @@
             this.splitContainer3.ResumeLayout(false);
             this.splitContainer7.Panel1.ResumeLayout(false);
             this.splitContainer7.Panel2.ResumeLayout(false);
-            this.splitContainer7.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
             this.splitContainer7.ResumeLayout(false);
+            this.m_grbLeit.ResumeLayout(false);
+            this.m_grbLeit.PerformLayout();
             this.m_grbMalInfo.ResumeLayout(false);
-            this.m_grbMalInfo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvLeitarNidurstodur)).EndInit();
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
@@ -678,7 +717,6 @@
         #endregion
 
         private SplitContainer splitContainer1;
-        private TreeView m_trwMalalykill;
         private DataGridView m_dgvSkjol;
         private PictureBox m_pibSkjal;
         private NumericUpDown m_numUpDown;
@@ -693,7 +731,6 @@
         private TabPage m_tapMalkerfi;
         private TabPage m_tapSkraakerfi;
         private TabPage m_tapGagnagrunnar;
-        private Label m_lblMalInfo;
         private GroupBox m_grbMalInfo;
         private GroupBox m_grbSkjol;
         private Label m_lblSidaValinn;
@@ -708,11 +745,17 @@
         private SplitContainer splitContainer7;
         private Button m_btnLeita;
         private TextBox m_tboLeita;
-        private Label m_lblLeitNidurstsodur;
-        private DataGridView m_dgvLeitarNidurstodur;
-        private DataGridViewTextBoxColumn colID;
-        private DataGridViewTextBoxColumn colTitill;
         private Button m_btnLjukaPontun;
+        private TabControl m_tacMalaLykillLeit;
+        private TabPage m_tapMalaLykill;
+        private TabPage m_tapLeit;
+        private TreeView m_trwLeit;
+        private TreeView m_trwMalalykill;
+        private GroupBox m_grbLeit;
+        private ListBox m_libMalInfo;
+        private SplitContainer splitContainer8;
+        private RadioButton m_rdbInnheldurAllt;
+        private RadioButton m_rdbInnheldlurMal;
         private DataGridViewTextBoxColumn colDokumentID;
         private DataGridViewTextBoxColumn colSagsID;
     }

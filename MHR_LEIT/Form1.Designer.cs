@@ -180,7 +180,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.m_dgvLeit);
-            this.splitContainer1.Size = new System.Drawing.Size(1553, 702);
+            this.splitContainer1.Size = new System.Drawing.Size(1739, 702);
             this.splitContainer1.SplitterDistance = 233;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
@@ -225,7 +225,7 @@
             // m_lblGagangrunnar
             // 
             this.m_lblGagangrunnar.AutoSize = true;
-            this.m_lblGagangrunnar.Location = new System.Drawing.Point(1357, 91);
+            this.m_lblGagangrunnar.Location = new System.Drawing.Point(1322, 85);
             this.m_lblGagangrunnar.Name = "m_lblGagangrunnar";
             this.m_lblGagangrunnar.Size = new System.Drawing.Size(103, 20);
             this.m_lblGagangrunnar.TabIndex = 14;
@@ -396,7 +396,7 @@
             this.m_dgvLeit.RowHeadersVisible = false;
             this.m_dgvLeit.RowTemplate.Height = 25;
             this.m_dgvLeit.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.m_dgvLeit.Size = new System.Drawing.Size(1553, 464);
+            this.m_dgvLeit.Size = new System.Drawing.Size(1739, 464);
             this.m_dgvLeit.TabIndex = 0;
             this.m_dgvLeit.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvLeit_CellClick);
             // 
@@ -492,11 +492,11 @@
             this.m_tacMain.Controls.Add(this.m_tapLeit);
             this.m_tacMain.Controls.Add(this.m_tapAfgreidsla);
             this.m_tacMain.Controls.Add(this.m_tapUmsjon);
-            this.m_tacMain.Location = new System.Drawing.Point(14, 81);
+            this.m_tacMain.Location = new System.Drawing.Point(12, 81);
             this.m_tacMain.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tacMain.Name = "m_tacMain";
             this.m_tacMain.SelectedIndex = 0;
-            this.m_tacMain.Size = new System.Drawing.Size(1567, 743);
+            this.m_tacMain.Size = new System.Drawing.Size(1753, 743);
             this.m_tacMain.TabIndex = 1;
             // 
             // m_tapLeit
@@ -506,7 +506,7 @@
             this.m_tapLeit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tapLeit.Name = "m_tapLeit";
             this.m_tapLeit.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapLeit.Size = new System.Drawing.Size(1559, 710);
+            this.m_tapLeit.Size = new System.Drawing.Size(1745, 710);
             this.m_tapLeit.TabIndex = 0;
             this.m_tapLeit.Text = "Leit";
             this.m_tapLeit.UseVisualStyleBackColor = true;
@@ -518,7 +518,7 @@
             this.m_tapAfgreidsla.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tapAfgreidsla.Name = "m_tapAfgreidsla";
             this.m_tapAfgreidsla.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapAfgreidsla.Size = new System.Drawing.Size(1559, 710);
+            this.m_tapAfgreidsla.Size = new System.Drawing.Size(1745, 710);
             this.m_tapAfgreidsla.TabIndex = 1;
             this.m_tapAfgreidsla.Text = "Afgreiðsla";
             this.m_tapAfgreidsla.UseVisualStyleBackColor = true;
@@ -537,8 +537,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Size = new System.Drawing.Size(1553, 702);
-            this.splitContainer2.SplitterDistance = 513;
+            this.splitContainer2.Size = new System.Drawing.Size(1739, 702);
+            this.splitContainer2.SplitterDistance = 574;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 3;
             // 
@@ -548,7 +548,7 @@
             this.m_trwDIP.Location = new System.Drawing.Point(0, 0);
             this.m_trwDIP.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_trwDIP.Name = "m_trwDIP";
-            this.m_trwDIP.Size = new System.Drawing.Size(513, 702);
+            this.m_trwDIP.Size = new System.Drawing.Size(574, 702);
             this.m_trwDIP.TabIndex = 0;
             this.m_trwDIP.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwDIP_AfterSelect);
             // 
@@ -575,7 +575,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.m_grbDIP);
-            this.splitContainer3.Size = new System.Drawing.Size(1035, 702);
+            this.splitContainer3.Size = new System.Drawing.Size(1160, 702);
             this.splitContainer3.SplitterDistance = 229;
             this.splitContainer3.SplitterWidth = 5;
             this.splitContainer3.TabIndex = 3;
@@ -682,7 +682,7 @@
             this.m_grbDIP.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_grbDIP.Name = "m_grbDIP";
             this.m_grbDIP.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_grbDIP.Size = new System.Drawing.Size(1035, 468);
+            this.m_grbDIP.Size = new System.Drawing.Size(1160, 468);
             this.m_grbDIP.TabIndex = 3;
             this.m_grbDIP.TabStop = false;
             this.m_grbDIP.Text = "Gögn í pöntun";
@@ -697,7 +697,7 @@
             this.m_tacPontun.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tacPontun.Name = "m_tacPontun";
             this.m_tacPontun.SelectedIndex = 0;
-            this.m_tacPontun.Size = new System.Drawing.Size(1029, 440);
+            this.m_tacPontun.Size = new System.Drawing.Size(1154, 440);
             this.m_tacPontun.TabIndex = 3;
             // 
             // m_tapPontunSkra
@@ -707,7 +707,7 @@
             this.m_tapPontunSkra.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tapPontunSkra.Name = "m_tapPontunSkra";
             this.m_tapPontunSkra.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapPontunSkra.Size = new System.Drawing.Size(1021, 407);
+            this.m_tapPontunSkra.Size = new System.Drawing.Size(1146, 407);
             this.m_tapPontunSkra.TabIndex = 0;
             this.m_tapPontunSkra.Text = "Skráarkerfi";
             this.m_tapPontunSkra.UseVisualStyleBackColor = true;
@@ -729,7 +729,7 @@
             this.m_dgvDIPList.ReadOnly = true;
             this.m_dgvDIPList.RowHeadersVisible = false;
             this.m_dgvDIPList.RowTemplate.Height = 25;
-            this.m_dgvDIPList.Size = new System.Drawing.Size(1015, 399);
+            this.m_dgvDIPList.Size = new System.Drawing.Size(1140, 399);
             this.m_dgvDIPList.TabIndex = 2;
             // 
             // colID
@@ -782,7 +782,7 @@
             this.m_tapPontunMalakerfi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tapPontunMalakerfi.Name = "m_tapPontunMalakerfi";
             this.m_tapPontunMalakerfi.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapPontunMalakerfi.Size = new System.Drawing.Size(1021, 407);
+            this.m_tapPontunMalakerfi.Size = new System.Drawing.Size(1146, 407);
             this.m_tapPontunMalakerfi.TabIndex = 1;
             this.m_tapPontunMalakerfi.Text = "Málakerfi";
             this.m_tapPontunMalakerfi.UseVisualStyleBackColor = true;
@@ -799,7 +799,7 @@
             this.m_dgvDIPmal.ReadOnly = true;
             this.m_dgvDIPmal.RowHeadersVisible = false;
             this.m_dgvDIPmal.RowTemplate.Height = 25;
-            this.m_dgvDIPmal.Size = new System.Drawing.Size(1015, 399);
+            this.m_dgvDIPmal.Size = new System.Drawing.Size(1140, 399);
             this.m_dgvDIPmal.TabIndex = 0;
             // 
             // m_tapPontunGagnagrunnar
@@ -809,7 +809,7 @@
             this.m_tapPontunGagnagrunnar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tapPontunGagnagrunnar.Name = "m_tapPontunGagnagrunnar";
             this.m_tapPontunGagnagrunnar.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapPontunGagnagrunnar.Size = new System.Drawing.Size(1021, 407);
+            this.m_tapPontunGagnagrunnar.Size = new System.Drawing.Size(1146, 407);
             this.m_tapPontunGagnagrunnar.TabIndex = 2;
             this.m_tapPontunGagnagrunnar.Text = "Gagmagrunnar";
             this.m_tapPontunGagnagrunnar.UseVisualStyleBackColor = true;
@@ -826,7 +826,7 @@
             this.m_dgvDIPGagnagrunnar.ReadOnly = true;
             this.m_dgvDIPGagnagrunnar.RowHeadersVisible = false;
             this.m_dgvDIPGagnagrunnar.RowTemplate.Height = 25;
-            this.m_dgvDIPGagnagrunnar.Size = new System.Drawing.Size(1015, 399);
+            this.m_dgvDIPGagnagrunnar.Size = new System.Drawing.Size(1140, 399);
             this.m_dgvDIPGagnagrunnar.TabIndex = 0;
             // 
             // m_tapUmsjon
@@ -836,7 +836,7 @@
             this.m_tapUmsjon.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tapUmsjon.Name = "m_tapUmsjon";
             this.m_tapUmsjon.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapUmsjon.Size = new System.Drawing.Size(1559, 710);
+            this.m_tapUmsjon.Size = new System.Drawing.Size(1745, 710);
             this.m_tapUmsjon.TabIndex = 2;
             this.m_tapUmsjon.Text = "Umsjón";
             this.m_tapUmsjon.UseVisualStyleBackColor = true;
@@ -851,7 +851,7 @@
             this.m_tacUmsjon.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tacUmsjon.Name = "m_tacUmsjon";
             this.m_tacUmsjon.SelectedIndex = 0;
-            this.m_tacUmsjon.Size = new System.Drawing.Size(1553, 702);
+            this.m_tacUmsjon.Size = new System.Drawing.Size(1739, 702);
             this.m_tacUmsjon.TabIndex = 0;
             // 
             // m_tapNotendur
@@ -861,7 +861,7 @@
             this.m_tapNotendur.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tapNotendur.Name = "m_tapNotendur";
             this.m_tapNotendur.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapNotendur.Size = new System.Drawing.Size(1545, 669);
+            this.m_tapNotendur.Size = new System.Drawing.Size(1731, 669);
             this.m_tapNotendur.TabIndex = 0;
             this.m_tapNotendur.Text = "Notendur";
             this.m_tapNotendur.UseVisualStyleBackColor = true;
@@ -872,7 +872,7 @@
             this.uscNotendur1.Location = new System.Drawing.Point(3, 4);
             this.uscNotendur1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.uscNotendur1.Name = "uscNotendur1";
-            this.uscNotendur1.Size = new System.Drawing.Size(1539, 661);
+            this.uscNotendur1.Size = new System.Drawing.Size(1725, 661);
             this.uscNotendur1.TabIndex = 0;
             // 
             // m_tapLanthegar
@@ -882,7 +882,7 @@
             this.m_tapLanthegar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tapLanthegar.Name = "m_tapLanthegar";
             this.m_tapLanthegar.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapLanthegar.Size = new System.Drawing.Size(1545, 669);
+            this.m_tapLanthegar.Size = new System.Drawing.Size(1731, 669);
             this.m_tapLanthegar.TabIndex = 1;
             this.m_tapLanthegar.Text = "Lánþegar";
             this.m_tapLanthegar.UseVisualStyleBackColor = true;
@@ -893,7 +893,7 @@
             this.usclanthegar1.Location = new System.Drawing.Point(3, 4);
             this.usclanthegar1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.usclanthegar1.Name = "usclanthegar1";
-            this.usclanthegar1.Size = new System.Drawing.Size(1539, 661);
+            this.usclanthegar1.Size = new System.Drawing.Size(1725, 661);
             this.usclanthegar1.TabIndex = 0;
             // 
             // m_tapUppfæra
@@ -903,7 +903,7 @@
             this.m_tapUppfæra.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tapUppfæra.Name = "m_tapUppfæra";
             this.m_tapUppfæra.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.m_tapUppfæra.Size = new System.Drawing.Size(1545, 669);
+            this.m_tapUppfæra.Size = new System.Drawing.Size(1731, 669);
             this.m_tapUppfæra.TabIndex = 2;
             this.m_tapUppfæra.Text = "Færa inn gögn";
             this.m_tapUppfæra.UseVisualStyleBackColor = true;
@@ -921,26 +921,25 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Right;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.m_tomUtskra});
-            this.menuStrip1.Location = new System.Drawing.Point(1894, 0);
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(30, 853);
+            this.menuStrip1.Size = new System.Drawing.Size(1924, 24);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // m_tomUtskra
             // 
             this.m_tomUtskra.Name = "m_tomUtskra";
-            this.m_tomUtskra.Size = new System.Drawing.Size(55, 24);
+            this.m_tomUtskra.Size = new System.Drawing.Size(62, 24);
             this.m_tomUtskra.Text = "Útskrá";
             this.m_tomUtskra.Visible = false;
             this.m_tomUtskra.Click += new System.EventHandler(this.m_tomUtskra_Click);
             // 
             // coltitillvorsluUtgafu
             // 
-            this.coltitillvorsluUtgafu.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.coltitillvorsluUtgafu.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.coltitillvorsluUtgafu.DataPropertyName = "titill_vorsluutgafu";
             this.coltitillvorsluUtgafu.HeaderText = "Titill vörsluútgáfu";
             this.coltitillvorsluUtgafu.Name = "coltitillvorsluUtgafu";
@@ -949,12 +948,11 @@
             // 
             // colDocTitel
             // 
-            this.colDocTitel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colDocTitel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colDocTitel.DataPropertyName = "doctitill";
             this.colDocTitel.HeaderText = "Titill skjals";
             this.colDocTitel.Name = "colDocTitel";
             this.colDocTitel.ReadOnly = true;
-            this.colDocTitel.Width = 94;
             // 
             // colExtensions
             // 

@@ -68,125 +68,131 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(201, 30);
+            this.label1.Size = new System.Drawing.Size(230, 40);
             this.label1.TabIndex = 0;
             this.label1.Text = "Nafn";
             // 
             // m_tboNafn
             // 
             this.m_tboNafn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboNafn.Location = new System.Drawing.Point(210, 3);
+            this.m_tboNafn.Location = new System.Drawing.Point(239, 4);
+            this.m_tboNafn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tboNafn.Name = "m_tboNafn";
-            this.m_tboNafn.Size = new System.Drawing.Size(719, 23);
+            this.m_tboNafn.Size = new System.Drawing.Size(822, 27);
             this.m_tboNafn.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(3, 30);
+            this.label2.Location = new System.Drawing.Point(3, 40);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(201, 30);
+            this.label2.Size = new System.Drawing.Size(230, 40);
             this.label2.TabIndex = 2;
             this.label2.Text = "Kennitala";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 60);
+            this.label3.Location = new System.Drawing.Point(3, 80);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 15);
+            this.label3.Size = new System.Drawing.Size(98, 20);
             this.label3.TabIndex = 4;
             this.label3.Text = "Vörslustofnun";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 90);
+            this.label4.Location = new System.Drawing.Point(3, 120);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 15);
+            this.label4.Size = new System.Drawing.Size(96, 20);
             this.label4.TabIndex = 6;
             this.label4.Text = "Notendanafn";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 120);
+            this.label5.Location = new System.Drawing.Point(3, 160);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 15);
+            this.label5.Size = new System.Drawing.Size(59, 20);
             this.label5.TabIndex = 8;
             this.label5.Text = "Lykilorð";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 150);
+            this.label9.Location = new System.Drawing.Point(3, 200);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(52, 15);
+            this.label9.Size = new System.Drawing.Size(64, 20);
             this.label9.TabIndex = 10;
             this.label9.Text = "Hlutverk";
             // 
             // m_tboNotendaNafn
             // 
-            this.m_tboNotendaNafn.Location = new System.Drawing.Point(210, 93);
+            this.m_tboNotendaNafn.Location = new System.Drawing.Point(239, 124);
+            this.m_tboNotendaNafn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tboNotendaNafn.Name = "m_tboNotendaNafn";
-            this.m_tboNotendaNafn.Size = new System.Drawing.Size(580, 23);
+            this.m_tboNotendaNafn.Size = new System.Drawing.Size(662, 27);
             this.m_tboNotendaNafn.TabIndex = 4;
             // 
             // m_tboLykilord
             // 
-            this.m_tboLykilord.Location = new System.Drawing.Point(210, 123);
+            this.m_tboLykilord.Location = new System.Drawing.Point(239, 164);
+            this.m_tboLykilord.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tboLykilord.Name = "m_tboLykilord";
             this.m_tboLykilord.PasswordChar = '*';
-            this.m_tboLykilord.Size = new System.Drawing.Size(580, 23);
+            this.m_tboLykilord.Size = new System.Drawing.Size(662, 27);
             this.m_tboLykilord.TabIndex = 5;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 180);
+            this.label7.Location = new System.Drawing.Point(3, 240);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(50, 15);
+            this.label7.Size = new System.Drawing.Size(63, 20);
             this.label7.TabIndex = 12;
             this.label7.Text = "Netfang";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 210);
+            this.label6.Location = new System.Drawing.Point(3, 280);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(74, 15);
+            this.label6.Size = new System.Drawing.Size(93, 20);
             this.label6.TabIndex = 14;
             this.label6.Text = "Heimilisfang";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 240);
+            this.label8.Location = new System.Drawing.Point(3, 320);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(58, 15);
+            this.label8.Size = new System.Drawing.Size(72, 20);
             this.label8.TabIndex = 16;
             this.label8.Text = "Sími/gsm";
             // 
             // m_tboNetfang
             // 
-            this.m_tboNetfang.Location = new System.Drawing.Point(210, 183);
+            this.m_tboNetfang.Location = new System.Drawing.Point(239, 244);
+            this.m_tboNetfang.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tboNetfang.Name = "m_tboNetfang";
-            this.m_tboNetfang.Size = new System.Drawing.Size(580, 23);
+            this.m_tboNetfang.Size = new System.Drawing.Size(662, 27);
             this.m_tboNetfang.TabIndex = 7;
             // 
             // m_tboHeimilsfang
             // 
-            this.m_tboHeimilsfang.Location = new System.Drawing.Point(210, 213);
+            this.m_tboHeimilsfang.Location = new System.Drawing.Point(239, 284);
+            this.m_tboHeimilsfang.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tboHeimilsfang.Name = "m_tboHeimilsfang";
-            this.m_tboHeimilsfang.Size = new System.Drawing.Size(580, 23);
+            this.m_tboHeimilsfang.Size = new System.Drawing.Size(662, 27);
             this.m_tboHeimilsfang.TabIndex = 8;
             // 
             // m_tboSimi
             // 
-            this.m_tboSimi.Location = new System.Drawing.Point(210, 243);
+            this.m_tboSimi.Location = new System.Drawing.Point(239, 324);
+            this.m_tboSimi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tboSimi.Name = "m_tboSimi";
-            this.m_tboSimi.Size = new System.Drawing.Size(580, 23);
+            this.m_tboSimi.Size = new System.Drawing.Size(662, 27);
             this.m_tboSimi.TabIndex = 9;
             // 
             // m_comVörslustofnun
@@ -199,9 +205,10 @@
             "HKOP",
             "HMOS",
             "HARN"});
-            this.m_comVörslustofnun.Location = new System.Drawing.Point(210, 63);
+            this.m_comVörslustofnun.Location = new System.Drawing.Point(239, 84);
+            this.m_comVörslustofnun.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_comVörslustofnun.Name = "m_comVörslustofnun";
-            this.m_comVörslustofnun.Size = new System.Drawing.Size(580, 23);
+            this.m_comVörslustofnun.Size = new System.Drawing.Size(662, 28);
             this.m_comVörslustofnun.TabIndex = 3;
             // 
             // m_comHlutverk
@@ -212,24 +219,26 @@
             "Veldu hlutverk",
             "Umsjónarmaður",
             "Skjalavörður"});
-            this.m_comHlutverk.Location = new System.Drawing.Point(210, 153);
+            this.m_comHlutverk.Location = new System.Drawing.Point(239, 204);
+            this.m_comHlutverk.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_comHlutverk.Name = "m_comHlutverk";
-            this.m_comHlutverk.Size = new System.Drawing.Size(580, 23);
+            this.m_comHlutverk.Size = new System.Drawing.Size(662, 28);
             this.m_comHlutverk.TabIndex = 6;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 300);
+            this.label10.Location = new System.Drawing.Point(3, 399);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(38, 15);
+            this.label10.Size = new System.Drawing.Size(47, 20);
             this.label10.TabIndex = 20;
             this.label10.Text = "Virkur";
             // 
             // m_chbVirkur
             // 
             this.m_chbVirkur.AutoSize = true;
-            this.m_chbVirkur.Location = new System.Drawing.Point(210, 303);
+            this.m_chbVirkur.Location = new System.Drawing.Point(239, 403);
+            this.m_chbVirkur.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_chbVirkur.Name = "m_chbVirkur";
             this.m_chbVirkur.Size = new System.Drawing.Size(15, 14);
             this.m_chbVirkur.TabIndex = 21;
@@ -238,35 +247,38 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(3, 270);
+            this.label11.Location = new System.Drawing.Point(3, 360);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(82, 15);
+            this.label11.Size = new System.Drawing.Size(102, 20);
             this.label11.TabIndex = 18;
             this.label11.Text = "Athugasemdir";
             // 
             // m_tboAthugasemdir
             // 
             this.m_tboAthugasemdir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboAthugasemdir.Location = new System.Drawing.Point(210, 273);
+            this.m_tboAthugasemdir.Location = new System.Drawing.Point(239, 364);
+            this.m_tboAthugasemdir.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tboAthugasemdir.Multiline = true;
             this.m_tboAthugasemdir.Name = "m_tboAthugasemdir";
-            this.m_tboAthugasemdir.Size = new System.Drawing.Size(719, 24);
+            this.m_tboAthugasemdir.Size = new System.Drawing.Size(822, 31);
             this.m_tboAthugasemdir.TabIndex = 10;
             // 
             // m_tboKennitala
             // 
             this.m_tboKennitala.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboKennitala.Location = new System.Drawing.Point(210, 33);
+            this.m_tboKennitala.Location = new System.Drawing.Point(239, 44);
+            this.m_tboKennitala.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_tboKennitala.Mask = "000000-0000";
             this.m_tboKennitala.Name = "m_tboKennitala";
-            this.m_tboKennitala.Size = new System.Drawing.Size(719, 23);
+            this.m_tboKennitala.Size = new System.Drawing.Size(822, 27);
             this.m_tboKennitala.TabIndex = 2;
             // 
             // m_btnVista
             // 
-            this.m_btnVista.Location = new System.Drawing.Point(500, 635);
+            this.m_btnVista.Location = new System.Drawing.Point(571, 847);
+            this.m_btnVista.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.m_btnVista.Name = "m_btnVista";
-            this.m_btnVista.Size = new System.Drawing.Size(75, 23);
+            this.m_btnVista.Size = new System.Drawing.Size(86, 31);
             this.m_btnVista.TabIndex = 11;
             this.m_btnVista.Text = "vista";
             this.m_btnVista.UseVisualStyleBackColor = true;
@@ -300,35 +312,37 @@
             this.tableLayoutPanel1.Controls.Add(this.label11, 0, 9);
             this.tableLayoutPanel1.Controls.Add(this.m_tboAthugasemdir, 1, 9);
             this.tableLayoutPanel1.Controls.Add(this.m_tboKennitala, 1, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(34, 86);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(39, 115);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 16;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1036, 497);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1184, 663);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // frmNotendur
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1131, 783);
+            this.ClientSize = new System.Drawing.Size(1293, 1044);
             this.Controls.Add(this.m_btnVista);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmNotendur";
             this.Text = "2";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();

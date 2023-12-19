@@ -80,9 +80,12 @@ namespace OAIS_ADMIN
              //5 ef ekki eyða skjalamyndara
             if(skjalamyndari.fjoldiVirkarUtgafna(skjalamyndari.auðkenni_5_1_6) == 0 ) 
             {
-                if(Directory.GetDirectories(dir.Parent.FullName).Length == 0 ) 
+                if (Directory.Exists(dir.Parent.FullName))
                 {
-                    Directory.Delete(dir.Parent.FullName);
+                    if (Directory.GetDirectories(dir.Parent.FullName).Length == 0)
+                    {
+                        Directory.Delete(dir.Parent.FullName);
+                    }
                 }
                
                 skjalamyndari.eyða(skjalamyndari.auðkenni_5_1_6);
@@ -103,7 +106,15 @@ namespace OAIS_ADMIN
             }
             //7 eyða miðlun
 
-            utgaf.midlunEyda(m_strAuðkenni);
+            try
+            {
+                utgaf.midlunEyda(m_strAuðkenni);
+            }
+            catch (Exception x)
+            {
+
+              
+            }
             utgaf.midlun = "0";
             utgaf.vorsluutgafa = m_strAuðkenni;
             utgaf.uppFaeraVegnaMidlun();
