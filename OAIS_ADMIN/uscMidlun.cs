@@ -1220,7 +1220,7 @@ namespace OAIS_ADMIN
                             row["skjalamyndari"] = fond.heiti_skjalamyndara_3_2_1;
                             row["Sveitarfélag"] = string.Empty;
                             row["Sveitarnr."] = string.Empty;
-                            row["Afh. ár"] = fond.afhendingar_tilfærslur_3_2_4;
+                            row["Afh. ár."] = fond.afhendingar_tilfærslur_3_2_4;
                             string[] strSplit = strSeries.Split("-");
                             row["skjalaflokkur"] = strSplit[0];
                             row["kassanúmer"] = "1"; //þarf líklega ekki að breyta þessu

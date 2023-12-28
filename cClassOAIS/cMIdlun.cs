@@ -247,7 +247,7 @@ namespace cClassOAIS
                 command.ExecuteNonQuery();
                 conn.Close();
                 conn.Dispose();
-
+              //  return; //taka út þegar ég er búin að setja inn grunninn.
                 //keyra hér inn í metadata í dt_midlun
                 if (strMetaFunction != string.Empty)
                 {
@@ -758,10 +758,28 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
-        public DataTable getExtensions()
+        public DataTable getExtensions(string strVarsla, string strSkjalm, string strUtgafa)
         {
             sækjaTengistreng();
-            string strSQL = "SELECt distinct extension FROM dt_midlun d  order by extension;";
+            string strSQL = string.Empty;
+            if(strVarsla == string.Empty && strSkjalm == string.Empty && strUtgafa == string.Empty)
+            {
+                strSQL = "SELECt distinct extension FROM dt_midlun d  order by extension;";
+            }
+            if (strVarsla != string.Empty)
+            {
+                strSQL = string.Format("SELECt distinct extension FROM dt_midlun d  where vorslustofnun_audkenni ='{0}' order by extension ;", strVarsla);
+            }
+            if(strSkjalm != string.Empty)
+            {
+                strSQL = string.Format("SELECt distinct extension FROM dt_midlun d  where vorslustofnun_audkenni ='{0}' order by extension ;", strVarsla);
+            }
+            if (strUtgafa != string.Empty)
+            {
+                strSQL = string.Format("SELECt distinct extension FROM dt_midlun d  where vorslustofnun_audkenni ='{0}' order by extension ;", strVarsla);
+            }
+
+
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

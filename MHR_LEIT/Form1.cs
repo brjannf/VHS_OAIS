@@ -110,11 +110,11 @@ namespace MHR_LEIT
             }
 
         }
-        private void fyllaExtensions()
+        private void fyllaExtensions(string strVarsla, string strSkjalm,string strUtgafa)
         {
             cMIdlun midlun = new cMIdlun();
             midlun.m_bAfrit = virkurNotandi.m_bAfrit;
-            DataTable dt = midlun.getExtensions();
+            DataTable dt = midlun.getExtensions(strVarsla, strSkjalm, strUtgafa);
             if (dt.Rows.Count > 0)
             {
                 DataRow r = dt.NewRow();
@@ -775,7 +775,7 @@ namespace MHR_LEIT
             fyllaSkjalamyndara("");
             fyllaV0rslusstofnanir();
             fyllaVörsluutgafur("");
-            fyllaExtensions();
+            fyllaExtensions("", "", "");
 
 
             m_dtpStart.Value = DateTime.Now;
@@ -853,7 +853,7 @@ namespace MHR_LEIT
                 fyllaLanthega();
                 fyllaDIPLista();
                 fyllaGagnaGrunna();
-                fyllaExtensions();
+                fyllaExtensions("", "", "");
 
 
             }
@@ -1597,6 +1597,7 @@ namespace MHR_LEIT
                 {
                     string strVarsla = m_comVorslustofnun.SelectedValue.ToString();
                     fyllaSkjalamyndara(strVarsla);
+                    fyllaExtensions(strVarsla, "", "");
                     fyllaVörsluutgafur("");
                 }
                 else
@@ -1617,6 +1618,7 @@ namespace MHR_LEIT
                 {
                     string strSkjalam = m_comSkjalamyndari.SelectedValue.ToString();
                     fyllaVörsluutgafur(strSkjalam);
+                    fyllaExtensions("", strSkjalam, "");
 
                 }
                 else
@@ -1723,6 +1725,19 @@ namespace MHR_LEIT
             virkurNotandi.hreinsaHlut();
             m_tomUtskra.Visible = false;
 
+        }
+
+        private void m_comVorsluUtgafur_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(m_comVorsluUtgafur.Focused)
+            {
+                if (m_comVorslustofnun.SelectedIndex != 0)
+                {
+                    string strUtgafa = m_comVorsluUtgafur.SelectedValue.ToString();
+                    fyllaExtensions("", "", strUtgafa);
+                }
+            }
+            
         }
     }
 }

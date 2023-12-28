@@ -150,6 +150,7 @@ CREATE TABLE  `db_oais_admin_afrit`.`dt_midlun` (
   `dalkur_malTitill` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `maltitill` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `docInnihald` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `extension` varchar(45) DEFAULT NULL,
   `vorslustofnun_audkenni` varchar(45) NOT NULL,
   `vorslustofnun_heiti` varchar(45) NOT NULL,
   `skjalamyndari_audkenni` varchar(45) NOT NULL,
@@ -159,7 +160,7 @@ CREATE TABLE  `db_oais_admin_afrit`.`dt_midlun` (
   `skjalaskra_afharnr` varchar(45) NOT NULL,
   `skjalaskra_innihald` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `hver_skradi` varchar(45) NOT NULL,
-  `dags_skrad` varchar (100) NOT NULL,
+  `dags_skrad` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `full_text_index` (`vorsluutgafa`,`titill_vorsluutgafu`,`doctitill`,`docLastWriten`,`docInnihald`,`vorslustofnun_heiti`,`skjalamyndari_heiti`,`skjalaskra_timabil`,`skjalaskra_afharnr`,`skjalaskra_innihald`,`maltitill`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -168,7 +169,7 @@ DROP TABLE IF EXISTS `db_oais_admin_afrit`.`dt_fyrirspurnir`;
 CREATE TABLE  `db_oais_admin_afrit`.`dt_fyrirspurnir` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `nafn` varchar(100) NOT NULL,
-  `fyrirspurn` varchar(500) NOT NULL,
+  `fyrirspurn` varchar(1500) NOT NULL,
   `lysing` varchar(5000) NOT NULL,
   `gagnagrunnur` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `nr` int unsigned NOT NULL DEFAULT '0',
