@@ -1448,7 +1448,7 @@ namespace OAIS_ADMIN
                 string dest = Path.Combine(destFolder, name);
                 CopyFolder(folder, dest);
                 m_prgBackup.PerformStep();
-                m_lblBackupStatus.Text = folder; // string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
+                m_lblBackupStatus.Text = folder; // string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);   
                 Application.DoEvents();
             }
         }

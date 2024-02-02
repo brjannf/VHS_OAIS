@@ -1,5 +1,6 @@
 using cClassOAIS;
 using cClassVHS;
+using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Data;
 using System.Diagnostics;
@@ -30,6 +31,7 @@ namespace MHR_LEIT
         public Form1()
         {
             InitializeComponent();
+            m_comFjoldiFaerslnaLeit.Text = "100";
             m_pnlNotandi.BringToFront();
             m_pnlNotandi.Dock = DockStyle.Fill;
             this.Text = "MHR - LEIT";
@@ -216,10 +218,10 @@ namespace MHR_LEIT
         }
         private void m_btnLeita_Click(object sender, EventArgs e)
         {
-            leita();
+            leita(true);
         }
 
-        private void leita()
+        private void leita(bool bLeit)
         {
             cMIdlun midlun = new cMIdlun();
             midlun.m_bAfrit = bAfrit;
@@ -251,20 +253,52 @@ namespace MHR_LEIT
             {
                 midlun.Endadags = m_dtEnd.Value.ToString();
             }
+            int iPageFjoldi = Convert.ToInt32(m_comFjoldiFaerslnaLeit.Text);
             //   mid
+            int iFjoldi = midlun.leitCount(m_tboLeitOrd.Text);
+            decimal dFjoldi = Convert.ToDecimal((double)iFjoldi / (double)iPageFjoldi);
+            int iPages = Convert.ToInt32(Math.Ceiling(dFjoldi));
+            //fylla pagecombo
+            if(bLeit)
+            {
+                m_comPages.Items.Clear();
+                for (int i = 0; i < iPages; i++)
+                {
+                    m_comPages.Items.Add(i + 1);
+                }
+                if (iFjoldi != 0)
+                {
+                    m_comPages.SelectedIndex = 0;
+                }
+                else
+                {
+                    m_comPages.Text = "0";
+                }
 
-            m_dtLeitarNidurstodur = midlun.leit(m_tboLeitOrd.Text);
+            }
+
+            m_lblSidaAf.Text = string.Format("af {0}", iPages);
+            if(bLeit)
+            {
+                m_dtLeitarNidurstodur = midlun.leit(m_tboLeitOrd.Text, iPageFjoldi.ToString(), "0");
+            }
+            else
+            {
+                int Ipage =  Convert.ToInt32(m_comPages.SelectedItem )-1;
+                iPages = Ipage * iPageFjoldi;
+                m_dtLeitarNidurstodur = midlun.leit(m_tboLeitOrd.Text, iPageFjoldi.ToString(), iPages.ToString() );
+            }
             m_dgvLeit.AutoGenerateColumns = false;
             m_dgvLeit.DataSource = m_dtLeitarNidurstodur;
             m_lblLeitarnidurstodur.Visible = true;
-            m_lblLeitarnidurstodur.Text = string.Format("Það fundust {0} leitarniðurstöður útfrá leitarorðunum {1}", m_dtLeitarNidurstodur.Rows.Count, m_tboLeitOrd.Text);
+            m_lblLeitarnidurstodur.Text = string.Format("Það fundust {0} leitarniðurstöður útfrá leitarorðunum {1}", iFjoldi, m_tboLeitOrd.Text);
         }
 
         private void m_tboLeitOrd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                leita();
+                leita(true);
             }
         }
 
@@ -1605,6 +1639,7 @@ namespace MHR_LEIT
                     fyllaV0rslusstofnanir();
                     fyllaSkjalamyndara("");
                     fyllaVörsluutgafur("");
+                    fyllaExtensions("", "", "");
                 }
             }
             
@@ -1731,13 +1766,69 @@ namespace MHR_LEIT
         {
             if(m_comVorsluUtgafur.Focused)
             {
-                if (m_comVorslustofnun.SelectedIndex != 0)
+                if (m_comVorsluUtgafur.SelectedIndex != 0)
                 {
                     string strUtgafa = m_comVorsluUtgafur.SelectedValue.ToString();
                     fyllaExtensions("", "", strUtgafa);
                 }
             }
             
+        }
+
+        private void m_comPages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(m_comPages.Focused)
+            {
+                leita(false);
+            }
+           
+        }
+
+        private void m_btnNaesta_Click(object sender, EventArgs e)
+        {
+            if(m_comPages.SelectedIndex != m_comPages.Items.Count - 1) 
+            {
+                m_comPages.SelectedIndex = m_comPages.SelectedIndex + 1;
+                leita(false);
+            }
+           
+        }
+
+        private void m_btnFyrri_Click(object sender, EventArgs e)
+        {
+            if(m_comPages.SelectedIndex != 0)
+            {
+                m_comPages.SelectedIndex = m_comPages.SelectedIndex - 1;
+                leita(false);
+            }
+           
+        }
+
+        private void m_btnFyrsta_Click(object sender, EventArgs e)
+        {
+            if(m_comPages.Items.Count != 0)
+            {
+                m_comPages.SelectedIndex = 0;
+                leita(false);
+            }
+           
+        }
+
+        private void m_btnSidasta_Click(object sender, EventArgs e)
+        {
+            if (m_comPages.Items.Count != 0)
+            {
+                m_comPages.SelectedIndex = m_comPages.Items.Count-1;
+                leita(false);
+            }
+        }
+
+        private void m_comFjoldiFaerslnaLeit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(m_comFjoldiFaerslnaLeit.Focused)
+            {
+                leita(true);
+            }
         }
     }
 }

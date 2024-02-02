@@ -443,13 +443,143 @@ namespace cClassOAIS
             return strREt;
         }
 
-        public DataTable leit(string strLeitarord)
+        public int leitCount(string strLeitarord)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Empty;
+
+            if (strLeitarord.Length != 0)
+            {
+                strSQL = string.Format("Select count(*) FROM dt_midlun m WHERE MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
+            }
+            else
+            {
+                strSQL = "SELECT count(*) FROM dt_midlun d ";
+            }
+
+
+
+
+            if (this.vorslustofnun_audkenni != null)
+            {
+                if (strLeitarord.Length == 0)
+                {
+                    strSQL += " WHERE vorslustofnun_audkenni = '" + this.vorslustofnun_audkenni + "' ";
+                }
+                else
+                {
+                    strSQL += " AND vorslustofnun_audkenni = '" + this.vorslustofnun_audkenni + "' ";
+                }
+
+            }
+
+            if (this.skjalamyndari_audkenni != null)
+            {
+                if (strLeitarord.Length == 0 && this.vorslustofnun_audkenni == null)
+                {
+                    strSQL += " WHERE skjalamyndari_audkenni = '" + this.skjalamyndari_audkenni + "' ";
+                }
+                else
+                {
+                    strSQL += " AND skjalamyndari_audkenni = '" + this.skjalamyndari_audkenni + "' ";
+                }
+
+            }
+            if (this.vorsluutgafa != null)
+            {
+                if (!strSQL.Contains("WHERE"))  //if (strLeitarord.Length == 0 && this.vorslustofnun_audkenni == null)
+                {
+                    strSQL += " WHERE vorsluutgafa = '" + this.vorsluutgafa + "' ";
+                }
+                else
+                {
+                    strSQL += " AND vorsluutgafa = '" + this.vorsluutgafa + "' ";
+                }
+
+            }
+
+
+
+            if (this.Upphafsdags != null || this.Endadags != null)
+            {
+                if (this.Upphafsdags == null && this.Endadags != null)
+                {
+                    DateTime dtEnd = Convert.ToDateTime(this.Endadags);
+                    string strEnd = dtEnd.Year.ToString() + "-" + dtEnd.Month.ToString() + "-" + dtEnd.Day.ToString();
+
+                    if (!strSQL.Contains("WHERE"))
+                    {
+                        strSQL += " WHERE DATE(docLastWriten) <= '" + strEnd + "' ";
+                    }
+                    else
+                    {
+                        strSQL += " AND DATE(docLastWriten) <= '" + strEnd + "' ";
+                    }
+                }
+                if (this.Upphafsdags != null && this.Endadags == null)
+                {
+                    DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
+                    string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
+                    if (!strSQL.Contains("WHERE")) // (strLeitarord.Length == 0 && this.skjalamyndari_audkenni == null && this.vorslustofnun_audkenni == null)
+                    {
+                        strSQL += " WHERE DATE(docLastWriten) >= '" + strStart + "' ";
+                    }
+                    else
+                    {
+                        strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' ";
+                    }
+                }
+                if (this.Upphafsdags != null && this.Endadags != null)
+                {
+                    DateTime dtEnd = Convert.ToDateTime(this.Endadags);
+                    string strEnd = dtEnd.Year.ToString() + "-" + dtEnd.Month.ToString() + "-" + dtEnd.Day.ToString();
+
+                    DateTime dtStart = Convert.ToDateTime(this.Upphafsdags);
+                    string strStart = dtStart.Year.ToString() + "-" + dtStart.Month.ToString() + "-" + dtStart.Day.ToString();
+
+                    if (!strSQL.Contains("WHERE"))
+                    {
+                        strSQL += " WHERE DATE(docLastWriten) >= '" + strStart + "' AND DATE(docLastWriten) <= '" + strEnd + "' ";
+                    }
+                    else
+                    {
+                        strSQL += " AND DATE(docLastWriten) >= '" + strStart + "' AND DATE(docLastWriten) <= '" + strEnd + "' ";
+                    }
+                }
+
+            }
+            if (this.extension != null)
+            {
+                if (!strSQL.Contains("WHERE"))
+                {
+                    strSQL += " WHERE extension = '" + this.extension + "' ";
+                }
+                else
+                {
+                    strSQL += " AND extension = '" + this.extension + "' ";
+                }
+
+            }
+            //if (strLeitarord != string.Empty)
+            //{
+            //    strSQL += "order by score desc;";
+            //}
+            int iRet = 0;
+            var  count = MySqlHelper.ExecuteScalar(m_strTengingOAIS, strSQL);
+            if(count != null)
+            {
+                iRet = Convert.ToInt32(count);  
+            }
+            ;
+            return iRet;
+        }
+        public DataTable leit(string strLeitarord, string strCountPage, string strPage)
         {
             sækjaTengistreng();
             string strSQL = string.Empty;
            if(strLeitarord.Length != 0)
             {
-                strSQL = string.Format("Select MATCH (titill_vorsluutgafu, doctitill,docLastWriten, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, m.*  FROM dt_midlun m WHERE MATCH (titill_vorsluutgafu, doctitill,docLastWriten,maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
+                strSQL = string.Format("Select MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, m.*  FROM dt_midlun m WHERE MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
             }
            else
             {
@@ -560,8 +690,9 @@ namespace cClassOAIS
             }
             if (strLeitarord!= string.Empty) 
             {
-                strSQL += "order by score desc;";
+                strSQL += "order by score desc";
             }
+            strSQL += string.Format(" limit {0}, {1};", strPage, strCountPage);
           
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS,strSQL);
             DataTable dt = ds.Tables[0];
@@ -772,11 +903,11 @@ namespace cClassOAIS
             }
             if(strSkjalm != string.Empty)
             {
-                strSQL = string.Format("SELECt distinct extension FROM dt_midlun d  where vorslustofnun_audkenni ='{0}' order by extension ;", strVarsla);
+                strSQL = string.Format("SELECt distinct extension FROM dt_midlun d  where skjalamyndari_audkenni ='{0}' order by extension ;", strSkjalm);
             }
             if (strUtgafa != string.Empty)
             {
-                strSQL = string.Format("SELECt distinct extension FROM dt_midlun d  where vorslustofnun_audkenni ='{0}' order by extension ;", strVarsla);
+                strSQL = string.Format("SELECt distinct extension FROM dt_midlun d  where vorsluutgafa ='{0}' order by extension ;", strUtgafa);
             }
 
 
