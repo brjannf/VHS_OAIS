@@ -73,13 +73,14 @@
             this.colVarslaStofnunID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSkjalMyndID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDocMalID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_lblSidaAf = new System.Windows.Forms.Label();
-            this.m_lblSida = new System.Windows.Forms.Label();
-            this.m_comPages = new System.Windows.Forms.ComboBox();
+            this.m_pnlPageing = new System.Windows.Forms.Panel();
             this.m_btnSidasta = new System.Windows.Forms.Button();
-            this.m_btnNaesta = new System.Windows.Forms.Button();
             this.m_btnFyrsta = new System.Windows.Forms.Button();
+            this.m_lblSida = new System.Windows.Forms.Label();
             this.m_btnFyrri = new System.Windows.Forms.Button();
+            this.m_lblSidaAf = new System.Windows.Forms.Label();
+            this.m_comPages = new System.Windows.Forms.ComboBox();
+            this.m_btnNaesta = new System.Windows.Forms.Button();
             this.m_pnlNotandi = new System.Windows.Forms.Panel();
             this.m_chbAfrit = new System.Windows.Forms.CheckBox();
             this.m_lblVillaInnSkraning = new System.Windows.Forms.Label();
@@ -109,13 +110,15 @@
             this.m_dgvDIPList = new System.Windows.Forms.DataGridView();
             this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTitill = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colVarsla = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMd5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSlod = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colHeitiUtgáfu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSkraRemove = new System.Windows.Forms.DataGridViewButtonColumn();
             this.m_tapPontunMalakerfi = new System.Windows.Forms.TabPage();
             this.m_dgvDIPmal = new System.Windows.Forms.DataGridView();
             this.m_tapPontunGagnagrunnar = new System.Windows.Forms.TabPage();
             this.m_dgvDIPGagnagrunnar = new System.Windows.Forms.DataGridView();
+            this.colGagnHeiti = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLeitskilyrdi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colGagnHeitivorslu = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.m_tapUmsjon = new System.Windows.Forms.TabPage();
             this.m_tacUmsjon = new System.Windows.Forms.TabControl();
             this.m_tapNotendur = new System.Windows.Forms.TabPage();
@@ -126,6 +129,11 @@
             this.m_btnLagaToflur = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.m_tomUtskra = new System.Windows.Forms.ToolStripMenuItem();
+            this.colMalSkraID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMalTitillSkjals = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMalTitilMals = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMalTitillVorslu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBtnFjarlaegja = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -135,6 +143,7 @@
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvLeit)).BeginInit();
+            this.m_pnlPageing.SuspendLayout();
             this.m_pnlNotandi.SuspendLayout();
             this.m_tacMain.SuspendLayout();
             this.m_tapLeit.SuspendLayout();
@@ -414,13 +423,7 @@
             // 
             // splitContainer4.Panel2
             // 
-            this.splitContainer4.Panel2.Controls.Add(this.m_lblSidaAf);
-            this.splitContainer4.Panel2.Controls.Add(this.m_lblSida);
-            this.splitContainer4.Panel2.Controls.Add(this.m_comPages);
-            this.splitContainer4.Panel2.Controls.Add(this.m_btnSidasta);
-            this.splitContainer4.Panel2.Controls.Add(this.m_btnNaesta);
-            this.splitContainer4.Panel2.Controls.Add(this.m_btnFyrsta);
-            this.splitContainer4.Panel2.Controls.Add(this.m_btnFyrri);
+            this.splitContainer4.Panel2.Controls.Add(this.m_pnlPageing);
             this.splitContainer4.Size = new System.Drawing.Size(1520, 346);
             this.splitContainer4.SplitterDistance = 271;
             this.splitContainer4.TabIndex = 1;
@@ -503,10 +506,10 @@
             // 
             this.colMal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.colMal.DataPropertyName = "maltitill";
-            this.colMal.HeaderText = "Málalykill";
+            this.colMal.HeaderText = "Titill máls";
             this.colMal.Name = "colMal";
             this.colMal.ReadOnly = true;
-            this.colMal.Width = 82;
+            this.colMal.Width = 76;
             // 
             // colInnhaldSkjals
             // 
@@ -649,36 +652,25 @@
             this.colDocMalID.ReadOnly = true;
             this.colDocMalID.Visible = false;
             // 
-            // m_lblSidaAf
+            // m_pnlPageing
             // 
-            this.m_lblSidaAf.AutoSize = true;
-            this.m_lblSidaAf.Location = new System.Drawing.Point(788, 32);
-            this.m_lblSidaAf.Name = "m_lblSidaAf";
-            this.m_lblSidaAf.Size = new System.Drawing.Size(17, 15);
-            this.m_lblSidaAf.TabIndex = 7;
-            this.m_lblSidaAf.Text = "af";
-            // 
-            // m_lblSida
-            // 
-            this.m_lblSida.AutoSize = true;
-            this.m_lblSida.Location = new System.Drawing.Point(672, 32);
-            this.m_lblSida.Name = "m_lblSida";
-            this.m_lblSida.Size = new System.Drawing.Size(32, 15);
-            this.m_lblSida.TabIndex = 6;
-            this.m_lblSida.Text = "Síða ";
-            // 
-            // m_comPages
-            // 
-            this.m_comPages.FormattingEnabled = true;
-            this.m_comPages.Location = new System.Drawing.Point(710, 28);
-            this.m_comPages.Name = "m_comPages";
-            this.m_comPages.Size = new System.Drawing.Size(72, 23);
-            this.m_comPages.TabIndex = 5;
-            this.m_comPages.SelectedIndexChanged += new System.EventHandler(this.m_comPages_SelectedIndexChanged);
+            this.m_pnlPageing.Controls.Add(this.m_btnSidasta);
+            this.m_pnlPageing.Controls.Add(this.m_btnFyrsta);
+            this.m_pnlPageing.Controls.Add(this.m_lblSida);
+            this.m_pnlPageing.Controls.Add(this.m_btnFyrri);
+            this.m_pnlPageing.Controls.Add(this.m_lblSidaAf);
+            this.m_pnlPageing.Controls.Add(this.m_comPages);
+            this.m_pnlPageing.Controls.Add(this.m_btnNaesta);
+            this.m_pnlPageing.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_pnlPageing.Location = new System.Drawing.Point(0, 0);
+            this.m_pnlPageing.Name = "m_pnlPageing";
+            this.m_pnlPageing.Size = new System.Drawing.Size(1520, 71);
+            this.m_pnlPageing.TabIndex = 8;
+            this.m_pnlPageing.Visible = false;
             // 
             // m_btnSidasta
             // 
-            this.m_btnSidasta.Location = new System.Drawing.Point(950, 26);
+            this.m_btnSidasta.Location = new System.Drawing.Point(942, 24);
             this.m_btnSidasta.Name = "m_btnSidasta";
             this.m_btnSidasta.Size = new System.Drawing.Size(75, 23);
             this.m_btnSidasta.TabIndex = 4;
@@ -686,19 +678,9 @@
             this.m_btnSidasta.UseVisualStyleBackColor = true;
             this.m_btnSidasta.Click += new System.EventHandler(this.m_btnSidasta_Click);
             // 
-            // m_btnNaesta
-            // 
-            this.m_btnNaesta.Location = new System.Drawing.Point(845, 26);
-            this.m_btnNaesta.Name = "m_btnNaesta";
-            this.m_btnNaesta.Size = new System.Drawing.Size(75, 23);
-            this.m_btnNaesta.TabIndex = 3;
-            this.m_btnNaesta.Text = ">";
-            this.m_btnNaesta.UseVisualStyleBackColor = true;
-            this.m_btnNaesta.Click += new System.EventHandler(this.m_btnNaesta_Click);
-            // 
             // m_btnFyrsta
             // 
-            this.m_btnFyrsta.Location = new System.Drawing.Point(478, 28);
+            this.m_btnFyrsta.Location = new System.Drawing.Point(401, 23);
             this.m_btnFyrsta.Name = "m_btnFyrsta";
             this.m_btnFyrsta.Size = new System.Drawing.Size(75, 23);
             this.m_btnFyrsta.TabIndex = 2;
@@ -706,15 +688,52 @@
             this.m_btnFyrsta.UseVisualStyleBackColor = true;
             this.m_btnFyrsta.Click += new System.EventHandler(this.m_btnFyrsta_Click);
             // 
+            // m_lblSida
+            // 
+            this.m_lblSida.AutoSize = true;
+            this.m_lblSida.Location = new System.Drawing.Point(597, 31);
+            this.m_lblSida.Name = "m_lblSida";
+            this.m_lblSida.Size = new System.Drawing.Size(32, 15);
+            this.m_lblSida.TabIndex = 6;
+            this.m_lblSida.Text = "Síða ";
+            // 
             // m_btnFyrri
             // 
-            this.m_btnFyrri.Location = new System.Drawing.Point(574, 27);
+            this.m_btnFyrri.Location = new System.Drawing.Point(504, 24);
             this.m_btnFyrri.Name = "m_btnFyrri";
             this.m_btnFyrri.Size = new System.Drawing.Size(75, 23);
             this.m_btnFyrri.TabIndex = 1;
             this.m_btnFyrri.Text = "<";
             this.m_btnFyrri.UseVisualStyleBackColor = true;
             this.m_btnFyrri.Click += new System.EventHandler(this.m_btnFyrri_Click);
+            // 
+            // m_lblSidaAf
+            // 
+            this.m_lblSidaAf.AutoSize = true;
+            this.m_lblSidaAf.Location = new System.Drawing.Point(754, 31);
+            this.m_lblSidaAf.Name = "m_lblSidaAf";
+            this.m_lblSidaAf.Size = new System.Drawing.Size(17, 15);
+            this.m_lblSidaAf.TabIndex = 7;
+            this.m_lblSidaAf.Text = "af";
+            // 
+            // m_comPages
+            // 
+            this.m_comPages.FormattingEnabled = true;
+            this.m_comPages.Location = new System.Drawing.Point(666, 25);
+            this.m_comPages.Name = "m_comPages";
+            this.m_comPages.Size = new System.Drawing.Size(72, 23);
+            this.m_comPages.TabIndex = 5;
+            this.m_comPages.SelectedIndexChanged += new System.EventHandler(this.m_comPages_SelectedIndexChanged);
+            // 
+            // m_btnNaesta
+            // 
+            this.m_btnNaesta.Location = new System.Drawing.Point(847, 24);
+            this.m_btnNaesta.Name = "m_btnNaesta";
+            this.m_btnNaesta.Size = new System.Drawing.Size(75, 23);
+            this.m_btnNaesta.TabIndex = 3;
+            this.m_btnNaesta.Text = ">";
+            this.m_btnNaesta.UseVisualStyleBackColor = true;
+            this.m_btnNaesta.Click += new System.EventHandler(this.m_btnNaesta_Click);
             // 
             // m_pnlNotandi
             // 
@@ -725,7 +744,7 @@
             this.m_pnlNotandi.Controls.Add(this.m_tboLykilOrd);
             this.m_pnlNotandi.Controls.Add(this.m_lblNotendaNafn);
             this.m_pnlNotandi.Controls.Add(this.m_tboNoterndaNafn);
-            this.m_pnlNotandi.Location = new System.Drawing.Point(377, 50);
+            this.m_pnlNotandi.Location = new System.Drawing.Point(310, 27);
             this.m_pnlNotandi.Name = "m_pnlNotandi";
             this.m_pnlNotandi.Size = new System.Drawing.Size(560, 452);
             this.m_pnlNotandi.TabIndex = 3;
@@ -808,6 +827,7 @@
             this.m_tacMain.SelectedIndex = 0;
             this.m_tacMain.Size = new System.Drawing.Size(1534, 557);
             this.m_tacMain.TabIndex = 1;
+            this.m_tacMain.SelectedIndexChanged += new System.EventHandler(this.m_tacMain_SelectedIndexChanged);
             // 
             // m_tapLeit
             // 
@@ -1012,9 +1032,8 @@
             this.m_dgvDIPList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colID,
             this.colTitill,
-            this.colVarsla,
-            this.colMd5,
-            this.colSlod});
+            this.colHeitiUtgáfu,
+            this.colSkraRemove});
             this.m_dgvDIPList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_dgvDIPList.Location = new System.Drawing.Point(3, 3);
             this.m_dgvDIPList.Name = "m_dgvDIPList";
@@ -1023,6 +1042,7 @@
             this.m_dgvDIPList.RowTemplate.Height = 25;
             this.m_dgvDIPList.Size = new System.Drawing.Size(995, 293);
             this.m_dgvDIPList.TabIndex = 2;
+            this.m_dgvDIPList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvDIPList_CellClick);
             // 
             // colID
             // 
@@ -1031,41 +1051,32 @@
             this.colID.HeaderText = "Auðkenni skjals";
             this.colID.Name = "colID";
             this.colID.ReadOnly = true;
-            this.colID.Width = 105;
+            this.colID.Width = 114;
             // 
             // colTitill
             // 
-            this.colTitill.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colTitill.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colTitill.DataPropertyName = "titill";
             this.colTitill.HeaderText = "Titill skjals";
             this.colTitill.Name = "colTitill";
             this.colTitill.ReadOnly = true;
-            this.colTitill.Width = 79;
             // 
-            // colVarsla
+            // colHeitiUtgáfu
             // 
-            this.colVarsla.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colVarsla.DataPropertyName = "vorsluutgafa";
-            this.colVarsla.HeaderText = "Auðkenni vörsluútgáfu";
-            this.colVarsla.Name = "colVarsla";
-            this.colVarsla.ReadOnly = true;
-            this.colVarsla.Width = 140;
+            this.colHeitiUtgáfu.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colHeitiUtgáfu.DataPropertyName = "heitiVorslu";
+            this.colHeitiUtgáfu.HeaderText = "Vörsluútgáfa";
+            this.colHeitiUtgáfu.Name = "colHeitiUtgáfu";
+            this.colHeitiUtgáfu.ReadOnly = true;
+            this.colHeitiUtgáfu.Width = 98;
             // 
-            // colMd5
+            // colSkraRemove
             // 
-            this.colMd5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colMd5.DataPropertyName = "md5";
-            this.colMd5.HeaderText = "Gátsumma skjals";
-            this.colMd5.Name = "colMd5";
-            this.colMd5.ReadOnly = true;
-            // 
-            // colSlod
-            // 
-            this.colSlod.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colSlod.DataPropertyName = "slod";
-            this.colSlod.HeaderText = "Slóð skjals";
-            this.colSlod.Name = "colSlod";
-            this.colSlod.ReadOnly = true;
+            this.colSkraRemove.HeaderText = "Fjarlægja";
+            this.colSkraRemove.Name = "colSkraRemove";
+            this.colSkraRemove.ReadOnly = true;
+            this.colSkraRemove.Text = "Fjarlægja";
+            this.colSkraRemove.UseColumnTextForButtonValue = true;
             // 
             // m_tapPontunMalakerfi
             // 
@@ -1083,6 +1094,12 @@
             this.m_dgvDIPmal.AllowUserToAddRows = false;
             this.m_dgvDIPmal.AllowUserToDeleteRows = false;
             this.m_dgvDIPmal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.m_dgvDIPmal.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colMalSkraID,
+            this.colMalTitillSkjals,
+            this.colMalTitilMals,
+            this.colMalTitillVorslu,
+            this.colBtnFjarlaegja});
             this.m_dgvDIPmal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_dgvDIPmal.Location = new System.Drawing.Point(3, 3);
             this.m_dgvDIPmal.Name = "m_dgvDIPmal";
@@ -1091,6 +1108,7 @@
             this.m_dgvDIPmal.RowTemplate.Height = 25;
             this.m_dgvDIPmal.Size = new System.Drawing.Size(995, 293);
             this.m_dgvDIPmal.TabIndex = 0;
+            this.m_dgvDIPmal.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.m_dgvDIPmal_CellClick);
             // 
             // m_tapPontunGagnagrunnar
             // 
@@ -1108,6 +1126,10 @@
             this.m_dgvDIPGagnagrunnar.AllowUserToAddRows = false;
             this.m_dgvDIPGagnagrunnar.AllowUserToDeleteRows = false;
             this.m_dgvDIPGagnagrunnar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.m_dgvDIPGagnagrunnar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colGagnHeiti,
+            this.colLeitskilyrdi,
+            this.colGagnHeitivorslu});
             this.m_dgvDIPGagnagrunnar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_dgvDIPGagnagrunnar.Location = new System.Drawing.Point(3, 3);
             this.m_dgvDIPGagnagrunnar.Name = "m_dgvDIPGagnagrunnar";
@@ -1116,6 +1138,32 @@
             this.m_dgvDIPGagnagrunnar.RowTemplate.Height = 25;
             this.m_dgvDIPGagnagrunnar.Size = new System.Drawing.Size(995, 293);
             this.m_dgvDIPGagnagrunnar.TabIndex = 0;
+            // 
+            // colGagnHeiti
+            // 
+            this.colGagnHeiti.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colGagnHeiti.DataPropertyName = "heiti";
+            this.colGagnHeiti.HeaderText = "Heiti gagnagrunns";
+            this.colGagnHeiti.Name = "colGagnHeiti";
+            this.colGagnHeiti.ReadOnly = true;
+            this.colGagnHeiti.Width = 119;
+            // 
+            // colLeitskilyrdi
+            // 
+            this.colLeitskilyrdi.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colLeitskilyrdi.DataPropertyName = "leitarskilyrdi";
+            this.colLeitskilyrdi.HeaderText = "Leitarskilyrði";
+            this.colLeitskilyrdi.Name = "colLeitskilyrdi";
+            this.colLeitskilyrdi.ReadOnly = true;
+            // 
+            // colGagnHeitivorslu
+            // 
+            this.colGagnHeitivorslu.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colGagnHeitivorslu.DataPropertyName = "heitivorslu";
+            this.colGagnHeitivorslu.HeaderText = "Heiti vörsluútgáfu";
+            this.colGagnHeitivorslu.Name = "colGagnHeitivorslu";
+            this.colGagnHeitivorslu.ReadOnly = true;
+            this.colGagnHeitivorslu.Width = 116;
             // 
             // m_tapUmsjon
             // 
@@ -1220,6 +1268,49 @@
             this.m_tomUtskra.Visible = false;
             this.m_tomUtskra.Click += new System.EventHandler(this.m_tomUtskra_Click);
             // 
+            // colMalSkraID
+            // 
+            this.colMalSkraID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colMalSkraID.DataPropertyName = "documentid";
+            this.colMalSkraID.HeaderText = "Auðkenni skjals";
+            this.colMalSkraID.Name = "colMalSkraID";
+            this.colMalSkraID.ReadOnly = true;
+            this.colMalSkraID.Width = 114;
+            // 
+            // colMalTitillSkjals
+            // 
+            this.colMalTitillSkjals.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colMalTitillSkjals.DataPropertyName = "titill";
+            this.colMalTitillSkjals.HeaderText = "Titill skjals";
+            this.colMalTitillSkjals.Name = "colMalTitillSkjals";
+            this.colMalTitillSkjals.ReadOnly = true;
+            // 
+            // colMalTitilMals
+            // 
+            this.colMalTitilMals.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colMalTitilMals.DataPropertyName = "maltitill";
+            this.colMalTitilMals.HeaderText = "Titill máls";
+            this.colMalTitilMals.Name = "colMalTitilMals";
+            this.colMalTitilMals.ReadOnly = true;
+            this.colMalTitilMals.Width = 82;
+            // 
+            // colMalTitillVorslu
+            // 
+            this.colMalTitillVorslu.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colMalTitillVorslu.DataPropertyName = "heitivorslu";
+            this.colMalTitillVorslu.HeaderText = "Heiti  vörsluútgáfu";
+            this.colMalTitillVorslu.Name = "colMalTitillVorslu";
+            this.colMalTitillVorslu.ReadOnly = true;
+            this.colMalTitillVorslu.Width = 119;
+            // 
+            // colBtnFjarlaegja
+            // 
+            this.colBtnFjarlaegja.HeaderText = "Fjarlægja";
+            this.colBtnFjarlaegja.Name = "colBtnFjarlaegja";
+            this.colBtnFjarlaegja.ReadOnly = true;
+            this.colBtnFjarlaegja.Text = "Fjarlægja";
+            this.colBtnFjarlaegja.UseColumnTextForButtonValue = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1238,10 +1329,11 @@
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
-            this.splitContainer4.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.m_dgvLeit)).EndInit();
+            this.m_pnlPageing.ResumeLayout(false);
+            this.m_pnlPageing.PerformLayout();
             this.m_pnlNotandi.ResumeLayout(false);
             this.m_pnlNotandi.PerformLayout();
             this.m_tacMain.ResumeLayout(false);
@@ -1309,11 +1401,6 @@
         private Label label5;
         private ComboBox m_comLanthegar;
         private Button m_btnNyrLanthegi;
-        private DataGridViewTextBoxColumn colID;
-        private DataGridViewTextBoxColumn colTitill;
-        private DataGridViewTextBoxColumn colVarsla;
-        private DataGridViewTextBoxColumn colMd5;
-        private DataGridViewTextBoxColumn colSlod;
         private Button m_btnOpna;
         private TreeView m_trwDIP;
         private GroupBox m_grbDIP;
@@ -1344,6 +1431,25 @@
         private ComboBox m_comExtensions;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem m_tomUtskra;
+        private SplitContainer splitContainer4;
+        private Button m_btnSidasta;
+        private Button m_btnNaesta;
+        private Button m_btnFyrsta;
+        private Button m_btnFyrri;
+        private ComboBox m_comFjoldiFaerslnaLeit;
+        private Label label7;
+        private Label label6;
+        private Label m_lblSidaAf;
+        private Label m_lblSida;
+        private ComboBox m_comPages;
+        private Panel m_pnlPageing;
+        private DataGridViewTextBoxColumn colID;
+        private DataGridViewTextBoxColumn colTitill;
+        private DataGridViewTextBoxColumn colHeitiUtgáfu;
+        private DataGridViewButtonColumn colSkraRemove;
+        private DataGridViewTextBoxColumn colGagnHeiti;
+        private DataGridViewTextBoxColumn colLeitskilyrdi;
+        private DataGridViewTextBoxColumn colGagnHeitivorslu;
         private DataGridViewTextBoxColumn coltitillvorsluUtgafu;
         private DataGridViewTextBoxColumn colDocTitel;
         private DataGridViewTextBoxColumn colExtensions;
@@ -1365,16 +1471,10 @@
         private DataGridViewTextBoxColumn colVarslaStofnunID;
         private DataGridViewTextBoxColumn colSkjalMyndID;
         private DataGridViewTextBoxColumn colDocMalID;
-        private SplitContainer splitContainer4;
-        private Button m_btnSidasta;
-        private Button m_btnNaesta;
-        private Button m_btnFyrsta;
-        private Button m_btnFyrri;
-        private ComboBox m_comFjoldiFaerslnaLeit;
-        private Label label7;
-        private Label label6;
-        private Label m_lblSidaAf;
-        private Label m_lblSida;
-        private ComboBox m_comPages;
+        private DataGridViewTextBoxColumn colMalSkraID;
+        private DataGridViewTextBoxColumn colMalTitillSkjals;
+        private DataGridViewTextBoxColumn colMalTitilMals;
+        private DataGridViewTextBoxColumn colMalTitillVorslu;
+        private DataGridViewButtonColumn colBtnFjarlaegja;
     }
 }

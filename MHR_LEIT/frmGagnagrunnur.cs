@@ -18,7 +18,9 @@ namespace MHR_LEIT
         string m_strOrginal = string.Empty; 
         string m_strSQLpanta = string.Empty;
         string m_strLeitSkilyrdi  = string.Empty;
+        
         cNotandi virkurnotandi = new cNotandi();    
+        cSkjalaskra skjal = new cSkjalaskra();
         
         DataTable m_dtSkra = new DataTable();
         DataTable m_dtMal  = new DataTable();
@@ -35,6 +37,9 @@ namespace MHR_LEIT
         public frmGagnagrunnur(string strGagnagrunnur, string strOrginalHeiti, DataTable dtGrunnar, DataTable dtSkrar, DataTable dtMal ,cNotandi not, DataSet ds_mal)
         {
             InitializeComponent();
+
+            
+            skjal.getSkraning(strGagnagrunnur.Replace("_", "."));
 
             m_dtSkra = dtSkrar;
             m_dtMal = dtMal;
@@ -54,32 +59,36 @@ namespace MHR_LEIT
             m_dtFyrirspurnir = mIdlun.getGagnagrunnaFyrirSpurnir(strGagnagrunnur);
             fyllaFyrirspurnaform();
             this.Text = m_strOrginal;
+            m_dgvPantSkraarkerfi.AutoGenerateColumns= false;
             m_dgvPantSkraarkerfi.DataSource = dtSkrar;
             m_tapSkráarkerfi.Text = string.Format("Skráarkerfi ({0})", dtSkrar.Rows.Count);
-            foreach (DataGridViewColumn col in m_dgvPantSkraarkerfi.Columns)
+
+            if(ds_mal.Tables.Count > 0 )
             {
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                m_dgvPantMalaKerfi.AutoGenerateColumns = false;
+                m_dgvPantMalaKerfi.DataSource = ds_mal.Tables[0];
+                m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", ds_mal.Tables[0].Rows.Count);
             }
-            m_dgvPantMalaKerfi.DataSource = dtMal;
-            m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
-            foreach (DataGridViewColumn col in m_dgvPantMalaKerfi.Columns)
+            else
             {
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                m_dgvPantMalaKerfi.AutoGenerateColumns = false;
+                m_dgvPantMalaKerfi.DataSource = dtMal;
+                m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
             }
-          
+       
+
+            m_dgvPantGagnagrunnar.AutoGenerateColumns = false;  
             m_dgvPantGagnagrunnar.DataSource = m_dtPantad;
             m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", dtGrunnar.Rows.Count);
-            foreach (DataGridViewColumn col in m_dgvPantGagnagrunnar.Columns)
-            {
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
-            if(m_dtPantad.Columns.Count != 5)
-            {
-                m_dtPantad.Columns.Add("Heiti");
-                m_dtPantad.Columns.Add("vorsluutgafa");
-                m_dtPantad.Columns.Add("leitarskilyrði");
-                m_dtPantad.Columns.Add("sql");
-            }
+        
+            //if(m_dtPantad.Columns.Count != 5)
+            //{
+            //    m_dtPantad.Columns.Add("Heiti");
+            //    m_dtPantad.Columns.Add("vorsluutgafa");
+            //    m_dtPantad.Columns.Add("leitarskilyrði");
+            //    m_dtPantad.Columns.Add("sql");
+            //    m_dtPantad.Columns.Add("heitivorslu");
+            //}
       
             
 
@@ -267,16 +276,19 @@ namespace MHR_LEIT
                     DataRow r = m_dtPantad.NewRow();
                     r["heiti"] = m_strOrginal;
                     r["vorsluutgafa"] = m_strGagnagrunnur.Replace("_", ".");
-                    r["leitarskilyrði"] = m_strLeitSkilyrdi;
+                    r["leitarskilyrdi"] = m_strLeitSkilyrdi;
                     r["sql"] = m_strSQLpanta;
+                    r["heitivorslu"] = skjal.titill_3_1_2;
                     m_dtPantad.Rows.Add(r);
                     m_dtPantad.AcceptChanges();
+                    m_dgvPantGagnagrunnar.AutoGenerateColumns = false;
                     m_dgvPantGagnagrunnar.DataSource = m_dtPantad;
                     m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtPantad.Rows.Count);
-                    foreach (DataGridViewColumn col in m_dgvPantGagnagrunnar.Columns)
-                    {
-                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    }
+                    m_strLeitSkilyrdi = string.Empty;
+                    //foreach (DataGridViewColumn col in m_dgvPantGagnagrunnar.Columns)
+                    //{
+                    //    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    //}
 
                 }
                 else

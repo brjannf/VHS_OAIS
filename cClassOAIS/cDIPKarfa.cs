@@ -69,7 +69,22 @@ namespace cClassOAIS
             }
            
         }
-
+        public void sækjaKörfu(string strKarfa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_karfa_dip d where karfa = '{0}';", strKarfa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL );
+            DataTable dt = ds.Tables[0];
+            foreach(DataRow dr in dt.Rows)
+            {
+                //  karfa, heiti, lanthegi, hver_skradi, dags_skrad
+                this.karfa = Convert.ToInt32(dr["karfa"]);
+                this.heiti = dr["heiti"].ToString();
+                this.lanthegi = dr["lanthegi"].ToString();
+                this.hver_skradi = dr["hver_skradi"].ToString();
+                this.dags_skrad = dr["dags_skrad"].ToString();
+            }
+        }
         public DataTable getKorfurDIP()
         {
             sækjaTengistreng();

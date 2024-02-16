@@ -40,6 +40,7 @@ namespace MHR_LEIT
         string m_strVorslutgafa = string.Empty;
         string m_strVorsluSofnunID = string.Empty;
         string m_strSkjalamID = string.Empty;
+        string m_strHeitiVarsla = string.Empty;
        
         ArrayList arr = new ArrayList();
         public DataTable m_dtValid = new DataTable();
@@ -54,9 +55,10 @@ namespace MHR_LEIT
             InitializeComponent();
 
             m_strVorsluSofnunID = row["vorslustofnun_audkenni"].ToString();
-            m_strSkjalamID = row["skjalamyndari_audkenni"].ToString(); 
+            m_strSkjalamID = row["skjalamyndari_audkenni"].ToString();
 
-            this.Text = row["titill_vorsluutgafu"].ToString();   
+            m_strHeitiVarsla = row["titill_vorsluutgafu"].ToString();
+            this.Text = m_strHeitiVarsla;
 
             m_dtExtension.Columns.Add("extension");
             m_lblLeitarNidurstodur.Text = string.Empty;
@@ -74,21 +76,18 @@ namespace MHR_LEIT
             {
                 m_dtValid.ImportRow(dr);
             }
+            m_dgvValdarSkrar.AutoGenerateColumns = false;
             m_dgvValdarSkrar.DataSource = m_dtValid;    
             m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
 
+            m_dgvGagnaGrunnar.AutoGenerateColumns = false;
             m_dgvGagnaGrunnar.DataSource = dtGrunn;
             m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", dtGrunn.Rows.Count);
-            foreach (DataGridViewColumn col in m_dgvGagnaGrunnar.Columns)
-            {
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
+           
+            m_dgvMalakerfi.AutoGenerateColumns = false;
             m_dgvMalakerfi.DataSource= dtMal;
             m_tapMalakerfi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
-            foreach (DataGridViewColumn col in m_dgvMalakerfi.Columns)
-            {
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
+         
             int iFjoldi = m_dtValid.Rows.Count + m_dtGrunn.Rows.Count + m_dtMal.Rows.Count;
             if (iFjoldi == 0)
             {
@@ -766,6 +765,7 @@ namespace MHR_LEIT
                         r["skjalID"] = e.Node.Tag;
                         r["titill"] = e.Node.Text;
                         r["vorsluutgafa"] = m_strVorslutgafa;
+                        r["heitivorslu"] = m_strHeitiVarsla;
                         string strExpr = "skjaliD = '" + e.Node.Tag.ToString() + "'";
                         DataRow[] fRow = m_dtValid.Select(strExpr);
                         if (fRow.Length == 0)
@@ -809,6 +809,7 @@ namespace MHR_LEIT
             {
                 m_btnAfgreida.Enabled = true;   
             }
+            m_dgvValdarSkrar.AutoGenerateColumns = false;
             m_dgvValdarSkrar.DataSource = m_dtValid;
             m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
           //  m_grbValdinnSkjol.Text = string.Format("Valinn skjöl ({0})", m_dtValid.Rows.Count);
@@ -870,7 +871,7 @@ namespace MHR_LEIT
             {
                 m_btnAfgreida.Enabled = true;
             }
-
+            
             m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtGrunn.Rows.Count);
             m_tapMalakerfi.Text = string.Format("Málakerfi ({0})", m_dtMal.Rows.Count);
             m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);

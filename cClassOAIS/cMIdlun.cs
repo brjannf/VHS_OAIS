@@ -579,11 +579,11 @@ namespace cClassOAIS
             string strSQL = string.Empty;
            if(strLeitarord.Length != 0)
             {
-                strSQL = string.Format("Select MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, m.*  FROM dt_midlun m WHERE MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
+                strSQL = string.Format("Select MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, concat(doctitill, '.',extension) as doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, extension, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad  FROM dt_midlun m WHERE MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
             }
            else
             {
-                strSQL = "SELECT * FROM dt_midlun d ";
+                strSQL = "SELECT id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, concat(doctitill, '.',extension) as doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, extension, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad FROM dt_midlun d ";
             }
 
            
@@ -1071,6 +1071,21 @@ namespace cClassOAIS
             return dt;
          
         }
+        /// <summary>
+        /// eftir á redding málID kom ekki rétt inn
+        /// </summary>
+        /// <param name="strID"></param>
+        /// <param name="strGagnagrunnur"></param>
+        /// <returns></returns>
+        public DataTable getmalIDfromDocument( string strGagnagrunnur)
+        {
+            string strTengistrengur = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = " + strGagnagrunnur + "; allow user variables = True; character set = utf8";
+            string strSQL = string.Format("SELECT a.documentID, a.sagid FROM avid_harn_2023067_1.attachments a, cases c where a.sagid = c.sagid;");
+            DataSet ds = MySqlHelper.ExecuteDataset(strTengistrengur, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+
+        }
 
         public void uppFæraMálHeitiGOPRO(string strID, string strTexti,string strSagID, string strGagnaGrunnur)
         {
@@ -1114,6 +1129,26 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@modified", strModifiet);
 
             command.CommandText = string.Format("update  db_oais_admin.dt_midlun set docCreated =  '{0}' , docLastWriten=  '{1}' where id = '{2}' ;",  strCreated, strModifiet, strID);
+
+            command.ExecuteNonQuery();
+            conn.Dispose();
+            command.Dispose();
+        }
+        /// <summary>
+        /// uppfæra malID hugsanlega vantar í import af gopro
+        /// </summary>
+        /// <param name="strID"></param>
+        /// <param name="strCreated"></param>
+        /// <param name="strModifiet"></param>
+        public void uppFæraMalIDutrfaDocid(string strDocID, string strMalID, string strGrunnur)
+        {
+            sækjaTengistreng();
+            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+ 
+
+            command.CommandText = string.Format("update  db_oais_admin.dt_midlun set malID =  '{0}'  where documentid = '{1}' and heiti_gagangrunns = '{2}' ;", strMalID, strDocID, strGrunnur);
 
             command.ExecuteNonQuery();
             conn.Dispose();

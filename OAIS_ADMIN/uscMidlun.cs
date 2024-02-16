@@ -1457,13 +1457,22 @@ namespace OAIS_ADMIN
         {
             //******************skrá fyrirsprunir úr templet
 
-            DataTable dt = midlun.getFyrirspurnTemplate(m_strHeitiKerfis);
+            //DataTable dt = midlun.getFyrirspurnTemplate(m_strHeitiKerfis);
    
-            foreach(DataRow r in dt.Rows)
-            {
+            //foreach(DataRow r in dt.Rows)
+            //{
              
-                midlun.vistaFyrirSpurn(r["fyrirspurn"].ToString(), m_strGrunnur, r["nafn"].ToString(), r["lysing"].ToString(),"0");
+            //    midlun.vistaFyrirSpurn(r["fyrirspurn"].ToString(), m_strGrunnur, r["nafn"].ToString(), r["lysing"].ToString(),"0");
+            //}
+            //laga malID í miðlunartöflu fyrir gopro
+            DataTable dtMal = midlun.getmalIDfromDocument(m_strGrunnur);
+            foreach(DataRow rr in dtMal.Rows)
+            {
+                string strMalID = rr["sagid"].ToString();
+                string strDociD = rr["documentID"].ToString();
+                midlun.uppFæraMalIDutrfaDocid(strDociD, strMalID, m_strGrunnur);
             }
+
 
             //****************laga dagsetningar á forminu yyyy-mm-dd
             //DataTable dt = midlun.getDagSetningAll();

@@ -31,6 +31,8 @@ namespace cClassOAIS
         public int karfa { get; set; }
         public string skjalID { get; set; }
         public string titill { get; set; }
+        public string heitiVorslu { get; set; }
+        public string maltitill { get; set; }
         public string vorsluutgafa { get; set; }
         public string md5 { get; set; }
         public string slod { get; set; }
@@ -55,11 +57,12 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@vorsluutgafa", this.vorsluutgafa);
             command.Parameters.AddWithValue("@md5", this.md5);
             command.Parameters.AddWithValue("@slod", this.slod);
+            command.Parameters.AddWithValue("@heitiVorslu", this.heitiVorslu);
 
 
             if (this.id == 0)
             {
-                command.CommandText = "REPLACE INTO `dt_item_korfu_dip` SET  `karfa`=@karfa,  `skjalID`=@skjalID, `titill`=@titill,`vorsluutgafa`=@vorsluutgafa,`md5`=@md5,`slod`=@slod; ";
+                command.CommandText = "REPLACE INTO `dt_item_korfu_dip` SET  `karfa`=@karfa,  `skjalID`=@skjalID, `titill`=@titill,`vorsluutgafa`=@vorsluutgafa,`md5`=@md5,`slod`=@slod,`heitiVorslu`=@heitiVorslu; ";
             }
             else
             {
@@ -93,10 +96,11 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@heiti", this.heiti);
             command.Parameters.AddWithValue("@leitarskilyrdi", this.leitarskilyrdi);
             command.Parameters.AddWithValue("@sql", this.sql);
+            command.Parameters.AddWithValue("@heitiVorslu", this.heitiVorslu);
 
             if (this.id == 0)
             {
-                command.CommandText = "REPLACE INTO `dt_karfa_item_gagna_dip` SET  `karfa`=@karfa, `vorsluutgafa`=@vorsluutgafa,`slod`=@slod,`heiti`=@heiti,`leitarskilyrdi`=@leitarskilyrdi,`sql`=@sql; ";
+                command.CommandText = "REPLACE INTO `dt_karfa_item_gagna_dip` SET  `karfa`=@karfa, `vorsluutgafa`=@vorsluutgafa,`slod`=@slod,`heiti`=@heiti,`leitarskilyrdi`=@leitarskilyrdi,`sql`=@sql,`heitiVorslu`=@heitiVorslu ; ";
             }
             else
             {
@@ -120,11 +124,15 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@slod", this.slod);
             command.Parameters.AddWithValue("@Skrar", this.Fjold_skrar);
             command.Parameters.AddWithValue("@md5", this.md5);
-           
+
+            command.Parameters.AddWithValue("@heitiVorslu", this.heitiVorslu);
+            command.Parameters.AddWithValue("@titill", this.titill);
+            command.Parameters.AddWithValue("@maltitill", this.maltitill);
+
 
             if (this.id == 0)
             {
-                command.CommandText = "REPLACE INTO `dt_item_korfu_mal_dip` SET  `karfa`=@karfa, `vorsluutgafa`=@vorsluutgafa,`slod`=@slod,`Skrar`=@Skrar,`md5`=@md5; ";
+                command.CommandText = "REPLACE INTO `dt_item_korfu_mal_dip` SET  `karfa`=@karfa, `vorsluutgafa`=@vorsluutgafa,`slod`=@slod,`Skrar`=@Skrar,`md5`=@md5,`heitiVorslu`=@heitiVorslu,`titill`=@titill,`maltitill`=@maltitill; ";
             }
             else
             {
