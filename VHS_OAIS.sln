@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAIS_ADMIN", "OAIS_ADMIN\OA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cClassOAIS", "cClassOAIS\cClassOAIS.csproj", "{5AFA29F7-ACCD-4D30-8E84-42ED6514710A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disaster_recovery", "Disaster_recovery\Disaster_recovery.csproj", "{E38F7A7A-67A4-4330-9F79-647E77CDD64F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disaster_recovery", "Disaster_recovery\Disaster_recovery.csproj", "{E38F7A7A-67A4-4330-9F79-647E77CDD64F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MHR_LEIT", "MHR_LEIT\MHR_LEIT.csproj", "{0C4ACDD4-28CF-4970-94C6-78187672CE3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MHR_LEIT", "MHR_LEIT\MHR_LEIT.csproj", "{0C4ACDD4-28CF-4970-94C6-78187672CE3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kortlagnin_vefur", "kortlagnin_vefur\kortlagnin_vefur.csproj", "{88A8A91F-CED5-4D4E-8C6D-4639D68A3F32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{0C4ACDD4-28CF-4970-94C6-78187672CE3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C4ACDD4-28CF-4970-94C6-78187672CE3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C4ACDD4-28CF-4970-94C6-78187672CE3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88A8A91F-CED5-4D4E-8C6D-4639D68A3F32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A8A91F-CED5-4D4E-8C6D-4639D68A3F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A8A91F-CED5-4D4E-8C6D-4639D68A3F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A8A91F-CED5-4D4E-8C6D-4639D68A3F32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

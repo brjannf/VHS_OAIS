@@ -991,6 +991,14 @@ namespace MHR_LEIT
             m_tapSkraakerfi.Text = string.Format("SKráakerfi ({0})", dt.Rows.Count);
 
             m_grbPantanir.Text = string.Format("Óafgreitt ({0})", iFjold);
+            if(iFjold == 0)
+            {
+                m_btnLjukaPontun.Enabled = false;
+            }
+            else
+            {
+                m_btnLjukaPontun.Enabled = true;
+            }
 
         }
 
@@ -1335,6 +1343,11 @@ namespace MHR_LEIT
                 string s = m_libMalInfo.SelectedItem.ToString();
                 Clipboard.SetData(DataFormats.StringFormat, s);
             }
+        }
+
+        private void m_numUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            fyllaMyndSkjal(Convert.ToInt32(m_strIdValinn), Convert.ToInt32(m_numUpDown.Value));
         }
     }
     

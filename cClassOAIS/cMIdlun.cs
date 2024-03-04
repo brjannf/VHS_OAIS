@@ -12,6 +12,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 using System.Configuration;
 using K4os.Compression.LZ4.Internal;
+using DocumentFormat.OpenXml.InkML;
 
 namespace cClassOAIS
 {
@@ -448,7 +449,7 @@ namespace cClassOAIS
             sækjaTengistreng();
             string strSQL = string.Empty;
 
-            if (strLeitarord.Length != 0)
+            if (strLeitarord != string.Empty)
             {
                 strSQL = string.Format("Select count(*) FROM dt_midlun m WHERE MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
             }
@@ -577,7 +578,7 @@ namespace cClassOAIS
         {
             sækjaTengistreng();
             string strSQL = string.Empty;
-           if(strLeitarord.Length != 0)
+            if (strLeitarord != string.Empty)
             {
                 strSQL = string.Format("Select MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, concat(doctitill, '.',extension) as doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, extension, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad  FROM dt_midlun m WHERE MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
             }
@@ -800,8 +801,31 @@ namespace cClassOAIS
         }
 
 
-
-
+        /// <summary>
+        /// orðmyndir
+        /// </summary>
+        /// <param name="strDatabase"></param>
+        /// <param name="strTegund"></param>
+        /// <returns></returns>
+        public string ordmyndir(string ord)
+        {
+            sækjaTengistreng();
+            string strRet = string.Empty;
+            string strSQL = string.Empty;
+            //strSQL = string.Format("SELECT group_concat(beygingarmynd SEPARATOR ' ') as ordmynd FROM ordmyndir.`bin` b where uppflettiord = '{0}'; ", ord);
+            strSQL = string.Format("select (SELECT group_concat(beygingarmynd SEPARATOR ' ') as ordmynd FROM ordmyndir.`bin`  where id = b.id) as ordmyndir FROM ordmyndir.`bin` b where beygingarmynd = binary '{0}'; ", ord);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS,strSQL);
+            foreach(DataRow r in ds.Tables[0].Rows)
+            {
+                strRet += r["ordmyndir"].ToString() + " ";
+            }
+            //var ordmyndir = MySqlHelper.ExecuteScalar(m_strTengingOAIS, strSQL);
+            //if(ordmyndir != null) 
+            //{
+            //    strRet = ordmyndir.ToString();
+            //}
+            return strRet;
+        }
         // private string str
         public string getFyrirspurn(string strDatabase, string strTegund)
         {

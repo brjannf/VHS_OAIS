@@ -29,6 +29,14 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.m_lblStatus = new System.Windows.Forms.Label();
+            this.m_lblToDo = new System.Windows.Forms.Label();
+            this.m_pgbGeymsluSkra = new System.Windows.Forms.ProgressBar();
+            this.m_chbBokstafir = new System.Windows.Forms.CheckBox();
+            this.m_lblSkjalaflokkur = new System.Windows.Forms.Label();
+            this.m_tboSeriesLevel = new System.Windows.Forms.TextBox();
+            this.m_btnBuaTilAuto = new System.Windows.Forms.Button();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.m_grbGogn = new System.Windows.Forms.GroupBox();
             this.m_trwGogn = new System.Windows.Forms.TreeView();
@@ -60,6 +68,10 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
@@ -81,7 +93,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer3);
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer4);
             // 
             // splitContainer1.Panel2
             // 
@@ -89,6 +101,93 @@
             this.splitContainer1.Size = new System.Drawing.Size(1478, 753);
             this.splitContainer1.SplitterDistance = 707;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.m_lblStatus);
+            this.splitContainer4.Panel1.Controls.Add(this.m_lblToDo);
+            this.splitContainer4.Panel1.Controls.Add(this.m_pgbGeymsluSkra);
+            this.splitContainer4.Panel1.Controls.Add(this.m_chbBokstafir);
+            this.splitContainer4.Panel1.Controls.Add(this.m_lblSkjalaflokkur);
+            this.splitContainer4.Panel1.Controls.Add(this.m_tboSeriesLevel);
+            this.splitContainer4.Panel1.Controls.Add(this.m_btnBuaTilAuto);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.splitContainer3);
+            this.splitContainer4.Size = new System.Drawing.Size(707, 753);
+            this.splitContainer4.SplitterDistance = 195;
+            this.splitContainer4.TabIndex = 2;
+            // 
+            // m_lblStatus
+            // 
+            this.m_lblStatus.AutoSize = true;
+            this.m_lblStatus.Location = new System.Drawing.Point(617, 70);
+            this.m_lblStatus.Name = "m_lblStatus";
+            this.m_lblStatus.Size = new System.Drawing.Size(38, 15);
+            this.m_lblStatus.TabIndex = 10;
+            this.m_lblStatus.Text = "label1";
+            // 
+            // m_lblToDo
+            // 
+            this.m_lblToDo.AutoSize = true;
+            this.m_lblToDo.Location = new System.Drawing.Point(43, 62);
+            this.m_lblToDo.Name = "m_lblToDo";
+            this.m_lblToDo.Size = new System.Drawing.Size(38, 15);
+            this.m_lblToDo.TabIndex = 9;
+            this.m_lblToDo.Text = "label1";
+            // 
+            // m_pgbGeymsluSkra
+            // 
+            this.m_pgbGeymsluSkra.Location = new System.Drawing.Point(111, 88);
+            this.m_pgbGeymsluSkra.Name = "m_pgbGeymsluSkra";
+            this.m_pgbGeymsluSkra.Size = new System.Drawing.Size(314, 23);
+            this.m_pgbGeymsluSkra.TabIndex = 8;
+            // 
+            // m_chbBokstafir
+            // 
+            this.m_chbBokstafir.AutoSize = true;
+            this.m_chbBokstafir.Checked = true;
+            this.m_chbBokstafir.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.m_chbBokstafir.Location = new System.Drawing.Point(52, 33);
+            this.m_chbBokstafir.Name = "m_chbBokstafir";
+            this.m_chbBokstafir.Size = new System.Drawing.Size(169, 19);
+            this.m_chbBokstafir.TabIndex = 7;
+            this.m_chbBokstafir.Text = "Setja bókstafi á skjalaflokka";
+            this.m_chbBokstafir.UseVisualStyleBackColor = true;
+            // 
+            // m_lblSkjalaflokkur
+            // 
+            this.m_lblSkjalaflokkur.AutoSize = true;
+            this.m_lblSkjalaflokkur.Location = new System.Drawing.Point(43, 15);
+            this.m_lblSkjalaflokkur.Name = "m_lblSkjalaflokkur";
+            this.m_lblSkjalaflokkur.Size = new System.Drawing.Size(241, 15);
+            this.m_lblSkjalaflokkur.TabIndex = 3;
+            this.m_lblSkjalaflokkur.Text = "Vinsamlegast hakkið við fyrsta yfirskjalaflokk";
+            // 
+            // m_tboSeriesLevel
+            // 
+            this.m_tboSeriesLevel.Location = new System.Drawing.Point(308, 12);
+            this.m_tboSeriesLevel.Name = "m_tboSeriesLevel";
+            this.m_tboSeriesLevel.Size = new System.Drawing.Size(377, 23);
+            this.m_tboSeriesLevel.TabIndex = 2;
+            // 
+            // m_btnBuaTilAuto
+            // 
+            this.m_btnBuaTilAuto.Location = new System.Drawing.Point(539, 88);
+            this.m_btnBuaTilAuto.Name = "m_btnBuaTilAuto";
+            this.m_btnBuaTilAuto.Size = new System.Drawing.Size(136, 23);
+            this.m_btnBuaTilAuto.TabIndex = 0;
+            this.m_btnBuaTilAuto.Text = "Búa til sjálfvirkt";
+            this.m_btnBuaTilAuto.UseVisualStyleBackColor = true;
+            this.m_btnBuaTilAuto.Click += new System.EventHandler(this.m_btnBuaTilAuto_Click);
             // 
             // splitContainer3
             // 
@@ -103,7 +202,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.m_grbGeymsluSkrá);
-            this.splitContainer3.Size = new System.Drawing.Size(707, 753);
+            this.splitContainer3.Size = new System.Drawing.Size(707, 554);
             this.splitContainer3.SplitterDistance = 329;
             this.splitContainer3.TabIndex = 1;
             // 
@@ -113,7 +212,7 @@
             this.m_grbGogn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbGogn.Location = new System.Drawing.Point(0, 0);
             this.m_grbGogn.Name = "m_grbGogn";
-            this.m_grbGogn.Size = new System.Drawing.Size(329, 753);
+            this.m_grbGogn.Size = new System.Drawing.Size(329, 554);
             this.m_grbGogn.TabIndex = 0;
             this.m_grbGogn.TabStop = false;
             this.m_grbGogn.Text = "Skáarsafn";
@@ -124,9 +223,10 @@
             this.m_trwGogn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_trwGogn.Location = new System.Drawing.Point(3, 19);
             this.m_trwGogn.Name = "m_trwGogn";
-            this.m_trwGogn.Size = new System.Drawing.Size(323, 731);
+            this.m_trwGogn.Size = new System.Drawing.Size(323, 532);
             this.m_trwGogn.TabIndex = 0;
             this.m_trwGogn.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.m_trwGogn_AfterCheck);
+            this.m_trwGogn.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwGogn_AfterSelect);
             this.m_trwGogn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_trwGogn_MouseDown);
             // 
             // m_grbGeymsluSkrá
@@ -135,7 +235,7 @@
             this.m_grbGeymsluSkrá.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_grbGeymsluSkrá.Location = new System.Drawing.Point(0, 0);
             this.m_grbGeymsluSkrá.Name = "m_grbGeymsluSkrá";
-            this.m_grbGeymsluSkrá.Size = new System.Drawing.Size(374, 753);
+            this.m_grbGeymsluSkrá.Size = new System.Drawing.Size(374, 554);
             this.m_grbGeymsluSkrá.TabIndex = 0;
             this.m_grbGeymsluSkrá.TabStop = false;
             this.m_grbGeymsluSkrá.Text = "Geymsluskrá";
@@ -146,7 +246,7 @@
             this.m_trwGeymsluskrá.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_trwGeymsluskrá.Location = new System.Drawing.Point(3, 19);
             this.m_trwGeymsluskrá.Name = "m_trwGeymsluskrá";
-            this.m_trwGeymsluskrá.Size = new System.Drawing.Size(368, 731);
+            this.m_trwGeymsluskrá.Size = new System.Drawing.Size(368, 532);
             this.m_trwGeymsluskrá.TabIndex = 0;
             this.m_trwGeymsluskrá.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.m_trwGeymsluskrá_AfterCheck);
             this.m_trwGeymsluskrá.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_trwGeymsluskrá_AfterSelect);
@@ -383,6 +483,11 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel1.PerformLayout();
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
@@ -430,5 +535,14 @@
         private Button m_btnEyda;
         private Button m_btnAddFile;
         private Button m_btnAddSubSerites;
+        private SplitContainer splitContainer4;
+        private Button m_btnBuaTilAuto;
+        private TextBox m_tboSeriesLeves;
+        private TextBox m_tboSeriesLevel;
+        private Label m_lblSkjalaflokkur;
+        private CheckBox m_chbBokstafir;
+        private ProgressBar m_pgbGeymsluSkra;
+        private Label m_lblStatus;
+        private Label m_lblToDo;
     }
 }

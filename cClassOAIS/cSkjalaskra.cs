@@ -132,7 +132,16 @@ namespace cClassOAIS
                 command.ExecuteNonQuery();
                 command.CommandText = "UPDATE `dt_vörsluutgafur` set `innihald` = @3_3_1_yfirlit_innihald, `timabil` = @3_1_3_tímabil, `utgafa_titill` = @3_1_2_titill, `afharnr` = @3_2_4_afhendingar_tilfærslur, `adgangstakmarkanir` = @3_4_1_skilyrði_aðgengi  where `vorsluutgafa`=@3_1_1_auðkenni;";
             }
-            command.ExecuteNonQuery();
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (Exception x)
+            {
+                string strBla=  this.yfirlit_innihald_3_3_1;
+        
+              
+            }
             conn.Dispose();
             command.Dispose();
 
@@ -263,7 +272,8 @@ namespace cClassOAIS
         public DataTable getVörsluútgáfurGU()
         {
             sækjaTengistreng();
-            string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where vorsluutgafa not like 'frum%';");
+            //  string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where vorsluutgafa not like 'frum%';");
+            string strSQL = string.Format("SELECT d.*, (select distinct tegund_grunns from dt_midlun m where d.vorsluutgafa= m.vorsluutgafa) as tegund FROM `dt_vörsluutgafur` d where vorsluutgafa not like 'frum%';");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -304,11 +314,98 @@ namespace cClassOAIS
             sækjaTengistreng();
             string strRet = string.Empty;
             string strSQL = string.Format("SELECT  concat(min(Year(lastwriten)),'-', max(Year(lastwriten))) as tímabil FROM {1} f where slod REGEXP '\\\\\\\\{0}'", strFlokkur ,strGrunnur + ".filesystem");
-            var timabil = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
-            if(timabil != null)
+            try
+            {
+                var timabil = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+                if (timabil != null)
+                {
+                    strRet = timabil.ToString();
+                }
+            }
+            catch (Exception xx) 
+            {
+
+                //throw;
+            }
+            return strRet;
+        }
+        public string getTimabilMalKerfi(string strGrunnur, string strMalTitill)
+        {
+              sækjaTengistreng();
+            strGrunnur = strGrunnur.Replace(".", "_");
+
+            MySqlConnection conn = new MySqlConnection(m_strTenging);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+
+            command.Parameters.AddWithValue("@maltitill", strMalTitill);
+
+            strMalTitill = strMalTitill.Replace("\'", "*"); ;
+
+            string strRet = string.Empty;
+            command.CommandText = string.Format("SELECT concat(min(Year(doclastwriten)),'-', max(Year(doclastwriten))) as tímabil FROM dt_midlun d where heiti_gagangrunns = '{0}' and maltitill like '{1}';", strGrunnur, strMalTitill);
+            var timabil = command.ExecuteScalar(); // MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if (timabil != null)
             {
                 strRet = timabil.ToString();
             }
+            conn.Dispose();
+            command.Dispose();
+            return strRet;
+           // string strSQL = string.Format("SELECT concat(min(Year(doclastwriten)),'-', max(Year(doclastwriten))) as tímabil  FROM db_oais_admin.dt_midlun d where heiti_gagangrunns = '{0}' and maltitill = '{1}' ;", strMalTitill, strGrunnur);
+               
+        }
+
+        public string getSkjalFjoldiMalkerfi(string strFlokkur, string strGrunnur)
+        {
+            sækjaTengistreng();
+            strGrunnur = strGrunnur.Replace(".", "_");
+            strFlokkur = strFlokkur.Replace("\'", "\\'");
+            MySqlConnection conn = new MySqlConnection(m_strTenging);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+
+            command.Parameters.AddWithValue("@flokkur", strFlokkur);
+
+            string strRet = string.Empty;
+            command.CommandText = string.Format("SELECT count(*) as fjoldi FROM dt_midlun d where heiti_gagangrunns = '{0}' and maltitill = '{1}';", strGrunnur, strFlokkur);
+            try
+            {
+                var timabil = command.ExecuteScalar(); // MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+                if (timabil != null)
+                {
+                    strRet = timabil.ToString();
+                }
+            }
+            catch (Exception x)
+            {
+
+            //    throw;
+            }
+            conn.Dispose();
+            command.Dispose();
+            return strRet;
+        }
+        public string getSkjalListiiMalkerfi(string strFlokkur, string strGrunnur)
+        {
+            sækjaTengistreng();
+            strGrunnur = strGrunnur.Replace(".", "_");
+
+            MySqlConnection conn = new MySqlConnection(m_strTenging);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+
+            command.Parameters.AddWithValue("@flokkur", strFlokkur);
+
+            string strRet = string.Empty;
+            command.CommandText = string.Format("SELECT group_concat(concat(doctitill,  extension) SEPARATOR '~') as listi FROM dt_midlun d where heiti_gagangrunns = '{0}' and maltitill = '{1}';", strGrunnur, strFlokkur);
+            var timabil = command.ExecuteScalar(); // MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if (timabil != null)
+            {
+                strRet = timabil.ToString();
+            }
+            conn.Dispose();
+            command.Dispose();
             return strRet;
         }
         public string getSkjalFjoldi(string strFlokkur, string strGrunnur)
@@ -329,6 +426,8 @@ namespace cClassOAIS
             {
                 strRet = timabil.ToString();
             }
+            conn.Dispose();
+            command.Dispose();
             return strRet;
         }
 

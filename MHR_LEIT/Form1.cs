@@ -2,6 +2,7 @@ using cClassOAIS;
 using cClassVHS;
 using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using OAIS_ADMIN;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
@@ -31,6 +32,7 @@ namespace MHR_LEIT
         public Form1()
         {
             InitializeComponent();
+
             m_comFjoldiFaerslnaLeit.Text = "100";
             m_pnlNotandi.BringToFront();
             m_pnlNotandi.Dock = DockStyle.Fill;
@@ -95,6 +97,45 @@ namespace MHR_LEIT
 
 
 
+        }
+        private void fyllaVorsluUtgafur()
+        {
+            cSkjalaskra utgafur = new cSkjalaskra();
+            utgafur.m_bAfrit = virkurNotandi.m_bAfrit;
+            DataTable dt  = utgafur.getVörsluútgáfurGU();
+
+            m_dgvVorsluUtgafur.AutoGenerateColumns = false;
+            m_dgvVorsluUtgafur.DataSource = formatTable(dt);
+        }
+
+        private DataTable formatTable(DataTable dt)
+        {
+            DataTable dtCloned = dt.Clone();
+            dtCloned.Columns["staerd"].DataType = typeof(string);
+            foreach (DataRow row in dt.Rows)
+            {
+                dtCloned.ImportRow(row);
+            }
+            //gera stærð skiljanlega
+
+            foreach (DataRow r in dtCloned.Rows)
+            {
+                long bla = (long)Convert.ToDouble(r["staerd"]);
+                r["staerd"] = FormatBytes(bla);
+            }
+            return dtCloned;
+        }
+        private static string FormatBytes(long bytes)
+        {
+            string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
+            int i;
+            double dblSByte = bytes;
+            for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
+            {
+                dblSByte = bytes / 1024.1;
+            }
+
+            return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
         private void fyllaGagnaGrunna()
         {
@@ -259,9 +300,31 @@ namespace MHR_LEIT
             {
                 midlun.Endadags = m_dtEnd.Value.ToString();
             }
+            //Bæta hér við öllum orðmyndum
+            string strLeitarORd = m_tboLeitOrd.Text;
+            if (m_chbOrdmyndir.Checked)
+            {
+                string[] strSplit = strLeitarORd.Split(" ");
+                //leita uppi orðmyndir í BIN
+                strLeitarORd = string.Empty;
+                foreach (string str in strSplit)
+                {
+                    string strOrdmyndir = midlun.ordmyndir(str);
+                    strLeitarORd += strOrdmyndir + " ";
+                }
+             
+                if(strLeitarORd == " ")
+                {
+                    strLeitarORd = string.Empty;
+                }
+                if (strLeitarORd == string.Empty)
+                {
+                    strLeitarORd = m_tboLeitOrd.Text;
+                }
+            }
             int iPageFjoldi = Convert.ToInt32(m_comFjoldiFaerslnaLeit.Text);
             //   mid
-            int iFjoldi = midlun.leitCount(m_tboLeitOrd.Text);
+            int iFjoldi = midlun.leitCount(strLeitarORd);
             decimal dFjoldi = Convert.ToDecimal((double)iFjoldi / (double)iPageFjoldi);
             int iPages = Convert.ToInt32(Math.Ceiling(dFjoldi));
             //fylla pagecombo
@@ -288,17 +351,18 @@ namespace MHR_LEIT
                 }
 
             }
+        
 
             m_lblSidaAf.Text = string.Format("af {0}", iPages);
             if(bLeit)
             {
-                m_dtLeitarNidurstodur = midlun.leit(m_tboLeitOrd.Text, iPageFjoldi.ToString(), "0");
+                m_dtLeitarNidurstodur = midlun.leit(strLeitarORd, iPageFjoldi.ToString(), "0");
             }
             else
             {
                 int Ipage =  Convert.ToInt32(m_comPages.SelectedItem )-1;
                 iPages = Ipage * iPageFjoldi;
-                m_dtLeitarNidurstodur = midlun.leit(m_tboLeitOrd.Text, iPageFjoldi.ToString(), iPages.ToString() );
+                m_dtLeitarNidurstodur = midlun.leit(strLeitarORd, iPageFjoldi.ToString(), iPages.ToString() );
             }
             m_dgvLeit.AutoGenerateColumns = false;
             m_dgvLeit.DataSource = m_dtLeitarNidurstodur;
@@ -1686,6 +1750,28 @@ namespace MHR_LEIT
             int iFjoldi = m_dtDIPSkra.Rows.Count + m_dtDIPGrunn.Rows.Count + m_dtDIPMal.Rows.Count;
             m_grbDIP.Text = string.Format("Óafgreitt {0}", iFjoldi);
             m_tapAfgreidsla.Text = string.Format("Afgreiðsla: {0} skrár óafgreiddar", iFjoldi);
+            fyllaDIPLista();
+            if (m_comLanthegar.SelectedIndex != 0)
+            {
+                string strID = m_comLanthegar.SelectedValue.ToString();
+                lanþegi.getaLanthega(strID);
+                if (lanþegi.id != 0)
+                {
+                    m_lblLanthegi.Visible = true;
+                    m_lblLanthegi.Text = string.Format("Nafn: {0}{1}Kennitala: {2}{1}Stofnun: {3}{1}Kennitala stofnunar: {4}{1}Sími: {5}{1}Netfang: {6}{1}Skráður af: {7}{1}Dagsetning skráningar: {8}", lanþegi.nafn, Environment.NewLine, lanþegi.kennitala, lanþegi.nafn_fyrirtaekis, lanþegi.kennitala_fyrirtaekis, lanþegi.simi, lanþegi.netfang, lanþegi.skrad_af, lanþegi.dags_skrad);
+                }
+                else
+                {
+                    m_lblLanthegi.Visible = false;
+                }
+
+            }
+            m_trwDIP.SelectedNode = m_trwDIP.Nodes[0];
+            m_tapPontunSkra.Text = string.Format("Skráakerfi ({0})", m_dtDIPSkra.Rows.Count);
+            m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
+            m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", m_dtDIPMal.Rows.Count);
+            iFjoldi = m_dtDIPSkra.Rows.Count + m_dtDIPGrunn.Rows.Count + m_dtDIPMal.Rows.Count;
+            m_grbDIP.Text = string.Format("Óafgreitt {0}", iFjoldi);
 
         }
 
@@ -2005,23 +2091,96 @@ namespace MHR_LEIT
             if(iFjoldi != 0)
             {
                 splitContainer3.Panel1.BackColor = System.Drawing.Color.LightYellow;
-                ;
-                // TreeNode n = new TreeNode("Ópantað");
-                if (m_trwDIP.Nodes[0].Text != "Óafgreidd pöntun")
+               
+                if(m_trwDIP.Nodes.Count > 0)
+                {
+                    // TreeNode n = new TreeNode("Ópantað");
+                    if (m_trwDIP.Nodes[0].Text != "Óafgreidd pöntun")
+                    {
+                        m_trwDIP.Nodes.Insert(0, "Óafgreidd pöntun");
+                    }
+                }
+                else
                 {
                     m_trwDIP.Nodes.Insert(0, "Óafgreidd pöntun");
                 }
+               
                 
             }
             else
             {
-                if (m_trwDIP.Nodes[0].Text == "Óafgreidd pöntun")
+                if (m_trwDIP.Nodes.Count != 0)
                 {
-                    m_trwDIP.Nodes.Remove(m_trwDIP.Nodes[0]);
+
+                    if (m_trwDIP.Nodes[0].Text == "Óafgreidd pöntun")
+                    {
+                        m_trwDIP.Nodes.Remove(m_trwDIP.Nodes[0]);
+                    }
+                    splitContainer3.Panel1.BackColor = System.Drawing.Color.White;
+                    m_trwDIP.SelectedNode = m_trwDIP.Nodes[0];
                 }
-                splitContainer3.Panel1.BackColor = System.Drawing.Color.White;
+              
             }
-            m_trwDIP.SelectedNode = m_trwDIP.Nodes[0];
+           
+        }
+
+        private void m_tacUmsjon_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            fyllaVorsluUtgafur();
+        }
+
+        private void m_dgvVorsluUtgafur_SelectionChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_dgvVorsluUtgafur_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                if (senderGrid.Columns["comBtnVörslustofnun"].Index == e.ColumnIndex)
+                {
+                    string strVorslustofnID = m_dgvVorsluUtgafur.Rows[e.RowIndex].Cells["colUtgafaVorsluAudkenni"].Value.ToString();
+                    frmVorslustofnun frmVorslu = new frmVorslustofnun(strVorslustofnID, virkurNotandi);
+                    frmVorslu.ShowDialog();
+                }
+
+                if (senderGrid.Columns["comBtnSkjalamyndari"].Index == e.ColumnIndex)
+                {
+                    string strSkjalamyndari = m_dgvVorsluUtgafur.Rows[e.RowIndex].Cells["colUtgafaSkjalamAudkenni"].Value.ToString();
+                    cSkjalamyndari skjalamyndari = new cSkjalamyndari();
+                    skjalamyndari.m_bAfrit = virkurNotandi.m_bAfrit;
+                    skjalamyndari.getSkjalamyndaraByAuðkenni(strSkjalamyndari);
+                    frmSkjalamyndari frmSkjalm = new frmSkjalamyndari(skjalamyndari, virkurNotandi);
+                    frmSkjalm.ShowDialog();
+                }
+                if (senderGrid.Columns["colBtnGeymsluskra"].Index == e.ColumnIndex)
+                {
+                    //string strAuðkenni, string strSlod,string strTegund, cNotandi not, string strVarsla
+                    string strAuðkenni = senderGrid.Rows[e.RowIndex].Cells["colUtgafurAuðkenni"].Value.ToString();
+                    string strVorslustofnID = m_dgvVorsluUtgafur.Rows[e.RowIndex].Cells["colUtgafaVorsluAudkenni"].Value.ToString();
+                    //string strSlod = senderGrid.Rows[e.RowIndex].Cells["colVarslaSlod"].Value.ToString();
+                    string strTegund =  senderGrid.Rows[e.RowIndex].Cells["colTegund"].Value.ToString();
+                                                      //string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorsluID"].Value.ToString();
+
+                    frmGeymsluskra frmgeymsla = new frmGeymsluskra(strAuðkenni, "asdf", strTegund, virkurNotandi, strVorslustofnID);
+                    frmgeymsla.ShowDialog();
+                }
+            }
+        
+           
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void m_pnlNotandi_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using cClassOAIS;
+using SixLabors.ImageSharp.Drawing;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
@@ -32,6 +33,9 @@ namespace OAIS_ADMIN
         TreeNode subseriesnode = new TreeNode();
 
         DataTable m_dtGEYMSLUSKRA = new DataTable();
+        int m_iSeriesLevel = 0;
+        Array m_arrSeries;
+        string m_strSeries = string.Empty;
 
         private DataTable m_dtGogn = new DataTable();
         public frmGeymsluskra()
@@ -41,7 +45,8 @@ namespace OAIS_ADMIN
         public frmGeymsluskra(string strAuðkenni, string strSlod,string strTegund, cNotandi not, string strVarsla)
         {
             InitializeComponent();
-        
+
+            m_arrSeries = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Þ","Æ", "Ö"};
             virkurnotandi = not;
             temp.m_bAfrit = virkurnotandi.m_bAfrit; 
             midlun.m_bAfrit = virkurnotandi.m_bAfrit;
@@ -262,12 +267,13 @@ namespace OAIS_ADMIN
                     if (m_strVorsluAudkenni == "HARN")
                     {
                         DataRow row = dtFilemaker.NewRow();
-                        row["tegund"] = string.Empty;
+                        row["tegund"] = "Opinber skjöl"; //þarf að breyta og vita hvað einka sköl eru
                         row["skjalamyndari"] = fond.heiti_skjalamyndara_3_2_1;
                         row["Sveitarfélag"] = string.Empty;
                         row["Sveitarnr."] = string.Empty;
-                        row["Afh. ár"] = fond.afhendingar_tilfærslur_3_2_4;
-                        string[] strSplit = strSeries.Split("-");
+                        string[]  strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
+                        row["Afh. ár."] = strSplit[0];
+                        strSplit = strSeries.Split("-");
                         row["skjalaflokkur"] = strSplit[0];
                         row["kassanúmer"] = "1"; //þarf líklega ekki að breyta þessu
                         row["Örk"] = "1"; //þyrfti að breyta þessu ef fleiri en ein örk verður sett inn
@@ -283,7 +289,16 @@ namespace OAIS_ADMIN
                         row["Heiti skjalafl."] = strSubSeries;
                         row["Geymsla"] = string.Empty;
                         row["Yfirskjalafl"] = strSeries;
-                        row["Ath."] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
+                        if(m_strTegund == "Málakerfi")
+                        {
+                            row["Ath."] = "Þetta skjalasafn inniheldur ræfræn gögn sem geymd eru hjá MHR og Héraðsskjalasafni Árnesinga"; // string.Empty; // string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
+                        }
+                        else
+                        {
+                            row["Ath."] =  string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
+                        }
+
+                       
                         row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
                         dtFilemaker.Rows.Add(row);
                         dtFilemaker.AcceptChanges();
@@ -570,6 +585,12 @@ namespace OAIS_ADMIN
         private void m_trwGogn_AfterCheck(object sender, TreeViewEventArgs e)
         {
             skjal.hreinsaHlut();
+            if(m_trwGogn.Focused)
+            {
+                m_iSeriesLevel = e.Node.Level;
+                m_tboSeriesLevel.Text = string.Format("{0} - level {1}", e.Node.Text, m_iSeriesLevel);
+            }
+   
             TreeNode n = new TreeNode(e.Node.Text);
             fondnode = m_trwGeymsluskrá.Nodes[0];
         
@@ -606,6 +627,12 @@ namespace OAIS_ADMIN
             {
                 if(m_trwGogn.SelectedNode.Checked)
                 {
+                   // //athuga hvort nóðan er kominn
+                   //TreeNode[] fNode =   m_trwGeymsluskrá.Nodes.Find(seriesnode.Text, true);
+                   // if (fNode.Length > 0)
+                   // {
+
+                   // }
                     seriesnode.Nodes.Add(n);
                    
                     subseriesnode = n;
@@ -616,6 +643,10 @@ namespace OAIS_ADMIN
                     if(m_strTegund == "Skráarkerfi")
                     {
                         skjal.tímabil_3_1_3 = skjal.getTimabil(n.Text, m_strAuðkenni.Replace(".", "_"));
+                    }
+                    if(m_strTegund == "Málakerfi")
+                    {
+                        skjal.tímabil_3_1_3 = skjal.getTimabilMalKerfi(m_strAuðkenni.Replace(".", "_"), n.Text);
                     }
       
                     skjal.titill_3_1_2 = n.Text;
@@ -729,6 +760,11 @@ namespace OAIS_ADMIN
                 {
                     temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodes[0].Text, temp.getSkjalFjoldi(temp.athugasemdir_skjalavarðar_3_7_1, m_strAuðkenni));
                 }
+                if(m_strTegund == "Málakerfi")
+                {
+                    //ef málakerfið er GoPro
+                    temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodes[0].Text, temp.getSkjalFjoldiMalkerfi(temp.athugasemdir_skjalavarðar_3_7_1, m_strAuðkenni));
+                }
                
                 skjal = temp;
                 fyllaGeymsluskraTöflu("Örk", "asdfaf");
@@ -834,6 +870,440 @@ namespace OAIS_ADMIN
         {
 
         }
+
+        private void m_btnBuaTilAuto_Click(object sender, EventArgs e)
+        {
+            if(m_tboSeriesLevel.Text == string.Empty)
+            {
+                MessageBox.Show("Vinamlegast hakkið við fyrsta yfirskjalaflokk");
+                return;
+            }
+            TreeNode tRoot = m_trwGeymsluskrá.Nodes[0];
+            m_trwGeymsluskrá.Nodes.Clear();
+            m_trwGeymsluskrá.Nodes.Insert(0, tRoot);
+            buaTilSkraAuto();
+     
+            // buaTilLaufAuto();
+            int iSeries = 0;
+            string[] strSeries = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Þ", "Æ", "Ö", "A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "I1", "J1", "K1", "L1", "M1", "N1", "O1", "P1", "R1", "S1", "T1", "U1", "V1", "W1", "X1", "Y1", "Z1", "Þ1", "Æ1", "Ö1" };
+            m_lblToDo.Text = "Bæti við örkum skref 2 af 2";
+            m_pgbGeymsluSkra.Value = 0;
+            m_pgbGeymsluSkra.Step = 1;
+            m_pgbGeymsluSkra.Maximum = m_trwGeymsluskrá.Nodes[0].Nodes.Count;
+
+            foreach (TreeNode tSub in m_trwGeymsluskrá.Nodes[0].Nodes)
+            {
+                string strBokSeries = string.Empty;
+                if (m_chbBokstafir.Checked)
+                {
+                    strBokSeries = strSeries[iSeries];
+                    tSub.Text = strSeries[iSeries] + "-" + tSub.Text;
+                    string strExp = "auðkenni= '" + tSub.Tag.ToString() + "'";
+                    DataRow[] fRow = m_dtGEYMSLUSKRA.Select(strExp);
+                    if (fRow.Length != 0)
+                    {
+                        fRow[0]["titill"] = tSub.Text;
+                    }
+                }
+
+
+                if (tSub.Level == 1)
+                {
+                    int iSubSeries = 0;
+                    m_pgbGeymsluSkra.Maximum = tSub.Nodes.Count;
+                    foreach (TreeNode n in tSub.Nodes)
+                    {
+                        if (m_chbBokstafir.Checked)
+                        {
+                            string strBokSubSeries = strBokSeries + strSeries[iSubSeries];
+                            n.Text = strBokSubSeries + "-" + n.Text;
+                            string strExp = "auðkenni= '" + n.Tag.ToString() + "'";
+                            DataRow[] fRow = m_dtGEYMSLUSKRA.Select(strExp);
+                            if (fRow.Length != 0)
+                            {
+                                fRow[0]["titill"] = n.Text;
+                            }
+
+                        }
+                        buaTilOrkAuto(n);
+                        m_pgbGeymsluSkra.PerformStep();
+                        m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                        Application.DoEvents();
+                        iSubSeries++;
+                    }
+
+                }
+                iSeries++;
+            }
+
+            Application.DoEvents();
+
+        }
+
+        private void m_btnBuaTilArkir_Click(object sender, EventArgs e)
+        {
+        
+            
+        }
+        private void buaTilSkraAuto()
+        {
+            m_lblToDo.Text = "Bý til skjalaskrá skref 1 af 2";
+            m_pgbGeymsluSkra.Value = 0;
+            m_pgbGeymsluSkra.Step = 1;
+
+
+            switch (m_iSeriesLevel)
+            {
+                case 0:
+                    m_pgbGeymsluSkra.Maximum = m_trwGogn.Nodes.Count;
+                    foreach (TreeNode tn in m_trwGogn.Nodes)
+                    {
+                        if (tn.Level == 0)
+                        {
+                            m_trwGogn.SelectedNode = tn;
+                            // seriesnode = tn;
+                            tn.Checked = true;
+                            m_pgbGeymsluSkra.Value = 0;
+                            m_pgbGeymsluSkra.Step = 1;
+                            m_pgbGeymsluSkra.Maximum =  tn.Nodes.Count;
+                            foreach (TreeNode tn1 in tn.Nodes)
+                            {
+                                //  m_trwGogn.SelectedNode = tn1;
+                                tn1.Checked = true;
+                                m_pgbGeymsluSkra.PerformStep();
+                                m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                                Application.DoEvents();
+
+                            }
+                            seriesnode.Checked = false;
+
+                            m_pgbGeymsluSkra.PerformStep();
+                            m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                            Application.DoEvents();
+
+                        }
+                    }
+            
+                    break;
+                case 1:
+                    m_pgbGeymsluSkra.Maximum = m_trwGogn.Nodes[0].Nodes.Count;
+                    foreach (TreeNode tn in m_trwGogn.Nodes[0].Nodes)
+                    {
+                        if (tn.Level == 1)
+                        {
+                            m_trwGogn.SelectedNode = tn;
+                            // seriesnode = tn;
+                            tn.Checked = true;
+
+                            foreach (TreeNode tn1 in tn.Nodes)
+                            {
+                                //  m_trwGogn.SelectedNode = tn1;
+                                tn1.Checked = true;
+
+                            }
+
+                            seriesnode.Checked = false;
+                            m_pgbGeymsluSkra.PerformStep();
+                            m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                            Application.DoEvents();
+
+                        }
+                    }
+                    break;
+                case 2:
+                    m_pgbGeymsluSkra.Maximum = m_trwGogn.Nodes[0].Nodes[0].Nodes.Count;
+                    foreach (TreeNode tn in m_trwGogn.Nodes[0].Nodes[0].Nodes)
+                    {
+                        if (tn.Level == 2)
+                        {
+                            m_trwGogn.SelectedNode = tn;
+                            // seriesnode = tn;
+                            tn.Checked = true;
+
+                            foreach (TreeNode tn1 in tn.Nodes)
+                            {
+                                //  m_trwGogn.SelectedNode = tn1;
+                                tn1.Checked = true;
+
+                            }
+
+                            seriesnode.Checked = false;
+                            m_pgbGeymsluSkra.PerformStep();
+                            m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                            Application.DoEvents();
+
+                        }
+                    }
+                    break;
+                case 3:
+                    m_pgbGeymsluSkra.Maximum = m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes.Count;
+                    foreach (TreeNode tn in m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes)
+                    {
+                        if (tn.Level == 3)
+                        {
+                            m_trwGogn.SelectedNode = tn;
+                            // seriesnode = tn;
+                            tn.Checked = true;
+
+                            foreach (TreeNode tn1 in tn.Nodes)
+                            {
+                                //  m_trwGogn.SelectedNode = tn1;
+                                tn1.Checked = true;
+
+                            }
+
+                            seriesnode.Checked = false;
+                            m_pgbGeymsluSkra.PerformStep();
+                            m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                            Application.DoEvents();
+
+                        }
+                    }
+                    break;
+                case 4:
+                    m_pgbGeymsluSkra.Maximum = m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes.Count;
+                    foreach (TreeNode tn in m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes)
+                    {
+                        if (tn.Level == 4)
+                        {
+                            m_trwGogn.SelectedNode = tn;
+                            // seriesnode = tn;
+                            tn.Checked = true;
+
+                            foreach (TreeNode tn1 in tn.Nodes)
+                            {
+                                //  m_trwGogn.SelectedNode = tn1;
+                                tn1.Checked = true;
+
+                            }
+
+                            seriesnode.Checked = false;
+                            m_pgbGeymsluSkra.PerformStep();
+                            m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                            Application.DoEvents();
+
+                        }
+                    }
+                    break;
+                case 5:
+                    m_pgbGeymsluSkra.Maximum = m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes.Count;
+                    foreach (TreeNode tn in m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes)
+                    {
+                        if (tn.Level == 5)
+                        {
+                            m_trwGogn.SelectedNode = tn;
+                            // seriesnode = tn;
+                            tn.Checked = true;
+
+                            foreach (TreeNode tn1 in tn.Nodes)
+                            {
+                                //  m_trwGogn.SelectedNode = tn1;
+                                tn1.Checked = true;
+
+                            }
+
+                            seriesnode.Checked = false;
+                            m_pgbGeymsluSkra.PerformStep();
+                            m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                            Application.DoEvents();
+
+                        }
+                    }
+                    break;
+                case 6:
+                    m_pgbGeymsluSkra.Maximum = m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes.Count;
+                    foreach (TreeNode tn in m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes)
+                    {
+                        if (tn.Level == 6)
+                        {
+                            m_trwGogn.SelectedNode = tn;
+                            // seriesnode = tn;
+                            tn.Checked = true;
+
+                            foreach (TreeNode tn1 in tn.Nodes)
+                            {
+                                //  m_trwGogn.SelectedNode = tn1;
+                                tn1.Checked = true;
+
+                            }
+
+                            seriesnode.Checked = false;
+                            m_pgbGeymsluSkra.PerformStep();
+                            m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                            Application.DoEvents();
+
+                        }
+                    }
+                    break;
+                case 7:
+                    m_pgbGeymsluSkra.Maximum = m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes.Count;
+                    foreach (TreeNode tn in m_trwGogn.Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes[0].Nodes)
+                    {
+                        if (tn.Level == 7)
+                        {
+                            m_trwGogn.SelectedNode = tn;
+                            // seriesnode = tn;
+                            tn.Checked = true;
+
+                            foreach (TreeNode tn1 in tn.Nodes)
+                            {
+                                //  m_trwGogn.SelectedNode = tn1;
+                                tn1.Checked = true;
+
+                            }
+
+                            seriesnode.Checked = false;
+                            m_pgbGeymsluSkra.PerformStep();
+                            m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
+                            Application.DoEvents();
+
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+
+           
+        }
+       
+        private void buaTilLaufAuto()
+        {
+            switch (m_iSeriesLevel)
+            {
+                case 0:
+                    foreach (TreeNode tSub in m_trwGeymsluskrá.Nodes)
+                    {
+
+                        if (tSub.Level == 0)
+                        {
+                            foreach (TreeNode n in tSub.Nodes)
+                            {
+                                buaTilOrkAuto(n);
+                                Application.DoEvents();
+                            }
+
+                        }
+                    }
+
+                    break;
+                case 1:
+                    foreach (TreeNode tSub in m_trwGeymsluskrá.Nodes[0].Nodes)
+                    {
+
+                        if (tSub.Level == 1)
+                        {
+                            foreach (TreeNode n in tSub.Nodes)
+                            {
+                                buaTilOrkAuto(n);
+                                Application.DoEvents();
+                            }
+
+                        }
+                    }
+                    break;
+                case 2:
+                    foreach (TreeNode tSub in m_trwGeymsluskrá.Nodes[0].Nodes[0].Nodes)
+                    {
+
+                        if (tSub.Level == 2)
+                        {
+                            foreach (TreeNode n in tSub.Nodes)
+                            {
+                                buaTilOrkAuto(n);
+                                Application.DoEvents();
+                            }
+
+                        }
+                    }
+                    break;
+                case 3:
+                    foreach (TreeNode tSub in m_trwGeymsluskrá.Nodes[0].Nodes[0].Nodes)
+                    {
+
+                        if (tSub.Level == 2)
+                        {
+                            foreach (TreeNode n in tSub.Nodes)
+                            {
+                                buaTilOrkAuto(n);
+                                Application.DoEvents();
+                            }
+
+                        }
+                    }
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    break;
+            }
+        }
+      
+        private void buaTilOrkAuto(TreeNode nodus)
+        {
+            cSkjalaskra ork = temp;
+            temp.upplýsingastig_3_1_4 = "Örk";
+            temp.titill_3_1_2 = "Örk 1";
+
+
+            if (nodus.Text != "Örk 1")
+            {
+                TreeNode orkNode = new TreeNode("Örk 1");
+                temp.auðkenni_3_1_1 = nodus.Parent.Parent.Index.ToString("000") + "-" + nodus.Parent.Index.ToString("000") + "-" + nodus.Index.ToString("000") + "-001";
+
+                orkNode.Tag = temp.auðkenni_3_1_1;
+
+                nodus.Nodes.Add(orkNode);
+                nodus.Expand();
+                if (m_strTegund == "Málakerfi")
+                {
+                    temp.tímabil_3_1_3 = skjal.getTimabilMalKerfi(m_strAuðkenni.Replace(".", "_"), nodus.Text);
+                }
+                if (m_strTegund == "Skráarkerfi")
+                {
+                    string[] strSplit = nodus.Text.Split("-");
+                    temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodus.Text, temp.getSkjalFjoldi(strSplit[1], m_strAuðkenni));
+                    temp.tímabil_3_1_3 = skjal.getTimabil(strSplit[1], m_strGagnagrunnur);
+                }
+                if (m_strTegund == "Málakerfi")
+                {
+                    //ef málakerfið er GoPro
+                    try
+                    {
+                        string strListiSkjol = temp.getSkjalListiiMalkerfi(nodus.Text, m_strAuðkenni);
+                        string[] strSplit = strListiSkjol.Split("~");
+                        strListiSkjol = string.Empty;
+                        foreach (string str in strSplit)
+                        {
+                            strListiSkjol += str + Environment.NewLine;
+                        }
+                        temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.{2}{2}{3}", nodus.Text, temp.getSkjalFjoldiMalkerfi(nodus.Text, m_strAuðkenni), Environment.NewLine, strListiSkjol);
+                        temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodus.Text, temp.getSkjalFjoldiMalkerfi(nodus.Text, m_strAuðkenni));
+
+                    }
+                    catch (Exception x)
+                    {
+
+                        temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodus.Text, temp.getSkjalFjoldiMalkerfi(nodus.Text, m_strAuðkenni));
+                    }
+                }
+
+                skjal = temp;
+                fyllaGeymsluskraTöflu("Örk", "asdfaf");
+            }
+
+            nodus.BackColor = Color.LightGreen;
+        }
+
+        private void m_trwGogn_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+      
     }
     public static class SOExtension
     {

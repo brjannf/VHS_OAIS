@@ -507,6 +507,7 @@
             this.m_numUpDown.Name = "m_numUpDown";
             this.m_numUpDown.Size = new System.Drawing.Size(40, 23);
             this.m_numUpDown.TabIndex = 3;
+            this.m_numUpDown.ValueChanged += new System.EventHandler(this.m_numUpDown_ValueChanged);
             // 
             // m_grbSkjalValid
             // 

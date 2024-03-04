@@ -146,7 +146,7 @@ namespace OAIS_ADMIN
                         }
                         if (m_strHeitiKerfis == "Filesystem")
                         {
-                            m_strHeitiKerfis = "Skráakerfi";
+                            m_strHeitiKerfis = "Skráarkerfi";
                         }
                         m_lblTegundVorslu.Text = m_strHeitiKerfis;
                     }

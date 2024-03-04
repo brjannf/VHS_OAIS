@@ -304,6 +304,27 @@ namespace MHR_LEIT
         {
             frmAfgreidsla afgreidsla = new frmAfgreidsla(virkurnotandi, m_dtSkra, m_dtMal, m_dtPantad, m_dsMal);
             afgreidsla.ShowDialog();
+            setjaFoldaTaba();
+
+
+        }
+
+        private void setjaFoldaTaba()
+        {
+            DataTable dt = (DataTable)m_dgvPantMalaKerfi.DataSource;
+            int iFjold = dt.Rows.Count;
+            m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", dt.Rows.Count);
+
+            dt = (DataTable)m_dgvPantGagnagrunnar.DataSource;
+            iFjold = iFjold + dt.Rows.Count;
+            m_tapGagnagrunnar.Text = string.Format("Gagnagrunnur ({0})", dt.Rows.Count);
+
+            dt = (DataTable)m_dgvPantSkraarkerfi.DataSource;
+            iFjold = iFjold + dt.Rows.Count;
+            m_tapSkráarkerfi.Text = string.Format("SKráakerfi ({0})", dt.Rows.Count);
+
+            m_grbPontun.Text = string.Format("Óafgreitt ({0})", iFjold);
+
         }
     }
 }
