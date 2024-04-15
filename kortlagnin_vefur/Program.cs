@@ -1,7 +1,13 @@
+using kortlagnin_vefur.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddTransient<JsonFileProductService>();
+builder.Services.AddControllers();
+builder.Services.AddServerSideBlazor();
+
 
 var app = builder.Build();
 
@@ -15,11 +21,21 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthorization();
 
 app.MapRazorPages();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+    endpoints.MapControllers();
+    endpoints.MapBlazorHub();
+   // endpoints.MapBlazorHub();
+
+});
+
 app.Run();
+
+

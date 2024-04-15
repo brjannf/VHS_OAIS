@@ -95,7 +95,7 @@ namespace cClassOAIS
         public DataTable getKorfuLanthega(string strLan)
         {
             sækjaTengistreng();
-            string strSQL = string.Format("SELECT * FROM dt_karfa_dip d where lanthegi = {0};", strLan);
+            string strSQL = string.Format("SELECT * FROM dt_karfa_dip d where lanthegi = {0} order by karfa desc;", strLan);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging,strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

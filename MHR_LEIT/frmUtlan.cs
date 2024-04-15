@@ -48,40 +48,45 @@ namespace MHR_LEIT
 
         private void m_dgvLanListi_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridView grid = (DataGridView)sender;
-            string strKarfa = grid.Rows[e.RowIndex].Cells["colKarfa"].Value.ToString();
-
-            string strSlod = string.Empty;
-
-            string[] strDir = Directory.GetDirectories(m_strDrif);
-            foreach (string str in strDir)
+            int ibla = e.RowIndex;
+            if (e.RowIndex != -1)
             {
-                string[] strSplie = str.Split("\\");
-                strSplie = strSplie[strSplie.Length - 1].Split("_");
-                string strBLA = strSplie[0];
-                if (strKarfa == strBLA)
+                DataGridView grid = (DataGridView)sender;
+                string strKarfa = grid.Rows[e.RowIndex].Cells["colKarfa"].Value.ToString();
+
+                string strSlod = string.Empty;
+
+                string[] strDir = Directory.GetDirectories(m_strDrif);
+                foreach (string str in strDir)
                 {
-                    strSlod = str;
+                    string[] strSplie = str.Split("\\");
+                    strSplie = strSplie[strSplie.Length - 1].Split("_");
+                    string strBLA = strSplie[0];
+                    if (strKarfa == strBLA)
+                    {
+                        strSlod = str;
+                    }
+
                 }
-            
-            }
 
-           // string strLanthegi = grid.Rows[e.RowIndex].Cells["colLanID"].Value.ToString();
-           // cLanthegar lanthegar= new cLanthegar();
-           // lanthegar.m_bAfrit = virkurnotandi.m_bAfrit;
-           // lanthegar.getaLanthega(strLanthegi);
-           
-           //strSlod = m_strDrif + "\\" + strKarfa +"_" + lanthegar.nafn;
+                // string strLanthegi = grid.Rows[e.RowIndex].Cells["colLanID"].Value.ToString();
+                // cLanthegar lanthegar= new cLanthegar();
+                // lanthegar.m_bAfrit = virkurnotandi.m_bAfrit;
+                // lanthegar.getaLanthega(strLanthegi);
 
-            if (strSlod != string.Empty)
-            {
-                var p = new Process();
-                p.StartInfo = new ProcessStartInfo(strSlod)
+                //strSlod = m_strDrif + "\\" + strKarfa +"_" + lanthegar.nafn;
+
+                if (strSlod != string.Empty)
                 {
-                    UseShellExecute = true
-                };
-                p.Start();
+                    var p = new Process();
+                    p.StartInfo = new ProcessStartInfo(strSlod)
+                    {
+                        UseShellExecute = true
+                    };
+                    p.Start();
+                }
             }
+       
         }
     }
 }
