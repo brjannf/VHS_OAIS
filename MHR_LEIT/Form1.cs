@@ -2,11 +2,14 @@ using cClassOAIS;
 using cClassVHS;
 using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using Google.Protobuf.WellKnownTypes;
+using MySql.Data.MySqlClient;
 using OAIS_ADMIN;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
+using System.Windows.Forms.Design;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -28,6 +31,7 @@ namespace MHR_LEIT
         cDIPKarfa karfa = new cDIPKarfa();
         cLanthegar lanþegi = new cLanthegar();
         string m_strSlodDIP = string.Empty;
+        string m_strRootInsert = string.Empty;
 
         public Form1()
         {
@@ -1532,7 +1536,7 @@ namespace MHR_LEIT
                         if (strBLA.Contains("\\"))
                         {
                             string strLink = ".." + strBLA;
-                            workSheet.Hyperlinks.Add(workSheet.Cells[i + 2, j + 1], ".." + strBLA, Type.Missing, "Sharifsoft", "www.Sharifsoft.com");
+                            workSheet.Hyperlinks.Add(workSheet.Cells[i + 2, j + 1], ".." + strBLA, System.Type.Missing, "Sharifsoft", "www.Sharifsoft.com");
                             //  workSheet.get_Range("c1").Formula = "=HYPERLINK("+ "..\\" +strBLA + ")";
                         }
                         workSheet.Cells[i + 2, j + 1] = tbl.Rows[i][j];
@@ -1866,7 +1870,7 @@ namespace MHR_LEIT
         {
             //nota þetta til að bæta við, breyta eða eyða töflum úr miðlunargrunni
             // 1. bæta við extensiondálki í midlunartöflu
-
+            #region 1. bæta við extensiondálki í midlunartöflu
             try
             {
                 virkurNotandi.addExtensionDalk();
@@ -1942,6 +1946,17 @@ namespace MHR_LEIT
                     }
 
                 }
+            }
+            #endregion
+            // 2. bæta við heiti heitiVorslu í dt_pantanir_karfa_item
+            try
+            {
+                virkurNotandi.addHeitiVarsla();
+            }
+            catch (Exception x)
+            {
+
+
             }
 
             MessageBox.Show("Búið");
@@ -2204,6 +2219,245 @@ namespace MHR_LEIT
                     synaPantanirFjoldi();
 
                 }
+            }
+        }
+
+        private void m_btnGetData_Click(object sender, EventArgs e)
+        {
+            DialogResult result = folderBrowserDialog1.ShowDialog(this);
+           
+            if (result == DialogResult.OK)
+            {
+                //1. fara í gengum pakkann og setja í datagrid
+                m_strRootInsert = folderBrowserDialog1.SelectedPath;
+
+                string strUtgafur = m_strRootInsert + "\\Vörsluútgáfur\\";
+                string[] strMöppur = new string[0];
+                if (Directory.Exists(strUtgafur))
+                {
+                    strMöppur = Directory.GetDirectories(strUtgafur);
+                }
+                else
+                {
+                    MessageBox.Show("Engar vörsluútgáfur í þessari möppur");
+                    return;
+                }
+
+                DataTable dtUtgafur = new DataTable();
+                dtUtgafur.Columns.Clear();
+                dtUtgafur.Rows.Clear();
+                dtUtgafur.Columns.Add("heiti_varsla");
+                dtUtgafur.Columns.Add("audkenni");
+
+                foreach (string str in strMöppur)
+                {
+                    DataRow r = dtUtgafur.NewRow();
+                    DirectoryInfo difo = new DirectoryInfo(str);
+                    r["heiti_varsla"] = difo.Name;
+                    string[] strAudkenni = Directory.GetDirectories(difo.FullName);
+                    string strVarsla = string.Empty;
+                    foreach (string strAud in strAudkenni)
+                    {
+                        difo = new DirectoryInfo(strAud);
+
+                        if (difo.Name.StartsWith("AVID"))
+                        {
+                            strVarsla = difo.Name;
+                        }
+
+                    }
+                    r["audkenni"] = strVarsla;
+                    dtUtgafur.Rows.Add(r);
+                    dtUtgafur.AcceptChanges();
+                }
+                m_dgvUtgafur.DataSource = dtUtgafur;
+
+                //3. tékka hvort AIP sé komið áður
+                cVorsluutgafur varsla = new cVorsluutgafur();
+                varsla.m_bAfrit = virkurNotandi.m_bAfrit;
+
+                DataTable dt = varsla.getVorsluUtgafurLista();
+                foreach (DataGridViewRow dr in m_dgvUtgafur.Rows)
+                {
+                    string strExp = "vorsluutgafa = '" + dr.Cells["colAudkenniVarslaMidlun"].Value.ToString() + "'";
+                    DataRow[] fRow = dt.Select(strExp);
+                    if (fRow.Length > 0)
+                    {
+                        dr.DefaultCellStyle.BackColor = System.Drawing.Color.LightGreen;
+                        dr.Cells["colMidlunTaka"].Value = false;
+                    }
+                    else
+                    {
+                        dr.Cells["colMidlunTaka"].Value = true;
+                    }
+
+
+                }
+                foreach (DataGridViewColumn col in m_dgvUtgafur.Columns)
+                {
+                    if (col.Name != "colMidlunTaka")
+                    {
+                        col.ReadOnly = true;
+                    }
+                    else
+                    {
+                        col.ReadOnly = false;
+                    }
+                }
+
+
+
+
+                //2. fleygja inn í vél því sem menn vilja.
+            }
+        }
+
+        private void m_dgvUtgafur_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void m_btnKeyraVorsluInn_Click(object sender, EventArgs e)
+        {
+            //0. hvar er endadótið - verð víst að biðja um það get líka fundið í fyrri afendingum í slóð dt_vörlsuútgafúr
+
+           
+            cVHS_drives drive = new cVHS_drives();
+            drive.m_bAfrit = virkurNotandi.m_bAfrit;
+            drive.getVirktDrif();
+            string strEndaMappa = drive.Nafn;
+            
+            //DialogResult result = folderBrowserDialog1.ShowDialog(this);
+            //if (result == DialogResult.OK) 
+            //{
+            //    strEndaMappa = folderBrowserDialog1.SelectedPath;
+            //    m_lblEndaMappa.Text = strEndaMappa;
+
+            //}
+            foreach(DataGridViewRow dr in m_dgvUtgafur.Rows)
+            {
+                if (dr.Cells["colMidlunTaka"].Value.ToString() == "True")
+                {
+                    //1. Flytja skjöl á réttan stað
+                    string strAIP = m_strRootInsert + "\\Vörsluútgáfur";
+                    string[] strAIPmoppur = Directory.GetDirectories(strAIP);
+                    foreach(string str in strAIPmoppur)
+                    {
+                        string[] strAIPVarslaMoppur = Directory.GetDirectories(str);
+                       
+                        foreach (string strAIPmAPPA in strAIPVarslaMoppur)
+                        {
+                            string[] strSplit = strAIPmAPPA.Split("\\");
+                            string strAudkenni = string.Empty;
+
+                            if (strSplit.Length != 0)
+                            {
+                                strAudkenni = strSplit[strSplit.Length - 1];
+                            }
+                            string strAudkenniOrginal = dr.Cells["colAudkenniVarslaMidlun"].Value.ToString();
+
+                            if (strAudkenni == strAudkenniOrginal || strAudkenni == strAudkenniOrginal.Replace("AVID", "FRUM"))
+                            {
+                                if (!Directory.Exists(strEndaMappa + "\\" + strAudkenni))
+                                {
+                                    Directory.CreateDirectory(strEndaMappa + "\\" + strAudkenni);
+                                }
+                           
+                                CopyFolder(strAIPmAPPA, strEndaMappa + "\\" + strAudkenni);
+                            }
+                            //3. Keyra inn gagnagrunn
+                            if (strAudkenni == "SQL")
+                            {
+                                string[] strSQLScript = Directory.GetFiles(strAIPmAPPA);
+                                if(strSQLScript.Length > 0)
+                                {
+                                    
+                                    strSplit = strSQLScript[0].Split("\\");
+                                    string strScript = strSplit[strSplit.Length - 1];
+                                    strSplit = strScript.Split(".");
+                                    if(strSplit.Length != 0)
+                                    {
+                                        Restore(strSQLScript[0], strSplit[0]);
+                                    }
+                                  
+                                }
+                            }
+                  
+                        }
+                    }
+                    //2. Keyra inn innsert fyrir media
+                    string strPathInnsert = m_strRootInsert + "\\SQL_META_AFRIT\\INSERT.sql";
+                    cMIdlun midlun = new cMIdlun();
+                    midlun.m_bAfrit = virkurNotandi.m_bAfrit;
+                    midlun.scriptLoad(strPathInnsert);
+
+
+
+                }
+
+
+            }
+            MessageBox.Show("Búið");
+        }
+        private void Restore(string strRestoreFile, string strDataBase)
+        {
+            string file = strRestoreFile;
+            string constring = string.Empty;
+            if (strDataBase != string.Empty)
+            {
+                cMIdlun midlun = new cMIdlun();
+                midlun.m_bAfrit = virkurNotandi.m_bAfrit;
+                midlun.createDatabase(strDataBase);
+                constring = "server = localhost; user id = root; Password = ivarBjarkLind; database = " + strDataBase + ";";
+            }
+            else
+            {
+                constring = "server = localhost; user id = root; Password = ivarBjarkLind;"; // database = db_oais_admin_afrit;";
+            }
+            //  constring = "server = localhost; user id = root; Password = ivarBjarkLind;"; // database = db_oais_admin_afrit;";
+            using (MySqlConnection conn = new MySqlConnection(constring))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        cmd.Connection = conn;
+                        conn.Open();
+                        mb.ImportFromFile(file);
+                        conn.Close();
+                    }
+                }
+            }
+        }
+        private void CopyFolder(string sourceFolder, string destFolder)
+        {
+            if (!Directory.Exists(destFolder))
+                Directory.CreateDirectory(destFolder);
+            string[] files = Directory.GetFiles(sourceFolder);
+            //m_prgBackup.Maximum = files.Length;
+            //m_prgBackup.Step = 1;
+            //m_prgBackup.Value = 0;
+            foreach (string file in files)
+            {
+                string name = Path.GetFileName(file);
+                string dest = Path.Combine(destFolder, name);
+                File.Copy(file, dest, true);
+                //m_prgBackup.PerformStep();
+                //m_lblBackupStatus.Text = file; // string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
+                Application.DoEvents();
+            }
+            string[] folders = Directory.GetDirectories(sourceFolder);
+            //m_prgBackup.Maximum = folders.Length;
+            //m_prgBackup.Step = 1;
+            //m_prgBackup.Value = 0;
+            foreach (string folder in folders)
+            {
+                string name = Path.GetFileName(folder);
+                string dest = Path.Combine(destFolder, name);
+                CopyFolder(folder, dest);
+                //m_prgBackup.PerformStep();
+                //m_lblBackupStatus.Text = folder; // string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
+                Application.DoEvents();
             }
         }
     }

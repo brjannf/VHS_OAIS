@@ -121,6 +121,29 @@ namespace cClassVHS
               }
         }
 
+        public void getVirktDrif()
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_drives d where virk = 1");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            //  DataSet ds = MySqlHelper.ExecuteDataset(cTenging.sækjaTengiStreng(), string.Format("SELECT `ID`,  `afhendingaar` as afhendingaár, `afhendinganr` as afhendinganr  FROM afhendingaskrá a where ID ={0};", ID));
+            DataTable dt = new DataTable();
+            dt = ds.Tables[0];
+            foreach (DataRow r in dt.Rows)
+            {
+                //  id, comID, nafn, format, laust, heild, tegund, framleitt, virk
+                this.iID = Convert.ToInt32(r["id"]);
+                this.comID = Convert.ToInt32(r["comID"]);
+                this.Nafn = r["nafn"].ToString();
+                this.Format = r["format"].ToString();
+                this.Laust = r["laust"].ToString();
+                this.Heild = r["heild"].ToString();
+                this.Tegund = r["tegund"].ToString();
+                this.Framleitt = r["framleitt"].ToString();
+                this.Virk = Convert.ToInt32(r["virk"]);
+            }
+        }
+
         public void hreinsaHlut()
         {
             this.iID = 0;

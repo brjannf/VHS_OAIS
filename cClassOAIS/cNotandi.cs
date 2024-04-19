@@ -256,6 +256,14 @@ namespace cClassOAIS
         
 
         }
+        public void addHeitiVarsla()
+        {
+            sækjaTengistreng();
+            string strSQL = "ALTER TABLE `dt_item_korfu_dip` ADD COLUMN `heitiVorslu` VARCHAR(250) NOT NULL AFTER `slod`;";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+
+
+        }
 
         public void skraInnskra(string strKennitala)
         {

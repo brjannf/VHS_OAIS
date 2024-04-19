@@ -30,7 +30,7 @@ namespace MHR_LEIT
             m_dgvNotendur.DataSource = m_dtNotendur;
             if (m_dtNotendur.Rows.Count == 1)
             {
-                m_dgvNotendur.Height = (m_dtNotendur.Rows.Count * 60);
+                m_dgvNotendur.Height = (m_dtNotendur.Rows.Count * 90);
             }
             else
             {

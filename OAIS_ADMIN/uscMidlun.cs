@@ -766,6 +766,7 @@ namespace OAIS_ADMIN
                 m_dgvUtafurKlasarVarsla.AutoGenerateColumns = false;
                 cVorsluutgafur utgafur = new cVorsluutgafur();
                 DataTable dtKVarsla = utgafur.getVorsluUtgafurVorslu(e.Node.Tag.ToString());
+                dtKVarsla.Columns.Add("taka");
                 foreach (DataRow row in dtKVarsla.Rows)
                 {
                     if (row["tegund"].ToString() == DBNull.Value.ToString())
@@ -777,6 +778,7 @@ namespace OAIS_ADMIN
                 m_dgvUtafurKlasarVarsla.ClearSelection();
                 m_lblKlasiVarslaValinn.Text = string.Format("Vörslustofnun {0} valinn", e.Node.Text);
                 m_btnBuaTilPakka.Text = string.Format("Búa til miðlunarpakka fyrir {0}", e.Node.Text);
+                colTaka.ReadOnly = false;
             }
             foreach (DataGridViewRow dRow in m_dgvUtafurKlasarVarsla.Rows)
             {
@@ -795,7 +797,15 @@ namespace OAIS_ADMIN
         private void m_dgvUtafurKlasarVarsla_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
-
+            foreach(DataGridViewColumn col in senderGrid.Columns) 
+            {
+                if(col.Name != "colTaka")
+                {
+                    col.ReadOnly = true;
+                }
+            }
+            senderGrid.Rows[e.RowIndex].Cells["colTaka"].ReadOnly = false;
+           
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
                 if (senderGrid.Columns["colGeymsluskra"].Index == e.ColumnIndex)
@@ -840,13 +850,23 @@ namespace OAIS_ADMIN
                 Directory.CreateDirectory(strAfritunarMappa);
             }
             //búa til möppu fyrir hverja vörsluútgáfu
-            DataTable dtVarsla = (DataTable)m_dgvUtafurKlasarVarsla.DataSource;
+            DataTable dtAllt = (DataTable)m_dgvUtafurKlasarVarsla.DataSource;
+            //
+            string strExp = "taka ='True'";
+            DataRow[] fRow = dtAllt.Select(strExp);
+            DataTable dtVarsla = dtAllt.Clone();
+            foreach(DataRow dr in fRow)
+            {
+                dtVarsla.ImportRow(dr);
+            }
             string strVarslAuðkenni = string.Empty;
             string strAuðkenni = string.Empty;
             string strVarslaStofnun = string.Empty;
             string strStofnanir = string.Empty;
             string strVarslaTitill = string.Empty;
             string strVorslustofnun = string.Empty;
+            string strSkjalamyndrar = string.Empty;
+            string strVarslaSkjalamyndari = string.Empty;
             foreach (DataRow r in dtVarsla.Rows)
             {
                 m_prgVorsluStofnun.Maximum = dtVarsla.Rows.Count;
@@ -854,10 +874,16 @@ namespace OAIS_ADMIN
                 m_prgVorsluStofnun.Step = 1;
                 m_lblStatus.Text = "flytt gögn frá " + r["varsla_heiti"].ToString();
                 strVarslAuðkenni = r["vorsluutgafa"].ToString();
+                strVarslaSkjalamyndari = r["skjalamyndari"].ToString();
+                strSkjalamyndrar += "'" + strVarslaSkjalamyndari + "',";
                 strAuðkenni += "'" + strVarslAuðkenni + "',";
                 strVarslaTitill = r["utgafa_titill"].ToString().Replace(" / ", "_");
                 strVorslustofnun = r["vorslustofnun"].ToString();
                 string strBackup = string.Empty;
+                if (r["taka"] == "True")
+                {
+
+             
                 if (r["vorslustofnun"].ToString() != strVarslaStofnun)
                 {
                     strVarslaStofnun = r["vorslustofnun"].ToString();
@@ -914,6 +940,7 @@ namespace OAIS_ADMIN
                 strDest = strDest + "\\" + strVarslAuðkenni.Replace(".", "_") + ".Sql";
                 m_lblStatus.Text = "Tek afrit af grunni " + strVarslAuðkenni.Replace(".", "_");
                 BackupSQL(strDest, strVarslAuðkenni.Replace(".", "_"));
+                }
             }
 
 
@@ -944,7 +971,7 @@ namespace OAIS_ADMIN
             cBackup back = new cBackup();
             DataTable dtGogn = new DataTable();
             //  string[] strTöflur = { "dt_fyrirspurnir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_isdiah_vörslustofnanir", "dt_item_korfu_dip", "dt_item_korfu_mal_dip", "dt_karfa_dip", "dt_karfa_item_gagna_dip", "dt_lanthegar", "dt_md5", "dt_midlun", "dt_notendur" };
-            string[] strTöflur = { "dt_isdiah_vörslustofnanir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_fyrirspurnir", "dt_md5", "dt_midlun", "ds_gagnagrunnar", "dt_vörsluutgafur", "dt_drives" };
+            string[] strTöflur = { "dt_isdiah_vörslustofnanir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_fyrirspurnir", "dt_md5", "dt_midlun", "ds_gagnagrunnar", "dt_vörsluutgafur" };
             string strSQLTEXT = string.Empty;
             // m_prgBackup.Value = 1;
             m_prgBackup.Maximum = strTöflur.Length;
@@ -961,8 +988,8 @@ namespace OAIS_ADMIN
                 }
                 if (str == "dt_isaar_skjalamyndarar")
                 {
-                    string strID = strStofnanir.Remove(strStofnanir.Length - 1);
-                    dtGogn = back.getDataFromTable(str, "5_4_2_auðkenni_vörslustofnunar", strID);
+                    string strID = strSkjalamyndrar.Remove(strSkjalamyndrar.Length - 1);
+                    dtGogn = back.getDataFromTable(str, "5_1_6_auðkenni", strID);
                     strSQLTEXT += createInsert(dtGogn, "dt_isaar_skjalamyndarar");
                 }
                 if (str == "dt_isadg_skráningar")
@@ -1376,7 +1403,7 @@ namespace OAIS_ADMIN
 
             foreach (DataRow dr in dt.Rows)
             {
-                strRet += "INSERT INTO db_oais_admin_afrit." + strTafla + "  VALUES (";
+                strRet += "REPLACE INTO db_oais_admin_afrit." + strTafla + "  VALUES (";
                 foreach (DataColumn col in dt.Columns)
                 {
                     string strBla = mysqlESCAPE(dr[col.ColumnName].ToString());
