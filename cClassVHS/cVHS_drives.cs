@@ -267,7 +267,18 @@ namespace cClassVHS
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
             strDrif = strDrif.Replace("\\", "\\\\");
-            command.CommandText = string.Format("update dt_drives set nafn = '{0}' where virk = 1;", strDrif);
+            //tékka hvort til sé virkt drif
+            string strSQL = string.Format("Select * from dt_drives where virk = 1;");
+            var oDrif = MySqlHelper.ExecuteScalar(m_strTenging,strSQL);
+            if(oDrif == null)
+            {
+                command.CommandText = string.Format("Replace into dt_drives set nafn = '{0}', virk = 1, comID = 1, format = 'NTFS', laust = 0, heild = 1;", strDrif);
+            }
+            else
+            {
+                command.CommandText = string.Format("update dt_drives set nafn = '{0}' where virk = 1;", strDrif);
+            }
+            
             command.ExecuteNonQuery();
             conn.Dispose();
             command.Dispose();

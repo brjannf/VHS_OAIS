@@ -50,6 +50,21 @@ namespace MHR_LEIT
             InitializeComponent();
            
         }
+
+        private void setjFolderTaba()
+        {
+            m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
+            m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtGrunn.Rows.Count);
+            if(m_dsDIPmal.Tables.Count != 0)
+            {
+                m_tapMalakerfi.Text = string.Format("Málakerfi ({0})", m_dsDIPmal.Tables[0].Rows.Count);
+            }
+            else
+            {
+                m_tapMalakerfi.Text = string.Format("Málakerfi (0)");
+            }
+          
+        }
         public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP, DataTable dtMal, DataTable dtGrunn, cNotandi not, DataSet dsDIPmal)
         {
             InitializeComponent();
@@ -62,9 +77,13 @@ namespace MHR_LEIT
 
             m_dtExtension.Columns.Add("extension");
             m_lblLeitarNidurstodur.Text = string.Empty;
-            m_dtMal = dtMal;
+            m_dtMal = dtMal; 
             m_dtGrunn = dtGrunn;
             m_dsDIPmal = dsDIPmal;
+            if(m_dsDIPmal.Tables.Count != 0)
+            {
+                m_dtMal = m_dsDIPmal.Tables[0];
+            }
 
             
 
@@ -78,16 +97,20 @@ namespace MHR_LEIT
             }
             m_dgvValdarSkrar.AutoGenerateColumns = false;
             m_dgvValdarSkrar.DataSource = m_dtValid;    
-            m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
+       
 
             m_dgvGagnaGrunnar.AutoGenerateColumns = false;
             m_dgvGagnaGrunnar.DataSource = dtGrunn;
-            m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", dtGrunn.Rows.Count);
            
-            m_dgvMalakerfi.AutoGenerateColumns = false;
-            m_dgvMalakerfi.DataSource= dtMal;
-            m_tapMalakerfi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
-         
+           if(m_dsDIPmal.Tables.Count != 0)
+            {
+                m_dgvMalakerfi.AutoGenerateColumns = false;
+                m_dgvMalakerfi.DataSource = m_dsDIPmal.Tables[0];
+            }      
+        
+
+
+            setjFolderTaba();
             int iFjoldi = m_dtValid.Rows.Count + m_dtGrunn.Rows.Count + m_dtMal.Rows.Count;
             if (iFjoldi == 0)
             {
@@ -978,38 +1001,74 @@ namespace MHR_LEIT
             var senderGrid = (DataGridView)sender;
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
-                if ((senderGrid.Columns["colSkraEyda"].Index == e.ColumnIndex))
+                switch (senderGrid.Name)
                 {
-                    DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlæjga skjal", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
-                    {
-                        string strID = senderGrid.Rows[e.RowIndex].Cells["colAudkenniSkjals"].Value.ToString();
-                        string strExp = "skjalID ='" + strID + "'";
-                        DataRow[] frow = m_dtValid.Select(strExp);
-                        frow[0].Delete();
-                        m_dtValid.AcceptChanges();
-                        m_dgvValdarSkrar.DataSource = m_dtValid;
-                        m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
-                        //finna í Treeviewinum
-                        var nodus = m_trwFileSystem.FlattenTree()
-                                                .Where(nn => nn.Tag == strID)
-                                               .ToList();
-                        //TreeNode[] nodes = m_trwFileSystem.Nodes.Find(strID, true);
-                        //nodes[0].Checked = false;
-                        if (nodus.Count == 1)
-                        {
-                            nodus[0].Checked = false;
-                        }
-                        nodus = m_trwLeit.FlattenTree()
-                                                .Where(nn => nn.Tag == strID)
-                                               .ToList();
+                    case "m_dgvValdarSkrar":
 
-                        if (nodus.Count == 1)
+                        if ((senderGrid.Columns["colSkraEyda"].Index == e.ColumnIndex))
                         {
-                            nodus[0].Checked = false;
+                            DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                string strID = senderGrid.Rows[e.RowIndex].Cells["colAudkenniSkjals"].Value.ToString();
+                                string strExp = "skjalID ='" + strID + "'";
+                                DataRow[] frow = m_dtValid.Select(strExp);
+                                frow[0].Delete();
+                                m_dtValid.AcceptChanges();
+                                m_dgvValdarSkrar.DataSource = m_dtValid;
+                                m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
+                                //finna í Treeviewinum
+                                var nodus = m_trwFileSystem.FlattenTree()
+                                                        .Where(nn => nn.Tag == strID)
+                                                       .ToList();
+                                //TreeNode[] nodes = m_trwFileSystem.Nodes.Find(strID, true);
+                                //nodes[0].Checked = false;
+                                if (nodus.Count == 1)
+                                {
+                                    nodus[0].Checked = false;
+                                }
+                                nodus = m_trwLeit.FlattenTree()
+                                                        .Where(nn => nn.Tag == strID)
+                                                       .ToList();
+
+                                if (nodus.Count == 1)
+                                {
+                                    nodus[0].Checked = false;
+                                }
+                            }
                         }
-                    }
+                        break;
+                    case "m_dgvMalakerfi":
+                        if ((senderGrid.Columns["colMalDelete"].Index == e.ColumnIndex))
+                        {
+                            DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                m_dgvMalakerfi.Rows.Remove(m_dgvMalakerfi.Rows[e.RowIndex]);
+                                m_dtMal = (DataTable)m_dgvMalakerfi.DataSource;
+                                m_dtMal.AcceptChanges();
+                               
+                            }
+                        } 
+                        break;
+                    case "m_dgvGagnaGrunnar":
+                        if ((senderGrid.Columns["colGagnDelete"].Index == e.ColumnIndex))
+                        {
+                            DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                m_dgvGagnaGrunnar.Rows.Remove(m_dgvGagnaGrunnar.Rows[e.RowIndex]);
+                                m_dtGrunn = (DataTable)m_dgvGagnaGrunnar.DataSource;
+                                m_dtGrunn.AcceptChanges();
+
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                
                 }
+                setjFolderTaba();
             }
         }
 

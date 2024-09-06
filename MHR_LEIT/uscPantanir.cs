@@ -37,6 +37,7 @@ namespace MHR_LEIT
 
             virkurNotandi = not;
             karfa.m_bAfrit = virkurNotandi.m_bAfrit;
+            lanþegi.m_bAfrit = virkurNotandi.m_bAfrit;
             m_dtDIPSkra = dtSkra;
             m_dtDIPMal = dtMal;
             m_dtDIPGrunn = dtGrunn;
@@ -47,28 +48,43 @@ namespace MHR_LEIT
 
         }
 
-        private void fyllaPantanir()
+        private void setjaFoldaTaba()
         {
             m_tapPontunSkra.Text = string.Format("Skráakerfi ({0})", m_dtDIPSkra.Rows.Count);
-            m_dgvDIPList.AutoGenerateColumns = false;
-            m_dgvDIPList.DataSource = m_dtDIPSkra;
-            if (m_dsDIPmal.Tables.Count == 0 )
+            m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
+
+            if (m_dsDIPmal.Tables.Count != 0)
             {
                 m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", m_dtDIPMal.Rows.Count);
+            }
+            else
+            {
+                m_tapPontunMalakerfi.Text = string.Format("Málakerfi (0)");
+            }
+        }
+    private void fyllaPantanir()
+        {
+            
+            m_dgvDIPList.AutoGenerateColumns = false;
+            m_dgvDIPList.DataSource = m_dtDIPSkra;
+            if (m_dsDIPmal.Tables.Count == 0)
+            {
+          
                 m_dgvDIPmal.AutoGenerateColumns = false;
                 m_dgvDIPmal.DataSource = m_dtDIPMal;
             }
             else
             {
-                m_tapPontunMalakerfi.Text = string.Format("Málakerfi ({0})", m_dsDIPmal.Tables[0].Rows.Count);
+              
                 m_dgvDIPmal.AutoGenerateColumns = false;
                 m_dgvDIPmal.DataSource = m_dsDIPmal.Tables[0];
-               
+
             }
+
           
-            m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
-            m_dgvDIPGagnagrunnar.AutoGenerateColumns=false;
+            m_dgvDIPGagnagrunnar.AutoGenerateColumns = false;
             m_dgvDIPGagnagrunnar.DataSource = m_dtDIPGrunn;
+            setjaFoldaTaba();
         }
 
         private void fyllaLanthega()
@@ -631,11 +647,20 @@ namespace MHR_LEIT
                 iFjoldi = m_dtDIPSkra.Rows.Count + m_dtDIPGrunn.Rows.Count;
             }
             if (iFjoldi != 0)
+            //  if (m_trwDIP.Nodes.Count != 0)
             {
                 splitContainer2.Panel1.BackColor = System.Drawing.Color.LightYellow;
-                ;
+
                 // TreeNode n = new TreeNode("Ópantað");
-                if (m_trwDIP.Nodes[0].Text != "Óafgreidd pöntun")
+                if (m_trwDIP.Nodes.Count != 0)
+                {
+                    if (m_trwDIP.Nodes[0].Text != "Óafgreidd pöntun")
+                    {
+                        m_trwDIP.Nodes.Insert(0, "Óafgreidd pöntun");
+                    }
+
+                }
+                else
                 {
                     m_trwDIP.Nodes.Insert(0, "Óafgreidd pöntun");
                 }
@@ -643,18 +668,30 @@ namespace MHR_LEIT
             }
             else
             {
-                if (m_trwDIP.Nodes[0].Text == "Óafgreidd pöntun")
+                //m_trwDIP.Nodes.Insert(0, "Óafgreidd pöntun");
+                if (m_trwDIP.Nodes.Count != 0)
                 {
-                    m_trwDIP.Nodes.Remove(m_trwDIP.Nodes[0]);
+                    if (m_trwDIP.Nodes[0].Text == "Óafgreidd pöntun")
+                    {
+                        if (m_trwDIP.Nodes.Count != 0)
+                        {
+                            m_trwDIP.Nodes.Remove(m_trwDIP.Nodes[0]);
+                        }
+
+                    }
                 }
+
                 splitContainer2.Panel1.BackColor = System.Drawing.Color.White;
             }
             m_btnKlaraPontun.Enabled = true;
             m_btnOpna.Enabled = false;
             m_btnTæma.Enabled = true;
-           // m_comLanthegar.SelectedIndex = 0;
+            // m_comLanthegar.SelectedIndex = 0;
             m_lblLanthegi.Visible = false;
-            m_trwDIP.SelectedNode = m_trwDIP.Nodes[0];
+            if (m_trwDIP.Nodes.Count != 0)
+            {
+                m_trwDIP.SelectedNode = m_trwDIP.Nodes[0];
+            }
         }
         private void exportExell(System.Data.DataTable tbl, string excelFilePath)
         {
@@ -759,7 +796,7 @@ namespace MHR_LEIT
 
         private void m_trwDIP_AfterSelect(object sender, TreeViewEventArgs e)
         {
-         //   if(m_trwDIP.Focused)
+            //   if(m_trwDIP.Focused)
             {
                 if (e.Node.Text == "Óafgreidd pöntun")
                 {
@@ -913,6 +950,60 @@ namespace MHR_LEIT
                     }
 
                 }
+            }
+        }
+
+        private void m_dgvDIPList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+
+            var senderGrid = (DataGridView)sender;
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                switch (senderGrid.Name)
+                {
+                    case "m_dgvDIPList":
+                        if (senderGrid.Columns["colSkraRemove"].Index == e.ColumnIndex)
+                        {
+                            DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                m_dgvDIPList.Rows.Remove(m_dgvDIPList.Rows[e.RowIndex]);
+                                m_dtDIPSkra = (DataTable)m_dgvDIPList.DataSource;
+                                m_dtDIPSkra.AcceptChanges();
+
+                            }
+                        }
+                        break;
+
+                    case "m_dgvDIPmal":
+                        if (senderGrid.Columns["colMalRemove"].Index == e.ColumnIndex)
+                        {
+                            DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                m_dgvDIPmal.Rows.Remove(m_dgvDIPmal.Rows[e.RowIndex]);
+                                m_dtDIPMal = (DataTable)m_dgvDIPmal.DataSource;
+                                m_dtDIPMal.AcceptChanges();
+                                //m_dsDIPmal.Tables[0] = m_dtDIPMal;
+                            }
+                        }
+                        break;
+
+                    case "m_dgvDIPGagnagrunnar":
+                        if (senderGrid.Columns["colGagnRemove"].Index == e.ColumnIndex)
+                        {
+                            DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                m_dgvDIPGagnagrunnar.Rows.Remove(m_dgvDIPGagnagrunnar.Rows[e.RowIndex]);
+                                m_dtDIPGrunn= (DataTable)m_dgvDIPGagnagrunnar.DataSource;
+                                m_dtDIPGrunn.AcceptChanges();
+                            }
+                        }
+                        break;
+                }
+                setjaFoldaTaba();
             }
         }
     }

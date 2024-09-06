@@ -85,6 +85,7 @@
             m_comPages = new ComboBox();
             m_btnNaesta = new Button();
             m_pnlNotandi = new Panel();
+            m_btnKeyrAfritInn = new Button();
             m_chbAfrit = new CheckBox();
             m_lblVillaInnSkraning = new Label();
             m_btnInnskra = new Button();
@@ -143,6 +144,8 @@
             colHeitiVarslaMidlun = new DataGridViewTextBoxColumn();
             colMidlunTaka = new DataGridViewCheckBoxColumn();
             colAudkenniVarslaMidlun = new DataGridViewTextBoxColumn();
+            progressBar1 = new ProgressBar();
+            m_lblEndaMappa = new Label();
             m_btnKeyraVorsluInn = new Button();
             m_tapLysigogn = new TabPage();
             m_dgvVorsluUtgafur = new DataGridView();
@@ -166,8 +169,6 @@
             menuStrip1 = new MenuStrip();
             m_tomUtskra = new ToolStripMenuItem();
             folderBrowserDialog1 = new FolderBrowserDialog();
-            m_lblEndaMappa = new Label();
-            progressBar1 = new ProgressBar();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -220,8 +221,7 @@
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(3, 4);
-            splitContainer1.Margin = new Padding(3, 4, 3, 4);
+            splitContainer1.Location = new Point(3, 3);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
             // 
@@ -254,18 +254,16 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(splitContainer4);
-            splitContainer1.Size = new Size(1739, 702);
-            splitContainer1.SplitterDistance = 232;
-            splitContainer1.SplitterWidth = 5;
+            splitContainer1.Size = new Size(1520, 523);
+            splitContainer1.SplitterDistance = 172;
             splitContainer1.TabIndex = 0;
             // 
             // m_chbOrdmyndir
             // 
             m_chbOrdmyndir.AutoSize = true;
-            m_chbOrdmyndir.Location = new Point(1322, 77);
-            m_chbOrdmyndir.Margin = new Padding(3, 4, 3, 4);
+            m_chbOrdmyndir.Location = new Point(1157, 58);
             m_chbOrdmyndir.Name = "m_chbOrdmyndir";
-            m_chbOrdmyndir.Size = new Size(794, 24);
+            m_chbOrdmyndir.Size = new Size(649, 19);
             m_chbOrdmyndir.TabIndex = 22;
             m_chbOrdmyndir.Text = "Leita eftir öllum orðmyndum (Beygingarlýsing íslensks nútímamáls. Stofnun Árna Magnússonar í íslenskum fræðum.))";
             m_chbOrdmyndir.UseVisualStyleBackColor = true;
@@ -273,18 +271,18 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(1493, 123);
+            label7.Location = new Point(1306, 92);
             label7.Name = "label7";
-            label7.Size = new Size(96, 20);
+            label7.Size = new Size(78, 15);
             label7.TabIndex = 21;
             label7.Text = "færslur á síðu";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(1322, 120);
+            label6.Location = new Point(1157, 90);
             label6.Name = "label6";
-            label6.Size = new Size(40, 20);
+            label6.Size = new Size(32, 15);
             label6.TabIndex = 20;
             label6.Text = "Sýna";
             // 
@@ -293,37 +291,35 @@
             m_comFjoldiFaerslnaLeit.DropDownStyle = ComboBoxStyle.DropDownList;
             m_comFjoldiFaerslnaLeit.FormattingEnabled = true;
             m_comFjoldiFaerslnaLeit.Items.AddRange(new object[] { "10", "50", "100", "500", "1000" });
-            m_comFjoldiFaerslnaLeit.Location = new Point(1376, 116);
-            m_comFjoldiFaerslnaLeit.Margin = new Padding(3, 4, 3, 4);
+            m_comFjoldiFaerslnaLeit.Location = new Point(1204, 87);
             m_comFjoldiFaerslnaLeit.Name = "m_comFjoldiFaerslnaLeit";
-            m_comFjoldiFaerslnaLeit.Size = new Size(99, 28);
+            m_comFjoldiFaerslnaLeit.Size = new Size(87, 23);
             m_comFjoldiFaerslnaLeit.TabIndex = 19;
             m_comFjoldiFaerslnaLeit.SelectedIndexChanged += m_comFjoldiFaerslnaLeit_SelectedIndexChanged;
             // 
             // m_lblSkraEnding
             // 
             m_lblSkraEnding.AutoSize = true;
-            m_lblSkraEnding.Location = new Point(450, 112);
+            m_lblSkraEnding.Location = new Point(394, 84);
             m_lblSkraEnding.Name = "m_lblSkraEnding";
-            m_lblSkraEnding.Size = new Size(104, 20);
+            m_lblSkraEnding.Size = new Size(82, 15);
             m_lblSkraEnding.TabIndex = 18;
             m_lblSkraEnding.Text = "Skráaendingar";
             // 
             // m_comExtensions
             // 
             m_comExtensions.FormattingEnabled = true;
-            m_comExtensions.Location = new Point(576, 108);
-            m_comExtensions.Margin = new Padding(3, 4, 3, 4);
+            m_comExtensions.Location = new Point(504, 81);
             m_comExtensions.Name = "m_comExtensions";
-            m_comExtensions.Size = new Size(165, 28);
+            m_comExtensions.Size = new Size(145, 23);
             m_comExtensions.TabIndex = 17;
             // 
             // m_lblVorsluUtgafur
             // 
             m_lblVorsluUtgafur.AutoSize = true;
-            m_lblVorsluUtgafur.Location = new Point(854, 161);
+            m_lblVorsluUtgafur.Location = new Point(747, 121);
             m_lblVorsluUtgafur.Name = "m_lblVorsluUtgafur";
-            m_lblVorsluUtgafur.Size = new Size(97, 20);
+            m_lblVorsluUtgafur.Size = new Size(78, 15);
             m_lblVorsluUtgafur.TabIndex = 16;
             m_lblVorsluUtgafur.Text = "Vörsluútgáfur";
             // 
@@ -331,48 +327,45 @@
             // 
             m_comVorsluUtgafur.DropDownStyle = ComboBoxStyle.DropDownList;
             m_comVorsluUtgafur.FormattingEnabled = true;
-            m_comVorsluUtgafur.Location = new Point(968, 155);
-            m_comVorsluUtgafur.Margin = new Padding(3, 4, 3, 4);
+            m_comVorsluUtgafur.Location = new Point(847, 116);
             m_comVorsluUtgafur.Name = "m_comVorsluUtgafur";
-            m_comVorsluUtgafur.Size = new Size(337, 28);
+            m_comVorsluUtgafur.Size = new Size(295, 23);
             m_comVorsluUtgafur.TabIndex = 15;
             m_comVorsluUtgafur.SelectedIndexChanged += m_comVorsluUtgafur_SelectedIndexChanged;
             // 
             // m_lblGagangrunnar
             // 
             m_lblGagangrunnar.AutoSize = true;
-            m_lblGagangrunnar.Location = new Point(1344, 173);
+            m_lblGagangrunnar.Location = new Point(1176, 130);
             m_lblGagangrunnar.Name = "m_lblGagangrunnar";
-            m_lblGagangrunnar.Size = new Size(103, 20);
+            m_lblGagangrunnar.Size = new Size(83, 15);
             m_lblGagangrunnar.TabIndex = 14;
             m_lblGagangrunnar.Text = "Gagnagrunnar";
             // 
             // m_comGagnagrunnar
             // 
             m_comGagnagrunnar.FormattingEnabled = true;
-            m_comGagnagrunnar.Location = new Point(1515, 165);
-            m_comGagnagrunnar.Margin = new Padding(3, 4, 3, 4);
+            m_comGagnagrunnar.Location = new Point(1326, 124);
             m_comGagnagrunnar.Name = "m_comGagnagrunnar";
-            m_comGagnagrunnar.Size = new Size(165, 28);
+            m_comGagnagrunnar.Size = new Size(145, 23);
             m_comGagnagrunnar.TabIndex = 13;
             m_comGagnagrunnar.SelectedIndexChanged += n_comGagnagrunnar_SelectedIndexChanged;
             // 
             // m_lblLeitarnidurstodur
             // 
             m_lblLeitarnidurstodur.AutoSize = true;
-            m_lblLeitarnidurstodur.Location = new Point(62, 76);
+            m_lblLeitarnidurstodur.Location = new Point(54, 57);
             m_lblLeitarnidurstodur.Name = "m_lblLeitarnidurstodur";
-            m_lblLeitarnidurstodur.Size = new Size(50, 20);
+            m_lblLeitarnidurstodur.Size = new Size(38, 15);
             m_lblLeitarnidurstodur.TabIndex = 12;
             m_lblLeitarnidurstodur.Text = "label5";
             m_lblLeitarnidurstodur.Visible = false;
             // 
             // m_btnHreinsa
             // 
-            m_btnHreinsa.Location = new Point(1441, 28);
-            m_btnHreinsa.Margin = new Padding(3, 4, 3, 4);
+            m_btnHreinsa.Location = new Point(1261, 21);
             m_btnHreinsa.Name = "m_btnHreinsa";
-            m_btnHreinsa.Size = new Size(86, 31);
+            m_btnHreinsa.Size = new Size(75, 23);
             m_btnHreinsa.TabIndex = 11;
             m_btnHreinsa.Text = "Hreinsa";
             m_btnHreinsa.UseVisualStyleBackColor = true;
@@ -381,67 +374,64 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(62, 165);
+            label4.Location = new Point(54, 124);
             label4.Name = "label4";
-            label4.Size = new Size(116, 20);
+            label4.Size = new Size(92, 15);
             label4.TabIndex = 10;
             label4.Text = "Endadagsetning";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(61, 120);
+            label3.Location = new Point(53, 90);
             label3.Name = "label3";
-            label3.Size = new Size(138, 20);
+            label3.Size = new Size(110, 15);
             label3.TabIndex = 9;
             label3.Text = "Upphafsdagsetning";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(854, 123);
+            label2.Location = new Point(747, 92);
             label2.Name = "label2";
-            label2.Size = new Size(102, 20);
+            label2.Size = new Size(81, 15);
             label2.TabIndex = 8;
             label2.Text = "Skjalamyndari";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(854, 81);
+            label1.Location = new Point(747, 61);
             label1.Name = "label1";
-            label1.Size = new Size(98, 20);
+            label1.Size = new Size(80, 15);
             label1.TabIndex = 7;
             label1.Text = "Vörslustofnun";
             // 
             // m_dtEnd
             // 
             m_dtEnd.Checked = false;
-            m_dtEnd.Location = new Point(206, 165);
-            m_dtEnd.Margin = new Padding(3, 4, 3, 4);
+            m_dtEnd.Location = new Point(180, 124);
             m_dtEnd.Name = "m_dtEnd";
             m_dtEnd.ShowCheckBox = true;
-            m_dtEnd.Size = new Size(196, 27);
+            m_dtEnd.Size = new Size(172, 23);
             m_dtEnd.TabIndex = 6;
             // 
             // m_dtpStart
             // 
             m_dtpStart.Checked = false;
-            m_dtpStart.Location = new Point(206, 112);
-            m_dtpStart.Margin = new Padding(3, 4, 3, 4);
+            m_dtpStart.Location = new Point(180, 84);
             m_dtpStart.Name = "m_dtpStart";
             m_dtpStart.ShowCheckBox = true;
-            m_dtpStart.Size = new Size(196, 27);
+            m_dtpStart.Size = new Size(172, 23);
             m_dtpStart.TabIndex = 5;
             // 
             // m_comSkjalamyndari
             // 
             m_comSkjalamyndari.DropDownStyle = ComboBoxStyle.DropDownList;
             m_comSkjalamyndari.FormattingEnabled = true;
-            m_comSkjalamyndari.Location = new Point(968, 116);
-            m_comSkjalamyndari.Margin = new Padding(3, 4, 3, 4);
+            m_comSkjalamyndari.Location = new Point(847, 87);
             m_comSkjalamyndari.Name = "m_comSkjalamyndari";
-            m_comSkjalamyndari.Size = new Size(337, 28);
+            m_comSkjalamyndari.Size = new Size(295, 23);
             m_comSkjalamyndari.TabIndex = 4;
             m_comSkjalamyndari.SelectedIndexChanged += m_comSkjalamyndari_SelectedIndexChanged;
             // 
@@ -449,19 +439,17 @@
             // 
             m_comVorslustofnun.DropDownStyle = ComboBoxStyle.DropDownList;
             m_comVorslustofnun.FormattingEnabled = true;
-            m_comVorslustofnun.Location = new Point(968, 77);
-            m_comVorslustofnun.Margin = new Padding(3, 4, 3, 4);
+            m_comVorslustofnun.Location = new Point(847, 58);
             m_comVorslustofnun.Name = "m_comVorslustofnun";
-            m_comVorslustofnun.Size = new Size(337, 28);
+            m_comVorslustofnun.Size = new Size(295, 23);
             m_comVorslustofnun.TabIndex = 3;
             m_comVorslustofnun.SelectedIndexChanged += m_comVorslustofnun_SelectedIndexChanged;
             // 
             // m_btnLeita
             // 
-            m_btnLeita.Location = new Point(1322, 28);
-            m_btnLeita.Margin = new Padding(3, 4, 3, 4);
+            m_btnLeita.Location = new Point(1157, 21);
             m_btnLeita.Name = "m_btnLeita";
-            m_btnLeita.Size = new Size(86, 31);
+            m_btnLeita.Size = new Size(75, 23);
             m_btnLeita.TabIndex = 1;
             m_btnLeita.Text = "Leita";
             m_btnLeita.UseVisualStyleBackColor = true;
@@ -469,10 +457,9 @@
             // 
             // m_tboLeitOrd
             // 
-            m_tboLeitOrd.Location = new Point(61, 29);
-            m_tboLeitOrd.Margin = new Padding(3, 4, 3, 4);
+            m_tboLeitOrd.Location = new Point(53, 22);
             m_tboLeitOrd.Name = "m_tboLeitOrd";
-            m_tboLeitOrd.Size = new Size(1244, 27);
+            m_tboLeitOrd.Size = new Size(1089, 23);
             m_tboLeitOrd.TabIndex = 0;
             m_tboLeitOrd.KeyDown += m_tboLeitOrd_KeyDown;
             // 
@@ -480,7 +467,6 @@
             // 
             splitContainer4.Dock = DockStyle.Fill;
             splitContainer4.Location = new Point(0, 0);
-            splitContainer4.Margin = new Padding(3, 4, 3, 4);
             splitContainer4.Name = "splitContainer4";
             splitContainer4.Orientation = Orientation.Horizontal;
             // 
@@ -491,9 +477,8 @@
             // splitContainer4.Panel2
             // 
             splitContainer4.Panel2.Controls.Add(m_pnlPageing);
-            splitContainer4.Size = new Size(1739, 465);
-            splitContainer4.SplitterDistance = 364;
-            splitContainer4.SplitterWidth = 5;
+            splitContainer4.Size = new Size(1520, 347);
+            splitContainer4.SplitterDistance = 271;
             splitContainer4.TabIndex = 1;
             // 
             // m_dgvLeit
@@ -505,13 +490,12 @@
             m_dgvLeit.Columns.AddRange(new DataGridViewColumn[] { coltitillvorsluUtgafu, colDocTitel, colExtensions, colLastWriten, colMal, colInnhaldSkjals, colAdgengi, colSkjalamyndari, colVorslustsofnun, colGagnaGrunnur, colDocID, colTegund_gagnagrunns, colDocOpnaAfrit, colDocFrum, colDocInnihald, colDocPanta, colDocVarslaID, dataGridViewTextBoxColumn1, colVarslaStofnunID, colSkjalMyndID, colDocMalID });
             m_dgvLeit.Dock = DockStyle.Fill;
             m_dgvLeit.Location = new Point(0, 0);
-            m_dgvLeit.Margin = new Padding(3, 4, 3, 4);
             m_dgvLeit.Name = "m_dgvLeit";
             m_dgvLeit.ReadOnly = true;
             m_dgvLeit.RowHeadersVisible = false;
             m_dgvLeit.RowTemplate.Height = 25;
             m_dgvLeit.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            m_dgvLeit.Size = new Size(1739, 364);
+            m_dgvLeit.Size = new Size(1520, 271);
             m_dgvLeit.TabIndex = 0;
             m_dgvLeit.CellClick += m_dgvLeit_CellClick;
             // 
@@ -522,7 +506,7 @@
             coltitillvorsluUtgafu.HeaderText = "Titill vörsluútgáfu";
             coltitillvorsluUtgafu.Name = "coltitillvorsluUtgafu";
             coltitillvorsluUtgafu.ReadOnly = true;
-            coltitillvorsluUtgafu.Width = 136;
+            coltitillvorsluUtgafu.Width = 114;
             // 
             // colDocTitel
             // 
@@ -539,7 +523,7 @@
             colExtensions.HeaderText = "Skáaending";
             colExtensions.Name = "colExtensions";
             colExtensions.ReadOnly = true;
-            colExtensions.Width = 111;
+            colExtensions.Width = 93;
             // 
             // colLastWriten
             // 
@@ -548,7 +532,7 @@
             colLastWriten.HeaderText = "Síðast breytt";
             colLastWriten.Name = "colLastWriten";
             colLastWriten.ReadOnly = true;
-            colLastWriten.Width = 106;
+            colLastWriten.Width = 89;
             // 
             // colMal
             // 
@@ -557,7 +541,7 @@
             colMal.HeaderText = "Titill máls";
             colMal.Name = "colMal";
             colMal.ReadOnly = true;
-            colMal.Width = 90;
+            colMal.Width = 76;
             // 
             // colInnhaldSkjals
             // 
@@ -575,7 +559,7 @@
             colAdgengi.HeaderText = "Aðgengistakmarkanir";
             colAdgengi.Name = "colAdgengi";
             colAdgengi.ReadOnly = true;
-            colAdgengi.Width = 174;
+            colAdgengi.Width = 145;
             // 
             // colSkjalamyndari
             // 
@@ -584,7 +568,7 @@
             colSkjalamyndari.HeaderText = "Skjalamyndari";
             colSkjalamyndari.Name = "colSkjalamyndari";
             colSkjalamyndari.ReadOnly = true;
-            colSkjalamyndari.Width = 127;
+            colSkjalamyndari.Width = 106;
             // 
             // colVorslustsofnun
             // 
@@ -593,7 +577,7 @@
             colVorslustsofnun.HeaderText = "Vörslustofnun";
             colVorslustsofnun.Name = "colVorslustsofnun";
             colVorslustsofnun.ReadOnly = true;
-            colVorslustsofnun.Width = 123;
+            colVorslustsofnun.Width = 105;
             // 
             // colGagnaGrunnur
             // 
@@ -618,7 +602,7 @@
             colTegund_gagnagrunns.HeaderText = "Tegund";
             colTegund_gagnagrunns.Name = "colTegund_gagnagrunns";
             colTegund_gagnagrunns.ReadOnly = true;
-            colTegund_gagnagrunns.Width = 83;
+            colTegund_gagnagrunns.Width = 71;
             // 
             // colDocOpnaAfrit
             // 
@@ -628,7 +612,7 @@
             colDocOpnaAfrit.ReadOnly = true;
             colDocOpnaAfrit.Text = "Afrit";
             colDocOpnaAfrit.UseColumnTextForButtonValue = true;
-            colDocOpnaAfrit.Width = 78;
+            colDocOpnaAfrit.Width = 62;
             // 
             // colDocFrum
             // 
@@ -638,7 +622,7 @@
             colDocFrum.ReadOnly = true;
             colDocFrum.Text = "Frumrit";
             colDocFrum.UseColumnTextForButtonValue = true;
-            colDocFrum.Width = 90;
+            colDocFrum.Width = 74;
             // 
             // colDocInnihald
             // 
@@ -648,7 +632,7 @@
             colDocInnihald.ReadOnly = true;
             colDocInnihald.Text = "Innhald";
             colDocInnihald.UseColumnTextForButtonValue = true;
-            colDocInnihald.Width = 79;
+            colDocInnihald.Width = 64;
             // 
             // colDocPanta
             // 
@@ -658,7 +642,7 @@
             colDocPanta.ReadOnly = true;
             colDocPanta.Text = "Panta";
             colDocPanta.UseColumnTextForButtonValue = true;
-            colDocPanta.Width = 85;
+            colDocPanta.Width = 68;
             // 
             // colDocVarslaID
             // 
@@ -711,18 +695,16 @@
             m_pnlPageing.Controls.Add(m_btnNaesta);
             m_pnlPageing.Dock = DockStyle.Fill;
             m_pnlPageing.Location = new Point(0, 0);
-            m_pnlPageing.Margin = new Padding(3, 4, 3, 4);
             m_pnlPageing.Name = "m_pnlPageing";
-            m_pnlPageing.Size = new Size(1739, 96);
+            m_pnlPageing.Size = new Size(1520, 72);
             m_pnlPageing.TabIndex = 8;
             m_pnlPageing.Visible = false;
             // 
             // m_btnSidasta
             // 
-            m_btnSidasta.Location = new Point(1077, 32);
-            m_btnSidasta.Margin = new Padding(3, 4, 3, 4);
+            m_btnSidasta.Location = new Point(942, 24);
             m_btnSidasta.Name = "m_btnSidasta";
-            m_btnSidasta.Size = new Size(86, 31);
+            m_btnSidasta.Size = new Size(75, 23);
             m_btnSidasta.TabIndex = 4;
             m_btnSidasta.Text = ">|";
             m_btnSidasta.UseVisualStyleBackColor = true;
@@ -730,10 +712,9 @@
             // 
             // m_btnFyrsta
             // 
-            m_btnFyrsta.Location = new Point(458, 31);
-            m_btnFyrsta.Margin = new Padding(3, 4, 3, 4);
+            m_btnFyrsta.Location = new Point(401, 23);
             m_btnFyrsta.Name = "m_btnFyrsta";
-            m_btnFyrsta.Size = new Size(86, 31);
+            m_btnFyrsta.Size = new Size(75, 23);
             m_btnFyrsta.TabIndex = 2;
             m_btnFyrsta.Text = "|<";
             m_btnFyrsta.UseVisualStyleBackColor = true;
@@ -742,18 +723,17 @@
             // m_lblSida
             // 
             m_lblSida.AutoSize = true;
-            m_lblSida.Location = new Point(682, 41);
+            m_lblSida.Location = new Point(597, 31);
             m_lblSida.Name = "m_lblSida";
-            m_lblSida.Size = new Size(41, 20);
+            m_lblSida.Size = new Size(32, 15);
             m_lblSida.TabIndex = 6;
             m_lblSida.Text = "Síða ";
             // 
             // m_btnFyrri
             // 
-            m_btnFyrri.Location = new Point(576, 32);
-            m_btnFyrri.Margin = new Padding(3, 4, 3, 4);
+            m_btnFyrri.Location = new Point(504, 24);
             m_btnFyrri.Name = "m_btnFyrri";
-            m_btnFyrri.Size = new Size(86, 31);
+            m_btnFyrri.Size = new Size(75, 23);
             m_btnFyrri.TabIndex = 1;
             m_btnFyrri.Text = "<";
             m_btnFyrri.UseVisualStyleBackColor = true;
@@ -762,28 +742,26 @@
             // m_lblSidaAf
             // 
             m_lblSidaAf.AutoSize = true;
-            m_lblSidaAf.Location = new Point(862, 41);
+            m_lblSidaAf.Location = new Point(754, 31);
             m_lblSidaAf.Name = "m_lblSidaAf";
-            m_lblSidaAf.Size = new Size(22, 20);
+            m_lblSidaAf.Size = new Size(17, 15);
             m_lblSidaAf.TabIndex = 7;
             m_lblSidaAf.Text = "af";
             // 
             // m_comPages
             // 
             m_comPages.FormattingEnabled = true;
-            m_comPages.Location = new Point(761, 33);
-            m_comPages.Margin = new Padding(3, 4, 3, 4);
+            m_comPages.Location = new Point(666, 25);
             m_comPages.Name = "m_comPages";
-            m_comPages.Size = new Size(82, 28);
+            m_comPages.Size = new Size(72, 23);
             m_comPages.TabIndex = 5;
             m_comPages.SelectedIndexChanged += m_comPages_SelectedIndexChanged;
             // 
             // m_btnNaesta
             // 
-            m_btnNaesta.Location = new Point(968, 32);
-            m_btnNaesta.Margin = new Padding(3, 4, 3, 4);
+            m_btnNaesta.Location = new Point(847, 24);
             m_btnNaesta.Name = "m_btnNaesta";
-            m_btnNaesta.Size = new Size(86, 31);
+            m_btnNaesta.Size = new Size(75, 23);
             m_btnNaesta.TabIndex = 3;
             m_btnNaesta.Text = ">";
             m_btnNaesta.UseVisualStyleBackColor = true;
@@ -791,6 +769,7 @@
             // 
             // m_pnlNotandi
             // 
+            m_pnlNotandi.Controls.Add(m_btnKeyrAfritInn);
             m_pnlNotandi.Controls.Add(m_chbAfrit);
             m_pnlNotandi.Controls.Add(m_lblVillaInnSkraning);
             m_pnlNotandi.Controls.Add(m_btnInnskra);
@@ -798,20 +777,29 @@
             m_pnlNotandi.Controls.Add(m_tboLykilOrd);
             m_pnlNotandi.Controls.Add(m_lblNotendaNafn);
             m_pnlNotandi.Controls.Add(m_tboNoterndaNafn);
-            m_pnlNotandi.Location = new Point(391, 28);
-            m_pnlNotandi.Margin = new Padding(3, 4, 3, 4);
+            m_pnlNotandi.Location = new Point(342, 21);
             m_pnlNotandi.Name = "m_pnlNotandi";
-            m_pnlNotandi.Size = new Size(640, 603);
+            m_pnlNotandi.Size = new Size(560, 452);
             m_pnlNotandi.TabIndex = 3;
             m_pnlNotandi.Paint += m_pnlNotandi_Paint;
+            // 
+            // m_btnKeyrAfritInn
+            // 
+            m_btnKeyrAfritInn.Location = new Point(118, 336);
+            m_btnKeyrAfritInn.Name = "m_btnKeyrAfritInn";
+            m_btnKeyrAfritInn.Size = new Size(276, 23);
+            m_btnKeyrAfritInn.TabIndex = 12;
+            m_btnKeyrAfritInn.Text = "Keyra inn afrit frá Héraðsskjalasafni";
+            m_btnKeyrAfritInn.UseVisualStyleBackColor = true;
+            m_btnKeyrAfritInn.Visible = false;
+            m_btnKeyrAfritInn.Click += m_btnKeyrAfritInn_Click;
             // 
             // m_chbAfrit
             // 
             m_chbAfrit.AutoSize = true;
-            m_chbAfrit.Location = new Point(134, 379);
-            m_chbAfrit.Margin = new Padding(3, 4, 3, 4);
+            m_chbAfrit.Location = new Point(117, 284);
             m_chbAfrit.Name = "m_chbAfrit";
-            m_chbAfrit.Size = new Size(162, 24);
+            m_chbAfrit.Size = new Size(135, 19);
             m_chbAfrit.TabIndex = 11;
             m_chbAfrit.Text = "Opna afritunargrunn";
             m_chbAfrit.UseVisualStyleBackColor = true;
@@ -822,7 +810,7 @@
             m_lblVillaInnSkraning.AutoSize = true;
             m_lblVillaInnSkraning.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             m_lblVillaInnSkraning.ForeColor = Color.IndianRed;
-            m_lblVillaInnSkraning.Location = new Point(135, 408);
+            m_lblVillaInnSkraning.Location = new Point(118, 306);
             m_lblVillaInnSkraning.Name = "m_lblVillaInnSkraning";
             m_lblVillaInnSkraning.Size = new Size(52, 21);
             m_lblVillaInnSkraning.TabIndex = 10;
@@ -831,10 +819,9 @@
             // 
             // m_btnInnskra
             // 
-            m_btnInnskra.Location = new Point(337, 332);
-            m_btnInnskra.Margin = new Padding(3, 4, 3, 4);
+            m_btnInnskra.Location = new Point(295, 249);
             m_btnInnskra.Name = "m_btnInnskra";
-            m_btnInnskra.Size = new Size(133, 31);
+            m_btnInnskra.Size = new Size(116, 23);
             m_btnInnskra.TabIndex = 9;
             m_btnInnskra.Text = "Innskráning";
             m_btnInnskra.UseVisualStyleBackColor = true;
@@ -843,37 +830,35 @@
             // m_lblLykilOrd
             // 
             m_lblLykilOrd.AutoSize = true;
-            m_lblLykilOrd.Location = new Point(134, 271);
+            m_lblLykilOrd.Location = new Point(117, 203);
             m_lblLykilOrd.Name = "m_lblLykilOrd";
-            m_lblLykilOrd.Size = new Size(62, 20);
+            m_lblLykilOrd.Size = new Size(51, 15);
             m_lblLykilOrd.TabIndex = 8;
             m_lblLykilOrd.Text = "Lykilorð:";
             // 
             // m_tboLykilOrd
             // 
-            m_tboLykilOrd.Location = new Point(211, 267);
-            m_tboLykilOrd.Margin = new Padding(3, 4, 3, 4);
+            m_tboLykilOrd.Location = new Point(185, 200);
             m_tboLykilOrd.Name = "m_tboLykilOrd";
             m_tboLykilOrd.PasswordChar = '*';
-            m_tboLykilOrd.Size = new Size(258, 27);
+            m_tboLykilOrd.Size = new Size(226, 23);
             m_tboLykilOrd.TabIndex = 7;
             m_tboLykilOrd.KeyUp += m_tboLykilOrd_KeyUp;
             // 
             // m_lblNotendaNafn
             // 
             m_lblNotendaNafn.AutoSize = true;
-            m_lblNotendaNafn.Location = new Point(101, 204);
+            m_lblNotendaNafn.Location = new Point(88, 153);
             m_lblNotendaNafn.Name = "m_lblNotendaNafn";
-            m_lblNotendaNafn.Size = new Size(99, 20);
+            m_lblNotendaNafn.Size = new Size(80, 15);
             m_lblNotendaNafn.TabIndex = 6;
             m_lblNotendaNafn.Text = "Notendanafn:";
             // 
             // m_tboNoterndaNafn
             // 
-            m_tboNoterndaNafn.Location = new Point(211, 200);
-            m_tboNoterndaNafn.Margin = new Padding(3, 4, 3, 4);
+            m_tboNoterndaNafn.Location = new Point(185, 150);
             m_tboNoterndaNafn.Name = "m_tboNoterndaNafn";
-            m_tboNoterndaNafn.Size = new Size(258, 27);
+            m_tboNoterndaNafn.Size = new Size(226, 23);
             m_tboNoterndaNafn.TabIndex = 5;
             m_tboNoterndaNafn.KeyUp += m_tboNoterndaNafn_KeyUp;
             // 
@@ -882,22 +867,20 @@
             m_tacMain.Controls.Add(m_tapLeit);
             m_tacMain.Controls.Add(m_tapAfgreidsla);
             m_tacMain.Controls.Add(m_tapUmsjon);
-            m_tacMain.Location = new Point(11, 81);
-            m_tacMain.Margin = new Padding(3, 4, 3, 4);
+            m_tacMain.Location = new Point(10, 61);
             m_tacMain.Name = "m_tacMain";
             m_tacMain.SelectedIndex = 0;
-            m_tacMain.Size = new Size(1753, 743);
+            m_tacMain.Size = new Size(1534, 557);
             m_tacMain.TabIndex = 1;
             m_tacMain.SelectedIndexChanged += m_tacMain_SelectedIndexChanged;
             // 
             // m_tapLeit
             // 
             m_tapLeit.Controls.Add(splitContainer1);
-            m_tapLeit.Location = new Point(4, 29);
-            m_tapLeit.Margin = new Padding(3, 4, 3, 4);
+            m_tapLeit.Location = new Point(4, 24);
             m_tapLeit.Name = "m_tapLeit";
-            m_tapLeit.Padding = new Padding(3, 4, 3, 4);
-            m_tapLeit.Size = new Size(1745, 710);
+            m_tapLeit.Padding = new Padding(3);
+            m_tapLeit.Size = new Size(1526, 529);
             m_tapLeit.TabIndex = 0;
             m_tapLeit.Text = "Leit";
             m_tapLeit.UseVisualStyleBackColor = true;
@@ -905,11 +888,10 @@
             // m_tapAfgreidsla
             // 
             m_tapAfgreidsla.Controls.Add(splitContainer2);
-            m_tapAfgreidsla.Location = new Point(4, 29);
-            m_tapAfgreidsla.Margin = new Padding(3, 4, 3, 4);
+            m_tapAfgreidsla.Location = new Point(4, 24);
             m_tapAfgreidsla.Name = "m_tapAfgreidsla";
-            m_tapAfgreidsla.Padding = new Padding(3, 4, 3, 4);
-            m_tapAfgreidsla.Size = new Size(1745, 710);
+            m_tapAfgreidsla.Padding = new Padding(3);
+            m_tapAfgreidsla.Size = new Size(1526, 529);
             m_tapAfgreidsla.TabIndex = 1;
             m_tapAfgreidsla.Text = "Afgreiðsla";
             m_tapAfgreidsla.UseVisualStyleBackColor = true;
@@ -917,8 +899,7 @@
             // splitContainer2
             // 
             splitContainer2.Dock = DockStyle.Fill;
-            splitContainer2.Location = new Point(3, 4);
-            splitContainer2.Margin = new Padding(3, 4, 3, 4);
+            splitContainer2.Location = new Point(3, 3);
             splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -928,18 +909,16 @@
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(splitContainer3);
-            splitContainer2.Size = new Size(1739, 702);
-            splitContainer2.SplitterDistance = 573;
-            splitContainer2.SplitterWidth = 5;
+            splitContainer2.Size = new Size(1520, 523);
+            splitContainer2.SplitterDistance = 500;
             splitContainer2.TabIndex = 3;
             // 
             // m_trwDIP
             // 
             m_trwDIP.Dock = DockStyle.Fill;
             m_trwDIP.Location = new Point(0, 0);
-            m_trwDIP.Margin = new Padding(3, 4, 3, 4);
             m_trwDIP.Name = "m_trwDIP";
-            m_trwDIP.Size = new Size(573, 702);
+            m_trwDIP.Size = new Size(500, 523);
             m_trwDIP.TabIndex = 0;
             m_trwDIP.AfterSelect += m_trwDIP_AfterSelect;
             // 
@@ -947,7 +926,6 @@
             // 
             splitContainer3.Dock = DockStyle.Fill;
             splitContainer3.Location = new Point(0, 0);
-            splitContainer3.Margin = new Padding(3, 4, 3, 4);
             splitContainer3.Name = "splitContainer3";
             splitContainer3.Orientation = Orientation.Horizontal;
             // 
@@ -966,18 +944,17 @@
             // splitContainer3.Panel2
             // 
             splitContainer3.Panel2.Controls.Add(m_grbDIP);
-            splitContainer3.Size = new Size(1161, 702);
-            splitContainer3.SplitterDistance = 228;
-            splitContainer3.SplitterWidth = 5;
+            splitContainer3.Size = new Size(1016, 523);
+            splitContainer3.SplitterDistance = 169;
             splitContainer3.TabIndex = 3;
             // 
             // m_lblPontunstatus
             // 
             m_lblPontunstatus.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             m_lblPontunstatus.AutoSize = true;
-            m_lblPontunstatus.Location = new Point(616, 186);
+            m_lblPontunstatus.Location = new Point(539, 138);
             m_lblPontunstatus.Name = "m_lblPontunstatus";
-            m_lblPontunstatus.Size = new Size(50, 20);
+            m_lblPontunstatus.Size = new Size(38, 15);
             m_lblPontunstatus.TabIndex = 8;
             m_lblPontunstatus.Text = "label7";
             m_lblPontunstatus.Visible = false;
@@ -985,19 +962,17 @@
             // m_pgbPontun
             // 
             m_pgbPontun.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            m_pgbPontun.Location = new Point(101, 177);
-            m_pgbPontun.Margin = new Padding(3, 4, 3, 4);
+            m_pgbPontun.Location = new Point(88, 131);
             m_pgbPontun.Name = "m_pgbPontun";
-            m_pgbPontun.Size = new Size(477, 31);
+            m_pgbPontun.Size = new Size(417, 23);
             m_pgbPontun.TabIndex = 7;
             m_pgbPontun.Visible = false;
             // 
             // m_btnTæma
             // 
-            m_btnTæma.Location = new Point(720, 195);
-            m_btnTæma.Margin = new Padding(3, 4, 3, 4);
+            m_btnTæma.Location = new Point(630, 146);
             m_btnTæma.Name = "m_btnTæma";
-            m_btnTæma.Size = new Size(143, 31);
+            m_btnTæma.Size = new Size(125, 23);
             m_btnTæma.TabIndex = 6;
             m_btnTæma.Text = "Tæma lista";
             m_btnTæma.UseVisualStyleBackColor = true;
@@ -1006,19 +981,18 @@
             // m_lblLanthegi
             // 
             m_lblLanthegi.AutoSize = true;
-            m_lblLanthegi.Location = new Point(101, 117);
+            m_lblLanthegi.Location = new Point(88, 88);
             m_lblLanthegi.Name = "m_lblLanthegi";
-            m_lblLanthegi.Size = new Size(50, 20);
+            m_lblLanthegi.Size = new Size(38, 15);
             m_lblLanthegi.TabIndex = 5;
             m_lblLanthegi.Text = "label6";
             m_lblLanthegi.Visible = false;
             // 
             // m_btnOpna
             // 
-            m_btnOpna.Location = new Point(720, 156);
-            m_btnOpna.Margin = new Padding(3, 4, 3, 4);
+            m_btnOpna.Location = new Point(630, 117);
             m_btnOpna.Name = "m_btnOpna";
-            m_btnOpna.Size = new Size(143, 31);
+            m_btnOpna.Size = new Size(125, 23);
             m_btnOpna.TabIndex = 4;
             m_btnOpna.Text = "Opna pakka";
             m_btnOpna.UseVisualStyleBackColor = true;
@@ -1026,10 +1000,9 @@
             // 
             // m_btnKlaraPontun
             // 
-            m_btnKlaraPontun.Location = new Point(720, 112);
-            m_btnKlaraPontun.Margin = new Padding(3, 4, 3, 4);
+            m_btnKlaraPontun.Location = new Point(630, 84);
             m_btnKlaraPontun.Name = "m_btnKlaraPontun";
-            m_btnKlaraPontun.Size = new Size(143, 31);
+            m_btnKlaraPontun.Size = new Size(125, 23);
             m_btnKlaraPontun.TabIndex = 3;
             m_btnKlaraPontun.Text = "Klára pöntun";
             m_btnKlaraPontun.UseVisualStyleBackColor = true;
@@ -1038,28 +1011,26 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(101, 59);
+            label5.Location = new Point(88, 44);
             label5.Name = "label5";
-            label5.Size = new Size(104, 20);
+            label5.Size = new Size(81, 15);
             label5.TabIndex = 2;
             label5.Text = "Veldu lánþega";
             // 
             // m_comLanthegar
             // 
             m_comLanthegar.FormattingEnabled = true;
-            m_comLanthegar.Location = new Point(250, 53);
-            m_comLanthegar.Margin = new Padding(3, 4, 3, 4);
+            m_comLanthegar.Location = new Point(219, 40);
             m_comLanthegar.Name = "m_comLanthegar";
-            m_comLanthegar.Size = new Size(402, 28);
+            m_comLanthegar.Size = new Size(352, 23);
             m_comLanthegar.TabIndex = 1;
             m_comLanthegar.SelectedIndexChanged += m_comLanthegar_SelectedIndexChanged;
             // 
             // m_btnNyrLanthegi
             // 
-            m_btnNyrLanthegi.Location = new Point(720, 53);
-            m_btnNyrLanthegi.Margin = new Padding(3, 4, 3, 4);
+            m_btnNyrLanthegi.Location = new Point(630, 40);
             m_btnNyrLanthegi.Name = "m_btnNyrLanthegi";
-            m_btnNyrLanthegi.Size = new Size(143, 31);
+            m_btnNyrLanthegi.Size = new Size(125, 23);
             m_btnNyrLanthegi.TabIndex = 0;
             m_btnNyrLanthegi.Text = "Nýr lánþegi";
             m_btnNyrLanthegi.UseVisualStyleBackColor = true;
@@ -1070,10 +1041,8 @@
             m_grbDIP.Controls.Add(m_tacPontun);
             m_grbDIP.Dock = DockStyle.Fill;
             m_grbDIP.Location = new Point(0, 0);
-            m_grbDIP.Margin = new Padding(3, 4, 3, 4);
             m_grbDIP.Name = "m_grbDIP";
-            m_grbDIP.Padding = new Padding(3, 4, 3, 4);
-            m_grbDIP.Size = new Size(1161, 469);
+            m_grbDIP.Size = new Size(1016, 350);
             m_grbDIP.TabIndex = 3;
             m_grbDIP.TabStop = false;
             m_grbDIP.Text = "Gögn í pöntun";
@@ -1084,21 +1053,19 @@
             m_tacPontun.Controls.Add(m_tapPontunMalakerfi);
             m_tacPontun.Controls.Add(m_tapPontunGagnagrunnar);
             m_tacPontun.Dock = DockStyle.Fill;
-            m_tacPontun.Location = new Point(3, 24);
-            m_tacPontun.Margin = new Padding(3, 4, 3, 4);
+            m_tacPontun.Location = new Point(3, 19);
             m_tacPontun.Name = "m_tacPontun";
             m_tacPontun.SelectedIndex = 0;
-            m_tacPontun.Size = new Size(1155, 441);
+            m_tacPontun.Size = new Size(1010, 328);
             m_tacPontun.TabIndex = 3;
             // 
             // m_tapPontunSkra
             // 
             m_tapPontunSkra.Controls.Add(m_dgvDIPList);
-            m_tapPontunSkra.Location = new Point(4, 29);
-            m_tapPontunSkra.Margin = new Padding(3, 4, 3, 4);
+            m_tapPontunSkra.Location = new Point(4, 24);
             m_tapPontunSkra.Name = "m_tapPontunSkra";
-            m_tapPontunSkra.Padding = new Padding(3, 4, 3, 4);
-            m_tapPontunSkra.Size = new Size(1147, 408);
+            m_tapPontunSkra.Padding = new Padding(3);
+            m_tapPontunSkra.Size = new Size(1002, 300);
             m_tapPontunSkra.TabIndex = 0;
             m_tapPontunSkra.Text = "Skráarkerfi";
             m_tapPontunSkra.UseVisualStyleBackColor = true;
@@ -1109,13 +1076,12 @@
             m_dgvDIPList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             m_dgvDIPList.Columns.AddRange(new DataGridViewColumn[] { colID, colTitill, colHeitiUtgáfu, colSkraRemove });
             m_dgvDIPList.Dock = DockStyle.Fill;
-            m_dgvDIPList.Location = new Point(3, 4);
-            m_dgvDIPList.Margin = new Padding(3, 4, 3, 4);
+            m_dgvDIPList.Location = new Point(3, 3);
             m_dgvDIPList.Name = "m_dgvDIPList";
             m_dgvDIPList.ReadOnly = true;
             m_dgvDIPList.RowHeadersVisible = false;
             m_dgvDIPList.RowTemplate.Height = 25;
-            m_dgvDIPList.Size = new Size(1141, 400);
+            m_dgvDIPList.Size = new Size(996, 294);
             m_dgvDIPList.TabIndex = 2;
             m_dgvDIPList.CellClick += m_dgvDIPList_CellClick;
             // 
@@ -1126,7 +1092,7 @@
             colID.HeaderText = "Auðkenni skjals";
             colID.Name = "colID";
             colID.ReadOnly = true;
-            colID.Width = 134;
+            colID.Width = 114;
             // 
             // colTitill
             // 
@@ -1143,7 +1109,7 @@
             colHeitiUtgáfu.HeaderText = "Vörsluútgáfa";
             colHeitiUtgáfu.Name = "colHeitiUtgáfu";
             colHeitiUtgáfu.ReadOnly = true;
-            colHeitiUtgáfu.Width = 117;
+            colHeitiUtgáfu.Width = 98;
             // 
             // colSkraRemove
             // 
@@ -1156,11 +1122,10 @@
             // m_tapPontunMalakerfi
             // 
             m_tapPontunMalakerfi.Controls.Add(m_dgvDIPmal);
-            m_tapPontunMalakerfi.Location = new Point(4, 29);
-            m_tapPontunMalakerfi.Margin = new Padding(3, 4, 3, 4);
+            m_tapPontunMalakerfi.Location = new Point(4, 24);
             m_tapPontunMalakerfi.Name = "m_tapPontunMalakerfi";
-            m_tapPontunMalakerfi.Padding = new Padding(3, 4, 3, 4);
-            m_tapPontunMalakerfi.Size = new Size(1147, 408);
+            m_tapPontunMalakerfi.Padding = new Padding(3);
+            m_tapPontunMalakerfi.Size = new Size(1002, 300);
             m_tapPontunMalakerfi.TabIndex = 1;
             m_tapPontunMalakerfi.Text = "Málakerfi";
             m_tapPontunMalakerfi.UseVisualStyleBackColor = true;
@@ -1172,13 +1137,12 @@
             m_dgvDIPmal.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             m_dgvDIPmal.Columns.AddRange(new DataGridViewColumn[] { colMalSkraID, colMalTitillSkjals, colMalTitilMals, colMalTitillVorslu, colBtnFjarlaegja });
             m_dgvDIPmal.Dock = DockStyle.Fill;
-            m_dgvDIPmal.Location = new Point(3, 4);
-            m_dgvDIPmal.Margin = new Padding(3, 4, 3, 4);
+            m_dgvDIPmal.Location = new Point(3, 3);
             m_dgvDIPmal.Name = "m_dgvDIPmal";
             m_dgvDIPmal.ReadOnly = true;
             m_dgvDIPmal.RowHeadersVisible = false;
             m_dgvDIPmal.RowTemplate.Height = 25;
-            m_dgvDIPmal.Size = new Size(1141, 400);
+            m_dgvDIPmal.Size = new Size(996, 294);
             m_dgvDIPmal.TabIndex = 0;
             m_dgvDIPmal.CellClick += m_dgvDIPmal_CellClick;
             // 
@@ -1189,7 +1153,7 @@
             colMalSkraID.HeaderText = "Auðkenni skjals";
             colMalSkraID.Name = "colMalSkraID";
             colMalSkraID.ReadOnly = true;
-            colMalSkraID.Width = 123;
+            colMalSkraID.Width = 105;
             // 
             // colMalTitillSkjals
             // 
@@ -1206,7 +1170,7 @@
             colMalTitilMals.HeaderText = "Titill máls";
             colMalTitilMals.Name = "colMalTitilMals";
             colMalTitilMals.ReadOnly = true;
-            colMalTitilMals.Width = 90;
+            colMalTitilMals.Width = 76;
             // 
             // colMalTitillVorslu
             // 
@@ -1215,7 +1179,7 @@
             colMalTitillVorslu.HeaderText = "Heiti  vörsluútgáfu";
             colMalTitillVorslu.Name = "colMalTitillVorslu";
             colMalTitillVorslu.ReadOnly = true;
-            colMalTitillVorslu.Width = 142;
+            colMalTitillVorslu.Width = 119;
             // 
             // colBtnFjarlaegja
             // 
@@ -1228,11 +1192,10 @@
             // m_tapPontunGagnagrunnar
             // 
             m_tapPontunGagnagrunnar.Controls.Add(m_dgvDIPGagnagrunnar);
-            m_tapPontunGagnagrunnar.Location = new Point(4, 29);
-            m_tapPontunGagnagrunnar.Margin = new Padding(3, 4, 3, 4);
+            m_tapPontunGagnagrunnar.Location = new Point(4, 24);
             m_tapPontunGagnagrunnar.Name = "m_tapPontunGagnagrunnar";
-            m_tapPontunGagnagrunnar.Padding = new Padding(3, 4, 3, 4);
-            m_tapPontunGagnagrunnar.Size = new Size(1147, 408);
+            m_tapPontunGagnagrunnar.Padding = new Padding(3);
+            m_tapPontunGagnagrunnar.Size = new Size(1002, 300);
             m_tapPontunGagnagrunnar.TabIndex = 2;
             m_tapPontunGagnagrunnar.Text = "Gagnagrunnar";
             m_tapPontunGagnagrunnar.UseVisualStyleBackColor = true;
@@ -1244,13 +1207,12 @@
             m_dgvDIPGagnagrunnar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             m_dgvDIPGagnagrunnar.Columns.AddRange(new DataGridViewColumn[] { colGagnHeiti, colLeitskilyrdi, colGagnHeitivorslu, colGagnRemove });
             m_dgvDIPGagnagrunnar.Dock = DockStyle.Fill;
-            m_dgvDIPGagnagrunnar.Location = new Point(3, 4);
-            m_dgvDIPGagnagrunnar.Margin = new Padding(3, 4, 3, 4);
+            m_dgvDIPGagnagrunnar.Location = new Point(3, 3);
             m_dgvDIPGagnagrunnar.Name = "m_dgvDIPGagnagrunnar";
             m_dgvDIPGagnagrunnar.ReadOnly = true;
             m_dgvDIPGagnagrunnar.RowHeadersVisible = false;
             m_dgvDIPGagnagrunnar.RowTemplate.Height = 25;
-            m_dgvDIPGagnagrunnar.Size = new Size(1141, 400);
+            m_dgvDIPGagnagrunnar.Size = new Size(996, 294);
             m_dgvDIPGagnagrunnar.TabIndex = 0;
             m_dgvDIPGagnagrunnar.CellClick += m_dgvDIPGagnagrunnar_CellClick;
             // 
@@ -1261,7 +1223,7 @@
             colGagnHeiti.HeaderText = "Heiti gagnagrunns";
             colGagnHeiti.Name = "colGagnHeiti";
             colGagnHeiti.ReadOnly = true;
-            colGagnHeiti.Width = 142;
+            colGagnHeiti.Width = 119;
             // 
             // colLeitskilyrdi
             // 
@@ -1278,7 +1240,7 @@
             colGagnHeitivorslu.HeaderText = "Heiti vörsluútgáfu";
             colGagnHeitivorslu.Name = "colGagnHeitivorslu";
             colGagnHeitivorslu.ReadOnly = true;
-            colGagnHeitivorslu.Width = 139;
+            colGagnHeitivorslu.Width = 116;
             // 
             // colGagnRemove
             // 
@@ -1288,16 +1250,15 @@
             colGagnRemove.ReadOnly = true;
             colGagnRemove.Text = "Fjarlægja";
             colGagnRemove.UseColumnTextForButtonValue = true;
-            colGagnRemove.Width = 76;
+            colGagnRemove.Width = 61;
             // 
             // m_tapUmsjon
             // 
             m_tapUmsjon.Controls.Add(m_tacUmsjon);
-            m_tapUmsjon.Location = new Point(4, 29);
-            m_tapUmsjon.Margin = new Padding(3, 4, 3, 4);
+            m_tapUmsjon.Location = new Point(4, 24);
             m_tapUmsjon.Name = "m_tapUmsjon";
-            m_tapUmsjon.Padding = new Padding(3, 4, 3, 4);
-            m_tapUmsjon.Size = new Size(1745, 710);
+            m_tapUmsjon.Padding = new Padding(3);
+            m_tapUmsjon.Size = new Size(1526, 529);
             m_tapUmsjon.TabIndex = 2;
             m_tapUmsjon.Text = "Umsjón";
             m_tapUmsjon.UseVisualStyleBackColor = true;
@@ -1309,22 +1270,20 @@
             m_tacUmsjon.Controls.Add(m_tapUppfæra);
             m_tacUmsjon.Controls.Add(m_tapLysigogn);
             m_tacUmsjon.Dock = DockStyle.Fill;
-            m_tacUmsjon.Location = new Point(3, 4);
-            m_tacUmsjon.Margin = new Padding(3, 4, 3, 4);
+            m_tacUmsjon.Location = new Point(3, 3);
             m_tacUmsjon.Name = "m_tacUmsjon";
             m_tacUmsjon.SelectedIndex = 0;
-            m_tacUmsjon.Size = new Size(1739, 702);
+            m_tacUmsjon.Size = new Size(1520, 523);
             m_tacUmsjon.TabIndex = 0;
             m_tacUmsjon.SelectedIndexChanged += m_tacUmsjon_SelectedIndexChanged;
             // 
             // m_tapNotendur
             // 
             m_tapNotendur.Controls.Add(uscNotendur1);
-            m_tapNotendur.Location = new Point(4, 29);
-            m_tapNotendur.Margin = new Padding(3, 4, 3, 4);
+            m_tapNotendur.Location = new Point(4, 24);
             m_tapNotendur.Name = "m_tapNotendur";
-            m_tapNotendur.Padding = new Padding(3, 4, 3, 4);
-            m_tapNotendur.Size = new Size(1731, 669);
+            m_tapNotendur.Padding = new Padding(3);
+            m_tapNotendur.Size = new Size(1512, 495);
             m_tapNotendur.TabIndex = 0;
             m_tapNotendur.Text = "Notendur";
             m_tapNotendur.UseVisualStyleBackColor = true;
@@ -1332,20 +1291,19 @@
             // uscNotendur1
             // 
             uscNotendur1.Dock = DockStyle.Fill;
-            uscNotendur1.Location = new Point(3, 4);
-            uscNotendur1.Margin = new Padding(3, 5, 3, 5);
+            uscNotendur1.Location = new Point(3, 3);
+            uscNotendur1.Margin = new Padding(3, 4, 3, 4);
             uscNotendur1.Name = "uscNotendur1";
-            uscNotendur1.Size = new Size(1725, 661);
+            uscNotendur1.Size = new Size(1506, 489);
             uscNotendur1.TabIndex = 0;
             // 
             // m_tapLanthegar
             // 
             m_tapLanthegar.Controls.Add(usclanthegar1);
-            m_tapLanthegar.Location = new Point(4, 29);
-            m_tapLanthegar.Margin = new Padding(3, 4, 3, 4);
+            m_tapLanthegar.Location = new Point(4, 24);
             m_tapLanthegar.Name = "m_tapLanthegar";
-            m_tapLanthegar.Padding = new Padding(3, 4, 3, 4);
-            m_tapLanthegar.Size = new Size(1731, 669);
+            m_tapLanthegar.Padding = new Padding(3);
+            m_tapLanthegar.Size = new Size(1512, 495);
             m_tapLanthegar.TabIndex = 1;
             m_tapLanthegar.Text = "Lánþegar";
             m_tapLanthegar.UseVisualStyleBackColor = true;
@@ -1353,20 +1311,19 @@
             // usclanthegar1
             // 
             usclanthegar1.Dock = DockStyle.Fill;
-            usclanthegar1.Location = new Point(3, 4);
-            usclanthegar1.Margin = new Padding(3, 5, 3, 5);
+            usclanthegar1.Location = new Point(3, 3);
+            usclanthegar1.Margin = new Padding(3, 4, 3, 4);
             usclanthegar1.Name = "usclanthegar1";
-            usclanthegar1.Size = new Size(1725, 661);
+            usclanthegar1.Size = new Size(1506, 489);
             usclanthegar1.TabIndex = 0;
             // 
             // m_tapUppfæra
             // 
             m_tapUppfæra.Controls.Add(splitContainer5);
-            m_tapUppfæra.Location = new Point(4, 29);
-            m_tapUppfæra.Margin = new Padding(3, 4, 3, 4);
+            m_tapUppfæra.Location = new Point(4, 24);
             m_tapUppfæra.Name = "m_tapUppfæra";
-            m_tapUppfæra.Padding = new Padding(3, 4, 3, 4);
-            m_tapUppfæra.Size = new Size(1731, 669);
+            m_tapUppfæra.Padding = new Padding(3);
+            m_tapUppfæra.Size = new Size(1512, 495);
             m_tapUppfæra.TabIndex = 2;
             m_tapUppfæra.Text = "Færa inn gögn";
             m_tapUppfæra.UseVisualStyleBackColor = true;
@@ -1374,7 +1331,8 @@
             // splitContainer5
             // 
             splitContainer5.Dock = DockStyle.Fill;
-            splitContainer5.Location = new Point(3, 4);
+            splitContainer5.Location = new Point(3, 3);
+            splitContainer5.Margin = new Padding(3, 2, 3, 2);
             splitContainer5.Name = "splitContainer5";
             splitContainer5.Orientation = Orientation.Horizontal;
             // 
@@ -1386,16 +1344,16 @@
             // splitContainer5.Panel2
             // 
             splitContainer5.Panel2.Controls.Add(splitContainer6);
-            splitContainer5.Size = new Size(1725, 661);
-            splitContainer5.SplitterDistance = 198;
+            splitContainer5.Size = new Size(1506, 489);
+            splitContainer5.SplitterDistance = 146;
+            splitContainer5.SplitterWidth = 3;
             splitContainer5.TabIndex = 2;
             // 
             // m_btnGetData
             // 
-            m_btnGetData.Location = new Point(840, 22);
-            m_btnGetData.Margin = new Padding(3, 4, 3, 4);
+            m_btnGetData.Location = new Point(735, 16);
             m_btnGetData.Name = "m_btnGetData";
-            m_btnGetData.Size = new Size(208, 31);
+            m_btnGetData.Size = new Size(182, 23);
             m_btnGetData.TabIndex = 1;
             m_btnGetData.Text = "Sækja gögn";
             m_btnGetData.UseVisualStyleBackColor = true;
@@ -1403,10 +1361,9 @@
             // 
             // m_btnLagaToflur
             // 
-            m_btnLagaToflur.Location = new Point(840, 61);
-            m_btnLagaToflur.Margin = new Padding(3, 4, 3, 4);
+            m_btnLagaToflur.Location = new Point(735, 46);
             m_btnLagaToflur.Name = "m_btnLagaToflur";
-            m_btnLagaToflur.Size = new Size(208, 31);
+            m_btnLagaToflur.Size = new Size(182, 23);
             m_btnLagaToflur.TabIndex = 0;
             m_btnLagaToflur.Text = "Laga töflur";
             m_btnLagaToflur.UseVisualStyleBackColor = true;
@@ -1416,6 +1373,7 @@
             // 
             splitContainer6.Dock = DockStyle.Fill;
             splitContainer6.Location = new Point(0, 0);
+            splitContainer6.Margin = new Padding(3, 2, 3, 2);
             splitContainer6.Name = "splitContainer6";
             // 
             // splitContainer6.Panel1
@@ -1427,8 +1385,8 @@
             splitContainer6.Panel2.Controls.Add(progressBar1);
             splitContainer6.Panel2.Controls.Add(m_lblEndaMappa);
             splitContainer6.Panel2.Controls.Add(m_btnKeyraVorsluInn);
-            splitContainer6.Size = new Size(1725, 459);
-            splitContainer6.SplitterDistance = 1222;
+            splitContainer6.Size = new Size(1506, 340);
+            splitContainer6.SplitterDistance = 1066;
             splitContainer6.TabIndex = 1;
             // 
             // m_dgvUtgafur
@@ -1440,10 +1398,11 @@
             m_dgvUtgafur.Columns.AddRange(new DataGridViewColumn[] { colHeitiVarslaMidlun, colMidlunTaka, colAudkenniVarslaMidlun });
             m_dgvUtgafur.Dock = DockStyle.Fill;
             m_dgvUtgafur.Location = new Point(0, 0);
+            m_dgvUtgafur.Margin = new Padding(3, 2, 3, 2);
             m_dgvUtgafur.Name = "m_dgvUtgafur";
             m_dgvUtgafur.RowHeadersVisible = false;
             m_dgvUtgafur.RowTemplate.Height = 29;
-            m_dgvUtgafur.Size = new Size(1222, 459);
+            m_dgvUtgafur.Size = new Size(1066, 340);
             m_dgvUtgafur.TabIndex = 0;
             m_dgvUtgafur.CellContentClick += m_dgvUtgafur_CellContentClick;
             // 
@@ -1459,7 +1418,7 @@
             colMidlunTaka.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             colMidlunTaka.HeaderText = "Velja vörsluútgáfu til að setja inn";
             colMidlunTaka.Name = "colMidlunTaka";
-            colMidlunTaka.Width = 139;
+            colMidlunTaka.Width = 111;
             // 
             // colAudkenniVarslaMidlun
             // 
@@ -1467,13 +1426,31 @@
             colAudkenniVarslaMidlun.DataPropertyName = "audkenni";
             colAudkenniVarslaMidlun.HeaderText = "Auðkenni vörsluútgáfu";
             colAudkenniVarslaMidlun.Name = "colAudkenniVarslaMidlun";
-            colAudkenniVarslaMidlun.Width = 165;
+            colAudkenniVarslaMidlun.Width = 140;
+            // 
+            // progressBar1
+            // 
+            progressBar1.Location = new Point(62, 95);
+            progressBar1.Margin = new Padding(3, 2, 3, 2);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(231, 17);
+            progressBar1.TabIndex = 2;
+            // 
+            // m_lblEndaMappa
+            // 
+            m_lblEndaMappa.AutoSize = true;
+            m_lblEndaMappa.Location = new Point(62, 66);
+            m_lblEndaMappa.Name = "m_lblEndaMappa";
+            m_lblEndaMappa.Size = new Size(38, 15);
+            m_lblEndaMappa.TabIndex = 1;
+            m_lblEndaMappa.Text = "label8";
             // 
             // m_btnKeyraVorsluInn
             // 
-            m_btnKeyraVorsluInn.Location = new Point(71, 25);
+            m_btnKeyraVorsluInn.Location = new Point(62, 19);
+            m_btnKeyraVorsluInn.Margin = new Padding(3, 2, 3, 2);
             m_btnKeyraVorsluInn.Name = "m_btnKeyraVorsluInn";
-            m_btnKeyraVorsluInn.Size = new Size(295, 34);
+            m_btnKeyraVorsluInn.Size = new Size(258, 26);
             m_btnKeyraVorsluInn.TabIndex = 0;
             m_btnKeyraVorsluInn.Text = "Keyra valdar vörsluútgáfur inn í kerfið";
             m_btnKeyraVorsluInn.UseVisualStyleBackColor = true;
@@ -1482,10 +1459,9 @@
             // m_tapLysigogn
             // 
             m_tapLysigogn.Controls.Add(m_dgvVorsluUtgafur);
-            m_tapLysigogn.Location = new Point(4, 29);
-            m_tapLysigogn.Margin = new Padding(3, 4, 3, 4);
+            m_tapLysigogn.Location = new Point(4, 24);
             m_tapLysigogn.Name = "m_tapLysigogn";
-            m_tapLysigogn.Size = new Size(1731, 669);
+            m_tapLysigogn.Size = new Size(1512, 495);
             m_tapLysigogn.TabIndex = 3;
             m_tapLysigogn.Text = "Lýsigögn";
             m_tapLysigogn.UseVisualStyleBackColor = true;
@@ -1515,14 +1491,13 @@
             m_dgvVorsluUtgafur.DefaultCellStyle = dataGridViewCellStyle2;
             m_dgvVorsluUtgafur.Dock = DockStyle.Fill;
             m_dgvVorsluUtgafur.Location = new Point(0, 0);
-            m_dgvVorsluUtgafur.Margin = new Padding(3, 4, 3, 4);
             m_dgvVorsluUtgafur.MultiSelect = false;
             m_dgvVorsluUtgafur.Name = "m_dgvVorsluUtgafur";
             m_dgvVorsluUtgafur.ReadOnly = true;
             m_dgvVorsluUtgafur.RowHeadersVisible = false;
             m_dgvVorsluUtgafur.RowTemplate.Height = 25;
             m_dgvVorsluUtgafur.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            m_dgvVorsluUtgafur.Size = new Size(1731, 669);
+            m_dgvVorsluUtgafur.Size = new Size(1512, 495);
             m_dgvVorsluUtgafur.TabIndex = 2;
             m_dgvVorsluUtgafur.CellClick += m_dgvVorsluUtgafur_CellContentClick;
             // 
@@ -1687,45 +1662,28 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { m_tomUtskra });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(6, 3, 0, 3);
-            menuStrip1.Size = new Size(1924, 24);
+            menuStrip1.Padding = new Padding(5, 2, 0, 2);
+            menuStrip1.Size = new Size(1684, 24);
             menuStrip1.TabIndex = 4;
             menuStrip1.Text = "menuStrip1";
             // 
             // m_tomUtskra
             // 
             m_tomUtskra.Name = "m_tomUtskra";
-            m_tomUtskra.Size = new Size(62, 24);
+            m_tomUtskra.Size = new Size(52, 20);
             m_tomUtskra.Text = "Útskrá";
             m_tomUtskra.Visible = false;
             m_tomUtskra.Click += m_tomUtskra_Click;
             // 
-            // m_lblEndaMappa
-            // 
-            m_lblEndaMappa.AutoSize = true;
-            m_lblEndaMappa.Location = new Point(71, 88);
-            m_lblEndaMappa.Name = "m_lblEndaMappa";
-            m_lblEndaMappa.Size = new Size(50, 20);
-            m_lblEndaMappa.TabIndex = 1;
-            m_lblEndaMappa.Text = "label8";
-            // 
-            // progressBar1
-            // 
-            progressBar1.Location = new Point(71, 127);
-            progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(264, 23);
-            progressBar1.TabIndex = 2;
-            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1924, 853);
+            ClientSize = new Size(1684, 640);
             Controls.Add(m_pnlNotandi);
             Controls.Add(m_tacMain);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
             Text = "Form1";
             splitContainer1.Panel1.ResumeLayout(false);
@@ -1925,5 +1883,6 @@
         private Button m_btnKeyraVorsluInn;
         private ProgressBar progressBar1;
         private Label m_lblEndaMappa;
+        private Button m_btnKeyrAfritInn;
     }
 }

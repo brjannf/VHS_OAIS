@@ -1364,6 +1364,59 @@ namespace MHR_LEIT
             }
 
         }
+
+        private void m_dgvPontunMalaKerfi_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            var senderGrid = (DataGridView)sender;
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                switch (senderGrid.Name)
+                {
+                    case "m_dgvPontunMalaKerfi":
+                        if (senderGrid.Columns["colMalDelete"].Index == e.ColumnIndex)
+                        {
+                            DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                m_dgvPontunMalaKerfi.Rows.Remove(m_dgvPontunMalaKerfi.Rows[e.RowIndex]);
+                                m_dtPontunMal = (DataTable)m_dgvPontunMalaKerfi.DataSource;
+                                m_dtPontunMal.AcceptChanges();
+                               
+                            }
+                        }
+                        break;
+                    case "m_dgvPontunSkraarKerfi":
+                        if (senderGrid.Columns["colSkraDelete"].Index == e.ColumnIndex)
+                        {
+                            DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                m_dgvPontunSkraarKerfi.Rows.Remove(m_dgvPontunSkraarKerfi.Rows[e.RowIndex]);
+                                m_dtSkra = (DataTable)m_dgvPontunSkraarKerfi.DataSource;
+                                m_dtSkra.AcceptChanges();
+
+                            }
+                        }
+                        break;
+                    case "m_dgvPontunGagnagrunnar":
+                        if (senderGrid.Columns["colGagnDelete"].Index == e.ColumnIndex)
+                        {
+                            DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                m_dgvPontunGagnagrunnar.Rows.Remove(m_dgvPontunGagnagrunnar.Rows[e.RowIndex]);
+                                m_dtGrunn = (DataTable)m_dgvPontunGagnagrunnar.DataSource;
+                                m_dtGrunn.AcceptChanges();
+
+                            }
+                        }
+                        break;
+                }
+
+                setjaFoldaTaba();
+            }
+        }
     }
 
 }

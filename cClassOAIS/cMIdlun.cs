@@ -874,7 +874,7 @@ namespace cClassOAIS
         public DataTable getGagnagrunnaFyrirSpurnir(string strGagnagrunnur)
         {
             sækjaTengistreng();
-            string strSQL = string.Format("SELECT * FROM dt_fyrirspurnir d where gagnagrunnur = '{0}';", strGagnagrunnur);
+            string strSQL = string.Format("SELECT * FROM dt_fyrirspurnir d where gagnagrunnur = '{0}' order by nr;", strGagnagrunnur);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

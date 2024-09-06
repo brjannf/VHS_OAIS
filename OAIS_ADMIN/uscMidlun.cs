@@ -669,6 +669,7 @@ namespace OAIS_ADMIN
                 midlun.uppFæraMálHeitiGOPRO(strID, strMalTitill, strSagID, m_strGrunnur);
 
                 m_prbGogn.PerformStep();
+                m_lblToflurStatus.Text = "Uppfæri gögn GoPro";
                 m_lblGognStatus.Text = string.Format("{0}/{1}", m_prbGogn.Value, m_prbGogn.Maximum);
                 Application.DoEvents();
             }

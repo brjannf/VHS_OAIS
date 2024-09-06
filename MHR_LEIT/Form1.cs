@@ -66,6 +66,10 @@ namespace MHR_LEIT
             {
                 m_chbAfrit.Visible = true;
             }
+            if (bAdmin && !bAfrit)
+            {
+                m_btnKeyrAfritInn.Visible = true;
+            }
             //skáarkerfi dip-tafla
             m_dtDIPSkra.Columns.Add("skjalID");
             m_dtDIPSkra.Columns.Add("titill");
@@ -180,8 +184,8 @@ namespace MHR_LEIT
             }
             else
             {
-                m_comGagnagrunnar.Visible = false;
-                m_lblGagangrunnar.Visible = false;
+                //m_comGagnagrunnar.Visible = false;
+                //m_lblGagangrunnar.Visible = false;
             }
         }
         private void fyllaDIPLista()
@@ -1794,7 +1798,7 @@ namespace MHR_LEIT
                 {
                     string strGrunnur = m_comGagnagrunnar.SelectedValue.ToString();
                     string strHeiti = m_comGagnagrunnar.Text.ToString();
-                    frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti, m_dtDIPGrunn, m_dtDIPSkra, m_dtDIPMal, virkurNotandi, m_dsDIPmal);
+                    frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti, m_dtDIPGrunn, m_dtDIPSkra, m_dtDIPMal, virkurNotandi, m_dsDIPmal, virkurNotandi);
                     frmGagn.ShowDialog();
 
                     foreach (DataRow r in frmGagn.m_dtPantad.Rows)
@@ -1977,11 +1981,52 @@ namespace MHR_LEIT
         {
             if (m_comVorsluUtgafur.Focused)
             {
+
                 if (m_comVorsluUtgafur.SelectedIndex != 0)
                 {
+                    //ef valið tékka hvort þetta sé gagnagrunnur (ef svo opna viðmót)
+                    cVorsluutgafur utgafur = new cVorsluutgafur();
+                    utgafur.m_bAfrit = virkurNotandi.m_bAfrit;
+
                     string strUtgafa = m_comVorsluUtgafur.SelectedValue.ToString();
-                    fyllaExtensions("", "", strUtgafa);
+                    string strGagnagrunnur = utgafur.erGagnagrunnur(strUtgafa);
+                    if (!string.IsNullOrEmpty(strGagnagrunnur))
+                    {
+                        string strGrunnur = strUtgafa.Replace(".", "_");
+                        string strHeiti = strGagnagrunnur;
+                        frmGagnagrunnur frmGagn = new frmGagnagrunnur(strGrunnur, strHeiti, m_dtDIPGrunn, m_dtDIPSkra, m_dtDIPMal, virkurNotandi, m_dsDIPmal, virkurNotandi);
+                        frmGagn.ShowDialog();
+
+                        foreach (DataRow r in frmGagn.m_dtPantad.Rows)
+                        {
+                            string strLeitarskilyrði = r["leitarskilyrdi"].ToString().Replace("'", "\"");
+                            string strEXp = string.Format("vorsluutgafa='{0}' and leitarskilyrdi='{1}'", r["vorsluutgafa"], strLeitarskilyrði, virkurNotandi);
+                            DataRow[] frow = m_dtDIPGrunn.Select(strEXp);
+                            if (frow.Length == 0)
+                            {
+                                m_dtDIPGrunn.ImportRow(r);
+                            }
+                            //    m_dtDIPGrunn.Columns.Add("Heiti");
+                            //    m_dtDIPGrunn.Columns.Add("vorsluutgafa");
+                            //    m_dtDIPGrunn.Columns.Add("leitarskilyrði");
+                            //    m_dtDIPGrunn.Columns.Add("sql");
+                        }
+                        m_dgvDIPGagnagrunnar.AutoGenerateColumns = false;
+                        m_dgvDIPGagnagrunnar.DataSource = m_dtDIPGrunn;
+
+
+                        m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
+                        int iFjoldi = m_dtDIPGrunn.Rows.Count + m_dtDIPSkra.Rows.Count + m_dtDIPMal.Rows.Count;
+                        m_grbDIP.Text = string.Format("Óafgreitt ({0})", iFjoldi);
+                        m_tapAfgreidsla.Text = string.Format("Afgreiðsla: {0} skrár óafgreiddar", iFjoldi);
+                    }
+                    else
+                    {
+                        fyllaExtensions("", "", strUtgafa);
+                    }
+
                 }
+
             }
 
         }
@@ -2102,6 +2147,8 @@ namespace MHR_LEIT
         private void m_tacMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             //finna út hvort til sé óafgreidd pöntun
+            fyllaDIPLista();
+            //EF TIL SÉ ÓAFGREIDD PÖNTUN VELJA HANA
             int iFjoldi = 0;
             if (m_dsDIPmal.Tables.Count != 0)
             {
@@ -2127,7 +2174,7 @@ namespace MHR_LEIT
                 {
                     m_trwDIP.Nodes.Insert(0, "Óafgreidd pöntun");
                 }
-
+                m_trwDIP.SelectedNode = m_trwDIP.Nodes[0];  
 
             }
             else
@@ -2225,7 +2272,7 @@ namespace MHR_LEIT
         private void m_btnGetData_Click(object sender, EventArgs e)
         {
             DialogResult result = folderBrowserDialog1.ShowDialog(this);
-           
+
             if (result == DialogResult.OK)
             {
                 //1. fara í gengum pakkann og setja í datagrid
@@ -2321,12 +2368,12 @@ namespace MHR_LEIT
         {
             //0. hvar er endadótið - verð víst að biðja um það get líka fundið í fyrri afendingum í slóð dt_vörlsuútgafúr
 
-           
+
             cVHS_drives drive = new cVHS_drives();
             drive.m_bAfrit = virkurNotandi.m_bAfrit;
             drive.getVirktDrif();
             string strEndaMappa = drive.Nafn;
-            
+
             //DialogResult result = folderBrowserDialog1.ShowDialog(this);
             //if (result == DialogResult.OK) 
             //{
@@ -2334,17 +2381,17 @@ namespace MHR_LEIT
             //    m_lblEndaMappa.Text = strEndaMappa;
 
             //}
-            foreach(DataGridViewRow dr in m_dgvUtgafur.Rows)
+            foreach (DataGridViewRow dr in m_dgvUtgafur.Rows)
             {
                 if (dr.Cells["colMidlunTaka"].Value.ToString() == "True")
                 {
                     //1. Flytja skjöl á réttan stað
                     string strAIP = m_strRootInsert + "\\Vörsluútgáfur";
                     string[] strAIPmoppur = Directory.GetDirectories(strAIP);
-                    foreach(string str in strAIPmoppur)
+                    foreach (string str in strAIPmoppur)
                     {
                         string[] strAIPVarslaMoppur = Directory.GetDirectories(str);
-                       
+
                         foreach (string strAIPmAPPA in strAIPVarslaMoppur)
                         {
                             string[] strSplit = strAIPmAPPA.Split("\\");
@@ -2362,27 +2409,27 @@ namespace MHR_LEIT
                                 {
                                     Directory.CreateDirectory(strEndaMappa + "\\" + strAudkenni);
                                 }
-                           
+
                                 CopyFolder(strAIPmAPPA, strEndaMappa + "\\" + strAudkenni);
                             }
                             //3. Keyra inn gagnagrunn
                             if (strAudkenni == "SQL")
                             {
                                 string[] strSQLScript = Directory.GetFiles(strAIPmAPPA);
-                                if(strSQLScript.Length > 0)
+                                if (strSQLScript.Length > 0)
                                 {
-                                    
+
                                     strSplit = strSQLScript[0].Split("\\");
                                     string strScript = strSplit[strSplit.Length - 1];
                                     strSplit = strScript.Split(".");
-                                    if(strSplit.Length != 0)
+                                    if (strSplit.Length != 0)
                                     {
                                         Restore(strSQLScript[0], strSplit[0]);
                                     }
-                                  
+
                                 }
                             }
-                  
+
                         }
                     }
                     //2. Keyra inn innsert fyrir media
@@ -2459,6 +2506,14 @@ namespace MHR_LEIT
                 //m_lblBackupStatus.Text = folder; // string.Format("{0}/{1}", m_prgBackup.Value, m_prgBackup.Maximum);
                 Application.DoEvents();
             }
+        }
+
+        private void m_btnKeyrAfritInn_Click(object sender, EventArgs e)
+        {
+            frmUppsetning frmUpp = new frmUppsetning();
+            frmUpp.ShowDialog();
+            m_chbAfrit.Visible = true;
+            m_btnKeyrAfritInn.Visible = true;
         }
     }
 }

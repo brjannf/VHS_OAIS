@@ -340,11 +340,11 @@
             // 
             // m_btnUppfæra
             // 
-            m_btnUppfæra.Location = new Point(1538, 121);
+            m_btnUppfæra.Location = new Point(1455, 29);
             m_btnUppfæra.Name = "m_btnUppfæra";
             m_btnUppfæra.Size = new Size(154, 44);
             m_btnUppfæra.TabIndex = 13;
-            m_btnUppfæra.Text = "uppfæra mála";
+            m_btnUppfæra.Text = "GoPro innsert";
             m_btnUppfæra.UseVisualStyleBackColor = true;
             m_btnUppfæra.Click += button1_Click;
             // 

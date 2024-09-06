@@ -100,7 +100,7 @@ namespace cClassOAIS
 
             if (this.id == 0)
             {
-                command.CommandText = "REPLACE INTO `dt_karfa_item_gagna_dip` SET  `karfa`=@karfa, `vorsluutgafa`=@vorsluutgafa,`slod`=@slod,`heiti`=@heiti,`leitarskilyrdi`=@leitarskilyrdi,`sql`=@sql,`heitiVorslu`=@heitiVorslu ; ";
+                command.CommandText = "REPLACE INTO `dt_karfa_item_gagna_dip` SET  `karfa`=@karfa, `vorsluutgafa`=@vorsluutgafa,`slod`=@slod,`heiti`=@heiti,`leitarskilyrdi`=@leitarskilyrdi,`sql`=@sql; ";
             }
             else
             {

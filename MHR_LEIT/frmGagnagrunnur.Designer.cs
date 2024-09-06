@@ -28,450 +28,488 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.m_dgvFyrirspurnir = new System.Windows.Forms.DataGridView();
-            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNafn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLysing = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFyrirspurn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colGagnagrunnur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.m_btnLjukaPontun = new System.Windows.Forms.Button();
-            this.m_btnSetjaIkorfu = new System.Windows.Forms.Button();
-            this.m_grbPontun = new System.Windows.Forms.GroupBox();
-            this.m_tacPantanir = new System.Windows.Forms.TabControl();
-            this.m_tapGagnagrunnar = new System.Windows.Forms.TabPage();
-            this.m_dgvPantGagnagrunnar = new System.Windows.Forms.DataGridView();
-            this.m_tapSkráarkerfi = new System.Windows.Forms.TabPage();
-            this.m_dgvPantSkraarkerfi = new System.Windows.Forms.DataGridView();
-            this.colSkraID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSkraTitill = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSkraheitiVorslu = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_tapMalakrefi = new System.Windows.Forms.TabPage();
-            this.m_dgvPantMalaKerfi = new System.Windows.Forms.DataGridView();
-            this.colMalID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMalTitillSkjals = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMalTitillMals = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMalHeitiVorslu = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.m_grbNidurstodur = new System.Windows.Forms.GroupBox();
-            this.m_dgvNidurstodur = new System.Windows.Forms.DataGridView();
-            this.colGagnHeit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLeitSkilyrdi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colHeitiVarsla = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvFyrirspurnir)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
-            this.m_grbPontun.SuspendLayout();
-            this.m_tacPantanir.SuspendLayout();
-            this.m_tapGagnagrunnar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvPantGagnagrunnar)).BeginInit();
-            this.m_tapSkráarkerfi.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvPantSkraarkerfi)).BeginInit();
-            this.m_tapMalakrefi.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvPantMalaKerfi)).BeginInit();
-            this.m_grbNidurstodur.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvNidurstodur)).BeginInit();
-            this.SuspendLayout();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            m_dgvFyrirspurnir = new DataGridView();
+            colID = new DataGridViewTextBoxColumn();
+            colNafn = new DataGridViewTextBoxColumn();
+            colLysing = new DataGridViewTextBoxColumn();
+            colFyrirspurn = new DataGridViewTextBoxColumn();
+            colGagnagrunnur = new DataGridViewTextBoxColumn();
+            splitContainer1 = new SplitContainer();
+            splitContainer2 = new SplitContainer();
+            splitContainer3 = new SplitContainer();
+            m_btnLjukaPontun = new Button();
+            m_btnSetjaIkorfu = new Button();
+            m_grbPontun = new GroupBox();
+            m_tacPantanir = new TabControl();
+            m_tapGagnagrunnar = new TabPage();
+            m_dgvPantGagnagrunnar = new DataGridView();
+            colGagnHeit = new DataGridViewTextBoxColumn();
+            colLeitSkilyrdi = new DataGridViewTextBoxColumn();
+            colHeitiVarsla = new DataGridViewTextBoxColumn();
+            colDelete = new DataGridViewButtonColumn();
+            m_tapSkráarkerfi = new TabPage();
+            m_dgvPantSkraarkerfi = new DataGridView();
+            colSkraID = new DataGridViewTextBoxColumn();
+            colSkraTitill = new DataGridViewTextBoxColumn();
+            colSkraheitiVorslu = new DataGridViewTextBoxColumn();
+            colSkraDelete = new DataGridViewButtonColumn();
+            m_tapMalakrefi = new TabPage();
+            m_dgvPantMalaKerfi = new DataGridView();
+            m_grbNidurstodur = new GroupBox();
+            m_dgvNidurstodur = new DataGridView();
+            colMalID = new DataGridViewTextBoxColumn();
+            colMalTitillSkjals = new DataGridViewTextBoxColumn();
+            colMalTitillMals = new DataGridViewTextBoxColumn();
+            colMalHeitiVorslu = new DataGridViewTextBoxColumn();
+            colMalDelete = new DataGridViewButtonColumn();
+            ((System.ComponentModel.ISupportInitialize)m_dgvFyrirspurnir).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer3).BeginInit();
+            splitContainer3.Panel1.SuspendLayout();
+            splitContainer3.Panel2.SuspendLayout();
+            splitContainer3.SuspendLayout();
+            m_grbPontun.SuspendLayout();
+            m_tacPantanir.SuspendLayout();
+            m_tapGagnagrunnar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)m_dgvPantGagnagrunnar).BeginInit();
+            m_tapSkráarkerfi.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)m_dgvPantSkraarkerfi).BeginInit();
+            m_tapMalakrefi.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)m_dgvPantMalaKerfi).BeginInit();
+            m_grbNidurstodur.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)m_dgvNidurstodur).BeginInit();
+            SuspendLayout();
             // 
             // m_dgvFyrirspurnir
             // 
-            this.m_dgvFyrirspurnir.AllowUserToAddRows = false;
-            this.m_dgvFyrirspurnir.AllowUserToDeleteRows = false;
-            this.m_dgvFyrirspurnir.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.m_dgvFyrirspurnir.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colID,
-            this.colNafn,
-            this.colLysing,
-            this.colFyrirspurn,
-            this.colGagnagrunnur});
-            this.m_dgvFyrirspurnir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvFyrirspurnir.Location = new System.Drawing.Point(0, 0);
-            this.m_dgvFyrirspurnir.Name = "m_dgvFyrirspurnir";
-            this.m_dgvFyrirspurnir.RowHeadersVisible = false;
-            this.m_dgvFyrirspurnir.RowTemplate.Height = 25;
-            this.m_dgvFyrirspurnir.Size = new System.Drawing.Size(1094, 185);
-            this.m_dgvFyrirspurnir.TabIndex = 0;
+            m_dgvFyrirspurnir.AllowUserToAddRows = false;
+            m_dgvFyrirspurnir.AllowUserToDeleteRows = false;
+            m_dgvFyrirspurnir.AllowUserToOrderColumns = true;
+            m_dgvFyrirspurnir.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            m_dgvFyrirspurnir.Columns.AddRange(new DataGridViewColumn[] { colID, colNafn, colLysing, colFyrirspurn, colGagnagrunnur });
+            m_dgvFyrirspurnir.Dock = DockStyle.Fill;
+            m_dgvFyrirspurnir.Location = new Point(0, 0);
+            m_dgvFyrirspurnir.Name = "m_dgvFyrirspurnir";
+            m_dgvFyrirspurnir.RowHeadersVisible = false;
+            m_dgvFyrirspurnir.RowTemplate.Height = 25;
+            m_dgvFyrirspurnir.Size = new Size(924, 184);
+            m_dgvFyrirspurnir.TabIndex = 0;
             // 
             // colID
             // 
-            this.colID.DataPropertyName = "id";
-            this.colID.HeaderText = "ID";
-            this.colID.Name = "colID";
-            this.colID.Visible = false;
+            colID.DataPropertyName = "id";
+            colID.HeaderText = "ID";
+            colID.Name = "colID";
+            colID.Visible = false;
             // 
             // colNafn
             // 
-            this.colNafn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colNafn.DataPropertyName = "nafn";
-            this.colNafn.HeaderText = "Titill fyrirspurnar";
-            this.colNafn.Name = "colNafn";
-            this.colNafn.Width = 108;
+            colNafn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colNafn.DataPropertyName = "nafn";
+            colNafn.HeaderText = "Titill fyrirspurnar";
+            colNafn.Name = "colNafn";
+            colNafn.Width = 108;
             // 
             // colLysing
             // 
-            this.colLysing.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colLysing.DataPropertyName = "lysing";
-            this.colLysing.HeaderText = "Lýsing fyrirspurnar";
-            this.colLysing.Name = "colLysing";
+            colLysing.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colLysing.DataPropertyName = "lysing";
+            colLysing.HeaderText = "Lýsing fyrirspurnar";
+            colLysing.Name = "colLysing";
             // 
             // colFyrirspurn
             // 
-            this.colFyrirspurn.DataPropertyName = "fyrirspurn";
-            this.colFyrirspurn.HeaderText = "Fyrirspurn";
-            this.colFyrirspurn.Name = "colFyrirspurn";
-            this.colFyrirspurn.Visible = false;
+            colFyrirspurn.DataPropertyName = "fyrirspurn";
+            colFyrirspurn.HeaderText = "Fyrirspurn";
+            colFyrirspurn.Name = "colFyrirspurn";
+            colFyrirspurn.Visible = false;
             // 
             // colGagnagrunnur
             // 
-            this.colGagnagrunnur.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colGagnagrunnur.DataPropertyName = "gagnagrunnur";
-            this.colGagnagrunnur.HeaderText = "Gagnagrunnur";
-            this.colGagnagrunnur.Name = "colGagnagrunnur";
-            this.colGagnagrunnur.Visible = false;
+            colGagnagrunnur.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colGagnagrunnur.DataPropertyName = "gagnagrunnur";
+            colGagnagrunnur.HeaderText = "Gagnagrunnur";
+            colGagnagrunnur.Name = "colGagnagrunnur";
+            colGagnagrunnur.Visible = false;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            splitContainer1.Panel1.Controls.Add(splitContainer2);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.m_grbNidurstodur);
-            this.splitContainer1.Size = new System.Drawing.Size(1528, 577);
-            this.splitContainer1.SplitterDistance = 288;
-            this.splitContainer1.TabIndex = 1;
+            splitContainer1.Panel2.AutoScroll = true;
+            splitContainer1.Panel2.Controls.Add(m_grbNidurstodur);
+            splitContainer1.Size = new Size(1364, 577);
+            splitContainer1.SplitterDistance = 287;
+            splitContainer1.TabIndex = 1;
             // 
             // splitContainer2
             // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
+            splitContainer2.Dock = DockStyle.Fill;
+            splitContainer2.Location = new Point(0, 0);
+            splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
+            splitContainer2.Panel1.Controls.Add(splitContainer3);
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.m_grbPontun);
-            this.splitContainer2.Size = new System.Drawing.Size(1528, 288);
-            this.splitContainer2.SplitterDistance = 1094;
-            this.splitContainer2.TabIndex = 1;
+            splitContainer2.Panel2.Controls.Add(m_grbPontun);
+            splitContainer2.Size = new Size(1364, 287);
+            splitContainer2.SplitterDistance = 924;
+            splitContainer2.TabIndex = 1;
             // 
             // splitContainer3
             // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            splitContainer3.Dock = DockStyle.Fill;
+            splitContainer3.Location = new Point(0, 0);
+            splitContainer3.Name = "splitContainer3";
+            splitContainer3.Orientation = Orientation.Horizontal;
             // 
             // splitContainer3.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.m_dgvFyrirspurnir);
+            splitContainer3.Panel1.Controls.Add(m_dgvFyrirspurnir);
             // 
             // splitContainer3.Panel2
             // 
-            this.splitContainer3.Panel2.Controls.Add(this.m_btnLjukaPontun);
-            this.splitContainer3.Panel2.Controls.Add(this.m_btnSetjaIkorfu);
-            this.splitContainer3.Size = new System.Drawing.Size(1094, 288);
-            this.splitContainer3.SplitterDistance = 185;
-            this.splitContainer3.TabIndex = 1;
+            splitContainer3.Panel2.Controls.Add(m_btnLjukaPontun);
+            splitContainer3.Panel2.Controls.Add(m_btnSetjaIkorfu);
+            splitContainer3.Size = new Size(924, 287);
+            splitContainer3.SplitterDistance = 184;
+            splitContainer3.TabIndex = 1;
             // 
             // m_btnLjukaPontun
             // 
-            this.m_btnLjukaPontun.Location = new System.Drawing.Point(923, 31);
-            this.m_btnLjukaPontun.Name = "m_btnLjukaPontun";
-            this.m_btnLjukaPontun.Size = new System.Drawing.Size(147, 23);
-            this.m_btnLjukaPontun.TabIndex = 1;
-            this.m_btnLjukaPontun.Text = "Ljúka pöntun";
-            this.m_btnLjukaPontun.UseVisualStyleBackColor = true;
-            this.m_btnLjukaPontun.Click += new System.EventHandler(this.m_btnLjukaPontun_Click);
+            m_btnLjukaPontun.Location = new Point(724, 53);
+            m_btnLjukaPontun.Name = "m_btnLjukaPontun";
+            m_btnLjukaPontun.Size = new Size(147, 23);
+            m_btnLjukaPontun.TabIndex = 1;
+            m_btnLjukaPontun.Text = "Ljúka pöntun";
+            m_btnLjukaPontun.UseVisualStyleBackColor = true;
+            m_btnLjukaPontun.Visible = false;
+            m_btnLjukaPontun.Click += m_btnLjukaPontun_Click;
             // 
             // m_btnSetjaIkorfu
             // 
-            this.m_btnSetjaIkorfu.Location = new System.Drawing.Point(691, 31);
-            this.m_btnSetjaIkorfu.Name = "m_btnSetjaIkorfu";
-            this.m_btnSetjaIkorfu.Size = new System.Drawing.Size(147, 23);
-            this.m_btnSetjaIkorfu.TabIndex = 0;
-            this.m_btnSetjaIkorfu.Text = "Setja í körfu";
-            this.m_btnSetjaIkorfu.UseVisualStyleBackColor = true;
-            this.m_btnSetjaIkorfu.Click += new System.EventHandler(this.m_btnSetjaIkorfu_Click);
+            m_btnSetjaIkorfu.Location = new Point(724, 13);
+            m_btnSetjaIkorfu.Name = "m_btnSetjaIkorfu";
+            m_btnSetjaIkorfu.Size = new Size(147, 23);
+            m_btnSetjaIkorfu.TabIndex = 0;
+            m_btnSetjaIkorfu.Text = "Setja í körfu";
+            m_btnSetjaIkorfu.UseVisualStyleBackColor = true;
+            m_btnSetjaIkorfu.Click += m_btnSetjaIkorfu_Click;
             // 
             // m_grbPontun
             // 
-            this.m_grbPontun.Controls.Add(this.m_tacPantanir);
-            this.m_grbPontun.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_grbPontun.Location = new System.Drawing.Point(0, 0);
-            this.m_grbPontun.Name = "m_grbPontun";
-            this.m_grbPontun.Size = new System.Drawing.Size(430, 288);
-            this.m_grbPontun.TabIndex = 2;
-            this.m_grbPontun.TabStop = false;
-            this.m_grbPontun.Text = "Gögn óafgreitt";
+            m_grbPontun.Controls.Add(m_tacPantanir);
+            m_grbPontun.Dock = DockStyle.Fill;
+            m_grbPontun.Location = new Point(0, 0);
+            m_grbPontun.Name = "m_grbPontun";
+            m_grbPontun.Size = new Size(436, 287);
+            m_grbPontun.TabIndex = 2;
+            m_grbPontun.TabStop = false;
+            m_grbPontun.Text = "Gögn óafgreitt";
             // 
             // m_tacPantanir
             // 
-            this.m_tacPantanir.Controls.Add(this.m_tapGagnagrunnar);
-            this.m_tacPantanir.Controls.Add(this.m_tapSkráarkerfi);
-            this.m_tacPantanir.Controls.Add(this.m_tapMalakrefi);
-            this.m_tacPantanir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tacPantanir.Location = new System.Drawing.Point(3, 19);
-            this.m_tacPantanir.Name = "m_tacPantanir";
-            this.m_tacPantanir.SelectedIndex = 0;
-            this.m_tacPantanir.Size = new System.Drawing.Size(424, 266);
-            this.m_tacPantanir.TabIndex = 1;
+            m_tacPantanir.Controls.Add(m_tapGagnagrunnar);
+            m_tacPantanir.Controls.Add(m_tapSkráarkerfi);
+            m_tacPantanir.Controls.Add(m_tapMalakrefi);
+            m_tacPantanir.Dock = DockStyle.Fill;
+            m_tacPantanir.Location = new Point(3, 19);
+            m_tacPantanir.Name = "m_tacPantanir";
+            m_tacPantanir.SelectedIndex = 0;
+            m_tacPantanir.Size = new Size(430, 265);
+            m_tacPantanir.TabIndex = 1;
             // 
             // m_tapGagnagrunnar
             // 
-            this.m_tapGagnagrunnar.Controls.Add(this.m_dgvPantGagnagrunnar);
-            this.m_tapGagnagrunnar.Location = new System.Drawing.Point(4, 24);
-            this.m_tapGagnagrunnar.Name = "m_tapGagnagrunnar";
-            this.m_tapGagnagrunnar.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapGagnagrunnar.Size = new System.Drawing.Size(416, 238);
-            this.m_tapGagnagrunnar.TabIndex = 0;
-            this.m_tapGagnagrunnar.Text = "Gagangrunnar";
-            this.m_tapGagnagrunnar.UseVisualStyleBackColor = true;
+            m_tapGagnagrunnar.Controls.Add(m_dgvPantGagnagrunnar);
+            m_tapGagnagrunnar.Location = new Point(4, 24);
+            m_tapGagnagrunnar.Name = "m_tapGagnagrunnar";
+            m_tapGagnagrunnar.Padding = new Padding(3);
+            m_tapGagnagrunnar.Size = new Size(422, 237);
+            m_tapGagnagrunnar.TabIndex = 0;
+            m_tapGagnagrunnar.Text = "Gagnagrunnar";
+            m_tapGagnagrunnar.UseVisualStyleBackColor = true;
             // 
             // m_dgvPantGagnagrunnar
             // 
-            this.m_dgvPantGagnagrunnar.AllowUserToAddRows = false;
-            this.m_dgvPantGagnagrunnar.AllowUserToDeleteRows = false;
-            this.m_dgvPantGagnagrunnar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.m_dgvPantGagnagrunnar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colGagnHeit,
-            this.colLeitSkilyrdi,
-            this.colHeitiVarsla});
-            this.m_dgvPantGagnagrunnar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvPantGagnagrunnar.Location = new System.Drawing.Point(3, 3);
-            this.m_dgvPantGagnagrunnar.Name = "m_dgvPantGagnagrunnar";
-            this.m_dgvPantGagnagrunnar.ReadOnly = true;
-            this.m_dgvPantGagnagrunnar.RowHeadersVisible = false;
-            this.m_dgvPantGagnagrunnar.RowTemplate.Height = 25;
-            this.m_dgvPantGagnagrunnar.Size = new System.Drawing.Size(410, 232);
-            this.m_dgvPantGagnagrunnar.TabIndex = 0;
-            // 
-            // m_tapSkráarkerfi
-            // 
-            this.m_tapSkráarkerfi.Controls.Add(this.m_dgvPantSkraarkerfi);
-            this.m_tapSkráarkerfi.Location = new System.Drawing.Point(4, 24);
-            this.m_tapSkráarkerfi.Name = "m_tapSkráarkerfi";
-            this.m_tapSkráarkerfi.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapSkráarkerfi.Size = new System.Drawing.Size(416, 238);
-            this.m_tapSkráarkerfi.TabIndex = 1;
-            this.m_tapSkráarkerfi.Text = "Skráarkerfi";
-            this.m_tapSkráarkerfi.UseVisualStyleBackColor = true;
-            // 
-            // m_dgvPantSkraarkerfi
-            // 
-            this.m_dgvPantSkraarkerfi.AllowUserToAddRows = false;
-            this.m_dgvPantSkraarkerfi.AllowUserToDeleteRows = false;
-            this.m_dgvPantSkraarkerfi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.m_dgvPantSkraarkerfi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colSkraID,
-            this.colSkraTitill,
-            this.colSkraheitiVorslu});
-            this.m_dgvPantSkraarkerfi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvPantSkraarkerfi.Location = new System.Drawing.Point(3, 3);
-            this.m_dgvPantSkraarkerfi.Name = "m_dgvPantSkraarkerfi";
-            this.m_dgvPantSkraarkerfi.ReadOnly = true;
-            this.m_dgvPantSkraarkerfi.RowHeadersVisible = false;
-            this.m_dgvPantSkraarkerfi.RowTemplate.Height = 25;
-            this.m_dgvPantSkraarkerfi.Size = new System.Drawing.Size(410, 232);
-            this.m_dgvPantSkraarkerfi.TabIndex = 0;
-            // 
-            // colSkraID
-            // 
-            this.colSkraID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colSkraID.DataPropertyName = "skjalID";
-            this.colSkraID.HeaderText = "Auðkenni skjals";
-            this.colSkraID.Name = "colSkraID";
-            this.colSkraID.ReadOnly = true;
-            this.colSkraID.Width = 105;
-            // 
-            // colSkraTitill
-            // 
-            this.colSkraTitill.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colSkraTitill.DataPropertyName = "titill";
-            this.colSkraTitill.HeaderText = "Titill skjals";
-            this.colSkraTitill.Name = "colSkraTitill";
-            this.colSkraTitill.ReadOnly = true;
-            // 
-            // colSkraheitiVorslu
-            // 
-            this.colSkraheitiVorslu.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colSkraheitiVorslu.DataPropertyName = "heitiVorslu";
-            this.colSkraheitiVorslu.HeaderText = "Heiti vörsluútgáfu";
-            this.colSkraheitiVorslu.Name = "colSkraheitiVorslu";
-            this.colSkraheitiVorslu.ReadOnly = true;
-            this.colSkraheitiVorslu.Width = 116;
-            // 
-            // m_tapMalakrefi
-            // 
-            this.m_tapMalakrefi.Controls.Add(this.m_dgvPantMalaKerfi);
-            this.m_tapMalakrefi.Location = new System.Drawing.Point(4, 24);
-            this.m_tapMalakrefi.Name = "m_tapMalakrefi";
-            this.m_tapMalakrefi.Padding = new System.Windows.Forms.Padding(3);
-            this.m_tapMalakrefi.Size = new System.Drawing.Size(416, 238);
-            this.m_tapMalakrefi.TabIndex = 2;
-            this.m_tapMalakrefi.Text = "Málakerfi";
-            this.m_tapMalakrefi.UseVisualStyleBackColor = true;
-            // 
-            // m_dgvPantMalaKerfi
-            // 
-            this.m_dgvPantMalaKerfi.AllowUserToAddRows = false;
-            this.m_dgvPantMalaKerfi.AllowUserToDeleteRows = false;
-            this.m_dgvPantMalaKerfi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.m_dgvPantMalaKerfi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colMalID,
-            this.colMalTitillSkjals,
-            this.colMalTitillMals,
-            this.colMalHeitiVorslu});
-            this.m_dgvPantMalaKerfi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvPantMalaKerfi.Location = new System.Drawing.Point(3, 3);
-            this.m_dgvPantMalaKerfi.Name = "m_dgvPantMalaKerfi";
-            this.m_dgvPantMalaKerfi.ReadOnly = true;
-            this.m_dgvPantMalaKerfi.RowHeadersVisible = false;
-            this.m_dgvPantMalaKerfi.RowTemplate.Height = 25;
-            this.m_dgvPantMalaKerfi.Size = new System.Drawing.Size(410, 232);
-            this.m_dgvPantMalaKerfi.TabIndex = 0;
-            // 
-            // colMalID
-            // 
-            this.colMalID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colMalID.DataPropertyName = "Skrar";
-            this.colMalID.HeaderText = "Auðkenni skjals";
-            this.colMalID.Name = "colMalID";
-            this.colMalID.ReadOnly = true;
-            this.colMalID.Width = 105;
-            // 
-            // colMalTitillSkjals
-            // 
-            this.colMalTitillSkjals.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colMalTitillSkjals.DataPropertyName = "titill";
-            this.colMalTitillSkjals.HeaderText = "Titill skjals";
-            this.colMalTitillSkjals.Name = "colMalTitillSkjals";
-            this.colMalTitillSkjals.ReadOnly = true;
-            // 
-            // colMalTitillMals
-            // 
-            this.colMalTitillMals.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            this.colMalTitillMals.DataPropertyName = "maltitill";
-            this.colMalTitillMals.HeaderText = "Titill máls";
-            this.colMalTitillMals.Name = "colMalTitillMals";
-            this.colMalTitillMals.ReadOnly = true;
-            this.colMalTitillMals.Width = 5;
-            // 
-            // colMalHeitiVorslu
-            // 
-            this.colMalHeitiVorslu.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colMalHeitiVorslu.DataPropertyName = "heitivorslu";
-            this.colMalHeitiVorslu.HeaderText = "Heiti vörsluútgáfu";
-            this.colMalHeitiVorslu.Name = "colMalHeitiVorslu";
-            this.colMalHeitiVorslu.ReadOnly = true;
-            this.colMalHeitiVorslu.Width = 116;
-            // 
-            // m_grbNidurstodur
-            // 
-            this.m_grbNidurstodur.Controls.Add(this.m_dgvNidurstodur);
-            this.m_grbNidurstodur.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_grbNidurstodur.Location = new System.Drawing.Point(0, 0);
-            this.m_grbNidurstodur.Name = "m_grbNidurstodur";
-            this.m_grbNidurstodur.Size = new System.Drawing.Size(1528, 285);
-            this.m_grbNidurstodur.TabIndex = 1;
-            this.m_grbNidurstodur.TabStop = false;
-            this.m_grbNidurstodur.Text = "Niðurstöður";
-            // 
-            // m_dgvNidurstodur
-            // 
-            this.m_dgvNidurstodur.AllowUserToAddRows = false;
-            this.m_dgvNidurstodur.AllowUserToDeleteRows = false;
-            this.m_dgvNidurstodur.AllowUserToOrderColumns = true;
-            this.m_dgvNidurstodur.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.m_dgvNidurstodur.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_dgvNidurstodur.Location = new System.Drawing.Point(3, 19);
-            this.m_dgvNidurstodur.Name = "m_dgvNidurstodur";
-            this.m_dgvNidurstodur.ReadOnly = true;
-            this.m_dgvNidurstodur.RowHeadersVisible = false;
-            this.m_dgvNidurstodur.RowTemplate.Height = 25;
-            this.m_dgvNidurstodur.Size = new System.Drawing.Size(1522, 263);
-            this.m_dgvNidurstodur.TabIndex = 0;
-            this.m_dgvNidurstodur.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.keyrafyrirspurn_CellClick);
+            m_dgvPantGagnagrunnar.AllowUserToAddRows = false;
+            m_dgvPantGagnagrunnar.AllowUserToDeleteRows = false;
+            m_dgvPantGagnagrunnar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            m_dgvPantGagnagrunnar.Columns.AddRange(new DataGridViewColumn[] { colGagnHeit, colLeitSkilyrdi, colHeitiVarsla, colDelete });
+            m_dgvPantGagnagrunnar.Dock = DockStyle.Fill;
+            m_dgvPantGagnagrunnar.Location = new Point(3, 3);
+            m_dgvPantGagnagrunnar.Name = "m_dgvPantGagnagrunnar";
+            m_dgvPantGagnagrunnar.ReadOnly = true;
+            m_dgvPantGagnagrunnar.RowHeadersVisible = false;
+            m_dgvPantGagnagrunnar.RowTemplate.Height = 25;
+            m_dgvPantGagnagrunnar.Size = new Size(416, 231);
+            m_dgvPantGagnagrunnar.TabIndex = 0;
+            m_dgvPantGagnagrunnar.CellClick += m_dgvPantGagnagrunnar_CellClick;
             // 
             // colGagnHeit
             // 
-            this.colGagnHeit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colGagnHeit.DataPropertyName = "heiti";
-            this.colGagnHeit.HeaderText = "Heiti gagnagrunns";
-            this.colGagnHeit.Name = "colGagnHeit";
-            this.colGagnHeit.ReadOnly = true;
-            this.colGagnHeit.Width = 119;
+            colGagnHeit.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colGagnHeit.DataPropertyName = "heiti";
+            colGagnHeit.HeaderText = "Heiti gagnagrunns";
+            colGagnHeit.Name = "colGagnHeit";
+            colGagnHeit.ReadOnly = true;
+            colGagnHeit.Width = 119;
             // 
             // colLeitSkilyrdi
             // 
-            this.colLeitSkilyrdi.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colLeitSkilyrdi.DataPropertyName = "leitarskilyrdi";
-            this.colLeitSkilyrdi.HeaderText = "Leitarskilyrði";
-            this.colLeitSkilyrdi.Name = "colLeitSkilyrdi";
-            this.colLeitSkilyrdi.ReadOnly = true;
+            colLeitSkilyrdi.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colLeitSkilyrdi.DataPropertyName = "leitarskilyrdi";
+            colLeitSkilyrdi.HeaderText = "Leitarskilyrði";
+            colLeitSkilyrdi.Name = "colLeitSkilyrdi";
+            colLeitSkilyrdi.ReadOnly = true;
+            colLeitSkilyrdi.Visible = false;
             // 
             // colHeitiVarsla
             // 
-            this.colHeitiVarsla.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colHeitiVarsla.DataPropertyName = "heitivorslu";
-            this.colHeitiVarsla.HeaderText = "Heiti vörsluúgáfu";
-            this.colHeitiVarsla.Name = "colHeitiVarsla";
-            this.colHeitiVarsla.ReadOnly = true;
-            this.colHeitiVarsla.Width = 113;
+            colHeitiVarsla.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colHeitiVarsla.DataPropertyName = "heitivorslu";
+            colHeitiVarsla.HeaderText = "Heiti vörsluúgáfu";
+            colHeitiVarsla.Name = "colHeitiVarsla";
+            colHeitiVarsla.ReadOnly = true;
+            // 
+            // colDelete
+            // 
+            colDelete.HeaderText = "Fjarlægja";
+            colDelete.Name = "colDelete";
+            colDelete.ReadOnly = true;
+            colDelete.Resizable = DataGridViewTriState.True;
+            colDelete.SortMode = DataGridViewColumnSortMode.Automatic;
+            colDelete.Text = "Fjarlægja";
+            colDelete.ToolTipText = "Fjarlægja færslu úr pöntun";
+            colDelete.UseColumnTextForButtonValue = true;
+            // 
+            // m_tapSkráarkerfi
+            // 
+            m_tapSkráarkerfi.Controls.Add(m_dgvPantSkraarkerfi);
+            m_tapSkráarkerfi.Location = new Point(4, 24);
+            m_tapSkráarkerfi.Name = "m_tapSkráarkerfi";
+            m_tapSkráarkerfi.Padding = new Padding(3);
+            m_tapSkráarkerfi.Size = new Size(422, 237);
+            m_tapSkráarkerfi.TabIndex = 1;
+            m_tapSkráarkerfi.Text = "Skráarkerfi";
+            m_tapSkráarkerfi.UseVisualStyleBackColor = true;
+            // 
+            // m_dgvPantSkraarkerfi
+            // 
+            m_dgvPantSkraarkerfi.AllowUserToAddRows = false;
+            m_dgvPantSkraarkerfi.AllowUserToDeleteRows = false;
+            m_dgvPantSkraarkerfi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            m_dgvPantSkraarkerfi.Columns.AddRange(new DataGridViewColumn[] { colSkraID, colSkraTitill, colSkraheitiVorslu, colSkraDelete });
+            m_dgvPantSkraarkerfi.Dock = DockStyle.Fill;
+            m_dgvPantSkraarkerfi.Location = new Point(3, 3);
+            m_dgvPantSkraarkerfi.Name = "m_dgvPantSkraarkerfi";
+            m_dgvPantSkraarkerfi.ReadOnly = true;
+            m_dgvPantSkraarkerfi.RowHeadersVisible = false;
+            m_dgvPantSkraarkerfi.RowTemplate.Height = 25;
+            m_dgvPantSkraarkerfi.Size = new Size(416, 231);
+            m_dgvPantSkraarkerfi.TabIndex = 0;
+            m_dgvPantSkraarkerfi.CellClick += m_dgvPantGagnagrunnar_CellClick;
+            // 
+            // colSkraID
+            // 
+            colSkraID.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colSkraID.DataPropertyName = "skjalID";
+            colSkraID.HeaderText = "Auðkenni skjals";
+            colSkraID.Name = "colSkraID";
+            colSkraID.ReadOnly = true;
+            colSkraID.Width = 105;
+            // 
+            // colSkraTitill
+            // 
+            colSkraTitill.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colSkraTitill.DataPropertyName = "titill";
+            colSkraTitill.HeaderText = "Titill skjals";
+            colSkraTitill.Name = "colSkraTitill";
+            colSkraTitill.ReadOnly = true;
+            // 
+            // colSkraheitiVorslu
+            // 
+            colSkraheitiVorslu.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colSkraheitiVorslu.DataPropertyName = "heitiVorslu";
+            colSkraheitiVorslu.HeaderText = "Heiti vörsluútgáfu";
+            colSkraheitiVorslu.Name = "colSkraheitiVorslu";
+            colSkraheitiVorslu.ReadOnly = true;
+            colSkraheitiVorslu.Width = 116;
+            // 
+            // colSkraDelete
+            // 
+            colSkraDelete.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colSkraDelete.HeaderText = "Fjarlægja";
+            colSkraDelete.Name = "colSkraDelete";
+            colSkraDelete.ReadOnly = true;
+            colSkraDelete.Text = "Fjarlægja";
+            colSkraDelete.ToolTipText = "Fjarlægja pöntun";
+            colSkraDelete.UseColumnTextForButtonValue = true;
+            colSkraDelete.Width = 61;
+            // 
+            // m_tapMalakrefi
+            // 
+            m_tapMalakrefi.Controls.Add(m_dgvPantMalaKerfi);
+            m_tapMalakrefi.Location = new Point(4, 24);
+            m_tapMalakrefi.Name = "m_tapMalakrefi";
+            m_tapMalakrefi.Padding = new Padding(3);
+            m_tapMalakrefi.Size = new Size(422, 237);
+            m_tapMalakrefi.TabIndex = 2;
+            m_tapMalakrefi.Text = "Málakerfi";
+            m_tapMalakrefi.UseVisualStyleBackColor = true;
+            // 
+            // m_dgvPantMalaKerfi
+            // 
+            m_dgvPantMalaKerfi.AllowUserToAddRows = false;
+            m_dgvPantMalaKerfi.AllowUserToDeleteRows = false;
+            m_dgvPantMalaKerfi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            m_dgvPantMalaKerfi.Columns.AddRange(new DataGridViewColumn[] { colMalID, colMalTitillSkjals, colMalTitillMals, colMalHeitiVorslu, colMalDelete });
+            m_dgvPantMalaKerfi.Dock = DockStyle.Fill;
+            m_dgvPantMalaKerfi.Location = new Point(3, 3);
+            m_dgvPantMalaKerfi.Name = "m_dgvPantMalaKerfi";
+            m_dgvPantMalaKerfi.ReadOnly = true;
+            m_dgvPantMalaKerfi.RowHeadersVisible = false;
+            m_dgvPantMalaKerfi.RowTemplate.Height = 25;
+            m_dgvPantMalaKerfi.Size = new Size(416, 231);
+            m_dgvPantMalaKerfi.TabIndex = 0;
+            m_dgvPantMalaKerfi.CellClick += m_dgvPantGagnagrunnar_CellClick;
+            // 
+            // m_grbNidurstodur
+            // 
+            m_grbNidurstodur.Controls.Add(m_dgvNidurstodur);
+            m_grbNidurstodur.Dock = DockStyle.Fill;
+            m_grbNidurstodur.Location = new Point(0, 0);
+            m_grbNidurstodur.Name = "m_grbNidurstodur";
+            m_grbNidurstodur.Size = new Size(1364, 286);
+            m_grbNidurstodur.TabIndex = 1;
+            m_grbNidurstodur.TabStop = false;
+            m_grbNidurstodur.Text = "Niðurstöður";
+            // 
+            // m_dgvNidurstodur
+            // 
+            m_dgvNidurstodur.AllowUserToAddRows = false;
+            m_dgvNidurstodur.AllowUserToDeleteRows = false;
+            m_dgvNidurstodur.AllowUserToOrderColumns = true;
+            m_dgvNidurstodur.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            m_dgvNidurstodur.Dock = DockStyle.Fill;
+            m_dgvNidurstodur.Location = new Point(3, 19);
+            m_dgvNidurstodur.Name = "m_dgvNidurstodur";
+            m_dgvNidurstodur.ReadOnly = true;
+            m_dgvNidurstodur.RowHeadersVisible = false;
+            m_dgvNidurstodur.RowTemplate.Height = 25;
+            m_dgvNidurstodur.Size = new Size(1358, 264);
+            m_dgvNidurstodur.TabIndex = 0;
+            m_dgvNidurstodur.CellContentClick += keyrafyrirspurn_CellClick;
+            // 
+            // colMalID
+            // 
+            colMalID.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colMalID.DataPropertyName = "Skrar";
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            colMalID.DefaultCellStyle = dataGridViewCellStyle1;
+            colMalID.HeaderText = "Auðkenni skjals";
+            colMalID.Name = "colMalID";
+            colMalID.ReadOnly = true;
+            colMalID.Width = 114;
+            // 
+            // colMalTitillSkjals
+            // 
+            colMalTitillSkjals.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colMalTitillSkjals.DataPropertyName = "titill";
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            colMalTitillSkjals.DefaultCellStyle = dataGridViewCellStyle2;
+            colMalTitillSkjals.HeaderText = "Titill skjals";
+            colMalTitillSkjals.Name = "colMalTitillSkjals";
+            colMalTitillSkjals.ReadOnly = true;
+            // 
+            // colMalTitillMals
+            // 
+            colMalTitillMals.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colMalTitillMals.DataPropertyName = "maltitill";
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            colMalTitillMals.DefaultCellStyle = dataGridViewCellStyle3;
+            colMalTitillMals.HeaderText = "Titill máls";
+            colMalTitillMals.Name = "colMalTitillMals";
+            colMalTitillMals.ReadOnly = true;
+            colMalTitillMals.Width = 82;
+            // 
+            // colMalHeitiVorslu
+            // 
+            colMalHeitiVorslu.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colMalHeitiVorslu.DataPropertyName = "heitivorslu";
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            colMalHeitiVorslu.DefaultCellStyle = dataGridViewCellStyle4;
+            colMalHeitiVorslu.HeaderText = "Heiti vörsluútgáfu";
+            colMalHeitiVorslu.Name = "colMalHeitiVorslu";
+            colMalHeitiVorslu.ReadOnly = true;
+            colMalHeitiVorslu.Width = 116;
+            // 
+            // colMalDelete
+            // 
+            colMalDelete.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colMalDelete.HeaderText = "Fjarlægja";
+            colMalDelete.Name = "colMalDelete";
+            colMalDelete.ReadOnly = true;
+            colMalDelete.Text = "Fjarlægja";
+            colMalDelete.ToolTipText = "Fjarlægja pöntun";
+            colMalDelete.UseColumnTextForButtonValue = true;
+            colMalDelete.Width = 61;
             // 
             // frmGagnagrunnur
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1528, 577);
-            this.Controls.Add(this.splitContainer1);
-            this.Name = "frmGagnagrunnur";
-            this.Text = "frmGagnagrunnur";
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvFyrirspurnir)).EndInit();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
-            this.m_grbPontun.ResumeLayout(false);
-            this.m_tacPantanir.ResumeLayout(false);
-            this.m_tapGagnagrunnar.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvPantGagnagrunnar)).EndInit();
-            this.m_tapSkráarkerfi.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvPantSkraarkerfi)).EndInit();
-            this.m_tapMalakrefi.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvPantMalaKerfi)).EndInit();
-            this.m_grbNidurstodur.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.m_dgvNidurstodur)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1364, 577);
+            Controls.Add(splitContainer1);
+            Name = "frmGagnagrunnur";
+            Text = "frmGagnagrunnur";
+            ((System.ComponentModel.ISupportInitialize)m_dgvFyrirspurnir).EndInit();
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
+            splitContainer3.Panel1.ResumeLayout(false);
+            splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer3).EndInit();
+            splitContainer3.ResumeLayout(false);
+            m_grbPontun.ResumeLayout(false);
+            m_tacPantanir.ResumeLayout(false);
+            m_tapGagnagrunnar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)m_dgvPantGagnagrunnar).EndInit();
+            m_tapSkráarkerfi.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)m_dgvPantSkraarkerfi).EndInit();
+            m_tapMalakrefi.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)m_dgvPantMalaKerfi).EndInit();
+            m_grbNidurstodur.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)m_dgvNidurstodur).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
@@ -497,15 +535,18 @@
         private DataGridView m_dgvPantSkraarkerfi;
         private DataGridView m_dgvPantMalaKerfi;
         private Button m_btnLjukaPontun;
+        private DataGridViewTextBoxColumn colGagnHeit;
+        private DataGridViewTextBoxColumn colLeitSkilyrdi;
+        private DataGridViewTextBoxColumn colHeitiVarsla;
+        private DataGridViewButtonColumn colDelete;
         private DataGridViewTextBoxColumn colSkraID;
         private DataGridViewTextBoxColumn colSkraTitill;
         private DataGridViewTextBoxColumn colSkraheitiVorslu;
+        private DataGridViewButtonColumn colSkraDelete;
         private DataGridViewTextBoxColumn colMalID;
         private DataGridViewTextBoxColumn colMalTitillSkjals;
         private DataGridViewTextBoxColumn colMalTitillMals;
         private DataGridViewTextBoxColumn colMalHeitiVorslu;
-        private DataGridViewTextBoxColumn colGagnHeit;
-        private DataGridViewTextBoxColumn colLeitSkilyrdi;
-        private DataGridViewTextBoxColumn colHeitiVarsla;
+        private DataGridViewButtonColumn colMalDelete;
     }
 }
