@@ -50,22 +50,29 @@
             colGagnHeit = new DataGridViewTextBoxColumn();
             colLeitSkilyrdi = new DataGridViewTextBoxColumn();
             colHeitiVarsla = new DataGridViewTextBoxColumn();
+            colGagnOpna = new DataGridViewButtonColumn();
             colDelete = new DataGridViewButtonColumn();
+            colGagnSQL = new DataGridViewTextBoxColumn();
             m_tapSkráarkerfi = new TabPage();
             m_dgvPantSkraarkerfi = new DataGridView();
             colSkraID = new DataGridViewTextBoxColumn();
             colSkraTitill = new DataGridViewTextBoxColumn();
             colSkraheitiVorslu = new DataGridViewTextBoxColumn();
+            colSkraOpna = new DataGridViewButtonColumn();
             colSkraDelete = new DataGridViewButtonColumn();
+            colSkraVarslaID = new DataGridViewTextBoxColumn();
             m_tapMalakrefi = new TabPage();
             m_dgvPantMalaKerfi = new DataGridView();
             m_grbNidurstodur = new GroupBox();
             m_dgvNidurstodur = new DataGridView();
-            colMalID = new DataGridViewTextBoxColumn();
+            colMalSkraID = new DataGridViewTextBoxColumn();
             colMalTitillSkjals = new DataGridViewTextBoxColumn();
             colMalTitillMals = new DataGridViewTextBoxColumn();
             colMalHeitiVorslu = new DataGridViewTextBoxColumn();
+            colMalOpna = new DataGridViewButtonColumn();
             colMalDelete = new DataGridViewButtonColumn();
+            colMalSlod = new DataGridViewTextBoxColumn();
+            colMalGagnagrunnur = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)m_dgvFyrirspurnir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -258,7 +265,7 @@
             m_dgvPantGagnagrunnar.AllowUserToAddRows = false;
             m_dgvPantGagnagrunnar.AllowUserToDeleteRows = false;
             m_dgvPantGagnagrunnar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            m_dgvPantGagnagrunnar.Columns.AddRange(new DataGridViewColumn[] { colGagnHeit, colLeitSkilyrdi, colHeitiVarsla, colDelete });
+            m_dgvPantGagnagrunnar.Columns.AddRange(new DataGridViewColumn[] { colGagnHeit, colLeitSkilyrdi, colHeitiVarsla, colGagnOpna, colDelete, colGagnSQL });
             m_dgvPantGagnagrunnar.Dock = DockStyle.Fill;
             m_dgvPantGagnagrunnar.Location = new Point(3, 3);
             m_dgvPantGagnagrunnar.Name = "m_dgvPantGagnagrunnar";
@@ -295,6 +302,17 @@
             colHeitiVarsla.Name = "colHeitiVarsla";
             colHeitiVarsla.ReadOnly = true;
             // 
+            // colGagnOpna
+            // 
+            colGagnOpna.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colGagnOpna.HeaderText = "Opna";
+            colGagnOpna.Name = "colGagnOpna";
+            colGagnOpna.ReadOnly = true;
+            colGagnOpna.Text = "Opna";
+            colGagnOpna.ToolTipText = "Opna skrá";
+            colGagnOpna.UseColumnTextForButtonValue = true;
+            colGagnOpna.Width = 42;
+            // 
             // colDelete
             // 
             colDelete.HeaderText = "Fjarlægja";
@@ -305,6 +323,14 @@
             colDelete.Text = "Fjarlægja";
             colDelete.ToolTipText = "Fjarlægja færslu úr pöntun";
             colDelete.UseColumnTextForButtonValue = true;
+            // 
+            // colGagnSQL
+            // 
+            colGagnSQL.DataPropertyName = "sql";
+            colGagnSQL.HeaderText = "sql";
+            colGagnSQL.Name = "colGagnSQL";
+            colGagnSQL.ReadOnly = true;
+            colGagnSQL.Visible = false;
             // 
             // m_tapSkráarkerfi
             // 
@@ -322,7 +348,7 @@
             m_dgvPantSkraarkerfi.AllowUserToAddRows = false;
             m_dgvPantSkraarkerfi.AllowUserToDeleteRows = false;
             m_dgvPantSkraarkerfi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            m_dgvPantSkraarkerfi.Columns.AddRange(new DataGridViewColumn[] { colSkraID, colSkraTitill, colSkraheitiVorslu, colSkraDelete });
+            m_dgvPantSkraarkerfi.Columns.AddRange(new DataGridViewColumn[] { colSkraID, colSkraTitill, colSkraheitiVorslu, colSkraOpna, colSkraDelete, colSkraVarslaID });
             m_dgvPantSkraarkerfi.Dock = DockStyle.Fill;
             m_dgvPantSkraarkerfi.Location = new Point(3, 3);
             m_dgvPantSkraarkerfi.Name = "m_dgvPantSkraarkerfi";
@@ -359,6 +385,15 @@
             colSkraheitiVorslu.ReadOnly = true;
             colSkraheitiVorslu.Width = 116;
             // 
+            // colSkraOpna
+            // 
+            colSkraOpna.HeaderText = "Opna";
+            colSkraOpna.Name = "colSkraOpna";
+            colSkraOpna.ReadOnly = true;
+            colSkraOpna.Text = "Opna";
+            colSkraOpna.ToolTipText = "Opna skrá";
+            colSkraOpna.UseColumnTextForButtonValue = true;
+            // 
             // colSkraDelete
             // 
             colSkraDelete.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -369,6 +404,14 @@
             colSkraDelete.ToolTipText = "Fjarlægja pöntun";
             colSkraDelete.UseColumnTextForButtonValue = true;
             colSkraDelete.Width = 61;
+            // 
+            // colSkraVarslaID
+            // 
+            colSkraVarslaID.DataPropertyName = "vorsluutgafa";
+            colSkraVarslaID.HeaderText = "vörsluauðkenni";
+            colSkraVarslaID.Name = "colSkraVarslaID";
+            colSkraVarslaID.ReadOnly = true;
+            colSkraVarslaID.Visible = false;
             // 
             // m_tapMalakrefi
             // 
@@ -386,7 +429,7 @@
             m_dgvPantMalaKerfi.AllowUserToAddRows = false;
             m_dgvPantMalaKerfi.AllowUserToDeleteRows = false;
             m_dgvPantMalaKerfi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            m_dgvPantMalaKerfi.Columns.AddRange(new DataGridViewColumn[] { colMalID, colMalTitillSkjals, colMalTitillMals, colMalHeitiVorslu, colMalDelete });
+            m_dgvPantMalaKerfi.Columns.AddRange(new DataGridViewColumn[] { colMalSkraID, colMalTitillSkjals, colMalTitillMals, colMalHeitiVorslu, colMalOpna, colMalDelete, colMalSlod, colMalGagnagrunnur });
             m_dgvPantMalaKerfi.Dock = DockStyle.Fill;
             m_dgvPantMalaKerfi.Location = new Point(3, 3);
             m_dgvPantMalaKerfi.Name = "m_dgvPantMalaKerfi";
@@ -424,16 +467,16 @@
             m_dgvNidurstodur.TabIndex = 0;
             m_dgvNidurstodur.CellContentClick += keyrafyrirspurn_CellClick;
             // 
-            // colMalID
+            // colMalSkraID
             // 
-            colMalID.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colMalID.DataPropertyName = "Skrar";
+            colMalSkraID.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colMalSkraID.DataPropertyName = "documentid";
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            colMalID.DefaultCellStyle = dataGridViewCellStyle1;
-            colMalID.HeaderText = "Auðkenni skjals";
-            colMalID.Name = "colMalID";
-            colMalID.ReadOnly = true;
-            colMalID.Width = 114;
+            colMalSkraID.DefaultCellStyle = dataGridViewCellStyle1;
+            colMalSkraID.HeaderText = "Auðkenni skjals";
+            colMalSkraID.Name = "colMalSkraID";
+            colMalSkraID.ReadOnly = true;
+            colMalSkraID.Width = 114;
             // 
             // colMalTitillSkjals
             // 
@@ -467,6 +510,17 @@
             colMalHeitiVorslu.ReadOnly = true;
             colMalHeitiVorslu.Width = 116;
             // 
+            // colMalOpna
+            // 
+            colMalOpna.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colMalOpna.HeaderText = "Opna";
+            colMalOpna.Name = "colMalOpna";
+            colMalOpna.ReadOnly = true;
+            colMalOpna.Text = "Opna";
+            colMalOpna.ToolTipText = "Opna skrá";
+            colMalOpna.UseColumnTextForButtonValue = true;
+            colMalOpna.Width = 42;
+            // 
             // colMalDelete
             // 
             colMalDelete.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -477,6 +531,22 @@
             colMalDelete.ToolTipText = "Fjarlægja pöntun";
             colMalDelete.UseColumnTextForButtonValue = true;
             colMalDelete.Width = 61;
+            // 
+            // colMalSlod
+            // 
+            colMalSlod.DataPropertyName = "slod";
+            colMalSlod.HeaderText = "Sláð á skrá";
+            colMalSlod.Name = "colMalSlod";
+            colMalSlod.ReadOnly = true;
+            colMalSlod.Visible = false;
+            // 
+            // colMalGagnagrunnur
+            // 
+            colMalGagnagrunnur.DataPropertyName = "gagnagrunnur";
+            colMalGagnagrunnur.HeaderText = "gagnagrunnur";
+            colMalGagnagrunnur.Name = "colMalGagnagrunnur";
+            colMalGagnagrunnur.ReadOnly = true;
+            colMalGagnagrunnur.Visible = false;
             // 
             // frmGagnagrunnur
             // 
@@ -535,18 +605,25 @@
         private DataGridView m_dgvPantSkraarkerfi;
         private DataGridView m_dgvPantMalaKerfi;
         private Button m_btnLjukaPontun;
-        private DataGridViewTextBoxColumn colGagnHeit;
-        private DataGridViewTextBoxColumn colLeitSkilyrdi;
-        private DataGridViewTextBoxColumn colHeitiVarsla;
-        private DataGridViewButtonColumn colDelete;
         private DataGridViewTextBoxColumn colSkraID;
         private DataGridViewTextBoxColumn colSkraTitill;
         private DataGridViewTextBoxColumn colSkraheitiVorslu;
+        private DataGridViewButtonColumn colSkraOpna;
         private DataGridViewButtonColumn colSkraDelete;
-        private DataGridViewTextBoxColumn colMalID;
+        private DataGridViewTextBoxColumn colSkraVarslaID;
+        private DataGridViewTextBoxColumn colGagnHeit;
+        private DataGridViewTextBoxColumn colLeitSkilyrdi;
+        private DataGridViewTextBoxColumn colHeitiVarsla;
+        private DataGridViewButtonColumn colGagnOpna;
+        private DataGridViewButtonColumn colDelete;
+        private DataGridViewTextBoxColumn colGagnSQL;
+        private DataGridViewTextBoxColumn colMalSkraID;
         private DataGridViewTextBoxColumn colMalTitillSkjals;
         private DataGridViewTextBoxColumn colMalTitillMals;
         private DataGridViewTextBoxColumn colMalHeitiVorslu;
+        private DataGridViewButtonColumn colMalOpna;
         private DataGridViewButtonColumn colMalDelete;
+        private DataGridViewTextBoxColumn colMalSlod;
+        private DataGridViewTextBoxColumn colMalGagnagrunnur;
     }
 }

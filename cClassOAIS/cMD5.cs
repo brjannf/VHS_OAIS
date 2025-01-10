@@ -70,6 +70,28 @@ namespace cClassOAIS
             }
             return strRet;
         }
+        public string getMD5RegEx(string strSlod, string strUtgafa)
+        {
+            sækjaTengistreng();
+            string strRet = string.Empty;
+            int iID = Convert.ToInt32(strSlod);
+            double dColl = Convert.ToInt32(iID) / 10000;
+            if (iID == 1)
+            {
+                dColl = 1;
+            }
+            else
+            {
+                dColl = dColl + 1;
+            }
+            string strSQL = string.Format("SELECT MD5 FROM db_oais_admin.dt_md5 d where AIP = '{1}' and slod regexp 'Documents\\\\\\\\docCollection{2}\\\\\\\\{0}$';", strSlod, strUtgafa, dColl);
+            var tala = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if (tala != null)
+            {
+                strRet = tala.ToString();
+            }
+            return strRet;
+        }
 
         public DataTable getMD5(string strMD5)
         {

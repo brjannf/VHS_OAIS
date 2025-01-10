@@ -235,6 +235,19 @@ CREATE TABLE  `db_oais_admin_afrit`.`dt_karfa_dip` (
   CONSTRAINT `FK_dt_karfa_DIP_1` FOREIGN KEY (`lanthegi`) REFERENCES `dt_lanthegar` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+DROP TABLE IF EXISTS `db_oais_admin_afrit`.`dt_karfa_dip`;
+CREATE TABLE  `db_oais_admin_afrit`.`dt_karfa_dip` (
+  `karfa` int unsigned NOT NULL AUTO_INCREMENT,
+  `heiti` varchar(100) NOT NULL,
+  `lanthegi` int unsigned NOT NULL,
+  `hver_skradi` varchar(45) NOT NULL,
+  `dags_skrad` datetime NOT NULL,
+  `athugasemdir` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`karfa`) USING BTREE,
+  KEY `FK_dt_karfa_DIP_1` (`lanthegi`),
+  CONSTRAINT `FK_dt_karfa_DIP_1` FOREIGN KEY (`lanthegi`) REFERENCES `dt_lanthegar` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 DROP TABLE IF EXISTS `db_oais_admin_afrit`.`dt_item_korfu_dip`;
 CREATE TABLE  `db_oais_admin_afrit`.`dt_item_korfu_dip` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
@@ -244,6 +257,7 @@ CREATE TABLE  `db_oais_admin_afrit`.`dt_item_korfu_dip` (
   `vorsluutgafa` varchar(50) NOT NULL,
   `md5` varchar(100) NOT NULL,
   `slod` varchar(250) NOT NULL,
+  `heitiVorslu` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_dt_item_korfu_dip_1` (`karfa`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -255,22 +269,12 @@ CREATE TABLE  `db_oais_admin_afrit`.`dt_item_korfu_mal_dip` (
   `md5` varchar(100) NOT NULL,
   `vorsluutgafa` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Skrar` int unsigned NOT NULL,
-  `slod` varchar(300) NOT NULL,
+  `slod` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `heitivorslu` varchar(250) NOT NULL,
+  `maltitill` varchar(250) NOT NULL,
+  `titill` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_dt_item_korfu_mal_dip_1` (`karfa`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-DROP TABLE IF EXISTS `db_oais_admin_afrit`.`dt_karfa_item_gagna_dip`;
-CREATE TABLE  `db_oais_admin_afrit`.`dt_karfa_item_gagna_dip` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `karfa` int unsigned NOT NULL,
-  `heiti` varchar(200) NOT NULL,
-  `vorsluutgafa` varchar(45) NOT NULL,
-  `leitarskilyrdi` varchar(500) NOT NULL,
-  `sql` varchar(500) NOT NULL,
-  `slod` varchar(300) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_dt_karfa_item_gagna_dip_1` (`karfa`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `db_oais_admin_afrit`.`ds_gagnagrunnar`;
@@ -280,7 +284,21 @@ CREATE TABLE  `db_oais_admin_afrit`.`ds_gagnagrunnar` (
   `heiti_gagnagrunns` varchar(100) NOT NULL,
   `orginal_heiti` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DROP TABLE IF EXISTS `db_oais_admin_afrit`.`dt_karfa_item_gagna_dip`;
+CREATE TABLE  `db_oais_admin_afrit`.`dt_karfa_item_gagna_dip` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `karfa` int unsigned NOT NULL,
+  `heiti` varchar(200) NOT NULL,
+  `vorsluutgafa` varchar(45) NOT NULL,
+  `leitarskilyrdi` varchar(500) NOT NULL,
+  `sql` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `slod` varchar(300) NOT NULL,
+  `heitivorslu` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_dt_karfa_item_gagna_dip_1` (`karfa`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;;
 
 DROP TABLE IF EXISTS `db_oais_admin_afrit`.`dt_vörsluutgafur`;
 CREATE TABLE  `db_oais_admin_afrit`.`dt_vörsluutgafur` (

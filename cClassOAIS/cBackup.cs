@@ -88,7 +88,15 @@ namespace cClassOAIS
             }
             else
             {
-                strSQL = string.Format("SELECT * FROM {0} WHERE {1} IN ({2});", strTable, strIDCol, strID);
+                if (strID.Contains("'"))
+                {
+                    strSQL = string.Format("SELECT * FROM {0} WHERE {1} IN ({2});", strTable, strIDCol, strID);
+                }
+                else
+                {
+                    strSQL = string.Format("SELECT * FROM {0} WHERE {1} IN ('{2}');", strTable, strIDCol, strID);
+                }
+                
             }
             
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IronOcr;
+using System.Drawing.Imaging;
 using MySqlX.XDevAPI.Common;
 using System.Xml;
 using DocumentFormat.OpenXml.Packaging;
@@ -21,6 +22,8 @@ namespace cClassOAIS
         private string m_strTenging = ConfigurationManager.ConnectionStrings["connection_allt"].ConnectionString; 
         private string m_strTengingOAIS = string.Empty; // "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = db_oais_admin; allow user variables = True; character set = utf8";
         public bool m_bAfrit = false;
+
+
         private void sækjaTengistreng()
         {
             if (m_bAfrit)
@@ -114,6 +117,33 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@docInnihald", this.docInnihald);
 
             command.CommandText = "INSERT INTO `dt_midlun` SET  `vorsluutgafa`=@vorsluutgafa,  `titill_vorsluutgafu`=@titill_vorsluutgafu, heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  extension=@extension,   hver_skradi=@hver_skradi, dags_skrad=NOW();";
+            //dalkur_documentid, documentid, dalkur_doctitill, doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald
+            // heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  hver_skradi=@hver_skradi, dags_skrad=NOW();";
+
+            command.ExecuteNonQuery();
+            conn.Dispose();
+            command.Dispose();
+        }
+
+        public void vistaOneCRM()
+        {
+            sækjaTengistreng();
+
+            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+            // //id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_grunns, tegund_dalks, gildi_dalks, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald
+           
+            command.Parameters.AddWithValue("@heiti_gagangrunns", this.heiti_gagangrunns);
+            command.Parameters.AddWithValue("@documentid", this.documentid);
+            command.Parameters.AddWithValue("@doctitill", this.doctitill);
+            command.Parameters.AddWithValue("@docCreated", this.docCreated);
+            command.Parameters.AddWithValue("@docLastWriten", this.docLastWriten);
+            command.Parameters.AddWithValue("@malID", this.malID);
+            command.Parameters.AddWithValue("@maltitill", this.maltitill);
+         
+
+            command.CommandText = string.Format("UPDATE `dt_midlun` SET doctitill=@doctitill, docCreated=@docCreated,  docLastWriten=@docLastWriten,  malID=@malID, maltitill=@maltitill  WHERE documentid='{0}' and heiti_gagangrunns='{1}';", this.documentid,this.heiti_gagangrunns);
             //dalkur_documentid, documentid, dalkur_doctitill, doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald
             // heiti_gagangrunns=@heiti_gagangrunns, tegund_grunns=@tegund_grunns, tafla_grunns=@tafla_grunns, vorslustofnun_audkenni=@vorslustofnun_audkenni, vorslustofnun_heiti=@vorslustofnun_heiti, skjalamyndari_audkenni=@skjalamyndari_audkenni, skjalamyndari_heiti=@skjalamyndari_heiti, skjalaskra_timabil=@skjalaskra_timabil,skjalaskra_adgengi=@skjalaskra_adgengi, skjalaskra_afharnr=@skjalaskra_afharnr,skjalaskra_innihald=@skjalaskra_innihald, dalkur_documentid=@dalkur_documentid, documentid=@documentid, dalkur_doctitill=@dalkur_doctitill,doctitill=@doctitill, dalkur_docCreated=@dalkur_docCreated, docCreated=@docCreated, dalkur_docLastWriten=@dalkur_docLastWriten, docLastWriten=@docLastWriten, dalkur_malID=@dalkur_malID,  malID=@malID,  dalkur_malTitill=@dalkur_malTitill,  maltitill=@maltitill, docInnihald=@docInnihald,  hver_skradi=@hver_skradi, dags_skrad=NOW();";
 
@@ -310,21 +340,23 @@ namespace cClassOAIS
 
                                         if (strFile[0].EndsWith(".tif") && bOCR)
                                         {
-                                            IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
+                                            //  IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
+                                            IronOcr.License.LicenseKey = ConfigurationManager.AppSettings["IronOcr.LicenseKey"];
+                                            // ocrLicense();
                                             var Ocr = new IronTesseract();
                                             Ocr.Language = OcrLanguage.Icelandic;
                                             using (var Input = new OcrInput())
                                             {
-                                               if (!strFile[0].EndsWith("AVID.HKOP.2023024.1\\Documents\\docCollection1\\4\\1.tif")) //vegna náttúrufræðistofu Kópabogs 2023_24
+                                              // if (!strFile[0].EndsWith("AVID.HKOP.2023024.1\\Documents\\docCollection1\\4\\1.tif")) //vegna náttúrufræðistofu Kópabogs 2023_24
                                                 {
                                                     Input.AddImage(strFile[0]);
                                                     var Result = Ocr.Read(Input);
                                                     this.docInnihald = Result.Text;
                                                 }
-                                                else
-                                                {
-                                                    this.docInnihald = "Of langur texti fyrir OCR-lestur";
-                                                }
+                                                //else
+                                                //{
+                                                //    this.docInnihald = "Of langur texti fyrir OCR-lestur";
+                                                //}
 
                                             }
                                         }
@@ -400,6 +432,60 @@ namespace cClassOAIS
             }
         }
 
+        //private void ocrLicense()
+        //{
+        //    IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
+        //}
+        public void ocrCreatePDF(string strTiff, string strPDF)
+        {
+            //IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
+            IronOcr.License.LicenseKey = ConfigurationManager.AppSettings["IronOcr.LicenseKey"];
+            var ocrTesseract = new IronTesseract();
+            ocrTesseract.Language = OcrLanguage.Icelandic;
+            // var ocrTesseract = new IronTesseract();
+            //  ocrTesseract.Configuration.AutoRotateDetectionForRenderSearchablePdf = true;
+            ocrTesseract.Configuration.RenderSearchablePdfsAndHocr = true;
+            // ocrTesseract.Configuration.RenderHocr = true;
+            // ocrTesseract.Configuration.RenderSearchablePdfsAndHoc
+            //finna fjölda ramma í tiff
+            FrameDimension dimension;
+            System.Drawing.Image image = System.Drawing.Image.FromFile(strTiff);
+            //System.Drawing.Image image;
+            //using (var bmpTemp = new Bitmap(@"C:\temp\4.tif"))
+            //{
+            //    image = new Bitmap(bmpTemp);
+            //}
+
+            dimension = FrameDimension.Page;
+            int x = 70;
+            int iPages = image.GetFrameCount(dimension);
+            //  ocrInput.LoadImageFrame("C:\\temp\\9.tif", 1);
+            int[] arr = Enumerable.Range(0, iPages - 1 + 1).ToArray();
+            var pageindices = Enumerable.Range(0, iPages - 1 + 1).ToArray();
+            if(iPages == 1)
+            {
+               pageindices =  new int[] {0};
+            }
+            using OcrInput input = new OcrInput();
+            strTiff = strTiff.Replace("\\\\", "\\");
+            if(iPages == 1)
+            {
+                input.LoadImageFrame(strTiff, 0);
+            }
+            else
+            {
+                input.LoadImageFrames(strTiff, pageindices);
+            }
+            
+          
+          //  input.LoadImageFrames(@"D:\AVID.HARN.2023067.1\ContextDocumentation\docCollection1\3\1.tif", pageindices);
+
+
+            var ocrResult = ocrTesseract.Read(input);
+            FileInfo fifo = new FileInfo(strPDF);
+            strPDF = fifo.FullName.Replace(fifo.Extension, ".pdf"); // strPDF.Replace(".tif", ".pdf");
+            ocrResult.SaveAsSearchablePdf(strPDF);
+        }
         public DataTable testFyrirSpurn(string strFyrirspurn, string strDatabase)
         {
             string strTengi = "server = localhost; user id = root; Password = ivarBjarkLind; persist security info = True; database = "+ strDatabase + "; allow user variables = True; character set = utf8";
@@ -760,7 +846,7 @@ namespace cClassOAIS
             string strSQL = string.Empty;
             if (strLeitarord.Length != 0)
             {
-                strSQL = string.Format("Select distinct documentid, doctitill  FROM dt_midlun m WHERE MATCH (doctitill,docLastWriten,maltitill, docInnihald)AGAINST ('{0}' IN BOOLEAN MODE) and heiti_gagangrunns = '{1}';", strLeitarord, strGagnagrunnur);
+                strSQL = string.Format("Select distinct documentid, doctitill, malID,  maltitill  FROM dt_midlun m WHERE MATCH (doctitill,docLastWriten,maltitill, docInnihald)AGAINST ('{0}' IN BOOLEAN MODE) and heiti_gagangrunns = '{1}' order by malID;", strLeitarord, strGagnagrunnur);
             }
             else
             {
@@ -956,6 +1042,23 @@ namespace cClassOAIS
            
         }
 
+        public void eydaMetaOnatadONECRM(string stringVorsluutgafa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Empty;
+            MySqlConnection conn = new MySqlConnection(m_strTengingOAIS);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand(strSQL, conn);
+
+
+            command.CommandText = string.Format("delete FROM db_oais_admin.dt_midlun d where vorsluutgafa = '{0}'and tafla_grunns != 'tblDocuments'", stringVorsluutgafa);
+            command.ExecuteNonQuery();
+
+            conn.Dispose();
+            command.Dispose();
+
+        }
+
         public void dropDatabase(string strGagnagrunnur)
         {
             sækjaTengistreng();
@@ -1036,6 +1139,14 @@ namespace cClassOAIS
             return dt;
         }
 
+        public DataTable getMidlunRestONECRM(string strUtgafa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM db_oais_admin.dt_midlun d where vorsluutgafa ='AVID.HARN.2023067.1' and documentid is not  null order by documentid;", strUtgafa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
         public DataTable málaTitillGOPRO_redding(string strUtgafa)
         {
             sækjaTengistreng();

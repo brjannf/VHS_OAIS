@@ -439,24 +439,23 @@ namespace OAIS_ADMIN
                 if (strFyrirspurn == string.Empty) //vegna nafnabreytinga AV 
                 {
                     strFyrirspurn = midlun.getFyrirspurn(m_strGagnagrunnur, "AV_Get_files_path");
+                    m_dtGogn = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
                 }
             }
             if (m_strTegund == "Málakerfi")
             {
                 strFyrirspurn = midlun.getFyrirspurn(m_strGagnagrunnur, "malalykill");
-            }
-            if(m_strTegund != "Gagnagrunnur")
-            {
                 m_dtGogn = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
             }
-            else
+            if(m_strTegund == "Gagnagrunnur")
             {
+                m_dtGogn = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
                 TreeNode n = new TreeNode("A-Gagnagrunnur1");
                 m_trwGogn.Nodes.Add(n);
                 TreeNode nn = new TreeNode("A-Gagnagrunnur2");
                 n.Nodes.Add(nn);
-
             }
+           
            
             int i  = 0; 
             foreach (DataRow r in m_dtGogn.Rows)
@@ -468,8 +467,10 @@ namespace OAIS_ADMIN
                 //einfalda til að byrja með
                 if (m_strTegund == "Málakerfi")
                 {
+                   
                     TreeNode n = new TreeNode(r["malalykill"].ToString());
-                    n.Tag = r["lykillID"];
+                    // n.Tag = r["lykillID"];
+                    n.Tag = r["malalykill"];
                     m_trwGogn.Nodes.Add(n);
                     strFyrirspurn = midlun.getFyrirspurn(m_strGagnagrunnur, "mal_lykill");
                     strFyrirspurn = strFyrirspurn.Replace("{lykillID}", n.Tag.ToString());

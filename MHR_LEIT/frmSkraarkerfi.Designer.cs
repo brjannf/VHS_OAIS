@@ -32,7 +32,9 @@
             colAudkenniSkjals = new DataGridViewTextBoxColumn();
             colTitillSkjals = new DataGridViewTextBoxColumn();
             colSkraHeitiVarsla = new DataGridViewTextBoxColumn();
+            colSkraOpna = new DataGridViewButtonColumn();
             colSkraEyda = new DataGridViewButtonColumn();
+            colSkraVarslaID = new DataGridViewTextBoxColumn();
             splitContainer1 = new SplitContainer();
             m_tacStrukturLeit = new TabControl();
             m_tapMoppuStruct = new TabPage();
@@ -50,11 +52,14 @@
             m_lblLeitarNidurstodur = new Label();
             m_tobLeitarord = new TextBox();
             splitContainer3 = new SplitContainer();
+            m_btnMD5Stadfesta = new Button();
             m_grbMeta = new GroupBox();
             m_btnSkjalamyndari = new Button();
             m_btnSkjalaskrá = new Button();
             m_btnVorslustofnun = new Button();
+            m_lblMD5 = new Label();
             m_lilSlod = new LinkLabel();
+            m_tboMD5 = new TextBox();
             m_lblDagsetning = new Label();
             m_btnAfgreida = new Button();
             m_lblSlodFile = new Label();
@@ -70,17 +75,22 @@
             m_tapSkraarkerfi = new TabPage();
             m_tapMalakerfi = new TabPage();
             m_dgvMalakerfi = new DataGridView();
-            colMalID = new DataGridViewTextBoxColumn();
+            colMalSkraID = new DataGridViewTextBoxColumn();
             colMalTitill = new DataGridViewTextBoxColumn();
             colMalMalTitill = new DataGridViewTextBoxColumn();
             colMalHeitiVorslu = new DataGridViewTextBoxColumn();
+            colMalOpna = new DataGridViewButtonColumn();
             colMalDelete = new DataGridViewButtonColumn();
+            colMalSlod = new DataGridViewTextBoxColumn();
+            colMalGagnagrunnur = new DataGridViewTextBoxColumn();
             m_tapGagnagrunnar = new TabPage();
             m_dgvGagnaGrunnar = new DataGridView();
             colGagnHeiti = new DataGridViewTextBoxColumn();
             colGagnLeidarskilyrdi = new DataGridViewTextBoxColumn();
             colGagnHeitiVorslu = new DataGridViewTextBoxColumn();
+            colGagnOpna = new DataGridViewButtonColumn();
             colGagnDelete = new DataGridViewButtonColumn();
+            colGagnSQL = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)m_dgvValdarSkrar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -117,7 +127,7 @@
             // 
             m_dgvValdarSkrar.AllowUserToAddRows = false;
             m_dgvValdarSkrar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            m_dgvValdarSkrar.Columns.AddRange(new DataGridViewColumn[] { colAudkenniSkjals, colTitillSkjals, colSkraHeitiVarsla, colSkraEyda });
+            m_dgvValdarSkrar.Columns.AddRange(new DataGridViewColumn[] { colAudkenniSkjals, colTitillSkjals, colSkraHeitiVarsla, colSkraOpna, colSkraEyda, colSkraVarslaID });
             m_dgvValdarSkrar.Dock = DockStyle.Fill;
             m_dgvValdarSkrar.Location = new Point(3, 3);
             m_dgvValdarSkrar.Name = "m_dgvValdarSkrar";
@@ -152,6 +162,19 @@
             colSkraHeitiVarsla.Name = "colSkraHeitiVarsla";
             colSkraHeitiVarsla.ReadOnly = true;
             // 
+            // colSkraOpna
+            // 
+            colSkraOpna.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colSkraOpna.HeaderText = "Opna";
+            colSkraOpna.Name = "colSkraOpna";
+            colSkraOpna.ReadOnly = true;
+            colSkraOpna.Resizable = DataGridViewTriState.True;
+            colSkraOpna.SortMode = DataGridViewColumnSortMode.Automatic;
+            colSkraOpna.Text = "Opna";
+            colSkraOpna.ToolTipText = "Opna skrá";
+            colSkraOpna.UseColumnTextForButtonValue = true;
+            colSkraOpna.Width = 61;
+            // 
             // colSkraEyda
             // 
             colSkraEyda.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -161,6 +184,14 @@
             colSkraEyda.Text = "Fjarlægja";
             colSkraEyda.UseColumnTextForButtonValue = true;
             colSkraEyda.Width = 61;
+            // 
+            // colSkraVarslaID
+            // 
+            colSkraVarslaID.DataPropertyName = "vorsluutgafa";
+            colSkraVarslaID.HeaderText = "vorsluaudkenni";
+            colSkraVarslaID.Name = "colSkraVarslaID";
+            colSkraVarslaID.ReadOnly = true;
+            colSkraVarslaID.Visible = false;
             // 
             // splitContainer1
             // 
@@ -352,8 +383,11 @@
             // 
             // splitContainer3.Panel1
             // 
+            splitContainer3.Panel1.Controls.Add(m_btnMD5Stadfesta);
             splitContainer3.Panel1.Controls.Add(m_grbMeta);
+            splitContainer3.Panel1.Controls.Add(m_lblMD5);
             splitContainer3.Panel1.Controls.Add(m_lilSlod);
+            splitContainer3.Panel1.Controls.Add(m_tboMD5);
             splitContainer3.Panel1.Controls.Add(m_lblDagsetning);
             splitContainer3.Panel1.Controls.Add(m_btnAfgreida);
             splitContainer3.Panel1.Controls.Add(m_lblSlodFile);
@@ -369,6 +403,17 @@
             splitContainer3.Size = new Size(1494, 763);
             splitContainer3.SplitterDistance = 114;
             splitContainer3.TabIndex = 1;
+            // 
+            // m_btnMD5Stadfesta
+            // 
+            m_btnMD5Stadfesta.Location = new Point(417, 82);
+            m_btnMD5Stadfesta.Name = "m_btnMD5Stadfesta";
+            m_btnMD5Stadfesta.Size = new Size(72, 23);
+            m_btnMD5Stadfesta.TabIndex = 10;
+            m_btnMD5Stadfesta.Text = "Staðfesta";
+            m_btnMD5Stadfesta.UseVisualStyleBackColor = true;
+            m_btnMD5Stadfesta.Visible = false;
+            m_btnMD5Stadfesta.Click += m_btnMD5Stadfesta_Click;
             // 
             // m_grbMeta
             // 
@@ -412,6 +457,16 @@
             m_btnVorslustofnun.UseVisualStyleBackColor = true;
             m_btnVorslustofnun.Click += m_btnVorslustofnun_Click;
             // 
+            // m_lblMD5
+            // 
+            m_lblMD5.AutoSize = true;
+            m_lblMD5.Location = new Point(56, 87);
+            m_lblMD5.Name = "m_lblMD5";
+            m_lblMD5.Size = new Size(38, 15);
+            m_lblMD5.TabIndex = 9;
+            m_lblMD5.Text = "label1";
+            m_lblMD5.Visible = false;
+            // 
             // m_lilSlod
             // 
             m_lilSlod.AutoSize = true;
@@ -422,6 +477,17 @@
             m_lilSlod.TabStop = true;
             m_lilSlod.Text = "m_lilSlod";
             m_lilSlod.LinkClicked += m_lilSlod_LinkClicked;
+            // 
+            // m_tboMD5
+            // 
+            m_tboMD5.Location = new Point(149, 84);
+            m_tboMD5.Name = "m_tboMD5";
+            m_tboMD5.ReadOnly = true;
+            m_tboMD5.Size = new Size(262, 23);
+            m_tboMD5.TabIndex = 8;
+            m_tboMD5.Text = "asfdasfasfdasf";
+            m_tboMD5.Visible = false;
+            m_tboMD5.WordWrap = false;
             // 
             // m_lblDagsetning
             // 
@@ -576,7 +642,7 @@
             m_dgvMalakerfi.AllowUserToAddRows = false;
             m_dgvMalakerfi.AllowUserToDeleteRows = false;
             m_dgvMalakerfi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            m_dgvMalakerfi.Columns.AddRange(new DataGridViewColumn[] { colMalID, colMalTitill, colMalMalTitill, colMalHeitiVorslu, colMalDelete });
+            m_dgvMalakerfi.Columns.AddRange(new DataGridViewColumn[] { colMalSkraID, colMalTitill, colMalMalTitill, colMalHeitiVorslu, colMalOpna, colMalDelete, colMalSlod, colMalGagnagrunnur });
             m_dgvMalakerfi.Dock = DockStyle.Fill;
             m_dgvMalakerfi.Location = new Point(3, 3);
             m_dgvMalakerfi.Name = "m_dgvMalakerfi";
@@ -587,14 +653,14 @@
             m_dgvMalakerfi.TabIndex = 0;
             m_dgvMalakerfi.CellClick += m_dgvValdarSkrar_CellClick;
             // 
-            // colMalID
+            // colMalSkraID
             // 
-            colMalID.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colMalID.DataPropertyName = "Skrar";
-            colMalID.HeaderText = "Auðkenni skjals";
-            colMalID.Name = "colMalID";
-            colMalID.ReadOnly = true;
-            colMalID.Width = 105;
+            colMalSkraID.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colMalSkraID.DataPropertyName = "documentid";
+            colMalSkraID.HeaderText = "Auðkenni skjals";
+            colMalSkraID.Name = "colMalSkraID";
+            colMalSkraID.ReadOnly = true;
+            colMalSkraID.Width = 105;
             // 
             // colMalTitill
             // 
@@ -622,6 +688,19 @@
             colMalHeitiVorslu.ReadOnly = true;
             colMalHeitiVorslu.Width = 116;
             // 
+            // colMalOpna
+            // 
+            colMalOpna.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colMalOpna.HeaderText = "Opna";
+            colMalOpna.Name = "colMalOpna";
+            colMalOpna.ReadOnly = true;
+            colMalOpna.Resizable = DataGridViewTriState.True;
+            colMalOpna.SortMode = DataGridViewColumnSortMode.Automatic;
+            colMalOpna.Text = "Opna";
+            colMalOpna.ToolTipText = "Opna skrá";
+            colMalOpna.UseColumnTextForButtonValue = true;
+            colMalOpna.Width = 61;
+            // 
             // colMalDelete
             // 
             colMalDelete.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -634,6 +713,21 @@
             colMalDelete.ToolTipText = "Fjarlægja úr pöntun";
             colMalDelete.UseColumnTextForButtonValue = true;
             colMalDelete.Width = 80;
+            // 
+            // colMalSlod
+            // 
+            colMalSlod.DataPropertyName = "slod";
+            colMalSlod.HeaderText = "Slóð skjals";
+            colMalSlod.Name = "colMalSlod";
+            colMalSlod.ReadOnly = true;
+            colMalSlod.Visible = false;
+            // 
+            // colMalGagnagrunnur
+            // 
+            colMalGagnagrunnur.DataPropertyName = "gagnagrunnur";
+            colMalGagnagrunnur.HeaderText = "Gagnagrunnur";
+            colMalGagnagrunnur.Name = "colMalGagnagrunnur";
+            colMalGagnagrunnur.ReadOnly = true;
             // 
             // m_tapGagnagrunnar
             // 
@@ -650,7 +744,7 @@
             // 
             m_dgvGagnaGrunnar.AllowUserToAddRows = false;
             m_dgvGagnaGrunnar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            m_dgvGagnaGrunnar.Columns.AddRange(new DataGridViewColumn[] { colGagnHeiti, colGagnLeidarskilyrdi, colGagnHeitiVorslu, colGagnDelete });
+            m_dgvGagnaGrunnar.Columns.AddRange(new DataGridViewColumn[] { colGagnHeiti, colGagnLeidarskilyrdi, colGagnHeitiVorslu, colGagnOpna, colGagnDelete, colGagnSQL });
             m_dgvGagnaGrunnar.Dock = DockStyle.Fill;
             m_dgvGagnaGrunnar.Location = new Point(3, 3);
             m_dgvGagnaGrunnar.Name = "m_dgvGagnaGrunnar";
@@ -687,6 +781,19 @@
             colGagnHeitiVorslu.ReadOnly = true;
             colGagnHeitiVorslu.Width = 116;
             // 
+            // colGagnOpna
+            // 
+            colGagnOpna.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colGagnOpna.HeaderText = "Opna";
+            colGagnOpna.Name = "colGagnOpna";
+            colGagnOpna.ReadOnly = true;
+            colGagnOpna.Resizable = DataGridViewTriState.True;
+            colGagnOpna.SortMode = DataGridViewColumnSortMode.Automatic;
+            colGagnOpna.Text = "Opna";
+            colGagnOpna.ToolTipText = "Opna skrá";
+            colGagnOpna.UseColumnTextForButtonValue = true;
+            colGagnOpna.Width = 61;
+            // 
             // colGagnDelete
             // 
             colGagnDelete.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -697,6 +804,14 @@
             colGagnDelete.ToolTipText = "Fjarlægja úr pöntun";
             colGagnDelete.UseColumnTextForButtonValue = true;
             colGagnDelete.Width = 61;
+            // 
+            // colGagnSQL
+            // 
+            colGagnSQL.DataPropertyName = "sql";
+            colGagnSQL.HeaderText = "Skrá sql";
+            colGagnSQL.Name = "colGagnSQL";
+            colGagnSQL.ReadOnly = true;
+            colGagnSQL.Visible = false;
             // 
             // frmSkraarkerfi
             // 
@@ -788,15 +903,25 @@
         private DataGridViewTextBoxColumn colAudkenniSkjals;
         private DataGridViewTextBoxColumn colTitillSkjals;
         private DataGridViewTextBoxColumn colSkraHeitiVarsla;
+        private DataGridViewButtonColumn colSkraOpna;
         private DataGridViewButtonColumn colSkraEyda;
-        private DataGridViewTextBoxColumn colMalID;
-        private DataGridViewTextBoxColumn colMalTitill;
-        private DataGridViewTextBoxColumn colMalMalTitill;
-        private DataGridViewTextBoxColumn colMalHeitiVorslu;
-        private DataGridViewButtonColumn colMalDelete;
+        private DataGridViewTextBoxColumn colSkraVarslaID;
         private DataGridViewTextBoxColumn colGagnHeiti;
         private DataGridViewTextBoxColumn colGagnLeidarskilyrdi;
         private DataGridViewTextBoxColumn colGagnHeitiVorslu;
+        private DataGridViewButtonColumn colGagnOpna;
         private DataGridViewButtonColumn colGagnDelete;
+        private DataGridViewTextBoxColumn colGagnSQL;
+        private DataGridViewTextBoxColumn colMalSkraID;
+        private DataGridViewTextBoxColumn colMalTitill;
+        private DataGridViewTextBoxColumn colMalMalTitill;
+        private DataGridViewTextBoxColumn colMalHeitiVorslu;
+        private DataGridViewButtonColumn colMalOpna;
+        private DataGridViewButtonColumn colMalDelete;
+        private DataGridViewTextBoxColumn colMalSlod;
+        private DataGridViewTextBoxColumn colMalGagnagrunnur;
+        private Button m_btnMD5Stadfesta;
+        private Label m_lblMD5;
+        private TextBox m_tboMD5;
     }
 }

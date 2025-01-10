@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -67,8 +68,17 @@ namespace MHR_LEIT
             if (ds_mal.Tables.Count > 0)
             {
                 m_dgvPantMalaKerfi.AutoGenerateColumns = false;
-                m_dgvPantMalaKerfi.DataSource = ds_mal.Tables[0];
-                m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", ds_mal.Tables[0].Rows.Count);
+                DataTable dtMalAllt = new DataTable();
+
+                for (int i = 0; i < ds_mal.Tables.Count; i++)
+                {
+                    if (i == 0)
+                        dtMalAllt = ds_mal.Tables[i].Copy();
+                    else
+                        dtMalAllt.Merge(ds_mal.Tables[i]);
+                }
+                m_dgvPantMalaKerfi.DataSource = dtMalAllt;
+                m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", dtMalAllt.Rows.Count);
             }
             else
             {
@@ -395,8 +405,17 @@ namespace MHR_LEIT
         private void setjaFoldaTaba()
         {
             DataTable dt = (DataTable)m_dgvPantMalaKerfi.DataSource;
-            int iFjold = dt.Rows.Count;
-            m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", dt.Rows.Count);
+            DataTable dtMalAllt = new DataTable();
+            for (int i = 0; i < m_dsMal.Tables.Count; i++)
+            {
+                if (i == 0)
+                    dtMalAllt = m_dsMal.Tables[i].Copy();
+                else
+                    dtMalAllt.Merge(m_dsMal.Tables[i]);
+            }
+          
+            int iFjold = dtMalAllt.Rows.Count;
+            m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", dtMalAllt.Rows.Count);
 
             dt = (DataTable)m_dgvPantGagnagrunnar.DataSource;
             iFjold = iFjold + dt.Rows.Count;
@@ -430,7 +449,15 @@ namespace MHR_LEIT
                                 setjaFoldaTaba();
                             }
                         }
-                     break;
+                        if (senderGrid.Columns["colGagnOpna"].Index == e.ColumnIndex)
+                        {
+                            string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colHeitiVarsla"].Value.ToString();
+                            string strLeit = senderGrid.Rows[e.RowIndex].Cells["colLeitSkilyrdi"].Value.ToString();  
+                            string strSQL = senderGrid.Rows[e.RowIndex].Cells["colGagnSQL"].Value.ToString();
+                            frmGagnagrunnSkoda skoda = new frmGagnagrunnSkoda(strSQL, virkurnotandi, m_strGagnagrunnur, strLeit, m_strOrginal, strVarsla);
+                            skoda.ShowDialog();
+                        }
+                            break;
                     case "m_dgvPantSkraarkerfi":
                         if (senderGrid.Columns["colSkraDelete"].Index == e.ColumnIndex)
                         {
@@ -444,6 +471,39 @@ namespace MHR_LEIT
                                 setjaFoldaTaba();
                             }
                         }
+                        if (senderGrid.Columns["colSkraOpna"].Index == e.ColumnIndex)
+                        {
+                            var p = new Process();
+                            string strSlod = string.Empty;
+                            string strVorsluutgafa = senderGrid.Rows[e.RowIndex].Cells["colSkraVarslaID"].Value.ToString();
+                            cVorsluutgafur utgafur = new cVorsluutgafur();
+                            utgafur.m_bAfrit = virkurnotandi.m_bAfrit;
+                            utgafur.getVörsluútgáfu(strVorsluutgafa);
+                            strSlod = utgafur.slod;
+
+
+                            string strValid = senderGrid.Rows[e.RowIndex].Cells["colSkraID"].Value.ToString();
+                            double dColl = Convert.ToInt32(strValid) / 10000;
+                            int iID = Convert.ToInt32(strValid);
+                            if (iID == 1)
+                            {
+                                dColl = 1;
+                            }
+                            else
+                            {
+                                dColl = dColl + 1;
+                            }
+                            strSlod = strSlod + "\\Documents\\docCollection" + dColl.ToString() + "\\" + strValid;
+
+                            string[] strFiles = Directory.GetFiles(strSlod);
+                            strSlod = strFiles[0];
+
+                            p.StartInfo = new ProcessStartInfo(strSlod)
+                            {
+                                UseShellExecute = true
+                            };
+                            p.Start();
+                        }
                         break;
                     case "m_dgvPantMalaKerfi":
                         if (senderGrid.Columns["colMalDelete"].Index == e.ColumnIndex)
@@ -451,12 +511,40 @@ namespace MHR_LEIT
                             DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
                             if (result == DialogResult.Yes)
                             {
+
+                                string strGrunnur = m_dgvPantMalaKerfi.Rows[e.RowIndex].Cells["colMalGagnagrunnur"].Value.ToString();
+                                string strDocID = m_dgvPantMalaKerfi.Rows[e.RowIndex].Cells["colMalSkraID"].Value.ToString();
+                                string strEXP = "documentid = '" + strDocID + "'";
+                                DataRow[] fRow = m_dsMal.Tables[strGrunnur].Select(strEXP);
+                                if (fRow.Length != 0)
+                                {
+                                    fRow[0].Delete();
+                                    m_dsMal.Tables[strGrunnur].AcceptChanges();
+                                }
                                 m_dgvPantMalaKerfi.Rows.Remove(m_dgvPantMalaKerfi.Rows[e.RowIndex]);
                                 m_dtMal = (DataTable)m_dgvPantMalaKerfi.DataSource;
                                 m_dtMal.AcceptChanges();
                                 erPontun();
                                 setjaFoldaTaba();
                             }
+                        }
+                        if (senderGrid.Columns["colMalOpna"].Index == e.ColumnIndex)
+                        {
+                            var p = new Process();
+
+                            string strSlod = senderGrid.Rows[e.RowIndex].Cells["colMalSlod"].Value.ToString();
+                            string[] strSkra = Directory.GetFiles(strSlod);
+                            if (strSkra.Length > 0)
+                            {
+                                strSlod = strSkra[0].ToString();
+                            }
+
+
+                            p.StartInfo = new ProcessStartInfo(strSlod)
+                            {
+                                UseShellExecute = true
+                            };
+                            p.Start();
                         }
                         break;
                     default:

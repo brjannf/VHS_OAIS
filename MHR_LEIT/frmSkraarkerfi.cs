@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Management;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,12 +28,12 @@ namespace MHR_LEIT
         cVHS_drives drive = new cVHS_drives();
         DataTable m_dtSkrar = new DataTable();
         DataTable m_dtMal = new DataTable();
-        DataTable m_dtGrunn = new DataTable(); 
-        DataSet m_dsDIPmal = new DataSet(); 
+        DataTable m_dtGrunn = new DataTable();
+        DataSet m_dsDIPmal = new DataSet();
         DataTable m_dtExtension = new DataTable();
-        
 
-        cNotandi virkurnotandi = new cNotandi();    
+
+        cNotandi virkurnotandi = new cNotandi();
         string m_strGagnagrunnur = string.Empty;
         string m_strFileValinn = string.Empty;
         string m_strIdValinn = string.Empty;
@@ -41,29 +42,38 @@ namespace MHR_LEIT
         string m_strVorsluSofnunID = string.Empty;
         string m_strSkjalamID = string.Empty;
         string m_strHeitiVarsla = string.Empty;
-       
+
         ArrayList arr = new ArrayList();
         public DataTable m_dtValid = new DataTable();
 
         public frmSkraarkerfi()
         {
             InitializeComponent();
-           
+
         }
 
         private void setjFolderTaba()
         {
             m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
             m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtGrunn.Rows.Count);
-            if(m_dsDIPmal.Tables.Count != 0)
+            if (m_dsDIPmal.Tables.Count != 0)
             {
-                m_tapMalakerfi.Text = string.Format("Málakerfi ({0})", m_dsDIPmal.Tables[0].Rows.Count);
+                DataTable dtMalAllt = new DataTable();
+
+                for (int i = 0; i < m_dsDIPmal.Tables.Count; i++)
+                {
+                    if (i == 0)
+                        dtMalAllt = m_dsDIPmal.Tables[i].Copy();
+                    else
+                        dtMalAllt.Merge(m_dsDIPmal.Tables[i]);
+                }
+                m_tapMalakerfi.Text = string.Format("Málakerfi ({0})", dtMalAllt.Rows.Count);
             }
             else
             {
                 m_tapMalakerfi.Text = string.Format("Málakerfi (0)");
             }
-          
+
         }
         public frmSkraarkerfi(string strGagnagrunnur, string strValdi, DataRow row, string strLeitarOrd, DataTable dtDIP, DataTable dtMal, DataTable dtGrunn, cNotandi not, DataSet dsDIPmal)
         {
@@ -77,37 +87,46 @@ namespace MHR_LEIT
 
             m_dtExtension.Columns.Add("extension");
             m_lblLeitarNidurstodur.Text = string.Empty;
-            m_dtMal = dtMal; 
+            m_dtMal = dtMal;
             m_dtGrunn = dtGrunn;
             m_dsDIPmal = dsDIPmal;
-            if(m_dsDIPmal.Tables.Count != 0)
+            if (m_dsDIPmal.Tables.Count != 0)
             {
                 m_dtMal = m_dsDIPmal.Tables[0];
             }
 
-            
+
 
             virkurnotandi = not;
             midlun.m_bAfrit = virkurnotandi.m_bAfrit;
             drive.m_bAfrit = virkurnotandi.m_bAfrit;
             m_dtValid = dtDIP.Clone();
-            foreach(DataRow dr in dtDIP.Rows) 
+            foreach (DataRow dr in dtDIP.Rows)
             {
                 m_dtValid.ImportRow(dr);
             }
             m_dgvValdarSkrar.AutoGenerateColumns = false;
-            m_dgvValdarSkrar.DataSource = m_dtValid;    
-       
+            m_dgvValdarSkrar.DataSource = m_dtValid;
+
 
             m_dgvGagnaGrunnar.AutoGenerateColumns = false;
             m_dgvGagnaGrunnar.DataSource = dtGrunn;
-           
-           if(m_dsDIPmal.Tables.Count != 0)
+
+            if (m_dsDIPmal.Tables.Count != 0)
             {
                 m_dgvMalakerfi.AutoGenerateColumns = false;
-                m_dgvMalakerfi.DataSource = m_dsDIPmal.Tables[0];
-            }      
-        
+                DataTable dtMalAllt = new DataTable();
+
+                for (int i = 0; i < dsDIPmal.Tables.Count; i++)
+                {
+                    if (i == 0)
+                        dtMalAllt = dsDIPmal.Tables[i].Copy();
+                    else
+                        dtMalAllt.Merge(dsDIPmal.Tables[i]);
+                }
+                m_dgvMalakerfi.DataSource = dtMalAllt;
+            }
+
 
 
             setjFolderTaba();
@@ -130,7 +149,7 @@ namespace MHR_LEIT
             m_strIdValinn = strValdi;
             m_strFileValinn = strValdi;
             m_strVorslutgafa = row["vorsluutgafa"].ToString();
-            if(virkurnotandi.m_bAfrit)
+            if (virkurnotandi.m_bAfrit)
             {
                 m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorsluutgafa"];
             }
@@ -138,7 +157,7 @@ namespace MHR_LEIT
             {
                 m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
             }
-        
+
             if (Directory.Exists(m_strRoot.Replace("AVID", "FRUM")))
             {
                 m_btnFrumRit.Enabled = true;
@@ -164,7 +183,7 @@ namespace MHR_LEIT
             string[] strFiles = Directory.GetFiles(strValid);
             m_strFileValinn = strFiles[0];
 
-           
+
 
 
             //Image image = Image.FromFile(m_strFileValinn);
@@ -172,18 +191,26 @@ namespace MHR_LEIT
 
             fyllaFilesystem();
             fyllaMyndSkjal(Convert.ToInt32(m_strIdValinn), 1);
+            string strUtgafa = m_strGagnagrunnur.Replace("_", ".");
+            cMD5 md5 = new cMD5();
+            md5.m_bAfrit = virkurnotandi.m_bAfrit;
+            m_tboMD5.Text = md5.getMD5RegEx(m_strIdValinn, strUtgafa);
+            m_lblMD5.Text = string.Format("MD5 skjal {0}", m_strIdValinn);
+            m_lblMD5.Visible = true;
+            m_tboMD5.Visible = true;
+            m_btnMD5Stadfesta.Visible = true;
             //id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad
             //finna skráaendingar
             string strExt = String.Empty;
-            foreach(DataRow rex in m_dtSkrar.Rows)
+            foreach (DataRow rex in m_dtSkrar.Rows)
             {
-               
+
                 string[] strSplit = rex["mappa"].ToString().Split("." +
                     "");
-                strExt = strSplit[strSplit.Length-1];
-                string strExp = "extension = '" + "."+ strExt + "'";
+                strExt = strSplit[strSplit.Length - 1];
+                string strExp = "extension = '" + "." + strExt + "'";
                 DataRow[] fRow = m_dtExtension.Select(strExp);
-                if(fRow.Length == 0)
+                if (fRow.Length == 0)
                 {
                     DataRow re = m_dtExtension.NewRow();
                     re["extension"] = "." + strExt;
@@ -193,10 +220,10 @@ namespace MHR_LEIT
             }
             fyllaExtension();
         }
-  
-       private void fyllaExtension()
+
+        private void fyllaExtension()
         {
-            
+
             DataRow r = m_dtExtension.NewRow();
             r["extension"] = "Veldu skráaendingu";
             m_dtExtension.Rows.InsertAt(r, 0);
@@ -204,15 +231,15 @@ namespace MHR_LEIT
             m_comExternsion.ValueMember = "extension";
             m_comExternsion.DisplayMember = "extension";
             m_comExternsion.DataSource = m_dtExtension;
-           
+
         }
         private void fyllaFilesystem()
         {
             //sækja fyrirspurnina
-            string strFyrirspurn =  midlun.getFyrirspurn(m_strGagnagrunnur, "Get_files_path");
-            if(strFyrirspurn == string.Empty) //vegna nafnabreytinga AV 
+            string strFyrirspurn = midlun.getFyrirspurn(m_strGagnagrunnur, "Get_files_path");
+            if (strFyrirspurn == string.Empty) //vegna nafnabreytinga AV 
             {
-               strFyrirspurn =  midlun.getFyrirspurn(m_strGagnagrunnur, "AV_Get_files_path");
+                strFyrirspurn = midlun.getFyrirspurn(m_strGagnagrunnur, "AV_Get_files_path");
             }
             //keyra fyrirspurninga
             m_dtSkrar = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
@@ -221,7 +248,7 @@ namespace MHR_LEIT
             foreach (DataRow r in m_dtSkrar.Rows)
             {
                 PopulateTreeView(m_trwFileSystem, m_dtSkrar.Rows[i]["mappa"].ToString().Split('\\'), '\\', r["skjalID"].ToString(), m_dtSkrar.Rows[i]["mappa"].ToString());
-            //    PopulateTreeView2(m_trwFileSystem, m_dtSkrar.Rows[i]["mappa"].ToString().Split('\\'), '\\');
+                //    PopulateTreeView2(m_trwFileSystem, m_dtSkrar.Rows[i]["mappa"].ToString().Split('\\'), '\\');
                 if (r["skjalID"].ToString() == m_strIdValinn)
                 {
                     string[] strSplit = m_dtSkrar.Rows[i]["mappa"].ToString().Split('\\');
@@ -232,18 +259,18 @@ namespace MHR_LEIT
                 }
                 i++;
             }
-           TreeNode[] nodues =  m_trwFileSystem.Nodes.Find(strSkra + "\\", true);
+            TreeNode[] nodues = m_trwFileSystem.Nodes.Find(strSkra + "\\", true);
             if (m_trwFileSystem.SelectedNode != null)
             {
                 Point p = new Point(m_trwFileSystem.SelectedNode.Bounds.X, m_trwFileSystem.SelectedNode.Bounds.Y);
-           //     m_trwFileSystem.PointToClient(p);
-             //   m_trwFileSystem.SelectedNode = nodues[0];
+                //     m_trwFileSystem.PointToClient(p);
+                //   m_trwFileSystem.SelectedNode = nodues[0];
             }
-               
+
         }
 
-      
-     
+
+
 
         public void PopulateTreeView(TreeView treeView, string[] paths, char pathSeparator, string strTag, string strSlod)
         {
@@ -252,18 +279,18 @@ namespace MHR_LEIT
             int i = 0;
             foreach (string path in paths)
             {
-             //   subPathAgg = string.Empty;
+                //   subPathAgg = string.Empty;
                 i++;
                 bool bSkjal = false;
-                if(i == paths.Length)
+                if (i == paths.Length)
                 {
-                    if(path.Contains("."))
+                    if (path.Contains("."))
                     {
                         bSkjal = true;
                     }
                 }
-              
-               if (m_strIdValinn == strTag || !bSkjal)
+
+                if (m_strIdValinn == strTag || !bSkjal)
                 {
 
                     foreach (string subPath in path.Split(pathSeparator))
@@ -286,16 +313,16 @@ namespace MHR_LEIT
                             {
                                 lastNode = lastNode.Nodes.Add(subPathAgg, subPath);
 
-                               if(bSkjal) //if (lastNode.Text.Contains('.'))
+                                if (bSkjal) //if (lastNode.Text.Contains('.'))
                                 {
                                     lastNode.Tag = strTag;
-                                    if(m_strIdValinn == strTag)
+                                    if (m_strIdValinn == strTag)
                                     {
                                         lastNode.BackColor = Color.LightGreen;
                                         m_trwFileSystem.SelectedNode = lastNode;
                                     }
                                 }
-                               else
+                                else
                                 {
                                     lastNode.Tag = strSlod;
                                 }
@@ -307,12 +334,12 @@ namespace MHR_LEIT
                         else
                         {
                             lastNode = nodes[0];
-                            if(lastNode.IsSelected)
+                            if (lastNode.IsSelected)
                             {
                                 lastNode.Expand();
                             }
-                           
-                           
+
+
                         }
 
 
@@ -330,7 +357,7 @@ namespace MHR_LEIT
             string[] strFiles = Directory.GetFiles(strDirectory);
 
 
-         
+
             var p = new Process();
             p.StartInfo = new ProcessStartInfo(strFiles[0])
             {
@@ -351,10 +378,14 @@ namespace MHR_LEIT
 
         private void m_trwFileSystem_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if(m_trwFileSystem.Focused)
+            if (m_trwFileSystem.Focused)
             {
-               
-                if(e.Node.Tag != null)
+
+                m_lblMD5.Visible = false;
+                m_tboMD5.Visible = false;
+                m_btnMD5Stadfesta.Visible = false;
+
+                if (e.Node.Tag != null)
                 {
                     if (e.Node.Tag.ToString().Contains("\\"))
                     {
@@ -371,23 +402,24 @@ namespace MHR_LEIT
                         m_lilSlod.Text = string.Format("Slóð {0}{1}", strSlod, Environment.NewLine);
 
                         m_lblSlodFile.Text = string.Format("Titill: {0}{1}Auðkenni skjals: {2}", e.Node.Text, Environment.NewLine, e.Node.Tag);
+
                     }
-                  
+
                     if (e.Node.Tag.ToString().Contains("\\"))
                     {
-                     //   MessageBox.Show("gaman");
+                        //   MessageBox.Show("gaman");
 
-                        
+
                         string strSkra = e.Node.Tag.ToString();
                         string strMappa = e.Node.Text;
                         string[] strSplit = strSkra.Split('\\');
                         string strLeitMappa = string.Empty;
                         bool bBuid = false;
-                        foreach(string str in strSplit)
+                        foreach (string str in strSplit)
                         {
-                            if(!bBuid)
+                            if (!bBuid)
                             {
-                                strLeitMappa +=  str + "\\";
+                                strLeitMappa += str + "\\";
                                 if (str == strMappa)
                                 {
                                     bBuid = true;
@@ -397,21 +429,21 @@ namespace MHR_LEIT
                         string strExp = "mappa like '" + strLeitMappa + "%'";
                         DataTable dtRest = new DataTable();
                         DataRow[] fRows = m_dtSkrar.Select(strExp);
-                       
-                        foreach(DataRow r in fRows)
-                        {
-                          //string strValid =  e.Node.Tag.ToString();
-                          //string strMappaTest = r["mappa"].ToString();
-                          //  if(strValid == strMappaTest)
-                          //  {
 
-                          //  }
-                           strSplit = r["mappa"].ToString().Split("\\");
-                            foreach(string str in strSplit)
+                        foreach (DataRow r in fRows)
+                        {
+                            //string strValid =  e.Node.Tag.ToString();
+                            //string strMappaTest = r["mappa"].ToString();
+                            //  if(strValid == strMappaTest)
+                            //  {
+
+                            //  }
+                            strSplit = r["mappa"].ToString().Split("\\");
+                            foreach (string str in strSplit)
                             {
-                                if(bBuid)
+                                if (bBuid)
                                 {
-                                    if(str == strMappa)
+                                    if (str == strMappa)
                                     {
                                         bBuid = false;
                                     }
@@ -427,12 +459,12 @@ namespace MHR_LEIT
                                             Boolean b = false;
                                             foreach (TreeNode thisNode in e.Node.Nodes)
                                             {
-                                              if(thisNode.Text == n.Text)
+                                                if (thisNode.Text == n.Text)
                                                 {
                                                     b = true;
                                                 }
                                             }
-                                            if(!b)
+                                            if (!b)
                                             {
                                                 n.Tag = r["skjalID"].ToString();
                                                 var nodus = m_trwFileSystem.FlattenTree()
@@ -444,10 +476,10 @@ namespace MHR_LEIT
                                                     e.Node.Nodes.Add(n);
                                                     n.BackColor = Color.LightGray;
                                                     e.Node.Expand();
-                                                  
+
 
                                                 }
-                                             
+
                                             }
                                             else
                                             {
@@ -463,7 +495,7 @@ namespace MHR_LEIT
                                             // .Where(nn => nn.Tag == n.Tag)
                                             //.ToList();
                                             TreeNode[] nodes = m_trwFileSystem.Nodes.Find(n.Tag.ToString(), true);
-                                            
+
                                             if (nodes[0] == null)
                                             {
                                                 e.Node.Nodes.Add(n);
@@ -472,31 +504,40 @@ namespace MHR_LEIT
 
                                         }
                                     }
-                                  
+
                                 }
 
                             }
-                      
+
                         }
                     }
                     else
                     {
-                          
+
                         int iID = Convert.ToInt32(e.Node.Tag);
-                        fyllaMyndSkjal(iID,1);
-                      
+                        fyllaMyndSkjal(iID, 1);
+                        //md5
+                        string strUtgafa = m_strGagnagrunnur.Replace("_", ".");
+                        cMD5 md5 = new cMD5();
+                        md5.m_bAfrit = virkurnotandi.m_bAfrit;
+                        m_tboMD5.Text = md5.getMD5RegEx(iID.ToString(), strUtgafa);
+                        m_lblMD5.Text = string.Format("MD5 skjal {0}", iID.ToString());
+                        m_lblMD5.Visible = true;
+                        m_tboMD5.Visible = true;
+                        m_btnMD5Stadfesta.Visible = true;
+
                     }
-                  
+
                 }
-                
+
             }
-            
+
         }
 
         private void fyllaMyndSkjal(int iID, int iPage)
         {
             m_strIdValinn = iID.ToString();
-            double dColl = Convert.ToInt32(m_strIdValinn)/ 10000;
+            double dColl = Convert.ToInt32(m_strIdValinn) / 10000;
             if (iID == 1)
             {
                 dColl = 1;
@@ -506,7 +547,7 @@ namespace MHR_LEIT
                 dColl = dColl + 1;
             }
 
-         
+
 
             string strValid = m_strRoot + "\\Documents\\docCollection" + dColl.ToString() + "\\" + m_strIdValinn;
             string[] strFiles = Directory.GetFiles(strValid);
@@ -514,9 +555,14 @@ namespace MHR_LEIT
 
             FileInfo fifo = new FileInfo(strFiles[0]);
 
-            if(fifo.Extension == ".tif")
+            if (fifo.Extension == ".tif")
             {
                 Image image = Image.FromFile(m_strFileValinn);
+                //Image image;
+                //using (var bmpTemp = new Bitmap(m_strFileValinn))
+                //{
+                //    image = new Bitmap(bmpTemp);
+                //}
                 FrameDimension dimension;
 
                 dimension = FrameDimension.Page;
@@ -530,13 +576,13 @@ namespace MHR_LEIT
                 if (frow.Length > 0)
                 {
                     var date = Convert.ToDateTime(frow[0]["Lastwriten"]);
-                    double diff = (DateTime.Now- date).TotalDays;
+                    double diff = (DateTime.Now - date).TotalDays;
                     var totalYears = Math.Truncate(diff / 365);
                     var totalMonths = Math.Truncate((diff % 365) / 30);
                     var remainingDays = Math.Truncate((diff % 365) % 30);
-                   string strDate = date.Day.ToString() + "." + date.Month.ToString() + "." + date.Year.ToString() ; 
+                    string strDate = date.Day.ToString() + "." + date.Month.ToString() + "." + date.Year.ToString();
                     TimeSpan tSpan = DateTime.Now - date;
-                    if(totalYears.ToString() == "1")
+                    if (totalYears.ToString() == "1")
                     {
                         m_lblDagsetning.Text = string.Format("Skjalinu var síðast breytt fyrir {0} ári, {1} mánuðum og {2} dögum eða þann {3}", totalYears, totalMonths, remainingDays, strDate);
                     }
@@ -544,12 +590,12 @@ namespace MHR_LEIT
                     {
                         m_lblDagsetning.Text = string.Format("Skjalinu var síðast breytt fyrir fyrir {0} árum, {1} mánuðum og {2} dögum eða þann {3}", totalYears, totalMonths, remainingDays, strDate);
                     }
-                   
+
                 }
                 image.SelectActiveFrame(FrameDimension.Page, iPage - 1); // iPages - 1);
                 m_pibSkjal.Image = image;
             }
-            if(fifo.Extension == ".mpg")
+            if (fifo.Extension == ".mpg")
             {
 
                 string strExp = "skjalID='" + m_strIdValinn + "'";
@@ -559,14 +605,14 @@ namespace MHR_LEIT
                     //  DateTime date = Convert.ToDateTime[]
                     m_lblDagsetning.Text = string.Format("Síðast var skráð í skjalið {0}", frow[0]["lastwriten"]);
                 }
-                 m_pibSkjal.ImageLocation = "video.png";
+                m_pibSkjal.ImageLocation = "video.png";
             }
-            
-           
+
+
             //opna blættí skalið
         }
 
-         private void pageImaga(object sender, EventArgs e)
+        private void pageImaga(object sender, EventArgs e)
         {
             Button b = (Button)sender;
             string[] strSplit = b.Text.Split("/");
@@ -582,7 +628,7 @@ namespace MHR_LEIT
         private void leitInnra()
         {
             m_trwLeit.Nodes.Clear();
-            if(arr.Count> 0) 
+            if (arr.Count > 0)
             {
                 foreach (TreeNode n in arr)
                 {
@@ -590,13 +636,13 @@ namespace MHR_LEIT
                 }
                 arr.Clear();
             }
-          
+
             DataTable dt = m_dtSkrar.Clone();
 
-            
-            midlun.leitarord = m_tobLeitarord.Text ;
 
-          
+            midlun.leitarord = m_tobLeitarord.Text;
+
+
             if (m_dtpStart.Checked)
             {
                 midlun.Upphafsdags = m_dtpStart.Value.ToString();
@@ -605,7 +651,7 @@ namespace MHR_LEIT
             {
                 midlun.Endadags = m_dtEnd.Value.ToString();
             }
-            if(m_comExternsion.SelectedIndex != 0)
+            if (m_comExternsion.SelectedIndex != 0)
             {
                 midlun.extension = m_comExternsion.SelectedValue.ToString();
             }
@@ -621,41 +667,41 @@ namespace MHR_LEIT
                 {
                     dt.ImportRow(r);
                     string[] strSplit = r["mappa"].ToString().Split("\\");
-                    TreeNode n = new TreeNode(strSplit[strSplit.Length-1]);
+                    TreeNode n = new TreeNode(strSplit[strSplit.Length - 1]);
                     n.Tag = r["skjalID"].ToString();
                     m_trwLeit.Nodes.Add(n);
-                  
+
                 }
-                
-             
-             
-                
-                    foreach(DataRow f in frow)
+
+
+
+
+                foreach (DataRow f in frow)
+                {
+                    string strMappa = f["mappa"].ToString();
+                    FileInfo fifo = new FileInfo(strMappa);
+                    string[] strSpit = strMappa.Split("\\");
+                    string strID = strSpit[strSpit.Length - 2] + "\\";
+                    TreeNode[] tNode = m_trwFileSystem.Nodes.Find(strID, true);
+                    if (tNode.Length != 0)
                     {
-                      string strMappa = f["mappa"].ToString();
-                      FileInfo fifo = new FileInfo(strMappa);
-                      string[] strSpit = strMappa.Split("\\");
-                     string strID = strSpit[strSpit.Length - 2] +"\\";
-                      TreeNode[] tNode = m_trwFileSystem.Nodes.Find(strID, true);
-                        if( tNode.Length != 0)
+                        if (f["skjalID"].ToString() != m_strIdValinn)
                         {
-                            if (f["skjalID"].ToString() != m_strIdValinn)
-                            {
-                                TreeNode nn = new TreeNode(strSpit[strSpit.Length - 1]);
-                                nn.Tag = f["skjalID"].ToString();
-                                nn.BackColor = Color.LightGreen;
-                                tNode[0].Nodes.Add(nn);
+                            TreeNode nn = new TreeNode(strSpit[strSpit.Length - 1]);
+                            nn.Tag = f["skjalID"].ToString();
+                            nn.BackColor = Color.LightGreen;
+                            tNode[0].Nodes.Add(nn);
 
-                                tNode[0].Expand();
-                                arr.Add(nn);
-                            }
-                           
-
+                            tNode[0].Expand();
+                            arr.Add(nn);
                         }
 
+
                     }
+
+                }
                 m_trwFileSystem.ExpandAll();
-                if(arr.Count != 0)
+                if (arr.Count != 0)
                 {
                     m_trwFileSystem.SelectedNode = (TreeNode)arr[0];
 
@@ -665,10 +711,10 @@ namespace MHR_LEIT
             {
                 m_lblLeitarNidurstodur.Text = "Engar leitarniðurstöður";
             }
-       
+
         }
 
-      
+
         public void PopulateTreeViewInnriLeit(TreeView treeView, string[] paths, char pathSeparator, string strTag, string strSlod)
         {
             TreeNode lastNode = null;
@@ -687,7 +733,7 @@ namespace MHR_LEIT
                     }
                 }
 
-               // if (m_strIdValinn == strTag || !bSkjal)
+                // if (m_strIdValinn == strTag || !bSkjal)
                 {
 
                     foreach (string subPath in path.Split(pathSeparator))
@@ -738,7 +784,7 @@ namespace MHR_LEIT
 
         private void m_tobLeitarord_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 leitInnra();
             }
@@ -756,8 +802,8 @@ namespace MHR_LEIT
 
         private void m_numUpDown_ValueChanged(object sender, EventArgs e)
         {
-           
-            fyllaMyndSkjal(Convert.ToInt32(m_strIdValinn),Convert.ToInt32(m_numUpDown.Value));
+
+            fyllaMyndSkjal(Convert.ToInt32(m_strIdValinn), Convert.ToInt32(m_numUpDown.Value));
         }
 
         private void m_dtpStart_ValueChanged(object sender, EventArgs e)
@@ -778,9 +824,9 @@ namespace MHR_LEIT
         private void m_trwFileSystem_AfterCheck(object sender, TreeViewEventArgs e)
         {
             CheckTreeViewNode(e.Node, e.Node.Checked);
-            if(e.Node.Checked )
+            if (e.Node.Checked)
             {
-                if(e.Node.Tag != null)
+                if (e.Node.Tag != null)
                 {
                     if (!e.Node.Tag.ToString().Contains("\\"))
                     {
@@ -824,27 +870,27 @@ namespace MHR_LEIT
                 }
             }
             int iFjoldi = m_dtValid.Rows.Count + m_dtGrunn.Rows.Count + m_dtMal.Rows.Count;
-            if(iFjoldi == 0)
+            if (iFjoldi == 0)
             {
-                m_btnAfgreida.Enabled = false;  
+                m_btnAfgreida.Enabled = false;
             }
             else
             {
-                m_btnAfgreida.Enabled = true;   
+                m_btnAfgreida.Enabled = true;
             }
             m_dgvValdarSkrar.AutoGenerateColumns = false;
             m_dgvValdarSkrar.DataSource = m_dtValid;
             m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
-          //  m_grbValdinnSkjol.Text = string.Format("Valinn skjöl ({0})", m_dtValid.Rows.Count);
+            //  m_grbValdinnSkjol.Text = string.Format("Valinn skjöl ({0})", m_dtValid.Rows.Count);
         }
         private void CheckTreeViewNode(TreeNode node, Boolean isChecked)
         {
             foreach (TreeNode item in node.Nodes)
             {
                 item.Checked = isChecked;
-                if(isChecked )
+                if (isChecked)
                 {
-                    if(!item.Tag.ToString().Contains("\\"))
+                    if (!item.Tag.ToString().Contains("\\"))
                     {
                         DataRow r = m_dtValid.NewRow();
                         r["skjalID"] = item.Tag;
@@ -852,13 +898,13 @@ namespace MHR_LEIT
                         r["vorsluutgafa"] = m_strVorslutgafa;
                         string strExpr = "skjaliD = '" + item.Tag.ToString() + "'";
                         DataRow[] fRow = m_dtValid.Select(strExpr);
-                        if(fRow.Length == 0 )
+                        if (fRow.Length == 0)
                         {
                             m_dtValid.Rows.Add(r);
                             m_dtValid.AcceptChanges();
                         }
                     }
-                 
+
                 }
                 else
                 {
@@ -880,21 +926,21 @@ namespace MHR_LEIT
 
         private void m_btnAfgreida_Click(object sender, EventArgs e)
         {
-            
-            frmAfgreidsla frmAfgreida = new frmAfgreidsla(virkurnotandi,m_dtValid, m_dtMal, m_dtGrunn, m_dsDIPmal);
+
+            frmAfgreidsla frmAfgreida = new frmAfgreidsla(virkurnotandi, m_dtValid, m_dtMal, m_dtGrunn, m_dsDIPmal);
             frmAfgreida.ShowDialog();
 
-            int iFjold = m_dtValid.Rows.Count + m_dtMal.Rows.Count + m_dtGrunn.Rows.Count;  
+            int iFjold = m_dtValid.Rows.Count + m_dtMal.Rows.Count + m_dtGrunn.Rows.Count;
 
-           if(iFjold == 0)
+            if (iFjold == 0)
             {
-                m_btnAfgreida.Enabled = false;  
+                m_btnAfgreida.Enabled = false;
             }
-           else
+            else
             {
                 m_btnAfgreida.Enabled = true;
             }
-            
+
             m_tapGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtGrunn.Rows.Count);
             m_tapMalakerfi.Text = string.Format("Málakerfi ({0})", m_dtMal.Rows.Count);
             m_tapSkraarkerfi.Text = string.Format("Skráakerfi ({0})", m_dtValid.Rows.Count);
@@ -911,12 +957,12 @@ namespace MHR_LEIT
                 if (e.Node.Tag != null)
                 {
                     //vantar að finna slóð útfrá docid
-                    string strExp ="skjalID = '" + e.Node.Tag.ToString() + "'";
+                    string strExp = "skjalID = '" + e.Node.Tag.ToString() + "'";
                     DataRow[] fRow = m_dtSkrar.Select(strExp);
                     string strSlod = string.Empty;
-                    if(fRow.Length ==1)
+                    if (fRow.Length == 1)
                     {
-                        strSlod= fRow[0]["mappa"].ToString();
+                        strSlod = fRow[0]["mappa"].ToString();
                         string[] strSplit = strSlod.Split("\\");
                         strSlod = strSlod.Replace(strSplit[strSplit.Length - 1], "");
                     }
@@ -924,11 +970,11 @@ namespace MHR_LEIT
                     m_lilSlod.Text = string.Format("Slóð {0}{1}", strSlod, Environment.NewLine);
 
                     m_lblSlodFile.Text = string.Format("Titill: {0}{1}Auðkenni skjals: {2}", e.Node.Text, Environment.NewLine, e.Node.Tag);
-                  //  m_lblSlodFile.Text = string.Format("Slóð skjals {0}{1}", e.Node.Tag.ToString(), Environment.NewLine);
-                     int iID = Convert.ToInt32(e.Node.Tag);
+                    //  m_lblSlodFile.Text = string.Format("Slóð skjals {0}{1}", e.Node.Tag.ToString(), Environment.NewLine);
+                    int iID = Convert.ToInt32(e.Node.Tag);
                     fyllaMyndSkjal(iID, 1);
 
-                    
+
 
                 }
 
@@ -1037,6 +1083,39 @@ namespace MHR_LEIT
                                 }
                             }
                         }
+                        if (senderGrid.Columns["colSkraOpna"].Index == e.ColumnIndex)
+                        {
+                            var p = new Process();
+                            string strSlod = string.Empty;
+                            string strVorsluutgafa = senderGrid.Rows[e.RowIndex].Cells["colSkraVarslaID"].Value.ToString();
+                            cVorsluutgafur utgafur = new cVorsluutgafur();
+                            utgafur.m_bAfrit = virkurnotandi.m_bAfrit;
+                            utgafur.getVörsluútgáfu(strVorsluutgafa);
+                            strSlod = utgafur.slod;
+
+
+                            string strValid = senderGrid.Rows[e.RowIndex].Cells["colAudkenniSkjals"].Value.ToString();
+                            double dColl = Convert.ToInt32(strValid) / 10000;
+                            int iID = Convert.ToInt32(strValid);
+                            if (iID == 1)
+                            {
+                                dColl = 1;
+                            }
+                            else
+                            {
+                                dColl = dColl + 1;
+                            }
+                            strSlod = strSlod + "\\Documents\\docCollection" + dColl.ToString() + "\\" + strValid;
+
+                            string[] strFiles = Directory.GetFiles(strSlod);
+                            strSlod = strFiles[0];
+
+                            p.StartInfo = new ProcessStartInfo(strSlod)
+                            {
+                                UseShellExecute = true
+                            };
+                            p.Start();
+                        }
                         break;
                     case "m_dgvMalakerfi":
                         if ((senderGrid.Columns["colMalDelete"].Index == e.ColumnIndex))
@@ -1044,12 +1123,39 @@ namespace MHR_LEIT
                             DialogResult result = MessageBox.Show("Viltu fjarlægja þetta skjal?", "Fjarlægja skjal", MessageBoxButtons.YesNo);
                             if (result == DialogResult.Yes)
                             {
+                                string strGrunnur = m_dgvMalakerfi.Rows[e.RowIndex].Cells["colMalGagnagrunnur"].Value.ToString();
+                                string strDocID = m_dgvMalakerfi.Rows[e.RowIndex].Cells["colMalSkraID"].Value.ToString();
+                                string strEXP = "documentid = '" + strDocID + "'";
+                                DataRow[] fRow = m_dsDIPmal.Tables[strGrunnur].Select(strEXP);
+                                if (fRow.Length != 0)
+                                {
+                                    fRow[0].Delete();
+                                    m_dsDIPmal.Tables[strGrunnur].AcceptChanges();
+                                }
                                 m_dgvMalakerfi.Rows.Remove(m_dgvMalakerfi.Rows[e.RowIndex]);
                                 m_dtMal = (DataTable)m_dgvMalakerfi.DataSource;
                                 m_dtMal.AcceptChanges();
-                               
+
                             }
-                        } 
+                        }
+                        if (senderGrid.Columns["colMalOpna"].Index == e.ColumnIndex)
+                        {
+                            var p = new Process();
+
+                            string strSlod = senderGrid.Rows[e.RowIndex].Cells["colMalSlod"].Value.ToString();
+                            string[] strSkra = Directory.GetFiles(strSlod);
+                            if (strSkra.Length > 0)
+                            {
+                                strSlod = strSkra[0].ToString();
+                            }
+
+
+                            p.StartInfo = new ProcessStartInfo(strSlod)
+                            {
+                                UseShellExecute = true
+                            };
+                            p.Start();
+                        }
                         break;
                     case "m_dgvGagnaGrunnar":
                         if ((senderGrid.Columns["colGagnDelete"].Index == e.ColumnIndex))
@@ -1063,10 +1169,19 @@ namespace MHR_LEIT
 
                             }
                         }
+                        if ((senderGrid.Columns["colGagnOpna"].Index == e.ColumnIndex))
+                        {
+                            string strGagnagrunnur = senderGrid.Rows[e.RowIndex].Cells["colGagnHeiti"].Value.ToString();
+                            string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colGagnHeitivorslu"].Value.ToString();
+                            string strLeit = senderGrid.Rows[e.RowIndex].Cells["colGagnLeidarskilyrdi"].Value.ToString();
+                            string strSQL = senderGrid.Rows[e.RowIndex].Cells["colGagnSQL"].Value.ToString();
+                            frmGagnagrunnSkoda skoda = new frmGagnagrunnSkoda(strSQL, virkurnotandi, strGagnagrunnur, strLeit, strGagnagrunnur, strVarsla);
+                            skoda.ShowDialog();
+                        }
                         break;
                     default:
                         break;
-                
+
                 }
                 setjFolderTaba();
             }
@@ -1075,7 +1190,7 @@ namespace MHR_LEIT
         private void m_lilSlod_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string strSlod = m_lilSlod.Text.Replace("Slóð ", "").Trim();
-           
+
 
             string strMappa = string.Empty;
             string[] strSplit = strSlod.Split('\\');
@@ -1088,7 +1203,7 @@ namespace MHR_LEIT
             }
             else
             {
-                if(m_trwLeit.SelectedNode is  null)
+                if (m_trwLeit.SelectedNode is null)
                 {
                     strSkjalID = m_trwFileSystem.SelectedNode.Tag.ToString();
                 }
@@ -1096,12 +1211,12 @@ namespace MHR_LEIT
                 {
                     strSkjalID = m_trwLeit.SelectedNode.Tag.ToString();
                 }
-                
+
             }
             m_tacStrukturLeit.SelectedTab = m_tapMoppuStruct;
             foreach (string str in strSplit)
             {
-                if(str != string.Empty)
+                if (str != string.Empty)
                 {
                     if (!bBuid)
                     {
@@ -1114,7 +1229,7 @@ namespace MHR_LEIT
                         }
                     }
                 }
-                
+
             }
             string strExp = "mappa like '" + strLeitMappa + "%'";
             DataTable dtRest = new DataTable();
@@ -1156,22 +1271,22 @@ namespace MHR_LEIT
                                 //        b = true;
                                 //    }
                                 //}
-                         //       if (!b)
+                                //       if (!b)
                                 {
                                     n.Tag = r["skjalID"].ToString();
                                     var nodus = m_trwFileSystem.FlattenTree()
                                      .Where(nn => nn.Tag == n.Tag)
                                     .ToList();
-                                   // TreeNode[] nodesX = m_trwFileSystem.Nodes.Find(n.Tag.ToString(), true);
+                                    // TreeNode[] nodesX = m_trwFileSystem.Nodes.Find(n.Tag.ToString(), true);
                                     if (nodus.Count == 0)
                                     {
                                         if (n.Tag.ToString() == strSkjalID)
                                         {
                                             TreeNodeCollection colNode = nodes[0].Nodes;
                                             bool bErTil = false;
-                                            foreach(TreeNode nx in colNode)
+                                            foreach (TreeNode nx in colNode)
                                             {
-                                                if(nx.Text == n.Text)
+                                                if (nx.Text == n.Text)
                                                 {
                                                     nx.BackColor = Color.LightBlue;
                                                     nodes[0].Expand();
@@ -1181,22 +1296,22 @@ namespace MHR_LEIT
                                                     bErTil = true;
                                                 }
                                             }
-                                            if(!bErTil)
+                                            if (!bErTil)
                                             {
                                                 nodes[0].Nodes.Add(n);
                                                 n.BackColor = Color.LightBlue;
                                                 nodes[0].Expand();
                                                 m_trwFileSystem.SelectedNode = n;
                                                 //Point p = new Point(n.Bounds.X, n.Bounds.Y);
-                                               // m_trwFileSystem.AutoScrollOffset = p;
+                                                // m_trwFileSystem.AutoScrollOffset = p;
                                             }
-                                          
+
                                         }
-                                       
+
                                     }
 
                                 }
-                                
+
 
                             }
                             else
@@ -1215,7 +1330,7 @@ namespace MHR_LEIT
                                 //}
 
                             }
-                           
+
                         }
 
                     }
@@ -1227,8 +1342,8 @@ namespace MHR_LEIT
 
         private void m_btnVorslustofnun_Click(object sender, EventArgs e)
         {
-           
-            
+
+
             frmVorslustofnun frmVorslu = new frmVorslustofnun(m_strVorsluSofnunID, virkurnotandi);
             frmVorslu.ShowDialog();
         }
@@ -1248,12 +1363,45 @@ namespace MHR_LEIT
             string strAuðkenni = m_strVorslutgafa; // senderGrid.Rows[e.RowIndex].Cells["colAudkenni"].Value.ToString();
             //string strSlod = senderGrid.Rows[e.RowIndex].Cells["colVarslaSlod"].Value.ToString();
             string strTegund = "Skráarkerfi"; // senderGrid.Rows[e.RowIndex].Cells["colTegund"].Value.ToString();
-            //string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorsluID"].Value.ToString();
-           
+                                              //string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorsluID"].Value.ToString();
+
             frmGeymsluskra frmgeymsla = new frmGeymsluskra(m_strVorslutgafa, m_strRoot, strTegund, virkurnotandi, m_strVorsluSofnunID);
             frmgeymsla.ShowDialog();
         }
+
+        private string md5(string strFile)
+        {
+            string strRet = string.Empty;
+            using (var md5 = MD5.Create())
+            {
+
+                // using (FileStream straumur = File.OpenRead("C:\\AVID.SA.18000.1\\Documents\\docCollection1\\1\\1.tif"))
+
+                {
+                    FileStream InputBin = new FileStream(strFile, FileMode.Open, FileAccess.Read, FileShare.None);
+                    byte[] bla = md5.ComputeHash(InputBin);
+                    strRet = BitConverter.ToString(bla).Replace("-", "");
+                    InputBin.Close();
+                }
+            }
+            return strRet;
+        }
+        private void m_btnMD5Stadfesta_Click(object sender, EventArgs e)
+        {
+
+            string strMD5 = md5(m_strFileValinn);
+
+            if (strMD5 == m_tboMD5.Text)
+            {
+                MessageBox.Show(string.Format("{0}{1}Sama gátsuma í grunni og á skránni", strMD5, Environment.NewLine));
+            }
+            else
+            {
+                MessageBox.Show(string.Format("{0}{1}ATH! EKKI sama gátsuma í grunni og á skránni", strMD5, Environment.NewLine));
+            }
+        }
     }
+
     public static class SOExtension
     {
         public static IEnumerable<TreeNode> FlattenTree(this TreeView tv)

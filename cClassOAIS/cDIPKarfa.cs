@@ -32,6 +32,7 @@ namespace cClassOAIS
         public string lanthegi { get; set; }
         public string hver_skradi { get; set; }
         public string dags_skrad { get; set; }
+        public string athugasemdir { get; set; }
 
         public void vista()
         {
@@ -45,15 +46,16 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@lanthegi", this.lanthegi);
             command.Parameters.AddWithValue("@hver_skradi", this.hver_skradi);
             command.Parameters.AddWithValue("@dags_skrad", this.dags_skrad);
+            command.Parameters.AddWithValue("@athugasemdir", this.athugasemdir);
 
 
             if (this.karfa == 0)
             {
-                command.CommandText = "REPLACE INTO `dt_karfa_dip` SET  `heiti`=@heiti,  `lanthegi`=@lanthegi, `hver_skradi`=@hver_skradi,`dags_skrad`=NOW();";
+                command.CommandText = "REPLACE INTO `dt_karfa_dip` SET  `heiti`=@heiti,  `lanthegi`=@lanthegi, `athugasemdir`=@athugasemdir, `hver_skradi`=@hver_skradi,`dags_skrad`=NOW();";
             }
             else
             {
-                // command.CommandText = string.Format("UPDATE `dt_notendur` SET  `kennitala`=@kennitala,  `notendanafn`=@notendanafn, `lykilorð`=@lykilorð, `vörslustofnun`=@vörslustofnun, `nafn`=@nafn,`virkur`=@virkur,`athugasemdir`=@athugasemdir,`hver_breytti`=@hver_breytti,`hlutverk`=@hlutverk,`email`=@email,`heimilisfang`=@heimilisfang,`simi`=@simi,`dags_breytt`=NOW() WHERE kennitala ={0};", strKennitala);
+                 command.CommandText = string.Format("UPDATE `dt_karfa_dip` SET `athugasemdir`=@athugasemdir WHERE karfa ={0};", this.karfa);
             }
            
             command.ExecuteNonQuery();
@@ -83,6 +85,7 @@ namespace cClassOAIS
                 this.lanthegi = dr["lanthegi"].ToString();
                 this.hver_skradi = dr["hver_skradi"].ToString();
                 this.dags_skrad = dr["dags_skrad"].ToString();
+                this.athugasemdir = dr["athugasemdir"].ToString();
             }
         }
         public DataTable getKorfurDIP()
@@ -108,6 +111,7 @@ namespace cClassOAIS
             this.lanthegi = null;
             this.hver_skradi = null;
             this.dags_skrad = null;
+            this.athugasemdir = null;
         }
     }
 }

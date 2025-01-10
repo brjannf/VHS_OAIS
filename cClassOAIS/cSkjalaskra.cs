@@ -272,8 +272,8 @@ namespace cClassOAIS
         public DataTable getVörsluútgáfurGU()
         {
             sækjaTengistreng();
-            //  string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where vorsluutgafa not like 'frum%';");
-            string strSQL = string.Format("SELECT d.*, (select distinct tegund_grunns from dt_midlun m where d.vorsluutgafa= m.vorsluutgafa) as tegund FROM `dt_vörsluutgafur` d where vorsluutgafa not like 'frum%';");
+             string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d where vorsluutgafa not like 'frum%';");
+           // string strSQL = string.Format("SELECT d.*, (select distinct tegund_grunns from dt_midlun m where d.vorsluutgafa= m.vorsluutgafa) as tegund FROM `dt_vörsluutgafur` d where vorsluutgafa not like 'frum%';");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

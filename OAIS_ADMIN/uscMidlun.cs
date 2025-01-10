@@ -14,6 +14,7 @@ using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Google.Protobuf.WellKnownTypes;
 using MySql.Data.MySqlClient;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace OAIS_ADMIN
@@ -140,7 +141,7 @@ namespace OAIS_ADMIN
                         {
                             m_strHeitiKerfis = ds.Tables["table"].Rows[0]["name"].ToString();
                         }
-                        if (m_strHeitiKerfis != "GoPro" && m_strHeitiKerfis != "Filesystem")
+                        if (m_strHeitiKerfis != "GoPro" && m_strHeitiKerfis != "Filesystem" && m_strHeitiKerfis != "OneCRM")
                         {
                             m_strHeitiKerfis = "Gagnagrunnur";
                         }
@@ -148,6 +149,7 @@ namespace OAIS_ADMIN
                         {
                             m_strHeitiKerfis = "Skráarkerfi";
                         }
+
                         m_lblTegundVorslu.Text = m_strHeitiKerfis;
                     }
 
@@ -281,6 +283,12 @@ namespace OAIS_ADMIN
                         int i = 1;
                         foreach (DataRow rr in frow)
                         {
+                            //varchar
+                            if (rr["type"].ToString().ToUpper() == "CHARACTER VARYING(8000)")
+                            {
+                                rr["type"] = "TEXT";
+                            }
+
                             if (rr["type"].ToString().ToLower() == "timestamp" || rr["type"].ToString().ToLower() == "datetime")
                             {
                                 strTime += rr["name"] + ":::";
@@ -440,7 +448,7 @@ namespace OAIS_ADMIN
                         midlun.skjalamyndari_audkenni = skjalamyndari.auðkenni_5_1_6;
                         midlun.skjalamyndari_heiti = skjalamyndari.opinbert_heiti_5_1_2;
                         midlun.tafla_grunns = strTableName;
-                        if(m_strHeitiKerfis == "GoPro")
+                        if(m_strHeitiKerfis == "GoPro" || m_strHeitiKerfis == "OneCRM")
                         {
                             midlun.tegund_grunns = "Málakerfi"; //þarf að finna betur úr þessu eða láta notanda velja.
                         }
@@ -512,6 +520,35 @@ namespace OAIS_ADMIN
         private void m_btnEndurHressa_Click(object sender, EventArgs e)
         {
             fyllaVorsluUtgafur();
+        }
+
+        private void mdlunOneCRM()
+        {
+            
+            cMIdlun midlun = new cMIdlun();
+            midlun.m_bAfrit = virkurnotandi.m_bAfrit;
+            //1. Eyða því sem er ekki í documents töflunni
+            midlun.eydaMetaOnatadONECRM(m_strGrunnur.Replace("_", "."));
+            //2. fyrir rest þarf að uppfæra
+            string strSQL = "SELECT subject,dokumentid, Modified, CreateDate, uid, (select subject from tblcases c where c.uid = i.uid) as maltitill FROM tblitems i, tbldocuments d  where i.itemid=d.itemid order by dokumentid;";
+            DataTable dt = midlun.keyraFyrirspurn(strSQL, m_strGrunnur);
+
+            foreach (DataRow r in dt.Rows)
+            {
+                midlun.doctitill = r["subject"].ToString();
+                midlun.documentid = r["dokumentid"].ToString();
+                midlun.docLastWriten = r["Modified"].ToString();
+                midlun.docCreated = r["CreateDate"].ToString();
+                midlun.malID = r["uid"].ToString();
+                midlun.maltitill = r["maltitill"].ToString();
+                midlun.heiti_gagangrunns = m_strGrunnur;
+                midlun.vistaOneCRM();
+
+                //fyrir hverja færslu uppfæra midlun.
+            }
+            //  SELECT subject, dokumentid, Modified, CreateDate, uid, (select subject from tblcases c where c.uid = i.uid) as maltitill FROM tblitems i, tbldocuments d  where i.itemid = d.itemid order by dokumentid;
+
+            // SELECT* FROM db_oais_admin.dt_midlun d where vorsluutgafa = 'AVID.HARN.2024001.1'and documentid != 'null' and tafla_grunns = 'tblDocuments';
         }
         private void midlunGoPro()
         {
@@ -704,6 +741,10 @@ namespace OAIS_ADMIN
                 {
                     midlunGoPro();
                 }
+                if(m_strHeitiKerfis == "OneCRM")
+                {
+                    mdlunOneCRM();
+                }
                 //setja inn fyrirspurnir
                 DataTable dt = midlun.getFyrirspurnTemplate(m_strHeitiKerfis);
                 foreach (DataRow r in dt.Rows)
@@ -831,145 +872,532 @@ namespace OAIS_ADMIN
         {
             //Fara yfir gridview og keyra eftirfarandi
             //1. Flytja vörsluútgáfu á ákveðina möppu - þarf að ákveða heiti líklega AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni}/vörsluútgáfuauðkenni
-            m_lblStatus.Text = "Bý til möppur";
-            if (!Directory.Exists("D:\\AIP-Afrit"))
+            //****************breyta þarf að geta valið stað************************
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK)
             {
-                Directory.CreateDirectory("D:\\AIP-Afrit");
-            }
-            string strAfritunarMappa = string.Empty;
-            string strDags = DateTime.Now.Day.ToString() + "_" + DateTime.Now.Month.ToString() + "_" + DateTime.Now.Year.ToString();
-            if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
-            {
-                strAfritunarMappa = string.Format("D:\\AIP-Afrit\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
-            }
-            else
-            {
-                strAfritunarMappa = string.Format("D:\\AIP-Afrit\\{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
-            }
-            if (!Directory.Exists(strAfritunarMappa))
-            {
-                Directory.CreateDirectory(strAfritunarMappa);
-            }
-            //búa til möppu fyrir hverja vörsluútgáfu
-            DataTable dtAllt = (DataTable)m_dgvUtafurKlasarVarsla.DataSource;
-            //
-            string strExp = "taka ='True'";
-            DataRow[] fRow = dtAllt.Select(strExp);
-            DataTable dtVarsla = dtAllt.Clone();
-            foreach(DataRow dr in fRow)
-            {
-                dtVarsla.ImportRow(dr);
-            }
-            string strVarslAuðkenni = string.Empty;
-            string strAuðkenni = string.Empty;
-            string strVarslaStofnun = string.Empty;
-            string strStofnanir = string.Empty;
-            string strVarslaTitill = string.Empty;
-            string strVorslustofnun = string.Empty;
-            string strSkjalamyndrar = string.Empty;
-            string strVarslaSkjalamyndari = string.Empty;
-            foreach (DataRow r in dtVarsla.Rows)
-            {
-                m_prgVorsluStofnun.Maximum = dtVarsla.Rows.Count;
-                m_prgVorsluStofnun.Value = 0;
-                m_prgVorsluStofnun.Step = 1;
-                m_lblStatus.Text = "flytt gögn frá " + r["varsla_heiti"].ToString();
-                strVarslAuðkenni = r["vorsluutgafa"].ToString();
-                strVarslaSkjalamyndari = r["skjalamyndari"].ToString();
-                strSkjalamyndrar += "'" + strVarslaSkjalamyndari + "',";
-                strAuðkenni += "'" + strVarslAuðkenni + "',";
-                strVarslaTitill = r["utgafa_titill"].ToString().Replace(" / ", "_");
-                strVorslustofnun = r["vorslustofnun"].ToString();
-                string strBackup = string.Empty;
-                if (r["taka"] == "True")
+                string strMappa = folderBrowserDialog1.SelectedPath + "\\AIP - Afrit";
+                m_lblStatus.Text = "Bý til möppur";
+                if (!Directory.Exists(strMappa))
                 {
-
-             
-                if (r["vorslustofnun"].ToString() != strVarslaStofnun)
-                {
-                    strVarslaStofnun = r["vorslustofnun"].ToString();
-                    strStofnanir += "'" + strVarslaStofnun + "',";
+                    Directory.CreateDirectory(strMappa);
                 }
+                string strAfritunarMappa = string.Empty;
+                string strDags = DateTime.Now.Day.ToString() + "_" + DateTime.Now.Month.ToString() + "_" + DateTime.Now.Year.ToString();
                 if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
                 {
-
+                    strAfritunarMappa = string.Format(strMappa +"\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
                 }
-                if (m_trwKlasarVorslustonun.SelectedNode.Level == 1)
+                else
                 {
+                    strAfritunarMappa = string.Format(strMappa + "\\{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
+                }
+                if (!Directory.Exists(strAfritunarMappa))
+                {
+                    Directory.CreateDirectory(strAfritunarMappa);
+                }
+                //búa til möppu fyrir hverja vörsluútgáfu
+                DataTable dtAllt = (DataTable)m_dgvUtafurKlasarVarsla.DataSource;
+                //
+                string strExp = "taka ='True'";
+                DataRow[] fRow = dtAllt.Select(strExp);
+                DataTable dtVarsla = dtAllt.Clone();
+                foreach (DataRow dr in fRow)
+                {
+                    dtVarsla.ImportRow(dr);
+                }
+                string strVarslAuðkenni = string.Empty;
+                string strAuðkenni = string.Empty;
+                string strVarslaStofnun = string.Empty;
+                string strStofnanir = string.Empty;
+                string strVarslaTitill = string.Empty;
+                string strVorslustofnun = string.Empty;
+                string strSkjalamyndrar = string.Empty;
+                string strVarslaSkjalamyndari = string.Empty;
+                cBackup back = new cBackup();
+                string strSchema = string.Empty;
 
-                    string strVarslaMappa = strAfritunarMappa + "\\Vörsluútgáfur";
-                    if (!Directory.Exists(strVarslaMappa))
+                if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
+                {
+                    strAfritunarMappa = string.Format(strMappa + "\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
+                }
+                else
+                {
+                    strAfritunarMappa = string.Format(strMappa + "\\{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
+                }
+                if (!Directory.Exists(strAfritunarMappa))
+                {
+                    Directory.CreateDirectory(strAfritunarMappa);
+                }
+
+                foreach (DataRow r in dtVarsla.Rows)
+                {
+                    m_prgVorsluStofnun.Maximum = dtVarsla.Rows.Count;
+                    m_prgVorsluStofnun.Value = 0;
+                    m_prgVorsluStofnun.Step = 1;
+                    m_lblStatus.Text = "flytt gögn frá " + r["varsla_heiti"].ToString();
+                    strVarslAuðkenni = r["vorsluutgafa"].ToString();
+                    strVarslaSkjalamyndari = r["skjalamyndari"].ToString();
+                    strSkjalamyndrar += "'" + strVarslaSkjalamyndari + "',";
+                    strAuðkenni += "'" + strVarslAuðkenni + "',";
+                    strVarslaTitill = r["utgafa_titill"].ToString().Replace(" / ", "_");
+                    strVorslustofnun = r["vorslustofnun"].ToString();
+                    string strBackup = string.Empty;
+                    if (r["taka"] == "True")
                     {
-                        Directory.CreateDirectory(strVarslaMappa);
+
+
+                        if (r["vorslustofnun"].ToString() != strVarslaStofnun)
+                        {
+                            strVarslaStofnun = r["vorslustofnun"].ToString();
+                            strStofnanir += "'" + strVarslaStofnun + "',";
+                        }
+                        if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
+                        {
+                            //Útfæra hér ef ég vil taka klasa í heild
+                        }
+                        if (m_trwKlasarVorslustonun.SelectedNode.Level == 1)
+                        {
+
+                            string strVarslaMappa = strAfritunarMappa + "\\Vörsluútgáfur";
+                            if (!Directory.Exists(strVarslaMappa))
+                            {
+                                Directory.CreateDirectory(strVarslaMappa);
+                            }
+                            strVarslaMappa = strVarslaMappa + "\\" + strVarslaTitill;
+                            strBackup = strVarslaMappa;
+                            if (!Directory.Exists(strVarslaMappa))
+                            {
+                                Directory.CreateDirectory(strVarslaMappa);
+                            }
+                            string strFrum = strVarslaMappa;
+                            strVarslaMappa = strVarslaMappa + "\\" + strVarslAuðkenni;
+                            if (!Directory.Exists(strVarslaMappa))
+                            {
+                                Directory.CreateDirectory(strVarslaMappa);
+                            }
+
+                            //ef til eru frummgögn
+                            string strSlod = r["slod"].ToString().Replace("AVID", "FRUM");
+                            if (Directory.Exists(strSlod))
+                            {
+
+                                strFrum = strFrum + "\\" + strVarslAuðkenni.Replace("AVID", "FRUM");
+                                m_lblStatus.Text = m_lblStatus.Text + " " + strFrum;
+                                Application.DoEvents();
+                                //TAKA ÚT FYRIR TEST********************************************
+                                CopyFolder(r["slod"].ToString().Replace("AVID", "FRUM"), strFrum);
+                            }
+                            m_lblStatus.Text = m_lblStatus.Text + " " + strVarslaMappa;
+                            Application.DoEvents();
+                            //TAKA ÚT FYRIR TEST********************************************
+                            CopyFolder(r["slod"].ToString(), strVarslaMappa);
+
+                        }
+                        m_prgVorsluStofnun.PerformStep();
+                        m_lblVorsluStofnunPrg.Text = string.Format("{0}/{1}", m_prgVorsluStofnun.Value, m_prgVorsluStofnun.Maximum);
+                        //2. Taka  sql-afrit afhverri útgáfu AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{gagnagrunnsheiti.sql}
+                        string strDest = strBackup + "\\SQL";
+                        if (!Directory.Exists(strDest))
+                        {
+                            Directory.CreateDirectory(strDest);
+                        }
+                        string strDestInnsert = strDest;
+                        strDest = strDest + "\\" + strVarslAuðkenni.Replace(".", "_") + ".Sql";
+                        m_lblStatus.Text = "Tek afrit af grunni " + strVarslAuðkenni.Replace(".", "_");
+                        BackupSQL(strDest, strVarslAuðkenni.Replace(".", "_"));
+                        //þarf að gera OAIS_ADMIN_AFRIT innsert hér fyrir hverja vörsluútgáfu.
+                        strSchema = strDestInnsert + "\\insert.Sql";
+                        buaTilInnsert(strVarslaStofnun + ",", back, strVarslaSkjalamyndari + ",", strVarslAuðkenni + ",", strSchema); //komma til að þurfa ekki að breyta falinu
+
                     }
-                    strVarslaMappa = strVarslaMappa + "\\" + strVarslaTitill;
-                    strBackup = strVarslaMappa;
-                    if (!Directory.Exists(strVarslaMappa))
+                }
+
+
+                //3. Gera insert-skriptu fyrir allan pakkan (metadata) AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{metadata.sql}
+                //A. ná í schemað
+                m_lblStatus.Text = "Bý til INSERT";
+                Application.DoEvents();
+
+
+                strSchema = strAfritunarMappa + "\\SQL_META_AFRIT";
+                if (!Directory.Exists(strSchema))
+                {
+                    Directory.CreateDirectory(strSchema);
+                }
+                File.Copy("OAIS_ADMIN_AFRIT.sql", strSchema + "\\OAIS_ADMIN_AFRIT.sql", true);
+                //A. gera innsert sriptu
+
+                DataTable dtGogn = new DataTable();
+                //  string[] strTöflur = { "dt_fyrirspurnir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_isdiah_vörslustofnanir", "dt_item_korfu_dip", "dt_item_korfu_mal_dip", "dt_karfa_dip", "dt_karfa_item_gagna_dip", "dt_lanthegar", "dt_md5", "dt_midlun", "dt_notendur" };
+                string[] strTöflur = { "dt_isdiah_vörslustofnanir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_fyrirspurnir", "dt_md5", "dt_midlun", "ds_gagnagrunnar", "dt_vörsluutgafur" };
+                string strSQLTEXT = string.Empty;
+                // m_prgBackup.Value = 1;
+                m_prgBackup.Maximum = strTöflur.Length;
+                m_prgBackup.Step = 1;
+                foreach (string str in strTöflur)
+                {
+                    m_lblBackupStatus.Text = string.Format("{0}/{1} {2}", m_prgBackup.Value, m_prgBackup.Maximum, str);
+                    if (str == "dt_isdiah_vörslustofnanir")
                     {
-                        Directory.CreateDirectory(strVarslaMappa);
+                        //þarf að búa til nýtt fall ef allt á að komast
+                        string strID = strStofnanir.Remove(strStofnanir.Length - 1);
+                        dtGogn = back.getDataFromTable(str, "5_1_1_auðkenni", strID);
+                        strSQLTEXT += createInsert(dtGogn, "dt_isdiah_vörslustofnanir");
                     }
-                    string strFrum = strVarslaMappa;
-                    strVarslaMappa = strVarslaMappa + "\\" + strVarslAuðkenni;
-                    if (!Directory.Exists(strVarslaMappa))
+                    if (str == "dt_isaar_skjalamyndarar")
                     {
-                        Directory.CreateDirectory(strVarslaMappa);
+                        string strID = strSkjalamyndrar.Remove(strSkjalamyndrar.Length - 1);
+                        dtGogn = back.getDataFromTable(str, "5_1_6_auðkenni", strID);
+                        strSQLTEXT += createInsert(dtGogn, "dt_isaar_skjalamyndarar");
+                    }
+                    if (str == "dt_isadg_skráningar")
+                    {
+                        //þarf að búa til nýtt fall ef allt á að komast
+                        string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
+
+                        dtGogn = back.getDataFromTable(str, "3_1_1_auðkenni", strID);
+                        strSQLTEXT += createInsert(dtGogn, "dt_isadg_skráningar");
+                    }
+                    if (str == "dt_fyrirspurnir")
+                    {
+                        string strID = strAuðkenni.Replace(".", "_").Remove(strAuðkenni.Length - 1);
+                        dtGogn = back.getDataFromTable(str, "gagnagrunnur", strID);
+                        strSQLTEXT += createInsert(dtGogn, "dt_fyrirspurnir"); //vantar að laga slaufusviga {}
                     }
 
-                    //ef til eru frummgögn
-                    string strSlod = r["slod"].ToString().Replace("AVID", "FRUM");
-                    if (Directory.Exists(strSlod))
-                    {
 
-                        strFrum = strFrum + "\\" + strVarslAuðkenni.Replace("AVID", "FRUM");
-                        m_lblStatus.Text = m_lblStatus.Text + " " + strFrum;
-                        Application.DoEvents();
-                        CopyFolder(r["slod"].ToString().Replace("AVID", "FRUM"), strFrum);
+                    //if (str == "dt_isadg_skráningar")
+                    //{
+                    //    //þarf að búa til nýtt fall ef allt á að komast
+                    //    string strID = strStofnanir.Remove(strStofnanir.Length - 1);
+                    //    dtGogn = back.getDataFromTable(str, "vörslustofnun", strID);
+                    //}
+
+                    if (str == "dt_md5")
+                    {
+                        //þarf að búa til nýtt fall ef allt á að komast
+                        string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
+                        dtGogn = back.getDataFromTable(str, "AIP", strID);
+                        strSQLTEXT += createInsert(dtGogn, "dt_md5");
                     }
-                    m_lblStatus.Text = m_lblStatus.Text + " " + strVarslaMappa;
+                    if (str == "dt_midlun")
+                    {
+                        //þarf að búa til nýtt fall ef allt á að komast
+                        string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
+                        dtGogn = back.getDataFromTable(str, "vorsluutgafa", strID);
+                        strSQLTEXT += createInsert(dtGogn, "dt_midlun");
+                    }
+                    if (str == "ds_gagnagrunnar")
+                    {
+                        //þarf að búa til nýtt fall ef allt á að komast
+                        string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
+                        dtGogn = back.getDataFromTable(str, "vorsluutgafa", strID);
+                        strSQLTEXT += createInsert(dtGogn, "ds_gagnagrunnar");
+                    }
+                    if (str == "dt_vörsluutgafur")
+                    {
+                        //þarf að búa til nýtt fall ef allt á að komast
+                        string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
+                        dtGogn = back.getDataFromTable(str, "vorsluutgafa", strID);
+                        strSQLTEXT += createInsert(dtGogn, "dt_vörsluutgafur");
+                    }
+                    if (str == "dt_drives")
+                    {
+                        dtGogn = back.getDataFromTable(str, "dt_drives", "");
+                        strSQLTEXT += createInsert(dtGogn, "dt_drives");
+                        //búa til einn master notanda
+                        //   strSQLTEXT += "INSERT INTO `dt_notendur` SET  `kennitala`='0000000000',  `notendanafn`='mhr', `lykilorð`='mhr', `vörslustofnun`='mhr', `nafn`='MHR',`virkur`='1',`athugasemdir`='',`hver_skradi`='mhr',`hlutverk`='Umsjónarmaður',`email`='',`heimilisfang`='',`simi`='',`dags_skráð`=NOW();";
+                    }
+                    m_prgBackup.PerformStep();
+                    m_lblBackupStatus.Text = string.Format("{0}/{1} {2}", m_prgBackup.Value, m_prgBackup.Maximum, str);
                     Application.DoEvents();
-                    CopyFolder(r["slod"].ToString(), strVarslaMappa);
-
                 }
-                m_prgVorsluStofnun.PerformStep();
-                m_lblVorsluStofnunPrg.Text = string.Format("{0}/{1}", m_prgVorsluStofnun.Value, m_prgVorsluStofnun.Maximum);
-                //2. Taka  sql-afrit afhverri útgáfu AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{gagnagrunnsheiti.sql}
-                string strDest = strBackup + "\\SQL";
-                if (!Directory.Exists(strDest))
+                //vista innsertið
+                strSchema = strSchema + "\\INSERT.sql";
+                File.WriteAllText(strSchema, strSQLTEXT);
+                //4. gera geymsluskrá á ákveðnu formati AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{geymsluskra.xlsx}
+                m_lblStatus.Text = "Bý til geymsluskrá";
+                Application.DoEvents();
+                foreach (DataRow rVarsla in dtVarsla.Rows)
                 {
-                    Directory.CreateDirectory(strDest);
+                    DataTable dt = skrá.getGeymsluSkra(rVarsla["vorsluutgafa"].ToString());
+                    DataTable dtGeymsla = new DataTable();
+                    dtGeymsla.Columns.Add("tilheyrir_skráningu");
+                    dtGeymsla.Columns.Add("upplysingastig");
+                    dtGeymsla.Columns.Add("auðkenni");
+                    dtGeymsla.Columns.Add("titill");
+                    dtGeymsla.Columns.Add("timabil");
+                    dtGeymsla.Columns.Add("innihald");
+                    dtGeymsla.Columns.Add("aðgengi");
+                    dtGeymsla.Columns.Add("afharnr");
+                    dtGeymsla.Columns.Add("athskjal");
+                    cSkjalaskra fond = new cSkjalaskra();
+                    fond.getSkraning(rVarsla["vorsluutgafa"].ToString());
+                    cSkjalaskra temp = new cSkjalaskra();
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        DataRow row = dtGeymsla.NewRow();
+                        //þarf hér að pæla í level of info
+
+                        if (r["3_1_4_upplýsingastig"].ToString() == "Skjalasafn")
+                        {
+
+                            string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
+                            fond.afhendingar_tilfærslur_3_2_4 = strSplit[0].Trim() + "/" + Convert.ToInt32(strSplit[1].Trim()).ToString();
+                            row["tilheyrir_skráningu"] = fond.tilheyrir_skráningu;
+                            row["upplysingastig"] = fond.upplýsingastig_3_1_4;
+                            row["auðkenni"] = fond.auðkenni_3_1_1;
+                            row["titill"] = fond.titill_3_1_2;
+                            row["timabil"] = fond.tímabil_3_1_3;
+                            row["innihald"] = fond.yfirlit_innihald_3_3_1;
+                            row["aðgengi"] = fond.skilyrði_aðgengi_3_4_1;
+                            row["afharnr"] = fond.afhendingar_tilfærslur_3_2_4;
+                            row["athskjal"] = fond.athugasemdir_skjalavarðar_3_7_1;
+                        }
+                        if (r["3_1_4_upplýsingastig"].ToString() == "Yfirskjalaflokkur")
+                        {
+
+                            // m_trwGeymsluskrá.Nodes.Add(n);
+                            temp.getSkraning(r["3_1_1_auðkenni"].ToString());
+
+                            string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
+                            fond.afhendingar_tilfærslur_3_2_4 = strSplit[0].Trim() + "/" + Convert.ToInt32(strSplit[1].Trim()).ToString();
+                            row["tilheyrir_skráningu"] = temp.tilheyrir_skráningu;
+                            row["upplysingastig"] = temp.upplýsingastig_3_1_4;
+                            row["auðkenni"] = temp.auðkenni_3_1_1.Replace(fond.auðkenni_3_1_1 + "-", "");
+                            row["titill"] = temp.titill_3_1_2;
+                            row["timabil"] = temp.tímabil_3_1_3;
+                            row["innihald"] = temp.yfirlit_innihald_3_3_1;
+                            row["aðgengi"] = temp.skilyrði_aðgengi_3_4_1;
+                            row["afharnr"] = fond.afhendingar_tilfærslur_3_2_4;
+                            row["athskjal"] = temp.athugasemdir_skjalavarðar_3_7_1;
+
+                        }
+                        if (r["3_1_4_upplýsingastig"].ToString() == "Skjalaflokkur")
+                        {
+
+                            temp.getSkraning(r["3_1_1_auðkenni"].ToString());
+
+                            string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
+                            fond.afhendingar_tilfærslur_3_2_4 = strSplit[0].Trim() + "/" + Convert.ToInt32(strSplit[1].Trim()).ToString();
+                            row["tilheyrir_skráningu"] = temp.tilheyrir_skráningu;
+                            row["upplysingastig"] = temp.upplýsingastig_3_1_4;
+                            row["auðkenni"] = temp.auðkenni_3_1_1.Replace(fond.auðkenni_3_1_1 + "-", "");
+                            row["titill"] = temp.titill_3_1_2;
+                            row["timabil"] = temp.tímabil_3_1_3;
+                            row["innihald"] = temp.yfirlit_innihald_3_3_1;
+                            row["aðgengi"] = temp.skilyrði_aðgengi_3_4_1;
+                            row["afharnr"] = fond.afhendingar_tilfærslur_3_2_4;
+                            row["athskjal"] = temp.athugasemdir_skjalavarðar_3_7_1;
+
+                        }
+                        if (r["3_1_4_upplýsingastig"].ToString() == "Örk")
+                        {
+                            //  m_trwGeymsluskrá.Nodes.Add(n);
+                            temp.getSkraning(r["3_1_1_auðkenni"].ToString());
+
+
+                            string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
+                            fond.afhendingar_tilfærslur_3_2_4 = strSplit[0].Trim() + "/" + Convert.ToInt32(strSplit[1].Trim()).ToString();
+                            row["tilheyrir_skráningu"] = temp.tilheyrir_skráningu;
+                            row["upplysingastig"] = temp.upplýsingastig_3_1_4;
+                            row["auðkenni"] = temp.auðkenni_3_1_1.Replace(fond.auðkenni_3_1_1 + "-", "");
+                            row["titill"] = temp.titill_3_1_2;
+                            row["timabil"] = temp.tímabil_3_1_3;
+                            row["innihald"] = temp.yfirlit_innihald_3_3_1;
+                            row["aðgengi"] = temp.skilyrði_aðgengi_3_4_1;
+                            row["afharnr"] = fond.afhendingar_tilfærslur_3_2_4;
+                            row["athskjal"] = temp.athugasemdir_skjalavarðar_3_7_1;
+
+                        }
+
+
+                        dtGeymsla.Rows.Add(row);
+                        dtGeymsla.AcceptChanges();
+
+                    }
+                    DataTable dtFilemaker = new DataTable();
+
+                    if (strVorslustofnun == "HAKU")
+                    {
+                        dtFilemaker.Columns.Add("Stofnun/deild");
+                        dtFilemaker.Columns.Add("Skjalaflokkur");
+                        dtFilemaker.Columns.Add("Kassanúmer");
+                        dtFilemaker.Columns.Add("Örk");
+                        dtFilemaker.Columns.Add("Frá ár");
+                        dtFilemaker.Columns.Add("Til ár");
+                        dtFilemaker.Columns.Add("Málalykill");
+                        dtFilemaker.Columns.Add("Efni");
+                        dtFilemaker.Columns.Add("Auðkenni og heiti skjalaflokks");
+                        dtFilemaker.Columns.Add("Yfirskjalafl");
+                        dtFilemaker.Columns.Add("Athugasemdir");
+                    }
+
+                    if (strVorslustofnun == "HARN")
+                    {
+                        dtFilemaker.Columns.Add("tegund");
+                        dtFilemaker.Columns.Add("Skjalamyndari");
+                        dtFilemaker.Columns.Add("Sveitarfélag");
+                        dtFilemaker.Columns.Add("Sveitarnr.");
+                        dtFilemaker.Columns.Add("Afh. ár.");
+                        dtFilemaker.Columns.Add("skjalaflokkur");
+                        dtFilemaker.Columns.Add("kassanúmer");
+                        dtFilemaker.Columns.Add("Örk");
+                        dtFilemaker.Columns.Add("frá ár");
+                        dtFilemaker.Columns.Add("til ár");
+                        dtFilemaker.Columns.Add("L.1");
+                        dtFilemaker.Columns.Add("Efni");
+                        dtFilemaker.Columns.Add("Heiti skjalafl.");
+                        dtFilemaker.Columns.Add("Geymsla");
+                        dtFilemaker.Columns.Add("Yfirskjalafl");
+                        dtFilemaker.Columns.Add("Ath.");
+                        dtFilemaker.Columns.Add("Afhnúmer");
+                    }
+                    if (strVorslustofnun == "HMOS")
+                    {
+                        //Skjalamyndari	Afh. ár	Afhnúmer	skjalaflokkur	kassanúmer	Örk	frá ár	til ár	Málalykill	Efni	Geymsla	Yfirskjalafl	Heiti skjalafl.	Ath.
+                        dtFilemaker.Columns.Add("Skjalamyndari");
+                        dtFilemaker.Columns.Add("Afh. ár");
+                        dtFilemaker.Columns.Add("Afhnúmer");
+                        dtFilemaker.Columns.Add("skjalaflokkur");
+                        dtFilemaker.Columns.Add("kassanúmer");
+
+                        dtFilemaker.Columns.Add("Örk");
+                        dtFilemaker.Columns.Add("frá ár");
+                        dtFilemaker.Columns.Add("til ár");
+                        dtFilemaker.Columns.Add("Málalykill");
+                        dtFilemaker.Columns.Add("Efni");
+                        dtFilemaker.Columns.Add("Geymsla");
+                        dtFilemaker.Columns.Add("Yfirskjalafl");
+                        dtFilemaker.Columns.Add("Heiti skjalafl.");
+                        dtFilemaker.Columns.Add("Ath.");
+                    }
+
+
+                    string strSeries = string.Empty;
+                    string strSubSeries = string.Empty;
+
+                    dtGeymsla.DefaultView.Sort = "auðkenni asc";
+                    DataTable dtSort = dtGeymsla.DefaultView.ToTable();
+
+                    foreach (DataRow r in dtSort.Rows)
+                    {
+                        if (r["upplysingastig"].ToString() == "Yfirskjalaflokkur")
+                        {
+                            if (r["titill"].ToString() != strSeries)
+                            {
+                                strSeries = r["titill"].ToString();
+                            }
+                        }
+                        if (r["upplysingastig"].ToString() == "Skjalaflokkur")
+                        {
+                            if (r["titill"] != strSeries)
+                            {
+                                strSubSeries = r["titill"].ToString();
+                            }
+                        }
+                        if (r["upplysingastig"].ToString() == "Örk")
+                        {
+                            if (strVorslustofnun == "HARN")
+                            {
+                                DataRow row = dtFilemaker.NewRow();
+                                row["tegund"] = string.Empty;
+                                row["skjalamyndari"] = fond.heiti_skjalamyndara_3_2_1;
+                                row["Sveitarfélag"] = string.Empty;
+                                row["Sveitarnr."] = string.Empty;
+                                row["Afh. ár."] = fond.afhendingar_tilfærslur_3_2_4;
+                                string[] strSplit = strSeries.Split("-");
+                                row["skjalaflokkur"] = strSplit[0];
+                                row["kassanúmer"] = "1"; //þarf líklega ekki að breyta þessu
+                                row["Örk"] = "1"; //þyrfti að breyta þessu ef fleiri en ein örk verður sett inn
+                                strSplit = r["timabil"].ToString().Split("-");
+                                if (strSplit.Length == 2)
+                                {
+                                    row["frá ár"] = strSplit[0];
+                                    row["til ár"] = strSplit[1];
+                                }
+
+                                row["L.1"] = string.Empty;
+                                row["Efni"] = r["innihald"];
+                                row["Heiti skjalafl."] = strSubSeries;
+                                row["Geymsla"] = string.Empty;
+                                row["Yfirskjalafl"] = strSeries;
+                                row["Ath."] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
+                                row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
+                                dtFilemaker.Rows.Add(row);
+                                dtFilemaker.AcceptChanges();
+                            }
+                            if (strVorslustofnun == "HMOS")
+                            {
+                                DataRow row = dtFilemaker.NewRow();
+                                row["skjalamyndari"] = fond.heiti_skjalamyndara_3_2_1;
+                                string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
+                                row["Afh. ár"] = strSplit[0];
+                                row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
+                                strSplit = strSeries.Split("-");
+                                row["skjalaflokkur"] = strSplit[0];
+                                row["kassanúmer"] = "1"; //þarf líklega ekki að breyta þessu
+                                row["Örk"] = "1"; //þyrfti að breyta þessu ef fleiri en ein örk verður sett inn
+                                strSplit = r["timabil"].ToString().Split("-");
+                                if (strSplit.Length == 2)
+                                {
+                                    row["frá ár"] = strSplit[0];
+                                    row["til ár"] = strSplit[1];
+                                }
+
+                                row["Málalykill"] = string.Empty;
+                                row["Efni"] = r["innihald"];
+                                row["Heiti skjalafl."] = strSubSeries;
+                                row["Geymsla"] = string.Empty;
+                                row["Yfirskjalafl"] = strSeries;
+                                row["Ath."] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
+                                row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
+                                dtFilemaker.Rows.Add(row);
+                                dtFilemaker.AcceptChanges();
+                            }
+                            if (strVorslustofnun == "HAKU")
+                            {
+                                DataRow row = dtFilemaker.NewRow();
+                                row["Stofnun/deild"] = fond.heiti_skjalamyndara_3_2_1;
+                                string[] strSplit = strSeries.Split("-");
+                                row["Skjalaflokkur"] = strSplit[0];
+                                row["Kassanúmer"] = "1";
+                                row["Örk"] = "1";
+                                strSplit = r["timabil"].ToString().Split("-");
+                                if (strSplit.Length == 2)
+                                {
+                                    row["Frá ár"] = strSplit[0];
+                                    row["Til ár"] = strSplit[1];
+                                }
+                                row["Málalykill"] = string.Empty;
+                                row["Efni"] = r["innihald"];
+                                row["Auðkenni og heiti skjalaflokks"] = strSubSeries;
+                                row["Yfirskjalafl"] = strSeries;
+                                row["Athugasemdir"] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
+                                dtFilemaker.Rows.Add(row);
+                                dtFilemaker.AcceptChanges();
+                            }
+                        }
+
+                    }
+                    string strGeymsluskra = strAfritunarMappa + "\\Geymsluskrár_excell";
+                    if (!Directory.Exists(strGeymsluskra))
+                    {
+                        Directory.CreateDirectory(strGeymsluskra);
+                    }
+                    strGeymsluskra = strGeymsluskra + "\\" + rVarsla["utgafa_titill"].ToString().Replace("/", "_") + ".xlsx";
+                    exportExell(dtFilemaker, strGeymsluskra);
                 }
-                strDest = strDest + "\\" + strVarslAuðkenni.Replace(".", "_") + ".Sql";
-                m_lblStatus.Text = "Tek afrit af grunni " + strVarslAuðkenni.Replace(".", "_");
-                BackupSQL(strDest, strVarslAuðkenni.Replace(".", "_"));
-                }
             }
+            //5. gera EAD
+            //6 gera EAC-CPF.
 
+            MessageBox.Show("Búið");
+        }
 
-            //3. Gera insert-skriptu fyrir allan pakkan (metadata) AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{metadata.sql}
-            //A. ná í schemað
-            m_lblStatus.Text = "Bý til INSERT";
-            Application.DoEvents();
-
-            if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
-            {
-                strAfritunarMappa = string.Format("D:\\AIP-Afrit\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
-            }
-            else
-            {
-                strAfritunarMappa = string.Format("D:\\AIP-Afrit\\{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
-            }
-            if (!Directory.Exists(strAfritunarMappa))
-            {
-                Directory.CreateDirectory(strAfritunarMappa);
-            }
-            string strSchema = strAfritunarMappa + "\\SQL_META_AFRIT";
-            if (!Directory.Exists(strSchema))
-            {
-                Directory.CreateDirectory(strSchema);
-            }
-            File.Copy("OAIS_ADMIN_AFRIT.sql", strSchema + "\\OAIS_ADMIN_AFRIT.sql", true);
-            //A. gera innsert sriptu
-            cBackup back = new cBackup();
+        private void buaTilInnsert(string strStofnanir, cBackup back, string strSkjalamyndrar, string strAuðkenni, string strSchema)
+        {
             DataTable dtGogn = new DataTable();
             //  string[] strTöflur = { "dt_fyrirspurnir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_isdiah_vörslustofnanir", "dt_item_korfu_dip", "dt_item_korfu_mal_dip", "dt_karfa_dip", "dt_karfa_item_gagna_dip", "dt_lanthegar", "dt_md5", "dt_midlun", "dt_notendur" };
             string[] strTöflur = { "dt_isdiah_vörslustofnanir", "dt_isaar_skjalamyndarar", "dt_isadg_skráningar", "dt_fyrirspurnir", "dt_md5", "dt_midlun", "ds_gagnagrunnar", "dt_vörsluutgafur" };
@@ -1056,287 +1484,9 @@ namespace OAIS_ADMIN
                 Application.DoEvents();
             }
             //vista innsertið
-            strSchema = strSchema + "\\INSERT.sql";
+            //strSchema = strSchema + "\\INSERT.sql";
             File.WriteAllText(strSchema, strSQLTEXT);
-            //4. gera geymsluskrá á ákveðnu formati AIP-{vörslustofnin|Klasi}/vörsluútgáfuauðkenni/{geymsluskra.xlsx}
-            m_lblStatus.Text = "Bý til geymsluskrá";
-            Application.DoEvents();
-            foreach (DataRow rVarsla in dtVarsla.Rows)
-            {
-                DataTable dt = skrá.getGeymsluSkra(rVarsla["vorsluutgafa"].ToString());
-                DataTable dtGeymsla = new DataTable();
-                dtGeymsla.Columns.Add("tilheyrir_skráningu");
-                dtGeymsla.Columns.Add("upplysingastig");
-                dtGeymsla.Columns.Add("auðkenni");
-                dtGeymsla.Columns.Add("titill");
-                dtGeymsla.Columns.Add("timabil");
-                dtGeymsla.Columns.Add("innihald");
-                dtGeymsla.Columns.Add("aðgengi");
-                dtGeymsla.Columns.Add("afharnr");
-                dtGeymsla.Columns.Add("athskjal");
-                cSkjalaskra fond = new cSkjalaskra();
-                fond.getSkraning(rVarsla["vorsluutgafa"].ToString());
-                cSkjalaskra temp = new cSkjalaskra();
-                foreach (DataRow r in dt.Rows)
-                {
-                    DataRow row = dtGeymsla.NewRow();
-                    //þarf hér að pæla í level of info
-
-                    if (r["3_1_4_upplýsingastig"].ToString() == "Skjalasafn")
-                    {
-
-                        string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
-                        fond.afhendingar_tilfærslur_3_2_4 = strSplit[0].Trim() + "/" + Convert.ToInt32(strSplit[1].Trim()).ToString();
-                        row["tilheyrir_skráningu"] = fond.tilheyrir_skráningu;
-                        row["upplysingastig"] = fond.upplýsingastig_3_1_4;
-                        row["auðkenni"] = fond.auðkenni_3_1_1;
-                        row["titill"] = fond.titill_3_1_2;
-                        row["timabil"] = fond.tímabil_3_1_3;
-                        row["innihald"] = fond.yfirlit_innihald_3_3_1;
-                        row["aðgengi"] = fond.skilyrði_aðgengi_3_4_1;
-                        row["afharnr"] = fond.afhendingar_tilfærslur_3_2_4;
-                        row["athskjal"] = fond.athugasemdir_skjalavarðar_3_7_1;
-                    }
-                    if (r["3_1_4_upplýsingastig"].ToString() == "Yfirskjalaflokkur")
-                    {
-
-                        // m_trwGeymsluskrá.Nodes.Add(n);
-                        temp.getSkraning(r["3_1_1_auðkenni"].ToString());
-
-                        string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
-                        fond.afhendingar_tilfærslur_3_2_4 = strSplit[0].Trim() + "/" + Convert.ToInt32(strSplit[1].Trim()).ToString();
-                        row["tilheyrir_skráningu"] = temp.tilheyrir_skráningu;
-                        row["upplysingastig"] = temp.upplýsingastig_3_1_4;
-                        row["auðkenni"] = temp.auðkenni_3_1_1.Replace(fond.auðkenni_3_1_1 + "-", "");
-                        row["titill"] = temp.titill_3_1_2;
-                        row["timabil"] = temp.tímabil_3_1_3;
-                        row["innihald"] = temp.yfirlit_innihald_3_3_1;
-                        row["aðgengi"] = temp.skilyrði_aðgengi_3_4_1;
-                        row["afharnr"] = fond.afhendingar_tilfærslur_3_2_4;
-                        row["athskjal"] = temp.athugasemdir_skjalavarðar_3_7_1;
-
-                    }
-                    if (r["3_1_4_upplýsingastig"].ToString() == "Skjalaflokkur")
-                    {
-
-                        temp.getSkraning(r["3_1_1_auðkenni"].ToString());
-
-                        string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
-                        fond.afhendingar_tilfærslur_3_2_4 = strSplit[0].Trim() + "/" + Convert.ToInt32(strSplit[1].Trim()).ToString();
-                        row["tilheyrir_skráningu"] = temp.tilheyrir_skráningu;
-                        row["upplysingastig"] = temp.upplýsingastig_3_1_4;
-                        row["auðkenni"] = temp.auðkenni_3_1_1.Replace(fond.auðkenni_3_1_1 + "-", "");
-                        row["titill"] = temp.titill_3_1_2;
-                        row["timabil"] = temp.tímabil_3_1_3;
-                        row["innihald"] = temp.yfirlit_innihald_3_3_1;
-                        row["aðgengi"] = temp.skilyrði_aðgengi_3_4_1;
-                        row["afharnr"] = fond.afhendingar_tilfærslur_3_2_4;
-                        row["athskjal"] = temp.athugasemdir_skjalavarðar_3_7_1;
-
-                    }
-                    if (r["3_1_4_upplýsingastig"].ToString() == "Örk")
-                    {
-                        //  m_trwGeymsluskrá.Nodes.Add(n);
-                        temp.getSkraning(r["3_1_1_auðkenni"].ToString());
-
-
-                        string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
-                        fond.afhendingar_tilfærslur_3_2_4 = strSplit[0].Trim() + "/" + Convert.ToInt32(strSplit[1].Trim()).ToString();
-                        row["tilheyrir_skráningu"] = temp.tilheyrir_skráningu;
-                        row["upplysingastig"] = temp.upplýsingastig_3_1_4;
-                        row["auðkenni"] = temp.auðkenni_3_1_1.Replace(fond.auðkenni_3_1_1 + "-", "");
-                        row["titill"] = temp.titill_3_1_2;
-                        row["timabil"] = temp.tímabil_3_1_3;
-                        row["innihald"] = temp.yfirlit_innihald_3_3_1;
-                        row["aðgengi"] = temp.skilyrði_aðgengi_3_4_1;
-                        row["afharnr"] = fond.afhendingar_tilfærslur_3_2_4;
-                        row["athskjal"] = temp.athugasemdir_skjalavarðar_3_7_1;
-
-                    }
-
-
-                    dtGeymsla.Rows.Add(row);
-                    dtGeymsla.AcceptChanges();
-
-                }
-                DataTable dtFilemaker = new DataTable();
-
-                if (strVorslustofnun == "HAKU")
-                {
-                    dtFilemaker.Columns.Add("Stofnun/deild");
-                    dtFilemaker.Columns.Add("Skjalaflokkur");
-                    dtFilemaker.Columns.Add("Kassanúmer");
-                    dtFilemaker.Columns.Add("Örk");
-                    dtFilemaker.Columns.Add("Frá ár");
-                    dtFilemaker.Columns.Add("Til ár");
-                    dtFilemaker.Columns.Add("Málalykill");
-                    dtFilemaker.Columns.Add("Efni");
-                    dtFilemaker.Columns.Add("Auðkenni og heiti skjalaflokks");
-                    dtFilemaker.Columns.Add("Yfirskjalafl");
-                    dtFilemaker.Columns.Add("Athugasemdir");
-                }
-
-                if (strVorslustofnun == "HARN")
-                {
-                    dtFilemaker.Columns.Add("tegund");
-                    dtFilemaker.Columns.Add("Skjalamyndari");
-                    dtFilemaker.Columns.Add("Sveitarfélag");
-                    dtFilemaker.Columns.Add("Sveitarnr.");
-                    dtFilemaker.Columns.Add("Afh. ár.");
-                    dtFilemaker.Columns.Add("skjalaflokkur");
-                    dtFilemaker.Columns.Add("kassanúmer");
-                    dtFilemaker.Columns.Add("Örk");
-                    dtFilemaker.Columns.Add("frá ár");
-                    dtFilemaker.Columns.Add("til ár");
-                    dtFilemaker.Columns.Add("L.1");
-                    dtFilemaker.Columns.Add("Efni");
-                    dtFilemaker.Columns.Add("Heiti skjalafl.");
-                    dtFilemaker.Columns.Add("Geymsla");
-                    dtFilemaker.Columns.Add("Yfirskjalafl");
-                    dtFilemaker.Columns.Add("Ath.");
-                    dtFilemaker.Columns.Add("Afhnúmer");
-                }
-                if (strVorslustofnun == "HMOS")
-                {
-                    //Skjalamyndari	Afh. ár	Afhnúmer	skjalaflokkur	kassanúmer	Örk	frá ár	til ár	Málalykill	Efni	Geymsla	Yfirskjalafl	Heiti skjalafl.	Ath.
-                    dtFilemaker.Columns.Add("Skjalamyndari");
-                    dtFilemaker.Columns.Add("Afh. ár");
-                    dtFilemaker.Columns.Add("Afhnúmer");
-                    dtFilemaker.Columns.Add("skjalaflokkur");
-                    dtFilemaker.Columns.Add("kassanúmer");
-
-                    dtFilemaker.Columns.Add("Örk");
-                    dtFilemaker.Columns.Add("frá ár");
-                    dtFilemaker.Columns.Add("til ár");
-                    dtFilemaker.Columns.Add("Málalykill");
-                    dtFilemaker.Columns.Add("Efni");
-                    dtFilemaker.Columns.Add("Geymsla");
-                    dtFilemaker.Columns.Add("Yfirskjalafl");
-                    dtFilemaker.Columns.Add("Heiti skjalafl.");
-                    dtFilemaker.Columns.Add("Ath.");
-                }
-
-
-                string strSeries = string.Empty;
-                string strSubSeries = string.Empty;
-
-                dtGeymsla.DefaultView.Sort = "auðkenni asc";
-                DataTable dtSort = dtGeymsla.DefaultView.ToTable();
-
-                foreach (DataRow r in dtSort.Rows)
-                {
-                    if (r["upplysingastig"].ToString() == "Yfirskjalaflokkur")
-                    {
-                        if (r["titill"].ToString() != strSeries)
-                        {
-                            strSeries = r["titill"].ToString();
-                        }
-                    }
-                    if (r["upplysingastig"].ToString() == "Skjalaflokkur")
-                    {
-                        if (r["titill"] != strSeries)
-                        {
-                            strSubSeries = r["titill"].ToString();
-                        }
-                    }
-                    if (r["upplysingastig"].ToString() == "Örk")
-                    {
-                        if (strVorslustofnun == "HARN")
-                        {
-                            DataRow row = dtFilemaker.NewRow();
-                            row["tegund"] = string.Empty;
-                            row["skjalamyndari"] = fond.heiti_skjalamyndara_3_2_1;
-                            row["Sveitarfélag"] = string.Empty;
-                            row["Sveitarnr."] = string.Empty;
-                            row["Afh. ár."] = fond.afhendingar_tilfærslur_3_2_4;
-                            string[] strSplit = strSeries.Split("-");
-                            row["skjalaflokkur"] = strSplit[0];
-                            row["kassanúmer"] = "1"; //þarf líklega ekki að breyta þessu
-                            row["Örk"] = "1"; //þyrfti að breyta þessu ef fleiri en ein örk verður sett inn
-                            strSplit = r["timabil"].ToString().Split("-");
-                            if (strSplit.Length == 2)
-                            {
-                                row["frá ár"] = strSplit[0];
-                                row["til ár"] = strSplit[1];
-                            }
-
-                            row["L.1"] = string.Empty;
-                            row["Efni"] = r["innihald"];
-                            row["Heiti skjalafl."] = strSubSeries;
-                            row["Geymsla"] = string.Empty;
-                            row["Yfirskjalafl"] = strSeries;
-                            row["Ath."] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
-                            row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
-                            dtFilemaker.Rows.Add(row);
-                            dtFilemaker.AcceptChanges();
-                        }
-                        if (strVorslustofnun == "HMOS")
-                        {
-                            DataRow row = dtFilemaker.NewRow();
-                            row["skjalamyndari"] = fond.heiti_skjalamyndara_3_2_1;
-                            string[] strSplit = fond.afhendingar_tilfærslur_3_2_4.Split("/");
-                            row["Afh. ár"] = strSplit[0];
-                            row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
-                            strSplit = strSeries.Split("-");
-                            row["skjalaflokkur"] = strSplit[0];
-                            row["kassanúmer"] = "1"; //þarf líklega ekki að breyta þessu
-                            row["Örk"] = "1"; //þyrfti að breyta þessu ef fleiri en ein örk verður sett inn
-                            strSplit = r["timabil"].ToString().Split("-");
-                            if (strSplit.Length == 2)
-                            {
-                                row["frá ár"] = strSplit[0];
-                                row["til ár"] = strSplit[1];
-                            }
-
-                            row["Málalykill"] = string.Empty;
-                            row["Efni"] = r["innihald"];
-                            row["Heiti skjalafl."] = strSubSeries;
-                            row["Geymsla"] = string.Empty;
-                            row["Yfirskjalafl"] = strSeries;
-                            row["Ath."] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
-                            row["Afhnúmer"] = fond.afhendingar_tilfærslur_3_2_4;
-                            dtFilemaker.Rows.Add(row);
-                            dtFilemaker.AcceptChanges();
-                        }
-                        if (strVorslustofnun == "HAKU")
-                        {
-                            DataRow row = dtFilemaker.NewRow();
-                            row["Stofnun/deild"] = fond.heiti_skjalamyndara_3_2_1;
-                            string[] strSplit = strSeries.Split("-");
-                            row["Skjalaflokkur"] = strSplit[0];
-                            row["Kassanúmer"] = "1";
-                            row["Örk"] = "1";
-                            strSplit = r["timabil"].ToString().Split("-");
-                            if (strSplit.Length == 2)
-                            {
-                                row["Frá ár"] = strSplit[0];
-                                row["Til ár"] = strSplit[1];
-                            }
-                            row["Málalykill"] = string.Empty;
-                            row["Efni"] = r["innihald"];
-                            row["Auðkenni og heiti skjalaflokks"] = strSubSeries;
-                            row["Yfirskjalafl"] = strSeries;
-                            row["Athugasemdir"] = string.Format("Skrár í þessum skjalaflokki eru geymdar í möppunni {0}", r["athskjal"].ToString());
-                            dtFilemaker.Rows.Add(row);
-                            dtFilemaker.AcceptChanges();
-                        }
-                    }
-
-                }
-                string strGeymsluskra = strAfritunarMappa + "\\Geymsluskrár_excell";
-                if (!Directory.Exists(strGeymsluskra))
-                {
-                    Directory.CreateDirectory(strGeymsluskra);
-                }
-                strGeymsluskra = strGeymsluskra + "\\" + rVarsla["utgafa_titill"].ToString().Replace("/", "_") + ".xlsx";
-                exportExell(dtFilemaker, strGeymsluskra);
-            }
-            //5. gera EAD
-            //6 gera EAC-CPF.
-
-            MessageBox.Show("Búið");
         }
-
         private void exportExell(System.Data.DataTable tbl, string excelFilePath)
         {
             try
@@ -1412,6 +1562,7 @@ namespace OAIS_ADMIN
                 }
                 strRet += strClolumns.Remove(strClolumns.Length - 1) + ");" + Environment.NewLine;
                 strClolumns = string.Empty;
+               
             }
             return strRet;
         }

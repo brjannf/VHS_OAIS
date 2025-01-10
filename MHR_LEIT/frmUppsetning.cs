@@ -147,6 +147,8 @@ namespace MHR_LEIT
                 not.hostRoot();
                 cClassVHS.cVHS_drives drive = new cClassVHS.cVHS_drives();
                 drive.m_bAfrit = true;
+         
+                //tékka hvort skráð hafi verið í dt_drive?
                 drive.uppfæradrifAfrit(m_strEnda + "\\AIP");
                 //staðsetning vörsluútgáfna
                 cVorsluutgafur utgafur = new cVorsluutgafur();
