@@ -50,6 +50,10 @@ namespace cClassOAIS
             MySqlConnection conn = new MySqlConnection(m_strTenging);
             conn.Open();
             MySqlCommand command = new MySqlCommand("", conn);
+            if(this.heitiVorslu == null )
+            {
+                this.heitiVorslu = "";
+            }
             //id, karfa, skjalID, titill, vorsluutgafa, md5, slod
             command.Parameters.AddWithValue("@karfa", this.karfa);
             command.Parameters.AddWithValue("@skjalID", this.skjalID);

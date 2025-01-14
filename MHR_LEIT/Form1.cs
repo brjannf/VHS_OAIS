@@ -1060,13 +1060,32 @@ namespace MHR_LEIT
                     if(m_chbPDF.Checked)
                     {
                         m_lblPontunstatus.Text += "Bý til pdf - tekur tíma";
-                   
+                        string strEndPDF = strEndaSkjal;
+                        strEndPDF = m_strSlodDIP.Replace("\\\\", "\\");
+                        strEndPDF = strEndPDF + "\\" + utgafur.utgafa_titill;
+                        if (!Directory.Exists(strEndPDF))
+                        {
+                            Directory.CreateDirectory(strEndPDF);
+                        }
+                        strEndPDF = strEndPDF + "\\PDF";
+                        if (!Directory.Exists(strEndPDF))
+                        {
+                            Directory.CreateDirectory(strEndPDF);
+                        }
+
                         Application.DoEvents();
-                        createPDF(strSkjal[0], strEndaSkjal);
-                    
-                       // DataRow pdfRow = dtExcell.NewRow();
-                       string strPDF = strEndaSkjal.Replace(strDIProot, "");
-                        r["slod"] = strPDF.Replace(".tif", ".pdf");
+                        string strPDF =  createPDF(strSkjal[0], strEndPDF + "\\" + r["titill"].ToString());
+                        // createPDF(strSlod, strEndaSkjal + "\\" + senderGrid.Rows[e.RowIndex].Cells["colTitill"].Value.ToString());
+
+                      
+                        // DataRow pdfRow = dtExcell.NewRow();
+                       strPDF = strPDF.Replace(strDIProot, "") ;
+                        //strSplit = r["titill"].ToString().Split(".");
+                        //if(strSplit.Length != 0)
+                        //{
+                        //    strPDF = "\\" + strPDF +"\\" + strSplit[0] + ".pdf";
+                        //}
+                        r["slod"] = "\\" + strPDF;
                         dtExcell.ImportRow(r);
                     }
 
@@ -1275,7 +1294,7 @@ namespace MHR_LEIT
                     if(m_chbPDF.Checked)
                     {
                         m_lblPontunstatus.Text += "Bý til pdf - tekur tíma";
-                        m_prbPontun.Style = ProgressBarStyle.Marquee;    
+                       // m_prbPontun.Style = ProgressBarStyle.Marquee;    
                         createPDF(strSkraSlod, strDestDoc);
                         Application.DoEvents();
 
@@ -1289,7 +1308,6 @@ namespace MHR_LEIT
                         rpr["maltitill"] = r["maltitill"].ToString(); ;
 
                         dtExcellMal.Rows.Add(rpr);
-
 
                     }
 
@@ -1550,17 +1568,19 @@ namespace MHR_LEIT
 
         }
 
-        private void createPDF(string strTiff, string strPDF)
+        private string createPDF(string strTiff, string strPDF)
         {
+            string strRet = string.Empty;
             try
             {
                 cMIdlun midlun = new cMIdlun();
                 midlun.m_bAfrit = virkurNotandi.m_bAfrit;
-                midlun.ocrCreatePDF(strTiff, strPDF);
+                strRet =  midlun.ocrCreatePDF(strTiff, strPDF);
+                return strRet;
             }
             catch (Exception x)
             {
-
+                return x.ToString();
                 //throw;
             }
         }
@@ -2429,25 +2449,45 @@ namespace MHR_LEIT
                     synaPantanirFjoldi();
 
                 }
-            }
-            if (senderGrid.Columns["colMalOpna"].Index == e.ColumnIndex)
-            {
-                var p = new Process();
-
-                string strSlod = senderGrid.Rows[e.RowIndex].Cells["colMalVarslaUtgafaID"].Value.ToString();
-                //string[] strSkra = Directory.GetFiles(strSlod);
-                //if(strSkra.Length > 0) 
-                //{
-                //    strSlod = strSkra[0].ToString();
-                //}
-
-
-                p.StartInfo = new ProcessStartInfo(strSlod)
+                if (senderGrid.Columns["colMalOpna"].Index == e.ColumnIndex)
                 {
-                    UseShellExecute = true
-                };
-                p.Start();
+                    var p = new Process();
+
+                    string strSlod = senderGrid.Rows[e.RowIndex].Cells["colMalVarslaUtgafaID"].Value.ToString();
+                    //string[] strSkra = Directory.GetFiles(strSlod);
+                    //if(strSkra.Length > 0) 
+                    //{
+                    //    strSlod = strSkra[0].ToString();
+                    //}
+
+
+                    p.StartInfo = new ProcessStartInfo(strSlod)
+                    {
+                        UseShellExecute = true
+                    };
+                    p.Start();
+                }
+                if (senderGrid.Columns["colMalPDF"].Index == e.ColumnIndex)
+                {
+                   
+                    m_prbPontun.Visible = true;
+                    m_prbPontun.Value = 0;
+                    m_prbPontun.Maximum = 1;
+                    m_lblPontunstatus.Visible = true;
+                    m_lblPontunstatus.Text = "0/1 - bý til PDF getur tekið smá tíma";
+                    Application.DoEvents();
+                    string strSlod = senderGrid.Rows[e.RowIndex].Cells["colMalVarslaUtgafaID"].Value.ToString();
+                    createPDF(strSlod, strSlod);
+                    m_prbPontun.PerformStep();
+                    m_lblPontunstatus.Text = "1/1";
+                    Application.DoEvents();
+                    MessageBox.Show("Pdf - komið");
+                    m_prbPontun.Visible = false;
+                    m_lblPontunstatus.Visible = false;
+                }
             }
+            
+          
         }
 
         private void m_tacMain_SelectedIndexChanged(object sender, EventArgs e)

@@ -54,9 +54,9 @@ namespace MHR_LEIT
             m_tapPontunSkra.Text = string.Format("Skráakerfi ({0})", m_dtDIPSkra.Rows.Count);
             m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
 
+            DataTable dtMalAllt = new DataTable();
             if (m_dsDIPmal.Tables.Count != 0)
             {
-                DataTable dtMalAllt = new DataTable();
 
                 for (int i = 0; i < m_dsDIPmal.Tables.Count; i++)
                 {
@@ -71,6 +71,28 @@ namespace MHR_LEIT
             {
                 m_tapPontunMalakerfi.Text = string.Format("Málakerfi (0)");
             }
+            int iFjoldiSkjal = dtMalAllt.Rows.Count + m_dtDIPSkra.Rows.Count;
+            if (iFjoldiSkjal != 0)
+            {
+                m_grbTegundSkjala.Visible = true;
+                m_rdbFrum.Enabled = true;
+                m_rdbFrumTif.Enabled = true;
+                if (m_dtDIPSkra.Rows.Count == 0)
+                {
+                    m_rdbFrum.Enabled = false;
+                    m_rdbFrumTif.Enabled = false;
+                    m_rdbTiff.Checked = true;
+                }
+                else
+                {
+                    m_rdbFrumTif.Checked = true;
+                }
+            }
+            else
+            {
+                m_grbTegundSkjala.Visible = false;
+            }
+
         }
         private void fyllaPantanir()
         {
@@ -154,12 +176,12 @@ namespace MHR_LEIT
                 else
                     dtMalAllt.Merge(m_dsDIPmal.Tables[ix]);
             }
-            m_pgbPontun.Maximum = m_dtDIPGrunn.Rows.Count + dtMalAllt.Rows.Count + m_dtDIPSkra.Rows.Count;
-            m_pgbPontun.Step = 1;
-            m_pgbPontun.Value = 0;
+            m_prbPontun.Maximum = m_dtDIPGrunn.Rows.Count + dtMalAllt.Rows.Count + m_dtDIPSkra.Rows.Count;
+            m_prbPontun.Step = 1;
+            m_prbPontun.Value = 0;
 
-            m_pgbPontun.Visible = true;
-            m_lblPontunstatus.Text = string.Format("0/{0}", m_pgbPontun.Maximum);
+            m_prbPontun.Visible = true;
+            m_lblPontunstatus.Text = string.Format("0/{0}", m_prbPontun.Maximum);
             m_lblPontunstatus.Visible = true;
             m_tacPontun.SelectedTab = m_tapPontunSkra;
             Application.DoEvents();
@@ -246,32 +268,67 @@ namespace MHR_LEIT
                     string[] strSplit = strTitill.Split(".");
 
                     string strEndaSkjal = strDIPfolder + "\\" + strSplit[0] + fifo.Extension;
-                    File.Copy(strSkjal[0], strEndaSkjal, true);
-                    cMD5 md5 = new cMD5();
-                    md5.m_bAfrit = virkurNotandi.m_bAfrit;
-                    strSplit = strSlod.Split("\\");
-                    strID = "\\" + strSplit[strSplit.Length - 1];
-                    string strMD5 = md5.getMD5(strID, utgafur.vorsluutgafa);
-                    r["slod"] = strEndaSkjal.Replace(strDIProot, "");
-                    r["md5"] = strMD5;
+                    //********************Búa til PDF**************************
+                    if (m_chbPDF.Checked)
+                    {
+                        m_lblPontunstatus.Text += "Bý til pdf - tekur tíma";
+                        string strEndPDF = strEndaSkjal;
+                        strEndPDF = m_strSlodDIP.Replace("\\\\", "\\");
+                        strEndPDF = strEndPDF + "\\" + utgafur.utgafa_titill;
+                        if (!Directory.Exists(strEndPDF))
+                        {
+                            Directory.CreateDirectory(strEndPDF);
+                        }
+                        strEndPDF = strEndPDF + "\\PDF";
+                        if (!Directory.Exists(strEndPDF))
+                        {
+                            Directory.CreateDirectory(strEndPDF);
+                        }
 
-                    dtExcell.ImportRow(r);
+                        Application.DoEvents();
+                        string strPDF = createPDF(strSkjal[0], strEndPDF + "\\" + r["titill"].ToString());
+                        // createPDF(strSlod, strEndaSkjal + "\\" + senderGrid.Rows[e.RowIndex].Cells["colTitill"].Value.ToString());
 
-                    fifo = new FileInfo(strEndaSkjal);
-                    karfa_item.karfa = karfa.karfa;
-                    karfa_item.skjalID = r["skjalID"].ToString();
-                    karfa_item.titill = fifo.Name; // r["titill"].ToString();
-                    karfa_item.heitiVorslu = r["heitiVorslu"].ToString();
-                    karfa_item.vorsluutgafa = r["vorsluutgafa"].ToString();
-                    karfa_item.md5 = strMD5;
-                    karfa_item.slod = strEndaSkjal;
-                    karfa_item.vista();
 
+                        // DataRow pdfRow = dtExcell.NewRow();
+                        strPDF = strPDF.Replace(strDIProot, "");
+                        //strSplit = r["titill"].ToString().Split(".");
+                        //if(strSplit.Length != 0)
+                        //{
+                        //    strPDF = "\\" + strPDF +"\\" + strSplit[0] + ".pdf";
+                        //}
+                        r["slod"] = "\\" + strPDF;
+                        dtExcell.ImportRow(r);
+                    }
+                    //*****************flytja tiff******************************
+                    if (!m_rdbFrum.Checked)
+                    {
+                        File.Copy(strSkjal[0], strEndaSkjal, true);
+                        cMD5 md5 = new cMD5();
+                        md5.m_bAfrit = virkurNotandi.m_bAfrit;
+                        strSplit = strSlod.Split("\\");
+                        strID = "\\" + strSplit[strSplit.Length - 1];
+                        string strMD5 = md5.getMD5(strID, utgafur.vorsluutgafa);
+                        r["slod"] = strEndaSkjal.Replace(strDIProot, "");
+                        r["md5"] = strMD5;
+
+                        dtExcell.ImportRow(r);
+
+                        fifo = new FileInfo(strEndaSkjal);
+                        karfa_item.karfa = karfa.karfa;
+                        karfa_item.skjalID = r["skjalID"].ToString();
+                        karfa_item.titill = fifo.Name; // r["titill"].ToString();
+                        karfa_item.heitiVorslu = r["heitiVorslu"].ToString();
+                        karfa_item.vorsluutgafa = r["vorsluutgafa"].ToString();
+                        karfa_item.md5 = strMD5;
+                        karfa_item.slod = strEndaSkjal;
+                        karfa_item.vista();
+                    }
 
 
 
                 }
-                if (bFrum)
+                if (bFrum && (m_rdbFrumTif.Checked || m_rdbFrum.Checked))
                 {
                     strSkjal = Directory.GetFiles(strSlod.Replace("AVID", "FRUM"));
                     if (strSkjal.Length > 0)
@@ -327,9 +384,9 @@ namespace MHR_LEIT
 
                 }
 
-                m_pgbPontun.PerformStep();
-                m_lblPontunstatus.Text = string.Format("{0}/{1}", m_pgbPontun.Value, m_pgbPontun.Maximum);
-                m_pgbPontun.Visible = true;
+                m_prbPontun.PerformStep();
+                m_lblPontunstatus.Text = string.Format("{0}/{1}", m_prbPontun.Value, m_prbPontun.Maximum);
+                m_prbPontun.Visible = true;
                 m_lblPontunstatus.Visible = true;
 
                 Application.DoEvents();
@@ -446,6 +503,27 @@ namespace MHR_LEIT
 
                     }
                     File.Copy(strSkraSlod, strDestDoc, true);
+                    //********************Búa til PDF**************************
+                    if (m_chbPDF.Checked)
+                    {
+                        m_lblPontunstatus.Text += "Bý til pdf - tekur tíma";
+                        // m_prbPontun.Style = ProgressBarStyle.Marquee;    
+                        createPDF(strSkraSlod, strDestDoc);
+                        Application.DoEvents();
+
+                        DataRow rpr = dtExcellMal.NewRow();
+                        string strPDF = strDestDoc.Replace(strDIProot, "");
+                        rpr["Slóð"] = strPDF.Replace(".tif", ".pdf");
+                        rpr["Mál"] = "Mál_" + iMal.ToString("00");
+                        rpr["Skrá"] = strDocTitill;
+
+                        //  rr["md5"] = strMD5;
+                        rpr["maltitill"] = r["maltitill"].ToString(); ;
+
+                        dtExcellMal.Rows.Add(rpr);
+
+                    }
+
 
                     string strDest = strDIPfolder + "\\" + "Mál_" + iMal.ToString("00") + "_" + strMalTitill + "\\" + strMalTitill + ".xlsx";
                     //keyra út upplýsingar um málið
@@ -494,9 +572,9 @@ namespace MHR_LEIT
                     karfa_item.maltitill = r["maltitill"].ToString();
                     karfa_item.vistaMalaKerfi();
 
-                    m_pgbPontun.PerformStep();
-                    m_lblPontunstatus.Text = string.Format("{0}/{1}", m_pgbPontun.Value, m_pgbPontun.Maximum);
-                    m_pgbPontun.Visible = true;
+                    m_prbPontun.PerformStep();
+                    m_lblPontunstatus.Text = string.Format("{0}/{1}", m_prbPontun.Value, m_prbPontun.Maximum);
+                    m_prbPontun.Visible = true;
                     m_lblPontunstatus.Visible = true;
                     Application.DoEvents();
                 }
@@ -600,9 +678,9 @@ namespace MHR_LEIT
                 strTextTXT += "Fyrirspurn_" + iFyrirspurnNr + " Leitarskilyrði: " + rr["leitarskilyrdi"] + "Fjoldi niðurstaðna: " + dt.Rows.Count + Environment.NewLine;
 
                 iFyrirspurnNr++;
-                m_pgbPontun.PerformStep();
-                m_lblPontunstatus.Text = string.Format("{0}/{1}", m_pgbPontun.Value, m_pgbPontun.Maximum);
-                m_pgbPontun.Visible = true;
+                m_prbPontun.PerformStep();
+                m_lblPontunstatus.Text = string.Format("{0}/{1}", m_prbPontun.Value, m_prbPontun.Maximum);
+                m_prbPontun.Visible = true;
                 m_lblPontunstatus.Visible = true;
                 Application.DoEvents();
             }
@@ -676,12 +754,28 @@ namespace MHR_LEIT
             karfa.hreinsahlut();
 
             MessageBox.Show("DIP tilbúið");
+            m_grbTegundSkjala.Visible = false;
             int Fjoldi = m_dtDIPSkra.Rows.Count + m_dtDIPGrunn.Rows.Count + m_dtDIPMal.Rows.Count;
             this.Text = string.Format("Afgreiðsla: {0} skrár óafgreiddar", Fjoldi);
-            m_pgbPontun.Visible = false;
+            m_prbPontun.Visible = false;
             m_lblPontunstatus.Visible = false;
         }
-
+        private string createPDF(string strTiff, string strPDF)
+        {
+            string strRet = string.Empty;
+            try
+            {
+                cMIdlun midlun = new cMIdlun();
+                midlun.m_bAfrit = virkurNotandi.m_bAfrit;
+                strRet = midlun.ocrCreatePDF(strTiff, strPDF);
+                return strRet;
+            }
+            catch (Exception x)
+            {
+                return x.ToString();
+                //throw;
+            }
+        }
         private string pathChar(string strPath)
         {
             string strRet = strPath;
@@ -1150,6 +1244,55 @@ namespace MHR_LEIT
 
                             }
                         }
+                        if (senderGrid.Columns["colSkraPDF"].Index == e.ColumnIndex)
+                        {
+                            string strSlod = string.Empty;
+                            string strVorsluutgafa = senderGrid.Rows[e.RowIndex].Cells["colSkraVarslaID"].Value.ToString();
+                            cVorsluutgafur utgafur = new cVorsluutgafur();
+                            utgafur.m_bAfrit = virkurNotandi.m_bAfrit;
+                            utgafur.getVörsluútgáfu(strVorsluutgafa);
+                            strSlod = utgafur.slod;
+                            string strValid = senderGrid.Rows[e.RowIndex].Cells["colID"].Value.ToString();
+                            double dColl = Convert.ToInt32(strValid) / 10000;
+                            int iID = Convert.ToInt32(strValid);
+                            if (iID == 1)
+                            {
+                                dColl = 1;
+                            }
+                            else
+                            {
+                                dColl = dColl + 1;
+                            }
+                            strSlod = strSlod + "\\Documents\\docCollection" + dColl.ToString() + "\\" + strValid;
+
+                            string[] strFiles = Directory.GetFiles(strSlod);
+                            strSlod = strFiles[0];
+                            //finna endaslóðina
+                            string strEndaSkjal = m_strSlodDIP.Replace("\\\\", "\\");
+                            strEndaSkjal = strEndaSkjal + "\\" + utgafur.utgafa_titill;
+                            if (!Directory.Exists(strEndaSkjal))
+                            {
+                                Directory.CreateDirectory(strEndaSkjal);
+                            }
+                            strEndaSkjal = strEndaSkjal + "\\PDF";
+                            if (!Directory.Exists(strEndaSkjal))
+                            {
+                                Directory.CreateDirectory(strEndaSkjal);
+                            }
+                            m_prbPontun.Visible = true;
+                            m_prbPontun.Value = 0;
+                            m_prbPontun.Maximum = 1;
+                            m_lblPontunstatus.Visible = true;
+                            m_lblPontunstatus.Text = "0/1 - bý til PDF getur tekið smá tíma";
+                            Application.DoEvents();
+                            createPDF(strSlod, strEndaSkjal + "\\" + senderGrid.Rows[e.RowIndex].Cells["colTitill"].Value.ToString());
+                            m_prbPontun.PerformStep();
+                            m_lblPontunstatus.Text = "1/1";
+                            Application.DoEvents();
+                            MessageBox.Show("Pdf - komið");
+                            m_prbPontun.Visible = false;
+                            m_lblPontunstatus.Visible = false;
+                        }
                         if (senderGrid.Columns["colSkraOpna"].Index == e.ColumnIndex)
                         {
                             var p = new Process();
@@ -1205,6 +1348,24 @@ namespace MHR_LEIT
                                 m_dtDIPMal.AcceptChanges();
                                 //m_dsDIPmal.Tables[0] = m_dtDIPMal;
                             }
+                        }
+                        if (senderGrid.Columns["colMalPDF"].Index == e.ColumnIndex)
+                        {
+
+                            m_prbPontun.Visible = true;
+                            m_prbPontun.Value = 0;
+                            m_prbPontun.Maximum = 1;
+                            m_lblPontunstatus.Visible = true;
+                            m_lblPontunstatus.Text = "0/1 - bý til PDF getur tekið smá tíma";
+                            Application.DoEvents();
+                            string strSlod = senderGrid.Rows[e.RowIndex].Cells["colMalSlod"].Value.ToString();
+                            createPDF(strSlod, strSlod);
+                            m_prbPontun.PerformStep();
+                            m_lblPontunstatus.Text = "1/1";
+                            Application.DoEvents();
+                            MessageBox.Show("Pdf - komið");
+                            m_prbPontun.Visible = false;
+                            m_lblPontunstatus.Visible = false;
                         }
                         if (senderGrid.Columns["colMalOpna"].Index == e.ColumnIndex)
                         {

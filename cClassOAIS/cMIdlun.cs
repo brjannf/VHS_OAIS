@@ -436,7 +436,7 @@ namespace cClassOAIS
         //{
         //    IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
         //}
-        public void ocrCreatePDF(string strTiff, string strPDF)
+        public string  ocrCreatePDF(string strTiff, string strPDF)
         {
             //IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
             IronOcr.License.LicenseKey = ConfigurationManager.AppSettings["IronOcr.LicenseKey"];
@@ -485,6 +485,7 @@ namespace cClassOAIS
             FileInfo fifo = new FileInfo(strPDF);
             strPDF = fifo.FullName.Replace(fifo.Extension, ".pdf"); // strPDF.Replace(".tif", ".pdf");
             ocrResult.SaveAsSearchablePdf(strPDF);
+            return strPDF;
         }
         public DataTable testFyrirSpurn(string strFyrirspurn, string strDatabase)
         {
@@ -666,11 +667,11 @@ namespace cClassOAIS
             string strSQL = string.Empty;
             if (strLeitarord != string.Empty)
             {
-                strSQL = string.Format("Select MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, concat(doctitill, '.',extension) as doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, extension, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad  FROM dt_midlun m WHERE MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
+                strSQL = string.Format("Select MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) as score, id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, concat(doctitill,extension) as doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, extension, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad  FROM dt_midlun m WHERE MATCH (doctitill, maltitill, docInnihald, vorslustofnun_heiti,skjalamyndari_heiti,skjalaskra_innihald)AGAINST ('{0}' IN BOOLEAN MODE) ", strLeitarord);
             }
            else
             {
-                strSQL = "SELECT id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, concat(doctitill, '.',extension) as doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, extension, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad FROM dt_midlun d ";
+                strSQL = "SELECT id, vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, concat(doctitill ,extension) as doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, extension, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad FROM dt_midlun d ";
             }
 
            
