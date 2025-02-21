@@ -26,7 +26,7 @@ namespace Kortlagning_excel
         {
             InitializeComponent();
             //    m_strMappa = "C:\\Users\\brjann\\OneDrive - Braud\\Documents\\9. Kortlagningar\\komid\\Skyrsla\\Heradsskjalasofn"; //onedrive
-            m_strMappa = "C:\\Users\\brjann\\Braud\\Braud - Documents\\Kortlagning\\Heradsskjalasofn"; //sharepoint
+            m_strMappa = "C:\\Users\\brjann\\Miðstöð héraðsskjalasafna um rafræna skjalavörslu\\MHR - Documents\\09 Kortlagningar\\Heradsskjalasofn"; //sharepoint
             m_dtMappa.Columns.Add("ID");
             m_dtMappa.Columns.Add("slod");
             m_dtExcell.Columns.Add("status");
@@ -77,27 +77,27 @@ namespace Kortlagning_excel
                 string strIDDel = string.Empty;
                 foreach (DataRow r in m_dtExcell.Rows)
                 {
-                    if(iMySQL > iExcell)
+                    if (iMySQL > iExcell)
                     {
-                        foreach(DataRow r2 in m_dtMySQL.Rows)
+                        foreach (DataRow r2 in m_dtMySQL.Rows)
                         {
                             string strID = r2["ID"].ToString();
                             string strExp = "ID='" + strID + "'";
                             DataRow[] fRow = m_dtExcell.Select(strExp);
-                            if(fRow.Length == 0)
+                            if (fRow.Length == 0)
                             {
                                 //búið að eyða úr excell
-                                if(!strIDDel.Contains(strID + ":"))
+                                if (!strIDDel.Contains(strID + ":"))
                                 {
                                     strIDDel += strID + ":";
                                     bRet = true;
                                 }
-                                
+
                             }
                         }
                     }
-                  
-                   
+
+
 
                     if (string.IsNullOrEmpty(r["ID"].ToString()))
                     {
@@ -161,7 +161,7 @@ namespace Kortlagning_excel
                 {
                     string[] strSplit = strIDDel.Split(":");
 
-                    foreach (string strSplit2 in strSplit) 
+                    foreach (string strSplit2 in strSplit)
                     {
                         if (strSplit2 != string.Empty)
                         {
@@ -174,12 +174,12 @@ namespace Kortlagning_excel
 
                             }
                         }
-                        
+
                     }
 
                 }
 
-                foreach (DataRow row in m_dtExcell.Rows) 
+                foreach (DataRow row in m_dtExcell.Rows)
                 {
                     dtClone.ImportRow(row);
 
@@ -309,6 +309,7 @@ namespace Kortlagning_excel
                         }
 
                         kortExcel.Heradsskjalasafn = r["Heradsskjalasafn"].ToString();
+                        kortExcel.Audkenni = r["Audkenni"].ToString();
                         kortExcel.Sveitarfelag = r["Sveitarfelag"].ToString();
                         kortExcel.Afhendingarskyldur_adili = r["Afhendingarskyldur_adili"].ToString();
                         kortExcel.Heiti_kerfis = r["Heiti_kerfis"].ToString();
@@ -419,7 +420,7 @@ namespace Kortlagning_excel
         {
             Excel.Application excel = new Excel.Application();
 
-            string strSkjal = "C:\\Users\\brjann\\Braud\\Braud - Documents\\Kortlagning\\kortlagning_allt.xlsx";
+            string strSkjal = "C:\\Users\\brjann\\Miðstöð héraðsskjalasafna um rafræna skjalavörslu\\MHR - Documents\\09 Kortlagningar\\kortlagning_allt.xlsx";
             Workbook wb = excel.Workbooks.Open(strSkjal);
             Worksheet xlWorkSheet = (Excel.Worksheet)wb.Worksheets.get_Item(1);
 
@@ -461,13 +462,64 @@ namespace Kortlagning_excel
         private void m_btnOpnaAllt_Click(object sender, EventArgs e)
         {
             var p = new Process();
-            string strSlod = "https://braudehf.sharepoint.com/:x:/r/sites/Braud/_layouts/15/Doc.aspx?sourcedoc=%7B737c6fce-ebcd-4072-9bfa-81921c3f924c%7D&action=view";
+            string strSlod = "https://heradskjalasofn.sharepoint.com/sites/MHR/SitePages/Home.aspx";
             p.StartInfo = new ProcessStartInfo(strSlod)
             {
                 UseShellExecute = true
             };
             p.Start();
         }
-      
+
+        private void m_btnVistaIexcell_Click(object sender, EventArgs e)
+        {
+            //1. sækja gögn úr gagnagrunni
+            m_strHeradsskjalasafn = m_dtExcell.Rows[0]["heradsskjalasafn"].ToString();
+          
+            //  m_strExcelSkjal
+            //2. sækja excell, rúlla yfir hann
+            vistaExcell(m_strHeradsskjalasafn);
+            //3 vista breytingar
+        }
+
+       private async void vistaExcell(string strHeradskjalasafn)
+        {
+            Excel.Application excel = new Excel.Application();
+            excel.Interactive = true;
+
+            string strSkjal = m_strExcelSkjal;
+            Workbook wb = excel.Workbooks.Open(strSkjal);
+            Worksheet xlWorkSheet = (Excel.Worksheet)wb.Worksheets.get_Item(1);
+
+            m_dtMySQL = kortlagning.getKortHera(strHeradskjalasafn);
+            //Skrá allt í excell aftur frá gagnagrunni.
+            int iRow = 2;
+            m_prbPublish.Value = 0;
+            m_prbPublish.Maximum = m_dtMySQL.Rows.Count;
+            m_prbPublish.Step = 1;
+            await Task.Delay(1000); //c# og com tala ekki á sama hraða bíða 1 sec
+            foreach (DataRow r in m_dtMySQL.Rows)
+            {
+                int iCol = 1;
+                foreach (DataColumn column in m_dtMySQL.Columns)
+                {
+                    //þarf að láta bíða í 1-3 sekúndur meðan C# og com eru að ná saman
+                    
+                    xlWorkSheet.Cells[iRow, iCol] = r[column].ToString();
+                    iCol++;
+                    //}
+
+                }
+
+                iRow++;
+                m_prbPublish.PerformStep();
+                m_lblPublish.Text = string.Format("{0}/{1}", m_prbPublish.Value, m_prbPublish.Maximum);
+                System.Windows.Forms.Application.DoEvents();
+            }
+
+            wb.Save();
+            wb.Close();
+            MessageBox.Show("Búið");
+        }
+        
     }
 }

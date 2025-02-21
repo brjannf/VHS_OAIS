@@ -71,6 +71,12 @@ namespace cClassOAIS
             string strSQL = "CREATE DATABASE  IF NOT EXISTS `db_oais_admin` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;";
             MySqlHelper.ExecuteNonQuery(strTenging, strSQL);
         }
+        public void createDatabase(string strGrunnur)
+        {
+            string strTenging = "server = localhost; user id = root; Password = ivarBjarkLind;";
+            string strSQL = "CREATE DATABASE  IF NOT EXISTS `"+strGrunnur+"` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;";
+            MySqlHelper.ExecuteNonQuery(strTenging, strSQL);
+        }
 
         public DataTable getAllDatabases()
         {

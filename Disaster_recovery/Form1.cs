@@ -26,14 +26,22 @@ namespace Disaster_recovery
                 TextShade.BLACK);
         }
 
-        private void m_btnRecovery_Click(object sender, EventArgs e)
+        private async void m_btnRecovery_Click(object sender, EventArgs e)
         {
 
             DialogResult result = folderBrowserDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                endurHeimta(folderBrowserDialog1.SelectedPath, folderBrowserDialog1.SelectedPath);
+                string resultus = await Task.Run(() =>
+                {
+                    endurHeimta(folderBrowserDialog1.SelectedPath, folderBrowserDialog1.SelectedPath);
+                    return "Endurheimt lokið!";
+                });
             }
+            //if (result == DialogResult.OK)
+            //{
+            //    endurHeimta(folderBrowserDialog1.SelectedPath, folderBrowserDialog1.SelectedPath);
+            //}
         }
         private void endurHeimta(string strSlod, string strDagsetning)
         {
@@ -48,14 +56,15 @@ namespace Disaster_recovery
                 {
                     if (str.EndsWith(".sql"))
                     {
-                        strBackupfile = str;
+                        strBackupfile = str; 
+                        Restore(strBackupfile);
                     }
                 }
                 m_lblHvadAfrita.Text = "Endurheimti gagangrunn";
                 Application.DoEvents();
                 cBackup back = new cBackup();
-                back.createDatabase();
-                Restore(strBackupfile);
+              //  back.createDatabase();
+               // Restore(strBackupfile);
                 m_lblHvadAfrita.Text = "Tæmi vörslusvæði";
                 if (Directory.Exists("D:\\AIP"))
                 {
@@ -110,19 +119,46 @@ namespace Disaster_recovery
         private void Restore(string strRestoreFile)
         {
             string file = strRestoreFile;
-            string constring = "server = localhost; user id = root; Password = ivarBjarkLind; database = db_oais_admin;";
-            using (MySqlConnection conn = new MySqlConnection(constring))
+            string strGrunnur = string.Empty;
+            string[] strSplit = file.Split("_");
+            string constring = string.Empty;
+            cBackup back = new cBackup();
+            if (strSplit.Length == 10)
             {
-                using (MySqlCommand cmd = new MySqlCommand())
+                
+               constring = "server = localhost; user id = root; Password = ivarBjarkLind; database = db_oais_admin;";
+               back.createDatabase();
+            }
+            else
+            {
+               strGrunnur = strSplit[7] + "_" + strSplit[8]+ "_" + strSplit[9] + "_" + strSplit[10];
+               constring = "server = localhost; user id = root; Password = ivarBjarkLind; database = " + strGrunnur + ";";
+              
+               back.createDatabase(strGrunnur);
+            }
+            // backup _OAIS_avid_haku_2023054_1_23_11_2024.sql
+            //string constring = "server = localhost; user id = root; Password = ivarBjarkLind; database = db_oais_admin;";
+
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(constring))
                 {
-                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    using (MySqlCommand cmd = new MySqlCommand())
                     {
-                        cmd.Connection = conn;
-                        conn.Open();
-                        mb.ImportFromFile(file);
-                        conn.Close();
+                        using (MySqlBackup mb = new MySqlBackup(cmd))
+                        {
+                            cmd.Connection = conn;
+                            conn.Open();
+                            mb.ImportFromFile(file);
+                            conn.Close();
+                        }
                     }
                 }
+            }
+            catch (Exception x)
+            {
+
+              //  throw;
             }
         }
     }

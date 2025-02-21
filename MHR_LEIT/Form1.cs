@@ -2849,7 +2849,15 @@ namespace MHR_LEIT
                                     m_lblStatusDoing.Text = "Flyt inn skrár";
                                     Application.DoEvents();
                                     //taka út við debug*******************************
-                                    CopyFolder(str, strEndaMappa + "\\" + strAudkenni);
+                                     try
+                                    {
+                                        CopyFolder(str, strEndaMappa + "\\" + strAudkenni);
+                                    }
+                                    catch (Exception x)
+                                    {
+
+                                       // throw;
+                                    }
                              
                             }
                             //3. Keyra inn gagnagrunn

@@ -32,11 +32,12 @@
             openFileDialog1 = new OpenFileDialog();
             m_dgvExcelSkjal = new DataGridView();
             splitContainer1 = new SplitContainer();
+            m_btnOpnaAllt = new Button();
             m_lblPublish = new Label();
             m_prbPublish = new ProgressBar();
             m_btnUppfaeraBirtingu = new Button();
             m_btnAthBreytingar = new Button();
-            m_btnVista = new Button();
+            m_btnVistaIgrunn = new Button();
             m_lblMySQL = new Label();
             m_lblExcell = new Label();
             m_lblUpdate = new Label();
@@ -45,7 +46,7 @@
             m_dgvMappaSkjol = new DataGridView();
             colTakkar = new DataGridViewButtonColumn();
             colSlod = new DataGridViewTextBoxColumn();
-            m_btnOpnaAllt = new Button();
+            m_btnVistaIexcell = new Button();
             ((System.ComponentModel.ISupportInitialize)m_dgvExcelSkjal).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -60,7 +61,7 @@
             // 
             // m_btnOpnaExcel
             // 
-            m_btnOpnaExcel.Location = new Point(524, 76);
+            m_btnOpnaExcel.Location = new Point(876, 37);
             m_btnOpnaExcel.Name = "m_btnOpnaExcel";
             m_btnOpnaExcel.Size = new Size(75, 23);
             m_btnOpnaExcel.TabIndex = 0;
@@ -93,12 +94,13 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(m_btnVistaIexcell);
             splitContainer1.Panel1.Controls.Add(m_btnOpnaAllt);
             splitContainer1.Panel1.Controls.Add(m_lblPublish);
             splitContainer1.Panel1.Controls.Add(m_prbPublish);
             splitContainer1.Panel1.Controls.Add(m_btnUppfaeraBirtingu);
             splitContainer1.Panel1.Controls.Add(m_btnAthBreytingar);
-            splitContainer1.Panel1.Controls.Add(m_btnVista);
+            splitContainer1.Panel1.Controls.Add(m_btnVistaIgrunn);
             splitContainer1.Panel1.Controls.Add(m_lblMySQL);
             splitContainer1.Panel1.Controls.Add(m_lblExcell);
             splitContainer1.Panel1.Controls.Add(m_lblUpdate);
@@ -111,6 +113,16 @@
             splitContainer1.Size = new Size(1284, 535);
             splitContainer1.SplitterDistance = 139;
             splitContainer1.TabIndex = 2;
+            // 
+            // m_btnOpnaAllt
+            // 
+            m_btnOpnaAllt.Location = new Point(287, 105);
+            m_btnOpnaAllt.Name = "m_btnOpnaAllt";
+            m_btnOpnaAllt.Size = new Size(138, 23);
+            m_btnOpnaAllt.TabIndex = 10;
+            m_btnOpnaAllt.Text = "Opna birtingu";
+            m_btnOpnaAllt.UseVisualStyleBackColor = true;
+            m_btnOpnaAllt.Click += m_btnOpnaAllt_Click;
             // 
             // m_lblPublish
             // 
@@ -148,15 +160,15 @@
             m_btnAthBreytingar.UseVisualStyleBackColor = true;
             m_btnAthBreytingar.Click += m_btnAthBreytingar_Click;
             // 
-            // m_btnVista
+            // m_btnVistaIgrunn
             // 
-            m_btnVista.Location = new Point(524, 47);
-            m_btnVista.Name = "m_btnVista";
-            m_btnVista.Size = new Size(75, 23);
-            m_btnVista.TabIndex = 5;
-            m_btnVista.Text = "Vista";
-            m_btnVista.UseVisualStyleBackColor = true;
-            m_btnVista.Click += m_btnVista_Click;
+            m_btnVistaIgrunn.Location = new Point(494, 43);
+            m_btnVistaIgrunn.Name = "m_btnVistaIgrunn";
+            m_btnVistaIgrunn.Size = new Size(95, 23);
+            m_btnVistaIgrunn.TabIndex = 5;
+            m_btnVistaIgrunn.Text = "Vista í grunn";
+            m_btnVistaIgrunn.UseVisualStyleBackColor = true;
+            m_btnVistaIgrunn.Click += m_btnVista_Click;
             // 
             // m_lblMySQL
             // 
@@ -242,15 +254,15 @@
             colSlod.ReadOnly = true;
             colSlod.Visible = false;
             // 
-            // m_btnOpnaAllt
+            // m_btnVistaIexcell
             // 
-            m_btnOpnaAllt.Location = new Point(287, 105);
-            m_btnOpnaAllt.Name = "m_btnOpnaAllt";
-            m_btnOpnaAllt.Size = new Size(138, 23);
-            m_btnOpnaAllt.TabIndex = 10;
-            m_btnOpnaAllt.Text = "Opna birtingu";
-            m_btnOpnaAllt.UseVisualStyleBackColor = true;
-            m_btnOpnaAllt.Click += m_btnOpnaAllt_Click;
+            m_btnVistaIexcell.Location = new Point(494, 72);
+            m_btnVistaIexcell.Name = "m_btnVistaIexcell";
+            m_btnVistaIexcell.Size = new Size(95, 23);
+            m_btnVistaIexcell.TabIndex = 11;
+            m_btnVistaIexcell.Text = "Vista í Excell";
+            m_btnVistaIexcell.UseVisualStyleBackColor = true;
+            m_btnVistaIexcell.Click += m_btnVistaIexcell_Click;
             // 
             // Form1
             // 
@@ -284,7 +296,7 @@
         private Label m_lblMySQL;
         private Label m_lblExcell;
         private Label m_lblUpdate;
-        private Button m_btnVista;
+        private Button m_btnVistaIgrunn;
         private SplitContainer splitContainer2;
         private DataGridView m_dgvMappaSkjol;
         private DataGridViewButtonColumn colTakkar;
@@ -294,5 +306,6 @@
         private Label m_lblPublish;
         private ProgressBar m_prbPublish;
         private Button m_btnOpnaAllt;
+        private Button m_btnVistaIexcell;
     }
 }
