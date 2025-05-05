@@ -91,6 +91,7 @@
             colGagnOpna = new DataGridViewButtonColumn();
             colGagnDelete = new DataGridViewButtonColumn();
             colGagnSQL = new DataGridViewTextBoxColumn();
+            m_btnLoka = new Button();
             ((System.ComponentModel.ISupportInitialize)m_dgvValdarSkrar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -274,6 +275,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            splitContainer2.Panel1.Controls.Add(m_btnLoka);
             splitContainer2.Panel1.Controls.Add(label5);
             splitContainer2.Panel1.Controls.Add(m_comExternsion);
             splitContainer2.Panel1.Controls.Add(label4);
@@ -813,6 +815,17 @@
             colGagnSQL.ReadOnly = true;
             colGagnSQL.Visible = false;
             // 
+            // m_btnLoka
+            // 
+            m_btnLoka.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            m_btnLoka.Location = new Point(1402, 3);
+            m_btnLoka.Name = "m_btnLoka";
+            m_btnLoka.Size = new Size(89, 23);
+            m_btnLoka.TabIndex = 21;
+            m_btnLoka.Text = "Loka";
+            m_btnLoka.UseVisualStyleBackColor = true;
+            m_btnLoka.Click += m_btnLoka_Click;
+            // 
             // frmSkraarkerfi
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -923,5 +936,6 @@
         private Button m_btnMD5Stadfesta;
         private Label m_lblMD5;
         private TextBox m_tboMD5;
+        private Button m_btnLoka;
     }
 }

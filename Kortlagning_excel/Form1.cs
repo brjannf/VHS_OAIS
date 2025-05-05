@@ -248,6 +248,8 @@ namespace Kortlagning_excel
                         da.Fill(m_dtExcell);
 
                     }
+                    conn.Close();
+                    comm.Dispose();
                 }
             }
             //    string sSheetName = null;
@@ -310,6 +312,7 @@ namespace Kortlagning_excel
 
                         kortExcel.Heradsskjalasafn = r["Heradsskjalasafn"].ToString();
                         kortExcel.Audkenni = r["Audkenni"].ToString();
+                        kortExcel.Klasi = r["Klasi"].ToString();
                         kortExcel.Sveitarfelag = r["Sveitarfelag"].ToString();
                         kortExcel.Afhendingarskyldur_adili = r["Afhendingarskyldur_adili"].ToString();
                         kortExcel.Heiti_kerfis = r["Heiti_kerfis"].ToString();
@@ -347,7 +350,7 @@ namespace Kortlagning_excel
             MessageBox.Show("Vistað");
         }
 
-        private void updateExcel()
+        private async void updateExcel()
         {
             Excel.Application excel = new Excel.Application();
 
@@ -357,6 +360,7 @@ namespace Kortlagning_excel
             m_dtMySQL = kortlagning.getKortHera(m_strHeradsskjalasafn);
             //Skrá allt í grunni aftur í m_dtMySQL.
             int iRow = 2;
+            await Task.Delay(3000); //c# og com tala ekki á sama hraða bíða 3 sec
             foreach (DataRow r in m_dtMySQL.Rows)
             {
                 int iCol = 1;
@@ -370,6 +374,7 @@ namespace Kortlagning_excel
 
             wb.Save();
             wb.Close();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
 
         }
 
@@ -456,6 +461,7 @@ namespace Kortlagning_excel
 
             wb.Save();
             wb.Close();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
             MessageBox.Show("Búið");
         }
 
@@ -496,7 +502,7 @@ namespace Kortlagning_excel
             m_prbPublish.Value = 0;
             m_prbPublish.Maximum = m_dtMySQL.Rows.Count;
             m_prbPublish.Step = 1;
-            await Task.Delay(1000); //c# og com tala ekki á sama hraða bíða 1 sec
+            await Task.Delay(3000); //c# og com tala ekki á sama hraða bíða 3 sec
             foreach (DataRow r in m_dtMySQL.Rows)
             {
                 int iCol = 1;

@@ -4,6 +4,8 @@ using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Google.Protobuf.WellKnownTypes;
+using MHR_LEIT.Properties;
+using Microsoft.Reporting.Map.WebForms.BingMaps;
 using MySql.Data.MySqlClient;
 using OAIS_ADMIN;
 using System.Data;
@@ -11,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -42,7 +45,7 @@ namespace MHR_LEIT
             m_comFjoldiFaerslnaLeit.Text = "100";
             m_pnlNotandi.Dock = DockStyle.Fill;
             m_pnlNotandi.BringToFront();
-     
+
             this.Text = "MHR - LEIT";
             this.WindowState = FormWindowState.Maximized;
             DataTable dt = virkurNotandi.getGrunnar();
@@ -907,6 +910,8 @@ namespace MHR_LEIT
                 uscNotendur1.virkurnotandi.m_bAfrit = virkurNotandi.m_bAfrit;
                 uscNotendur1.virkurnotandi = virkurNotandi;
                 usclanthegar1.virkurnotandi = virkurNotandi;
+                m_tomHjalpCHM.Visible = true;
+                m_tomHjalpPDF.Visible = true;
                 uscNotendur1.fyllaNotendaLista();
                 usclanthegar1.fyllaLanthega();
                 fyllaVörsluutgafur("");
@@ -1054,10 +1059,10 @@ namespace MHR_LEIT
                     string[] strSplit = strTitill.Split(".");
 
                     string strEndaSkjal = strDIPfolder + "\\" + strSplit[0] + fifo.Extension;
-                  
+
 
                     //********************Búa til PDF**************************
-                    if(m_chbPDF.Checked)
+                    if (m_chbPDF.Checked)
                     {
                         m_lblPontunstatus.Text += "Bý til pdf - tekur tíma";
                         string strEndPDF = strEndaSkjal;
@@ -1074,12 +1079,12 @@ namespace MHR_LEIT
                         }
 
                         Application.DoEvents();
-                        string strPDF =  createPDF(strSkjal[0], strEndPDF + "\\" + r["titill"].ToString());
+                        string strPDF = createPDF(strSkjal[0], strEndPDF + "\\" + r["titill"].ToString());
                         // createPDF(strSlod, strEndaSkjal + "\\" + senderGrid.Rows[e.RowIndex].Cells["colTitill"].Value.ToString());
 
-                      
+
                         // DataRow pdfRow = dtExcell.NewRow();
-                       strPDF = strPDF.Replace(strDIProot, "") ;
+                        strPDF = strPDF.Replace(strDIProot, "");
                         //strSplit = r["titill"].ToString().Split(".");
                         //if(strSplit.Length != 0)
                         //{
@@ -1291,10 +1296,10 @@ namespace MHR_LEIT
                     DataRow rr = dtExcellMal.NewRow();
                     File.Copy(strSkraSlod, strDestDoc, true);
                     //********************Búa til PDF**************************
-                    if(m_chbPDF.Checked)
+                    if (m_chbPDF.Checked)
                     {
                         m_lblPontunstatus.Text += "Bý til pdf - tekur tíma";
-                       // m_prbPontun.Style = ProgressBarStyle.Marquee;    
+                        // m_prbPontun.Style = ProgressBarStyle.Marquee;    
                         createPDF(strSkraSlod, strDestDoc);
                         Application.DoEvents();
 
@@ -1335,7 +1340,7 @@ namespace MHR_LEIT
                     mD5.m_bAfrit = virkurNotandi.m_bAfrit;
                     string strMD5 = mD5.getMD5(strID, utgafur.vorsluutgafa);
 
-                    
+
                     rr["Mál"] = "Mál_" + iMal.ToString("00");
                     rr["Skrá"] = strDocTitill;
 
@@ -1359,7 +1364,7 @@ namespace MHR_LEIT
                     karfa_item.heitiVorslu = r["heitivorslu"].ToString();
                     karfa_item.maltitill = r["maltitill"].ToString();
                     karfa_item.vistaMalaKerfi();
-                    
+
                     m_prbPontun.PerformStep();
                     m_lblPontunstatus.Text = string.Format("{0}/{1}", m_prbPontun.Value, m_prbPontun.Maximum);
                     m_prbPontun.Visible = true;
@@ -1575,7 +1580,7 @@ namespace MHR_LEIT
             {
                 cMIdlun midlun = new cMIdlun();
                 midlun.m_bAfrit = virkurNotandi.m_bAfrit;
-                strRet =  midlun.ocrCreatePDF(strTiff, strPDF);
+                strRet = midlun.ocrCreatePDF(strTiff, strPDF);
                 return strRet;
             }
             catch (Exception x)
@@ -1738,6 +1743,8 @@ namespace MHR_LEIT
                 }
                 colGagnRemove.Visible = true;
                 colSkraRemove.Visible = true;
+                colPDF.Visible = false;
+                colMalPDF.Visible = false;
                 m_dgvDIPGagnagrunnar.AutoGenerateColumns = false;
                 m_dgvDIPGagnagrunnar.DataSource = m_dtDIPGrunn;
                 m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
@@ -1747,7 +1754,8 @@ namespace MHR_LEIT
 
 
 
-
+            colPDF.Visible = true;
+            colMalPDF.Visible = true;
             colGagnRemove.Visible = false;
             colSkraRemove.Visible = false;
             colBtnFjarlaegja.Visible = false;
@@ -2032,6 +2040,41 @@ namespace MHR_LEIT
 
         private void m_btnLagaToflur_Click(object sender, EventArgs e)
         {
+
+
+            //laga tímabil í tbMidlun
+            DataTable dtTimi = virkurNotandi.getTimabilMidlun();
+
+            foreach(DataRow row in dtTimi.Rows)
+            {
+                string id = row["id"].ToString();
+                string strCreated = row["doccreated"].ToString();
+                string strChanged = row["doclastwriten"].ToString();
+                if (strCreated.Contains("/")) 
+                {
+                    DateTime datCreated = Convert.ToDateTime(strCreated);
+                    DateTime datChanged = new DateTime();
+                    if (strChanged != string.Empty)
+                    {
+                        datChanged = Convert.ToDateTime(strChanged);
+                    }
+                    
+
+                    string strDATECreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString() + "-" + datCreated.Day.ToString();
+                    string strDATECanged = datChanged.Year.ToString() + "-" + datChanged.Month.ToString() + "-" + datChanged.Day.ToString();
+                    if (strChanged == "01/01/1900 00:00:00")
+                    {
+                        strDATECanged = string.Empty;
+                    }
+
+                    virkurNotandi.upDateTimi(strDATECreated, strDATECanged, id);
+                }
+                
+            }
+            MessageBox.Show("ble");
+            return;
+
+            string strVillu = string.Empty;
             //nota þetta til að bæta við, breyta eða eyða töflum úr miðlunargrunni
             // 1. bæta við extensiondálki í midlunartöflu
             #region 1. bæta við extensiondálki í midlunartöflu
@@ -2041,7 +2084,7 @@ namespace MHR_LEIT
             }
             catch (Exception x)
             {
-
+                strVillu += x.ToString() + Environment.NewLine;
 
             }
             //sækja alla midlunartöfluna
@@ -2113,6 +2156,7 @@ namespace MHR_LEIT
             }
             #endregion
             // 2. bæta við heiti heitiVorslu í dt_pantanir_karfa_item
+            #region Bæta við heiti dákla í dt_pantanir_karfa_item
             try
             {
                 virkurNotandi.addHeitiVarsla();
@@ -2122,8 +2166,76 @@ namespace MHR_LEIT
 
 
             }
+            #endregion
+            //3.Bæta við Tegund í dt_vörsluutgafur og setja gögn inn frá miðlunartöflunni.
+            //sauðakóðinn er
+            //1. bæta við tegund_grunns ALTER TABLE `db_oais_admin`.`dt_vörsluutgafur` ADD COLUMN `tegund` VARCHAR(100) AFTER `utgafa_titill`;
 
-            MessageBox.Show("Búið");
+            try
+            {
+                virkurNotandi.addTegundGrunns();
+            }
+            catch (Exception x)
+            {
+                strVillu += x.ToString() + Environment.NewLine;
+
+            }
+            //2. ná í töflu vörslustofnanir
+            DataTable dtUtgafa = virkurNotandi.getVorsluutgafur();
+            //3 rúlla yfir og fletta upp í miðlun og svo skrá í vörslútgáfutöflu
+            foreach (DataRow dr in dtUtgafa.Rows)
+            {
+                //1 ná í tegund
+                string strUtgafa = dr["vorsluutgafa"].ToString();
+                string strTegund = virkurNotandi.getTegund(strUtgafa);
+                if (strTegund == string.Empty)
+                {
+                    //tékka á hvort sé gagnagrunnur
+                    if (virkurNotandi.erGagnagrunnur(strUtgafa))
+                    {
+                        strTegund = "Gagnagrunnur";
+                    }
+
+                }
+                //uppfæra tegund í vörsluútgáfutöflu
+                virkurNotandi.upDateTegund(strTegund, strUtgafa);
+            }
+
+            //1. laga charset og 3_1_yfirlit_innihald 
+            try
+            {
+                virkurNotandi.changeIsadgCharSet();
+            }
+            catch (Exception x)
+            {
+                strVillu += x.ToString() + Environment.NewLine;
+
+            }
+
+            //fyrirspurnir í gagngrunns dip
+            //ALTER TABLE `db_oais_admin`.`dt_karfa_item_gagna_dip` MODIFY COLUMN `sql` VARCHAR(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL;
+            try
+            {
+                virkurNotandi.lengthDataDIPDatabase();
+            }
+            catch (Exception x)
+            {
+                strVillu += x.ToString() + Environment.NewLine;
+
+            }
+
+            if (strVillu != string.Empty)
+            {
+                MessageBox.Show("Búið" + Environment.NewLine + strVillu);
+            }
+            else
+            {
+                MessageBox.Show("Búið");
+            }
+
+
+
+
         }
 
         private void m_tomUtskra_Click(object sender, EventArgs e)
@@ -2134,6 +2246,8 @@ namespace MHR_LEIT
             m_tboLykilOrd.Text = string.Empty;
             virkurNotandi.hreinsaHlut();
             m_tomUtskra.Visible = false;
+            m_tomHjalpPDF.Visible = false;  
+            m_tomHjalpCHM.Visible = false;  
 
         }
 
@@ -2265,7 +2379,7 @@ namespace MHR_LEIT
                         m_dtDIPSkra = (DataTable)m_dgvDIPList.DataSource;
                         m_dtDIPSkra.AcceptChanges();
                     }
-                    
+
                     synaPantanirFjoldi();
 
                 }
@@ -2295,7 +2409,7 @@ namespace MHR_LEIT
                     //finna endaslóðina
                     string strEndaSkjal = m_strSlodDIP.Replace("\\\\", "\\");
                     strEndaSkjal = strEndaSkjal + "\\" + utgafur.utgafa_titill;
-                    if(!Directory.Exists(strEndaSkjal))
+                    if (!Directory.Exists(strEndaSkjal))
                     {
                         Directory.CreateDirectory(strEndaSkjal);
                     }
@@ -2389,6 +2503,7 @@ namespace MHR_LEIT
 
                 m_grbDIP.Text = string.Format("Óafgreitt ({0})", iAllsPant);
                 m_tapAfgreidsla.Text = string.Format("Afgreiðsla: ({0}) skrár óafgreiddar", iAllsPant);
+                
             }
             else
             {
@@ -2413,6 +2528,7 @@ namespace MHR_LEIT
                 colGagnRemove.Visible = false;
                 colSkraRemove.Visible = false;
                 colGagnRemove.Visible = false;
+               
             }
 
 
@@ -2469,7 +2585,7 @@ namespace MHR_LEIT
                 }
                 if (senderGrid.Columns["colMalPDF"].Index == e.ColumnIndex)
                 {
-                   
+
                     m_prbPontun.Visible = true;
                     m_prbPontun.Value = 0;
                     m_prbPontun.Maximum = 1;
@@ -2486,8 +2602,8 @@ namespace MHR_LEIT
                     m_lblPontunstatus.Visible = false;
                 }
             }
-            
-          
+
+
         }
 
         private void m_tacMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -2622,8 +2738,9 @@ namespace MHR_LEIT
                     //string strSlod = senderGrid.Rows[e.RowIndex].Cells["colVarslaSlod"].Value.ToString();
                     string strTegund = senderGrid.Rows[e.RowIndex].Cells["colTegund"].Value.ToString();
                     //string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorsluID"].Value.ToString();
-
-                    frmGeymsluskra frmgeymsla = new frmGeymsluskra(strAuðkenni, "asdf", strTegund, virkurNotandi, strVorslustofnID);
+                    //ef málakerfi vantara vita hvaða kerfi one, gopro, workpoint osvr
+                    string strSlod = senderGrid.Rows[e.RowIndex].Cells["colUtgafaSlod"].Value.ToString();
+                    frmGeymsluskra frmgeymsla = new frmGeymsluskra(strAuðkenni, strSlod, strTegund, virkurNotandi, strVorslustofnID);
                     frmgeymsla.ShowDialog();
                 }
             }
@@ -2796,7 +2913,7 @@ namespace MHR_LEIT
             DataTable dt = (DataTable)m_dgvUtgafur.DataSource;
             string strExp = "taka='true'";
             DataRow[] fRow = dt.Select(strExp);
-            if(fRow.Length == 0)
+            if (fRow.Length == 0)
             {
                 MessageBox.Show("Vantar að hakka við vörsuútgáfur til að flytja inn");
                 return;
@@ -2805,109 +2922,109 @@ namespace MHR_LEIT
             m_prgImportStatusHeild.Step = 1;
             m_prgImportStatusHeild.Value = 0;
             //}
-           // foreach (DataGridViewRow dr in m_dgvUtgafur.Rows)
+            // foreach (DataGridViewRow dr in m_dgvUtgafur.Rows)
             foreach (DataRow row in dt.Rows)
             {
                 // if (dr.Cells["colMidlunTaka"].Value.ToString() == "True")
                 if (row["taka"] != DBNull.Value)
                 {
-                 if(Convert.ToBoolean(row["taka"])) 
-                {
-                    //1. Flytja skjöl á réttan stað
-                    string strAIP = m_strRootInsert + "\\Vörsluútgáfur" + "\\" + row["heiti_varsla"].ToString();
-                    string[] strAIPmoppur = Directory.GetDirectories(strAIP);
-                    foreach (string str in strAIPmoppur)
+                    if (Convert.ToBoolean(row["taka"]))
                     {
-                        //string[] strAIPVarslaMoppur = Directory.GetDirectories(str);
-
-                        m_prgImportStatusHeild.PerformStep();
-                        m_lblImportStatusHeild.Text = string.Format("{0}/{1}", m_prgImportStatusHeild.Value, m_prgImportStatusHeild.Maximum);
-                        m_lblStatusVarslaTaka.Text = string.Format("Flyt inn {0}", row["heiti_varsla"]);
-           
-
-                       // foreach (string strAIPmAPPA in strAIPVarslaMoppur)
+                        //1. Flytja skjöl á réttan stað
+                        string strAIP = m_strRootInsert + "\\Vörsluútgáfur" + "\\" + row["heiti_varsla"].ToString();
+                        string[] strAIPmoppur = Directory.GetDirectories(strAIP);
+                        foreach (string str in strAIPmoppur)
                         {
-                            string[] strSplit = str.Split("\\");
-                            string strAudkenni = string.Empty;
+                            //string[] strAIPVarslaMoppur = Directory.GetDirectories(str);
 
-                            if (strSplit.Length != 0)
-                            {
-                                strAudkenni = strSplit[strSplit.Length - 1];
-                            }
-                            // string strAudkenniOrginal = dr.Cells["colAudkenniVarslaMidlun"].Value.ToString();
-                            string strAudkenniOrginal = row["audkenni"].ToString();
+                            m_prgImportStatusHeild.PerformStep();
+                            m_lblImportStatusHeild.Text = string.Format("{0}/{1}", m_prgImportStatusHeild.Value, m_prgImportStatusHeild.Maximum);
+                            m_lblStatusVarslaTaka.Text = string.Format("Flyt inn {0}", row["heiti_varsla"]);
 
-                            if (strAudkenni == strAudkenniOrginal || strAudkenni == strAudkenniOrginal.Replace("AVID", "FRUM"))
+
+                            // foreach (string strAIPmAPPA in strAIPVarslaMoppur)
                             {
-                                if (!Directory.Exists(strEndaMappa + "\\" + strAudkenni))
+                                string[] strSplit = str.Split("\\");
+                                string strAudkenni = string.Empty;
+
+                                if (strSplit.Length != 0)
                                 {
-                                    Directory.CreateDirectory(strEndaMappa + "\\" + strAudkenni);
+                                    strAudkenni = strSplit[strSplit.Length - 1];
                                 }
-                                //    m_prgImportStatusEitt.PerformStep();
-                                //    m_lblImportStatusEitt.Text = string.Format("{0}/{1}", m_prgImportStatusEitt.Value, m_prgImportStatusEitt.Maximum);
+                                // string strAudkenniOrginal = dr.Cells["colAudkenniVarslaMidlun"].Value.ToString();
+                                string strAudkenniOrginal = row["audkenni"].ToString();
+
+                                if (strAudkenni == strAudkenniOrginal || strAudkenni == strAudkenniOrginal.Replace("AVID", "FRUM"))
+                                {
+                                    if (!Directory.Exists(strEndaMappa + "\\" + strAudkenni))
+                                    {
+                                        Directory.CreateDirectory(strEndaMappa + "\\" + strAudkenni);
+                                    }
+                                    //    m_prgImportStatusEitt.PerformStep();
+                                    //    m_lblImportStatusEitt.Text = string.Format("{0}/{1}", m_prgImportStatusEitt.Value, m_prgImportStatusEitt.Maximum);
                                     m_grbInsertStatus.Visible = true;
                                     m_lblStatusDoing.Text = "Flyt inn skrár";
                                     Application.DoEvents();
                                     //taka út við debug*******************************
-                                     try
+                                    try
                                     {
                                         CopyFolder(str, strEndaMappa + "\\" + strAudkenni);
                                     }
                                     catch (Exception x)
                                     {
 
-                                       // throw;
+                                        // throw;
                                     }
-                             
-                            }
-                            //3. Keyra inn gagnagrunn
-                            if (strAudkenni == "SQL")
-                            {
-                                string[] strSQLScript = Directory.GetFiles(str);
-                                //keyra hér inn tvær skrár 
-                                //1. sql afrit
-                                //2. sql innsert.
-                                foreach(string strSQL in strSQLScript)
-                                {
-                                    FileInfo fifo = new FileInfo(strSQL);
 
-                                    if (fifo.Name != "insert.Sql")
-                                    {
-                                        m_grbInsertStatus.Visible = true;
-                                        m_lblStatusDoing.Text = "Flyt inn gagnagrunn";
-                                        Application.DoEvents();
-                                        strSplit = strSQLScript[0].Split("\\");
-                                        string strScript = strSplit[strSplit.Length - 1];
-                                        strSplit = strScript.Split(".");
-                                        if (strSplit.Length != 0)
-                                        {
-                                            Restore(strSQLScript[0], strSplit[0]);
-                                        }
-                                    
-                                    }
-                                    else
-                                    {
-                                        m_grbInsertStatus.Visible = true;
-                                        m_lblStatusDoing.Text = "Flyt inn lýsigögn (metadata)";
-                                        Application.DoEvents();
-                                        //2. Keyra inn innsert fyrir media
-                                        // string strPathInnsert = m_strRootInsert + "\\SQL_META_AFRIT\\INSERT.sql";
-                                        cMIdlun midlun = new cMIdlun();
-                                        midlun.m_bAfrit = virkurNotandi.m_bAfrit;
-                                        midlun.scriptLoad(strSQL);
-                                    
-                                    }
                                 }
-                               
+                                //3. Keyra inn gagnagrunn
+                                if (strAudkenni == "SQL")
+                                {
+                                    string[] strSQLScript = Directory.GetFiles(str);
+                                    //keyra hér inn tvær skrár 
+                                    //1. sql afrit
+                                    //2. sql innsert.
+                                    foreach (string strSQL in strSQLScript)
+                                    {
+                                        FileInfo fifo = new FileInfo(strSQL);
+
+                                        if (fifo.Name != "insert.Sql")
+                                        {
+                                            m_grbInsertStatus.Visible = true;
+                                            m_lblStatusDoing.Text = "Flyt inn gagnagrunn";
+                                            Application.DoEvents();
+                                            strSplit = strSQLScript[0].Split("\\");
+                                            string strScript = strSplit[strSplit.Length - 1];
+                                            strSplit = strScript.Split(".");
+                                            if (strSplit.Length != 0)
+                                            {
+                                                Restore(strSQLScript[0], strSplit[0]);
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            m_grbInsertStatus.Visible = true;
+                                            m_lblStatusDoing.Text = "Flyt inn lýsigögn (metadata)";
+                                            Application.DoEvents();
+                                            //2. Keyra inn innsert fyrir media
+                                            // string strPathInnsert = m_strRootInsert + "\\SQL_META_AFRIT\\INSERT.sql";
+                                            cMIdlun midlun = new cMIdlun();
+                                            midlun.m_bAfrit = virkurNotandi.m_bAfrit;
+                                            midlun.scriptLoad(strSQL);
+
+                                        }
+                                    }
+
+                                }
+
                             }
-
                         }
+
+
+
+
                     }
-                   
-
-
-
-                }
                 }
 
 
@@ -2997,13 +3114,36 @@ namespace MHR_LEIT
         {
             cDIPKarfa karfa = new cDIPKarfa();
             karfa.m_bAfrit = virkurNotandi.m_bAfrit;
-            if (m_trwDIP.SelectedNode.Tag != null )
+            if (m_trwDIP.SelectedNode.Tag != null)
             {
                 string strTag = m_trwDIP.SelectedNode.Tag.ToString();
                 karfa.sækjaKörfu(strTag);
                 karfa.athugasemdir = m_tboPontunAth.Text;
                 karfa.vista();
             }
+        }
+
+        private void m_tomHjalpCHM_Click(object sender, EventArgs e)
+        {
+
+            var p = new Process();
+            string strSlod = helpProvider1.HelpNamespace;
+            p.StartInfo = new ProcessStartInfo(strSlod)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        private void m_tomHjalpPDF_Click(object sender, EventArgs e)
+        {
+            var p = new Process();
+            string strSlod = helpProvider2.HelpNamespace;
+            p.StartInfo = new ProcessStartInfo(strSlod)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
     }
 }

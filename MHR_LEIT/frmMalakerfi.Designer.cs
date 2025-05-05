@@ -62,6 +62,7 @@
             colSagsID = new DataGridViewTextBoxColumn();
             colVidhengi = new DataGridViewTextBoxColumn();
             splitContainer5 = new SplitContainer();
+            m_btnMD5Stadfesta = new Button();
             m_lblMD5 = new Label();
             m_tboMD5 = new TextBox();
             m_lblSidaValinn = new Label();
@@ -70,6 +71,7 @@
             m_grbSkjalValid = new GroupBox();
             m_pibSkjal = new PictureBox();
             m_grbPantanir = new GroupBox();
+            m_btnLoka = new Button();
             m_tacPantanir = new TabControl();
             m_tapMalkerfi = new TabPage();
             m_dgvPontunMalaKerfi = new DataGridView();
@@ -97,7 +99,6 @@
             colGagnOpna = new DataGridViewButtonColumn();
             colGagnDelete = new DataGridViewButtonColumn();
             colGagnSQL = new DataGridViewTextBoxColumn();
-            m_btnMD5Stadfesta = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -591,6 +592,16 @@
             splitContainer5.SplitterDistance = 60;
             splitContainer5.TabIndex = 3;
             // 
+            // m_btnMD5Stadfesta
+            // 
+            m_btnMD5Stadfesta.Location = new Point(791, 35);
+            m_btnMD5Stadfesta.Name = "m_btnMD5Stadfesta";
+            m_btnMD5Stadfesta.Size = new Size(72, 23);
+            m_btnMD5Stadfesta.TabIndex = 7;
+            m_btnMD5Stadfesta.Text = "Staðfesta";
+            m_btnMD5Stadfesta.UseVisualStyleBackColor = true;
+            m_btnMD5Stadfesta.Click += m_btnMD5Stadfesta_Click;
+            // 
             // m_lblMD5
             // 
             m_lblMD5.AutoSize = true;
@@ -659,6 +670,7 @@
             // 
             // m_grbPantanir
             // 
+            m_grbPantanir.Controls.Add(m_btnLoka);
             m_grbPantanir.Controls.Add(m_tacPantanir);
             m_grbPantanir.Dock = DockStyle.Fill;
             m_grbPantanir.Location = new Point(0, 0);
@@ -667,6 +679,17 @@
             m_grbPantanir.TabIndex = 1;
             m_grbPantanir.TabStop = false;
             m_grbPantanir.Text = "Skjöl valin";
+            // 
+            // m_btnLoka
+            // 
+            m_btnLoka.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            m_btnLoka.Location = new Point(382, 12);
+            m_btnLoka.Name = "m_btnLoka";
+            m_btnLoka.Size = new Size(75, 23);
+            m_btnLoka.TabIndex = 1;
+            m_btnLoka.Text = "Loka";
+            m_btnLoka.UseVisualStyleBackColor = true;
+            m_btnLoka.Click += m_btnLoka_Click;
             // 
             // m_tacPantanir
             // 
@@ -949,16 +972,6 @@
             colGagnSQL.ReadOnly = true;
             colGagnSQL.Visible = false;
             // 
-            // m_btnMD5Stadfesta
-            // 
-            m_btnMD5Stadfesta.Location = new Point(791, 35);
-            m_btnMD5Stadfesta.Name = "m_btnMD5Stadfesta";
-            m_btnMD5Stadfesta.Size = new Size(72, 23);
-            m_btnMD5Stadfesta.TabIndex = 7;
-            m_btnMD5Stadfesta.Text = "Staðfesta";
-            m_btnMD5Stadfesta.UseVisualStyleBackColor = true;
-            m_btnMD5Stadfesta.Click += m_btnMD5Stadfesta_Click;
-            // 
             // frmMalakerfi
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1099,5 +1112,6 @@
         private TextBox m_tboMD5;
         private Label m_lblMD5;
         private Button m_btnMD5Stadfesta;
+        private Button m_btnLoka;
     }
 }

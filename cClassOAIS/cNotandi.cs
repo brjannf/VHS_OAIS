@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using DocumentFormat.OpenXml.Office2010.PowerPoint;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using Mysqlx.Expr;
@@ -243,6 +244,59 @@ namespace cClassOAIS
             
         }
 
+        public DataTable getVorsluutgafur()
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM `dt_vörsluutgafur` d;");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getTimabilMidlun()
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT id,heiti_gagangrunns,maltitill, doccreated, doclastwriten FROM dt_midlun d;");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public void upDateTimi(string strCreated, string strChanged, string strID)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("UPDATE dt_midlun d set doccreated = '{0}', doclastwriten = '{1}'  where id = {2};", strCreated, strChanged, strID);
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+        }
+        public string getTegund(string strUtgafa)
+        {
+            sækjaTengistreng();
+            string strRet = string.Empty;
+            string strSQL = string.Format("SELECT distinct tegund_grunns FROM dt_midlun d where vorsluutgafa = '{0}';",strUtgafa);
+            var ret = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if(ret != null)
+            {
+                strRet = ret.ToString();
+            }
+            return strRet;
+        }
+        public bool erGagnagrunnur(string strUtgafa)
+        {
+            sækjaTengistreng();
+            bool bRet = false;
+            string strSQL = string.Format("SELECT id FROM ds_gagnagrunnar d where vorsluutgafa  = '{0}';", strUtgafa);
+            var ret = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
+            if (ret != null)
+            {
+                bRet = true;
+            }
+            return bRet;
+        }
+        public void upDateTegund(string strTegund, string strUtgafa) 
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("UPDATE  `dt_vörsluutgafur` set tegund = '{0}' WHERE vorsluutgafa = '{1}';", strTegund, strUtgafa);
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+        }
         /// <summary>
         /// Bæti hér við eða breytum dálkum
         /// </summary>
@@ -262,7 +316,33 @@ namespace cClassOAIS
             string strSQL = "ALTER TABLE `dt_item_korfu_dip` ADD COLUMN `heitiVorslu` VARCHAR(250) NOT NULL AFTER `slod`;";
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
 
+        }
+        public void changeIsadgCharSet()
+        {
+            sækjaTengistreng();
+            string strSQL = "ALTER TABLE `db_oais_admin_afrit`.`dt_isadg_skráningar` DROP INDEX `fulltext_allt`,\r\n ADD FULLTEXT INDEX `fulltext_allt`(`3_1_2_titill`, `3_1_5_magn_lýsing`, `3_2_1_heiti_skjalamyndara`, `3_2_3_saga_skjalanna`, `3_3_2_tímaáætlanir`, `3_3_3_fyrirsjáanlegar_viðbætur`, `3_3_4_innri_skipan`, `3_4_2_skilyrði_endurprentun`, `3_4_4_ytri_einkenni`, `3_5_1_tilvist_frumrita`, `3_5_2_tilvist_afrita`, `3_6_1_athugasemdir`, `3_7_1_athugasemdir_skjalavarðar`);";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+            strSQL = "ALTER TABLE `dt_isadg_skráningar` MODIFY COLUMN `3_3_1_yfirlit_innihald` LONGBLOB DEFAULT NULL COMMENT '3.3.1 Scope and content. Lýsir umfangi og innihaldi skjalasafnsins.'\r\n, CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
 
+        }
+
+        public void addTegundGrunns()
+        {
+            sækjaTengistreng();
+            string strSQL = "ALTER TABLE `dt_vörsluutgafur` ADD COLUMN `tegund` VARCHAR(100) AFTER `utgafa_titill`;";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+
+        }
+
+        public void lengthDataDIPDatabase()
+        {
+            sækjaTengistreng();
+            string strSQL = "ALTER TABLE `db_oais_admin`.`dt_karfa_item_gagna_dip` MODIFY COLUMN `sql` VARCHAR(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL;";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+
+            strSQL = "ALTER TABLE `db_oais_admin`.`dt_karfa_item_gagna_dip` MODIFY COLUMN `sql` VARCHAR(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,\r\n MODIFY COLUMN `heitivorslu` VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL;";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }
 
         public void skraInnskra(string strKennitala)

@@ -1400,6 +1400,11 @@ namespace MHR_LEIT
                 MessageBox.Show(string.Format("{0}{1}ATH! EKKI sama gátsuma í grunni og á skránni", strMD5, Environment.NewLine));
             }
         }
+
+        private void m_btnLoka_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 
     public static class SOExtension

@@ -305,6 +305,7 @@ CREATE TABLE  `db_oais_admin_afrit`.`dt_vörsluutgafur` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `vorsluutgafa` varchar(45) NOT NULL,
   `utgafa_titill` varchar(200) NOT NULL,
+  `tegund` varchar(100) DEFAULT NULL,
   `vorslustofnun` varchar(45) NOT NULL,
   `varsla_heiti` varchar(200) NOT NULL,
   `skjalamyndari` varchar(45) NOT NULL,

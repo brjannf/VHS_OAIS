@@ -367,6 +367,15 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
+
+        public DataTable getAllVörslustofnanir()
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT distinct v.`5_1_2_opinbert_heiti` as  varsla_heiti, v.`5_1_1_auðkenni` as  vorslustofnun FROM dt_isdiah_vörslustofnanir v order by varsla_heiti;");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
         public DataTable getAllVorslustofnanirGU()
         {
             sækjaTengistreng();

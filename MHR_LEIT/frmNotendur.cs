@@ -29,8 +29,9 @@ namespace MHR_LEIT
             breytanota = notandi;
             breytanota.m_bAfrit = virkurnotandi.m_bAfrit;
             m_strrKennitala = breytanota.kennitala;
-            fyllaNotanda();
             fyllaVorsluStofnun();
+            fyllaNotanda();
+            
 
         }
 
@@ -38,7 +39,7 @@ namespace MHR_LEIT
         {
             cVorslustofnun varsla = new cVorslustofnun();
             varsla.m_bAfrit = virkurnotandi.m_bAfrit;
-            DataTable dt = varsla.getAllVOrslustofnanir();
+            DataTable dt = varsla.getAllVörslustofnanir();
             DataRow r = dt.NewRow();
             r["varsla_heiti"] = "Veldu vörslustofnun";
             dt.Rows.InsertAt(r, 0);
@@ -55,6 +56,18 @@ namespace MHR_LEIT
             m_tboNetfang.Text = breytanota.netfang;
             m_tboNotendaNafn.Text = breytanota.notendanafn;
             m_tboHeimilsfang.Text = breytanota.heimilisfang;
+            if (virkurnotandi.m_bAfrit)
+            {
+                m_comVörslustofnun.SelectedItem = m_comVörslustofnun.Items[1];
+            }
+            else
+            {
+                if(breytanota.vörslustofnun != null)
+                {
+                    m_comVörslustofnun.SelectedValue = breytanota.vörslustofnun;
+                }
+              
+            }
             m_tboSimi.Text = breytanota.simi;
             m_tboAthugasemdir.Text = breytanota.athugasemdir;
             if (breytanota.virkur == 1)
@@ -159,7 +172,7 @@ namespace MHR_LEIT
 
             breytanota.vista(m_strrKennitala);
             m_strrKennitala = breytanota.kennitala;
-            DialogResult result = MessageBox.Show("Breytingar srkáðar. Loka glugga?", "Vistað", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Breytingar skráðar. Loka glugga?", "Vistað", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 this.Close();

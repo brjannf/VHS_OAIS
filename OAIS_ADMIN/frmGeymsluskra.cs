@@ -36,6 +36,7 @@ namespace OAIS_ADMIN
         int m_iSeriesLevel = 0;
         Array m_arrSeries;
         string m_strSeries = string.Empty;
+        string m_strKerfi = string.Empty;
 
         private DataTable m_dtGogn = new DataTable();
         public frmGeymsluskra()
@@ -45,6 +46,34 @@ namespace OAIS_ADMIN
         public frmGeymsluskra(string strAuðkenni, string strSlod,string strTegund, cNotandi not, string strVarsla)
         {
             InitializeComponent();
+
+
+            DataSet ds = new DataSet();
+            ds.ReadXml(strSlod + "\\Indices\\tableIndex.xml");
+            //fiska út kerfisheitið
+            try
+            {
+                m_strKerfi = ds.Tables["siardDiark"].Rows[0]["dbName"].ToString();
+            }
+            catch (Exception x)
+            {
+
+                m_strKerfi = strTegund;
+            }
+
+            if(strTegund.ToLower() == "málakerfi")
+            {
+                m_grbGogn.Text = "Málalykill/mál";
+            }
+            if (strTegund.ToLower() == "skráarkerfi")
+            {
+                m_grbGogn.Text = "Skráakerfi/möppur";
+            }
+            if (strTegund.ToLower() == "gagnagrunnur")
+            {
+                m_grbGogn.Text = "Gagnagrunnur";
+            }
+
 
             m_arrSeries = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Þ","Æ", "Ö"};
             virkurnotandi = not;
@@ -71,6 +100,14 @@ namespace OAIS_ADMIN
             fyllaSkjalaSkra();
             fyllaGogn();
             skjal.getSkraning(strAuðkenni);
+            if (strTegund.ToLower() == "málakerfi")
+            {
+                m_trwGogn.Nodes[0].Checked = true;
+                m_iSeriesLevel = m_trwGogn.Nodes[0].Level;
+                m_tboSeriesLevel.Text = string.Format("{0} - level {1}", m_trwGogn.Nodes[0].Text, m_iSeriesLevel);
+                m_trwGogn.SelectedNode = m_trwGogn.Nodes[0];
+                m_chbBokstafir.Checked = false;
+            }
         }
 
         private void fyllaSkjalaSkra()
@@ -441,6 +478,10 @@ namespace OAIS_ADMIN
                     strFyrirspurn = midlun.getFyrirspurn(m_strGagnagrunnur, "AV_Get_files_path");
                     m_dtGogn = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
                 }
+                else
+                {
+                    m_dtGogn = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
+                }
             }
             if (m_strTegund == "Málakerfi")
             {
@@ -449,7 +490,7 @@ namespace OAIS_ADMIN
             }
             if(m_strTegund == "Gagnagrunnur")
             {
-                m_dtGogn = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
+                //m_dtGogn = midlun.keyraFyrirspurn(strFyrirspurn, m_strGagnagrunnur);
                 TreeNode n = new TreeNode("A-Gagnagrunnur1");
                 m_trwGogn.Nodes.Add(n);
                 TreeNode nn = new TreeNode("A-Gagnagrunnur2");
@@ -469,8 +510,16 @@ namespace OAIS_ADMIN
                 {
                    
                     TreeNode n = new TreeNode(r["malalykill"].ToString());
-                    // n.Tag = r["lykillID"];
-                    n.Tag = r["malalykill"];
+                    //hér er misræmi milli one og gopro - one er bara með einn dálk malalykill sem er bæði display og valuemember.
+                    if (m_dtGogn.Columns.Count != 1)
+                    {
+                        n.Tag = r["lykillID"];
+                    }
+                    else
+                    {
+                        n.Tag = r["malalykill"];
+                    }
+
                     m_trwGogn.Nodes.Add(n);
                     strFyrirspurn = midlun.getFyrirspurn(m_strGagnagrunnur, "mal_lykill");
                     strFyrirspurn = strFyrirspurn.Replace("{lykillID}", n.Tag.ToString());
@@ -601,6 +650,11 @@ namespace OAIS_ADMIN
             TreeNode n = new TreeNode(e.Node.Text);
             fondnode = m_trwGeymsluskrá.Nodes[0];
         
+            if(m_trwGogn.SelectedNode == null)
+            {
+                return;
+            }
+
             if(!m_trwGogn.SelectedNode.Checked)
             {
                 var nodes = m_trwGeymsluskrá.FlattenTree()
@@ -640,6 +694,10 @@ namespace OAIS_ADMIN
                    // {
 
                    // }
+                   if(seriesnode.Text == "4.4 Skólavistun")
+                    {
+
+                    }
                     seriesnode.Nodes.Add(n);
                    
                     subseriesnode = n;
@@ -653,7 +711,14 @@ namespace OAIS_ADMIN
                     }
                     if(m_strTegund == "Málakerfi")
                     {
-                        skjal.tímabil_3_1_3 = skjal.getTimabilMalKerfi(m_strAuðkenni.Replace(".", "_"), n.Text);
+                        string strFlokkur = n.Text;
+                        if(m_strKerfi.ToLower() == "onecrm")
+                        {
+                            string[] strSplit = n.Text.Split("-");
+                            strFlokkur = strFlokkur.Replace(strSplit[0] + "-", "");
+
+                        }
+                        skjal.tímabil_3_1_3 = skjal.getTimabilMalKerfi(m_strAuðkenni.Replace(".", "_"), strFlokkur, m_strKerfi);
                     }
       
                     skjal.titill_3_1_2 = n.Text;
@@ -894,10 +959,10 @@ namespace OAIS_ADMIN
             //tRoot.Nodes.Remove(tRoot.Nodes[0]);
            
             buaTilSkraAuto();
-     
+      
             // buaTilLaufAuto();
             int iSeries = 0;
-            string[] strSeries = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Þ", "Æ", "Ö", "A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "I1", "J1", "K1", "L1", "M1", "N1", "O1", "P1", "R1", "S1", "T1", "U1", "V1", "W1", "X1", "Y1", "Z1", "Þ1", "Æ1", "Ö1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "I2", "J2", "K2", "L2", "M2", "N2", "O2", "P2", "R2", "S2", "T2", "U2", "V2", "W2", "X2", "Y2", "Z2", "Þ2", "Æ2", "Ö2" };
+            string[] strSeries = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Þ", "Æ", "Ö", "A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "I1", "J1", "K1", "L1", "M1", "N1", "O1", "P1", "R1", "S1", "T1", "U1", "V1", "W1", "X1", "Y1", "Z1", "Þ1", "Æ1", "Ö1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "I2", "J2", "K2", "L2", "M2", "N2", "O2", "P2", "R2", "S2", "T2", "U2", "V2", "W2", "X2", "Y2", "Z2", "Þ2", "Æ2", "Ö2", "A3", "B3", "C3", "D3", "E3", "F3", "G3", "H3", "I3", "J3", "K3", "L3", "M3", "N3", "O3", "P3", "R3", "S3", "T3", "U3", "V3", "W3", "X3", "Y3", "Z3", "Þ3", "Æ3", "Ö3" };
             m_lblToDo.Text = "Bæti við örkum skref 2 af 2";
             m_pgbGeymsluSkra.Value = 0;
             m_pgbGeymsluSkra.Step = 1;
@@ -905,6 +970,7 @@ namespace OAIS_ADMIN
 
             foreach (TreeNode tSub in m_trwGeymsluskrá.Nodes[0].Nodes)
             {
+              
                 string strYfirMappa = string.Empty;
                 string strBokSeries = string.Empty;
                 if (m_chbBokstafir.Checked)
@@ -933,7 +999,11 @@ namespace OAIS_ADMIN
                 }
                 if(tSub.Nodes.Count == 1)
                 {
-                    tSub.Nodes[0].Text = tSub.Text;
+                    if(m_strKerfi.ToLower() == "gopro")
+                    {
+                       // tSub.Nodes[0].Text = tSub.Text;
+                    }
+                  
                     bEkkiNeittUndir = true;
                 }
 
@@ -943,7 +1013,9 @@ namespace OAIS_ADMIN
                     m_pgbGeymsluSkra.Maximum = tSub.Nodes.Count;
                     foreach (TreeNode n in tSub.Nodes)
                     {
+                      
                         string strMappa = "...\\" + strYfirMappa + "\\" + n.Text;
+                        //  if (m_chbBokstafir.Checked && !bEkkiNeittUndir)
                         if (m_chbBokstafir.Checked && !bEkkiNeittUndir)
                         {
                             string strBokSubSeries = strBokSeries + strSeries[iSubSeries];
@@ -956,6 +1028,11 @@ namespace OAIS_ADMIN
                             }
 
                         }
+                        else
+                        {
+                           // n.Text;
+                        }
+                     
                         buaTilOrkAuto(n, strMappa);
                         m_pgbGeymsluSkra.PerformStep();
                         m_lblStatus.Text = string.Format("{0}/{1}", m_pgbGeymsluSkra.Value, m_pgbGeymsluSkra.Maximum);
@@ -968,7 +1045,7 @@ namespace OAIS_ADMIN
             }
 
             Application.DoEvents();
-
+            MessageBox.Show("Búið");
         }
 
         private void m_btnBuaTilArkir_Click(object sender, EventArgs e)
@@ -997,6 +1074,10 @@ namespace OAIS_ADMIN
                             m_pgbGeymsluSkra.Value = 0;
                             m_pgbGeymsluSkra.Step = 1;
                             m_pgbGeymsluSkra.Maximum =  tn.Nodes.Count;
+                            if(m_trwGogn.Nodes.Count == 1)
+                            {
+
+                            }
                             foreach (TreeNode tn1 in tn.Nodes)
                             {
                                 //  m_trwGogn.SelectedNode = tn1;
@@ -1278,6 +1359,10 @@ namespace OAIS_ADMIN
             cSkjalaskra ork = temp;
             temp.upplýsingastig_3_1_4 = "Örk";
             temp.titill_3_1_2 = "Örk 1";
+            if(nodus.Text == "202209-0021 Endurskoðun siðareglna SkogGn 2022")
+            {
+
+            }
 
 
             if (nodus.Text != "Örk 1")
@@ -1289,15 +1374,33 @@ namespace OAIS_ADMIN
 
                 nodus.Nodes.Add(orkNode);
                 nodus.Expand();
+                Application.DoEvents();
                 if (m_strTegund == "Málakerfi")
                 {
-                    temp.tímabil_3_1_3 = skjal.getTimabilMalKerfi(m_strAuðkenni.Replace(".", "_"), nodus.Text);
+                    string strFlokkur = nodus.Text;
+                    if (m_strKerfi.ToLower() == "onecrm")
+                    {
+                        string[] strSplit = nodus.Text.Split("-");
+                        strFlokkur = strFlokkur.Replace(strSplit[0] + "-", "");
+
+                    }
+                    temp.tímabil_3_1_3 = skjal.getTimabilMalKerfi(m_strAuðkenni.Replace(".", "_"), strFlokkur, m_strKerfi);
                 }
                 if (m_strTegund == "Skráarkerfi")
                 {
                     string[] strSplit = nodus.Text.Split("-");
-                    temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodus.Text, temp.getSkjalFjoldi(strSplit[1], m_strAuðkenni));
-                    temp.tímabil_3_1_3 = skjal.getTimabil(strSplit[1], m_strGagnagrunnur);
+                    if(strSplit.Length != 1)
+                    {
+                        string strFlokkur = nodus.Text.Replace(strSplit[0] + "-", "");
+                        temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodus.Text, temp.getSkjalFjoldi(strFlokkur, m_strAuðkenni));
+                        temp.tímabil_3_1_3 = skjal.getTimabil(strFlokkur, m_strGagnagrunnur);
+                    }
+                    else
+                    {
+                        temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodus.Text, temp.getSkjalFjoldi(nodus.Text, m_strAuðkenni));
+                        temp.tímabil_3_1_3 = skjal.getTimabil(nodus.Text, m_strGagnagrunnur);
+                    }
+                
                     // temp.athugasemdir_skjalavarðar_3_7_1 = string.Format("Gögn í þessum skjalaflokki eru geymd í möppunni {0},", strMappa);
                     temp.athugasemdir_skjalavarðar_3_7_1 = string.Format(strMappa);
                 }
@@ -1306,15 +1409,57 @@ namespace OAIS_ADMIN
                     //ef málakerfið er GoPro
                     try
                     {
-                        string strListiSkjol = temp.getSkjalListiiMalkerfi(nodus.Text, m_strAuðkenni);
-                        string[] strSplit = strListiSkjol.Split("~");
-                        strListiSkjol = string.Empty;
-                        foreach (string str in strSplit)
+                        string[] strSplit = nodus.Text.Split("-");
+                        string strSkjalaflokkur = string.Empty;
+                        if (m_strKerfi.ToLower() == "gopro")
                         {
-                            strListiSkjol += str + Environment.NewLine;
+                            strSkjalaflokkur = nodus.Text;
                         }
-                        temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.{2}{2}{3}", nodus.Text, temp.getSkjalFjoldiMalkerfi(nodus.Text, m_strAuðkenni), Environment.NewLine, strListiSkjol);
-                        temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodus.Text, temp.getSkjalFjoldiMalkerfi(nodus.Text, m_strAuðkenni));
+                        if (m_strKerfi.ToLower() == "onecrm")
+                        {
+                            strSkjalaflokkur = nodus.Text;
+                            strSkjalaflokkur = strSkjalaflokkur.Replace(strSplit[0] +"-","");
+                        }
+
+                        string strListiSkjol = string.Empty; // temp.getSkjalListiiMalkerfi(strSkjalaflokkur, m_strAuðkenni);
+                        DataTable dtListi = temp.getSkjalListiiMalkerfiTafla(strSkjalaflokkur, m_strAuðkenni);
+
+
+                        StringBuilder sb = new StringBuilder(11000);
+
+                        int i = 1;
+                        foreach(DataRow dr in dtListi.Rows)
+                        {
+                            sb.Append(i + ". " + dr["doctitill"].ToString() + Environment.NewLine);
+                         //   strListiSkjol += i + ". " + dr["doctitill"].ToString() + Environment.NewLine;
+                            i++;
+                        }
+
+                        strListiSkjol = sb.ToString();
+                        //strSplit = strListiSkjol.Split("~");
+                        //strListiSkjol = string.Empty;
+                        //int i = 1;
+                        //foreach (string str in strSplit)
+                        //{
+                        //    strListiSkjol += i.ToString() + ". " + str + Environment.NewLine;
+                        //    i++;
+                        //}
+
+                        if (temp.getSkjalFjoldiMalkerfi(strSkjalaflokkur, m_strAuðkenni) == "0")
+                        {
+
+                        }
+                    
+                        if(m_chbListaSkjolOrk.Checked )
+                        {
+                            temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.{2}{2}{3}", nodus.Text, dtListi.Rows.Count, Environment.NewLine, strListiSkjol);
+                        }
+                        else
+                        {
+                            temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodus.Text, dtListi.Rows.Count);// temp.getSkjalFjoldiMalkerfi(strSkjalaflokkur, m_strAuðkenni));
+                        }
+                        //temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.{2}{2}{3}", nodus.Text, temp.getSkjalFjoldiMalkerfi(strSkjalaflokkur, m_strAuðkenni), Environment.NewLine, strListiSkjol);
+                        // temp.yfirlit_innihald_3_3_1 = string.Format("Skjalaflokkur {0} inniheldur {1} rafræn skjöl.", nodus.Text, temp.getSkjalFjoldiMalkerfi(strSkjalaflokkur, m_strAuðkenni));
 
                     }
                     catch (Exception x)

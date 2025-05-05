@@ -269,7 +269,7 @@ namespace MHR_LEIT
             foreach (DataRow row in dtLyklar.Rows)
             {
                 //  malalykill, lykillID //ONESYSTEMS
-                if (m_strHeitiVorslu.Contains("OneCRM"))
+                if (m_strHeitiVorslu.Contains("OneCRM") || m_strHeitiVorslu.Contains("OneCrm"))
                 {
                     TreeNode n = new TreeNode(row["malalykill"].ToString());
                     n.Tag = row["malalykill"].ToString();
@@ -633,23 +633,44 @@ namespace MHR_LEIT
         {
             m_strIdValinn = iID.ToString();
             double dColl = Convert.ToInt32(m_strIdValinn) / 10000;
-            if (iID == 1)
+            if (iID == 99999992)
             {
-                dColl = 1;
+                //þarf að vita úr hvaða dColli kemur
+                string[] strDCollection = Directory.GetDirectories(m_strRoot + "\\Documents");
+
+                int i = 1;
+                foreach(string str in strDCollection)
+                {
+                    if(Directory.Exists(str + "\\99999992"))
+                    {
+                        dColl = i;
+                    }
+                    i++;
+                }
+              
             }
             else
             {
-                dColl = dColl + 1;
+                if (iID == 1)
+                {
+                    dColl = 1;
+                }
+                else
+                {
+                    dColl = dColl + 1;
+                }
             }
+            
+           
 
             string strValid = m_strRoot + "\\Documents\\docCollection" + dColl.ToString() + "\\" + m_strIdValinn;
 
 
             string[] strFiles = Directory.GetFiles(strValid);
             m_strFileValinn = strFiles[0];
-          
-            
-         //   Image image = Image.FromFile(m_strFileValinn);
+
+
+            //   Image image = Image.FromFile(m_strFileValinn);
 
             Image image;
             using (var bmpTemp = new Bitmap(m_strFileValinn))
@@ -1703,12 +1724,12 @@ namespace MHR_LEIT
         private void m_btnMD5Stadfesta_Click(object sender, EventArgs e)
         {
             //m_strFileValinn = "D:\\AIP\\HARN\\00088\\AVID.HARN.2023067.1\\Documents\\docCollection2\\10088\\1.tif";
-           
+
             string strMD5 = md5(m_strFileValinn);
 
-            if(strMD5 == m_tboMD5.Text)
+            if (strMD5 == m_tboMD5.Text)
             {
-                MessageBox.Show(string.Format("{0}{1}Sama gátsuma í grunni og á skránni", strMD5,Environment.NewLine));
+                MessageBox.Show(string.Format("{0}{1}Sama gátsuma í grunni og á skránni", strMD5, Environment.NewLine));
             }
             else
             {
@@ -1723,7 +1744,7 @@ namespace MHR_LEIT
             {
 
                 // using (FileStream straumur = File.OpenRead("C:\\AVID.SA.18000.1\\Documents\\docCollection1\\1\\1.tif"))
-               
+
                 {
                     FileStream InputBin = new FileStream(strFile, FileMode.Open, FileAccess.Read, FileShare.None);
                     byte[] bla = md5.ComputeHash(InputBin);
@@ -1732,6 +1753,11 @@ namespace MHR_LEIT
                 }
             }
             return strRet;
+        }
+
+        private void m_btnLoka_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 

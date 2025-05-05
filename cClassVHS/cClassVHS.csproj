@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ByteSize" Version="2.1.1" />
+    <PackageReference Include="ByteSize" Version="2.1.2" />
     <PackageReference Include="MySql.Data" Version="8.0.32" />
     <PackageReference Include="System.Management" Version="7.0.0" />
   </ItemGroup>

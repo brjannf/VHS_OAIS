@@ -193,7 +193,7 @@ namespace cClassOAIS
         public DataTable getGeymsluSkra(string strAuðkenni)
         {
             sækjaTengistreng();
-            string strSQL = string.Format("SELECT * FROM `dt_isadg_skráningar` d where 3_1_1_auðkenni like '{0}%' order by  3_1_1_auðkenni asc;", strAuðkenni);
+            string strSQL = string.Format("SELECT id, vörslustofnun, skjalamyndari, tilheyrir_skráningu, ritskoðun, 3_1_1_auðkenni, 3_1_2_titill, 3_1_3_tímabil, 3_1_4_upplýsingastig, 3_1_5_magn_lýsing, 3_2_1_heiti_skjalamyndara, 3_2_2_saga_skjalamyndara, 3_2_3_saga_skjalanna, 3_2_4_afhendingar_tilfærslur, convert(3_3_1_yfirlit_innihald  USING utf8) as 3_3_1_yfirlit_innihald, 3_3_2_tímaáætlanir, 3_3_3_fyrirsjáanlegar_viðbætur, 3_3_4_innri_skipan, 3_4_1_skilyrði_aðgengi, 3_4_2_skilyrði_endurprentun, 3_4_3_tungumál, 3_4_4_ytri_einkenni, 3_4_5_hjálpargögn, 3_5_1_tilvist_frumrita, 3_5_2_tilvist_afrita, 3_5_3_skyld_skjöl, 3_5_4_útgáfuupplýsingar, 3_6_1_athugasemdir, 3_7_1_athugasemdir_skjalavarðar, 3_7_2_reglur_venjur, 3_7_3_dagsetningar, hver_skráði, dags_skráð, hver_breytti, dags_breytt FROM `dt_isadg_skráningar` d where 3_1_1_auðkenni like '{0}%' order by  3_1_1_auðkenni asc;", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -201,7 +201,7 @@ namespace cClassOAIS
         public void getSkraning(string strAuðkenni)
         {
             sækjaTengistreng();
-            string strSQL = string.Format("SELECT * FROM `dt_isadg_skráningar` d where 3_1_1_auðkenni = '{0}'; ", strAuðkenni);
+            string strSQL = string.Format("SELECT id, vörslustofnun, skjalamyndari, tilheyrir_skráningu, ritskoðun, 3_1_1_auðkenni, 3_1_2_titill, 3_1_3_tímabil, 3_1_4_upplýsingastig, 3_1_5_magn_lýsing, 3_2_1_heiti_skjalamyndara, 3_2_2_saga_skjalamyndara, 3_2_3_saga_skjalanna, 3_2_4_afhendingar_tilfærslur, convert(3_3_1_yfirlit_innihald  USING utf8) as 3_3_1_yfirlit_innihald, 3_3_2_tímaáætlanir, 3_3_3_fyrirsjáanlegar_viðbætur, 3_3_4_innri_skipan, 3_4_1_skilyrði_aðgengi, 3_4_2_skilyrði_endurprentun, 3_4_3_tungumál, 3_4_4_ytri_einkenni, 3_4_5_hjálpargögn, 3_5_1_tilvist_frumrita, 3_5_2_tilvist_afrita, 3_5_3_skyld_skjöl, 3_5_4_útgáfuupplýsingar, 3_6_1_athugasemdir, 3_7_1_athugasemdir_skjalavarðar, 3_7_2_reglur_venjur, 3_7_3_dagsetningar, hver_skráði, dags_skráð, hver_breytti, dags_breytt FROM `dt_isadg_skráningar` d where 3_1_1_auðkenni = '{0}'; ", strAuðkenni);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
 
@@ -329,7 +329,7 @@ namespace cClassOAIS
             }
             return strRet;
         }
-        public string getTimabilMalKerfi(string strGrunnur, string strMalTitill)
+        public string getTimabilMalKerfi(string strGrunnur, string strMalTitill, string strKerfi)
         {
               sækjaTengistreng();
             strGrunnur = strGrunnur.Replace(".", "_");
@@ -343,7 +343,15 @@ namespace cClassOAIS
             strMalTitill = strMalTitill.Replace("\'", "*"); ;
 
             string strRet = string.Empty;
-            command.CommandText = string.Format("SELECT concat(min(Year(doclastwriten)),'-', max(Year(doclastwriten))) as tímabil FROM dt_midlun d where heiti_gagangrunns = '{0}' and maltitill like '{1}';", strGrunnur, strMalTitill);
+            if(strKerfi.ToLower() == "onecrm" || strKerfi.ToLower() == "gopro")
+            {
+                command.CommandText = string.Format("SELECT concat(min(Year(doccreated)),'-', max(Year(doclastwriten))) as tímabil FROM dt_midlun d where heiti_gagangrunns = '{0}' and maltitill like '{1}';", strGrunnur, strMalTitill);
+            }
+            else
+            {
+                command.CommandText = string.Format("SELECT concat(min(Year(doclastwriten)),'-', max(Year(doclastwriten))) as tímabil FROM dt_midlun d where heiti_gagangrunns = '{0}' and maltitill like '{1}';", strGrunnur, strMalTitill);
+            }
+     
             var timabil = command.ExecuteScalar(); // MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
             if (timabil != null)
             {
@@ -385,6 +393,17 @@ namespace cClassOAIS
             conn.Dispose();
             command.Dispose();
             return strRet;
+        }
+
+       //skila skjalalista sem töflu
+
+        public DataTable getSkjalListiiMalkerfiTafla(string strFlokkur, string strGrunnur)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT doctitill FROM dt_midlun d where vorsluutgafa = '{0}' and maltitill = '{1}';", strGrunnur,strFlokkur);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
         }
         public string getSkjalListiiMalkerfi(string strFlokkur, string strGrunnur)
         {

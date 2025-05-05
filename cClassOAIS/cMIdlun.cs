@@ -316,6 +316,13 @@ namespace cClassOAIS
                                     dColl = dColl + 1;
 
                                     strSlod = strSlod + "\\Documents\\docCollection" + dColl.ToString() + "\\" + iID;
+                                    //************redding þangað til ég fæ skýringu fyrir Ölfus oneCrm
+
+                                    if (iID == 99999992)
+                                    {
+                                        strSlod = "D:\\AIP\\HARN\\00006\\AVID.HARN.2025001.1\\Documents\\docCollection1\\99999992";
+
+                                    }
 
                                     string[] strFile = Directory.GetFiles(strSlod);
                                     try
@@ -340,24 +347,36 @@ namespace cClassOAIS
 
                                         if (strFile[0].EndsWith(".tif") && bOCR)
                                         {
-                                            //  IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
-                                            IronOcr.License.LicenseKey = ConfigurationManager.AppSettings["IronOcr.LicenseKey"];
-                                            // ocrLicense();
-                                            var Ocr = new IronTesseract();
-                                            Ocr.Language = OcrLanguage.Icelandic;
-                                            using (var Input = new OcrInput())
+                                            //EF skrá er of stór redding 
+                                            if (this.heiti_gagangrunns == "AVID_HARN_2025001_1" && iID == 2476)
                                             {
-                                              // if (!strFile[0].EndsWith("AVID.HKOP.2023024.1\\Documents\\docCollection1\\4\\1.tif")) //vegna náttúrufræðistofu Kópabogs 2023_24
-                                                {
-                                                    Input.AddImage(strFile[0]);
-                                                    var Result = Ocr.Read(Input);
-                                                    this.docInnihald = Result.Text;
-                                                }
-                                                //else
-                                                //{
-                                                //    this.docInnihald = "Of langur texti fyrir OCR-lestur";
-                                                //}
+                                                this.docInnihald = "Ekki hægt að OCR lesa";
+                                            }
+                                            else
+                                            {
 
+
+                                                //  IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
+                                                IronOcr.License.LicenseKey = ConfigurationManager.AppSettings["IronOcr.LicenseKey"];
+                                                // ocrLicense();
+                                                var Ocr = new IronTesseract();
+                                                Ocr.Language = OcrLanguage.Icelandic;
+                                                using (var Input = new OcrInput())
+                                                {
+                                                    // if (!strFile[0].EndsWith("AVID.HKOP.2023024.1\\Documents\\docCollection1\\4\\1.tif")) //vegna náttúrufræðistofu Kópabogs 2023_24
+                                                    {
+                                                        Input.AddImage(strFile[0]);
+                                                        var Result = Ocr.Read(Input);
+                                                        this.docInnihald = Result.Text;
+                                                        
+                                                    }
+                                                    //else
+                                                    //{
+                                                    //    this.docInnihald = "Of langur texti fyrir OCR-lestur";
+                                                    //}
+
+                                                }
+                                                GC.Collect(); //sjá hvort þetta þolir 
                                             }
                                         }
                                     }

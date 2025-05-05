@@ -83,7 +83,7 @@ namespace MHR_LEIT
             else
             {
                 m_dgvPantMalaKerfi.AutoGenerateColumns = false;
-               
+
                 m_dgvPantMalaKerfi.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
                 m_dgvPantMalaKerfi.DataSource = dtMal;
                 m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", dtMal.Rows.Count);
@@ -123,6 +123,7 @@ namespace MHR_LEIT
         {
             DataTable dtClone = m_dtFyrirspurnir.Clone();
 
+           
 
 
             DataView view = new DataView(m_dtFyrirspurnir);
@@ -413,7 +414,7 @@ namespace MHR_LEIT
                 else
                     dtMalAllt.Merge(m_dsMal.Tables[i]);
             }
-          
+
             int iFjold = dtMalAllt.Rows.Count;
             m_tapMalakrefi.Text = string.Format("Málakerfi ({0})", dtMalAllt.Rows.Count);
 
@@ -452,12 +453,12 @@ namespace MHR_LEIT
                         if (senderGrid.Columns["colGagnOpna"].Index == e.ColumnIndex)
                         {
                             string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colHeitiVarsla"].Value.ToString();
-                            string strLeit = senderGrid.Rows[e.RowIndex].Cells["colLeitSkilyrdi"].Value.ToString();  
+                            string strLeit = senderGrid.Rows[e.RowIndex].Cells["colLeitSkilyrdi"].Value.ToString();
                             string strSQL = senderGrid.Rows[e.RowIndex].Cells["colGagnSQL"].Value.ToString();
                             frmGagnagrunnSkoda skoda = new frmGagnagrunnSkoda(strSQL, virkurnotandi, m_strGagnagrunnur, strLeit, m_strOrginal, strVarsla);
                             skoda.ShowDialog();
                         }
-                            break;
+                        break;
                     case "m_dgvPantSkraarkerfi":
                         if (senderGrid.Columns["colSkraDelete"].Index == e.ColumnIndex)
                         {
@@ -551,8 +552,13 @@ namespace MHR_LEIT
                         break;
                 }
             }
-  
 
+
+        }
+
+        private void m_btnLoka_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

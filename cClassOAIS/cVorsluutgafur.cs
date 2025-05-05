@@ -34,6 +34,7 @@ namespace cClassOAIS
         public string utgafa_titill { get; set; }
         public string vorslustofnun { get; set; }
         public string varsla_heiti { get; set; }
+        public string tegund { get; set; }
         public string skjalamyndari { get; set; }
         public string skjalm_heiti { get; set; }
         public long staerd {get; set; }
@@ -71,6 +72,7 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@utgafa_titill", this.utgafa_titill);
             command.Parameters.AddWithValue("@vorslustofnun", this.vorslustofnun);
             command.Parameters.AddWithValue("@varsla_heiti", this.varsla_heiti);
+            command.Parameters.AddWithValue("@tegund", this.tegund);
             command.Parameters.AddWithValue("@skjalamyndari", this.skjalamyndari);
             command.Parameters.AddWithValue("@skjalm_heiti", this.skjalm_heiti);
             command.Parameters.AddWithValue("@staerd", this.staerd);
@@ -86,11 +88,11 @@ namespace cClassOAIS
             // command.Parameters.AddWithValue("@dags_skrad", this.dags_skrad);
             if (this.ID == 0)
             {
-                command.CommandText = "INSERT INTO `dt_vörsluutgafur` SET  `vorsluutgafa`=@vorsluutgafa,`utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir,`frumeintak`=@frumeintak, `dags_skrad`=NOW()";
+                command.CommandText = "INSERT INTO `dt_vörsluutgafur` SET  `vorsluutgafa`=@vorsluutgafa,`utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti,`tegund`=@tegund, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir,`frumeintak`=@frumeintak, `dags_skrad`=NOW()";
             }
             else
             {
-                command.CommandText = string.Format("UPDATE `dt_vörsluutgafur` SET `utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir,`frumeintak`=@frumeintak, `dags_skrad`=NOW() WHERE vorsluutgafa='{0}'", this.vorsluutgafa);
+                command.CommandText = string.Format("UPDATE `dt_vörsluutgafur` SET `utgafa_titill`=@utgafa_titill,`vorslustofnun`=@vorslustofnun, `varsla_heiti`=@varsla_heiti,`tegund`=@tegund, `skjalamyndari`=@skjalamyndari,`skjalm_heiti`=@skjalm_heiti, `staerd`=@staerd, `slod`=@slod, `innihald`=@innihald, `timabil`=@timabil, `afharnr`=@afharnr, `MD5`=@MD5, `hver_skradi`=@hver_skradi,`adgangstakmarkanir`=@adgangstakmarkanir,`frumeintak`=@frumeintak, `dags_skrad`=NOW() WHERE vorsluutgafa='{0}'", this.vorsluutgafa);
             }
             
 
@@ -130,6 +132,7 @@ namespace cClassOAIS
                 this.utgafa_titill = r["utgafa_titill"].ToString();
                 this.vorslustofnun = r["vorslustofnun"].ToString();
                 this.varsla_heiti = r["varsla_heiti"].ToString();
+                this.tegund = r["tegund"].ToString();
                 this.skjalamyndari = r["skjalamyndari"].ToString();
                 this.skjalm_heiti = r["skjalm_heiti"].ToString();
                 this.staerd = (long)Convert.ToDouble(r["staerd"].ToString());

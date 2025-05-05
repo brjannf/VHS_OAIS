@@ -506,7 +506,7 @@
             // 
             // m_btnkeyra
             // 
-            m_btnkeyra.Location = new Point(1177, 22);
+            m_btnkeyra.Location = new Point(1186, 22);
             m_btnkeyra.Name = "m_btnkeyra";
             m_btnkeyra.Size = new Size(75, 23);
             m_btnkeyra.TabIndex = 6;
@@ -551,7 +551,7 @@
             m_tap_HRM_ACCESS.Controls.Add(splitContainer1);
             m_tap_HRM_ACCESS.Location = new Point(4, 24);
             m_tap_HRM_ACCESS.Name = "m_tap_HRM_ACCESS";
-            m_tap_HRM_ACCESS.Padding = new Padding(3, 3, 3, 3);
+            m_tap_HRM_ACCESS.Padding = new Padding(3);
             m_tap_HRM_ACCESS.Size = new Size(1604, 656);
             m_tap_HRM_ACCESS.TabIndex = 0;
             m_tap_HRM_ACCESS.Text = "Miðlun fyrir MHR";
@@ -562,7 +562,7 @@
             m_tapVorslur.Controls.Add(splitContainer3);
             m_tapVorslur.Location = new Point(4, 24);
             m_tapVorslur.Name = "m_tapVorslur";
-            m_tapVorslur.Padding = new Padding(3, 3, 3, 3);
+            m_tapVorslur.Padding = new Padding(3);
             m_tapVorslur.Size = new Size(1604, 656);
             m_tapVorslur.TabIndex = 1;
             m_tapVorslur.Text = "Miðlun fyrir vörslustofnanir";

@@ -335,13 +335,21 @@ namespace OAIS_ADMIN
             string strRet = string.Empty;
             using (var md5 = MD5.Create())
             {
-                
+
                 // using (FileStream straumur = File.OpenRead("C:\\AVID.SA.18000.1\\Documents\\docCollection1\\1\\1.tif"))
+                try
                 {
-                    FileStream InputBin = new FileStream(strFile, FileMode.Open, FileAccess.Read, FileShare.None);
-                    byte[] bla = md5.ComputeHash(InputBin);
-                    strRet = BitConverter.ToString(bla).Replace("-", "");
-                    InputBin.Close();
+                    {
+                        FileStream InputBin = new FileStream(strFile, FileMode.Open, FileAccess.Read, FileShare.None);
+                        byte[] bla = md5.ComputeHash(InputBin);
+                        strRet = BitConverter.ToString(bla).Replace("-", "");
+                        InputBin.Close();
+                    }
+                }
+                catch (Exception x)
+                {
+                    string strVilla = strFile +Environment.NewLine + x.ToString();
+                    MessageBox.Show(strVilla);
                 }
             }
             return strRet;
@@ -769,7 +777,28 @@ namespace OAIS_ADMIN
             varsla.MD5 = CreateMd5ForFolder(varsla.slod).ToUpper();
             varsla.hver_skradi = virkurnotandi.nafn;
             varsla.adgangstakmarkanir = skrá.skilyrði_aðgengi_3_4_1;
-            if(strSlodFRUM != string.Empty)
+            //skrá tegund þarf að opna tableindex finna heiti gagnagrunns
+            DataSet ds = new DataSet(); 
+            ds.ReadXml(varsla.slod + "\\Indices\\tableIndex.xml");
+            if(ds.Tables["siardDiark"].Columns.Count == 2)
+            {
+                varsla.tegund = "skráarkerfi";
+            }
+            else
+            {
+                string strSlod = varsla.slod + "\\Documents";
+                if (Directory.Exists(strSlod))
+                {
+                    varsla.tegund = "Málakerfi";
+                }
+                else
+                {
+                    varsla.tegund = "Gagnagrunnur";
+                }
+            }
+
+            
+            if (strSlodFRUM != string.Empty)
             {
                 varsla.frumeintak = 1;
             }
@@ -806,6 +835,8 @@ namespace OAIS_ADMIN
                 varsla.hver_skradi = virkurnotandi.nafn;
                 varsla.adgangstakmarkanir = skrá.skilyrði_aðgengi_3_4_1;
                 varsla.frumeintak = 1;
+
+
                 if(bErEytt)
                 {
                     varsla.merkjaEYtt(varsla.vorsluutgafa, 0);
