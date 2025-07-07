@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsLan" targetNamespace="http://tempuri.org/dsLan.xsd" xmlns:mstns="http://tempuri.org/dsLan.xsd" xmlns="http://tempuri.org/dsLan.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Driver={MySQL ODBC 8.0 Unicode Driver};uid=root;server=127.0.0.1;database=test;port=3306;charset=latin1" IsAppSettingsProperty="false" Modifier="Assembly" Name="ODBC.127.0.0.1 via TCP/IP.db_oais_admin" Provider="System.Data.Odbc" />
+          <Connection ConnectionStringObject="Dsn=MYSQL forSSRS;uid=root;pwd=ivarBjarkLind" IsAppSettingsProperty="false" Modifier="Assembly" Name="ODBC.localhost via TCP/IP.db_oais_admin" Provider="System.Data.Odbc" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ODBC.localhost via TCP/IP.db_oais_admin" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT karfa, '' lanthegi, '' as vorsluutgafa, '' as skrar, hver_skradi, dags_skrad, athugasemdir FROM dt_karfa_dip d order by karfa desc</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="karfa" DataSetColumn="karfa" />
+              <Mapping SourceColumn="hver_skradi" DataSetColumn="hver_skradi" />
+              <Mapping SourceColumn="dags_skrad" DataSetColumn="dags_skrad" />
+              <Mapping SourceColumn="athugasemdir" DataSetColumn="athugasemdir" />
+              <Mapping SourceColumn="lanthegi" DataSetColumn="lanthegi" />
+              <Mapping SourceColumn="vorsluutgafa" DataSetColumn="vorsluutgafa" />
+              <Mapping SourceColumn="skrar" DataSetColumn="skrar" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsLan" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="dsLan" msprop:Generator_DataSetName="dsLan">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_UserTableName="DataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="karfa" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInRow="karfa" msprop:Generator_ColumnPropNameInTable="karfaColumn" msprop:Generator_ColumnVarNameInTable="columnkarfa" msprop:Generator_UserColumnName="karfa" type="xs:long" minOccurs="0" />
+              <xs:element name="hver_skradi" msprop:Generator_ColumnPropNameInRow="hver_skradi" msprop:Generator_ColumnPropNameInTable="hver_skradiColumn" msprop:Generator_ColumnVarNameInTable="columnhver_skradi" msprop:Generator_UserColumnName="hver_skradi">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="180" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="dags_skrad" msprop:Generator_ColumnPropNameInRow="dags_skrad" msprop:Generator_ColumnPropNameInTable="dags_skradColumn" msprop:Generator_ColumnVarNameInTable="columndags_skrad" msprop:Generator_UserColumnName="dags_skrad" type="xs:dateTime" />
+              <xs:element name="athugasemdir" msprop:Generator_ColumnPropNameInRow="athugasemdir" msprop:Generator_ColumnPropNameInTable="athugasemdirColumn" msprop:Generator_ColumnVarNameInTable="columnathugasemdir" msprop:Generator_UserColumnName="athugasemdir" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="4000" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="lanthegi" msdata:ReadOnly="true" msprop:Generator_ColumnPropNameInRow="lanthegi" msprop:Generator_ColumnPropNameInTable="lanthegiColumn" msprop:Generator_ColumnVarNameInTable="columnlanthegi" msprop:Generator_UserColumnName="lanthegi" type="xs:string" minOccurs="0" />
+              <xs:element name="vorsluutgafa" msdata:ReadOnly="true" msprop:Generator_ColumnPropNameInRow="vorsluutgafa" msprop:Generator_ColumnPropNameInTable="vorsluutgafaColumn" msprop:Generator_ColumnVarNameInTable="columnvorsluutgafa" msprop:Generator_UserColumnName="vorsluutgafa" type="xs:string" minOccurs="0" />
+              <xs:element name="skrar" msdata:ReadOnly="true" msprop:Generator_ColumnPropNameInRow="skrar" msprop:Generator_ColumnPropNameInTable="skrarColumn" msprop:Generator_ColumnVarNameInTable="columnskrar" msprop:Generator_UserColumnName="skrar" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1">
+      <xs:selector xpath=".//mstns:DataTable1" />
+      <xs:field xpath="mstns:karfa" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

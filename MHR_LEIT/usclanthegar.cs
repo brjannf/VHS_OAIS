@@ -30,7 +30,9 @@ namespace MHR_LEIT
 
         private void m_btnSkyrlsa_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Sorrý ekki komið");
+            DataTable dt = (DataTable)m_dgvLanthegar.DataSource;
+            frmLanthegarSkyrsla skyrsla = new frmLanthegarSkyrsla(virkurnotandi, dt);
+            skyrsla.ShowDialog();
         }
 
         private void m_btnStofna_Click(object sender, EventArgs e)

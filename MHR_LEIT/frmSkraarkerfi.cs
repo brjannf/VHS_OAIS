@@ -558,6 +558,7 @@ namespace MHR_LEIT
             if (fifo.Extension == ".tif")
             {
                 Image image = Image.FromFile(m_strFileValinn);
+              
                 //Image image;
                 //using (var bmpTemp = new Bitmap(m_strFileValinn))
                 //{
@@ -594,6 +595,7 @@ namespace MHR_LEIT
                 }
                 image.SelectActiveFrame(FrameDimension.Page, iPage - 1); // iPages - 1);
                 m_pibSkjal.Image = image;
+ 
             }
             if (fifo.Extension == ".mpg")
             {
@@ -1343,7 +1345,6 @@ namespace MHR_LEIT
         private void m_btnVorslustofnun_Click(object sender, EventArgs e)
         {
 
-
             frmVorslustofnun frmVorslu = new frmVorslustofnun(m_strVorsluSofnunID, virkurnotandi);
             frmVorslu.ShowDialog();
         }
@@ -1378,10 +1379,11 @@ namespace MHR_LEIT
                 // using (FileStream straumur = File.OpenRead("C:\\AVID.SA.18000.1\\Documents\\docCollection1\\1\\1.tif"))
 
                 {
-                    FileStream InputBin = new FileStream(strFile, FileMode.Open, FileAccess.Read, FileShare.None);
+                    //þarf að loka straumnum til að lesa
+
+                    FileStream InputBin = new FileStream(strFile, FileMode.Open, FileAccess.Read, FileShare.Read);
                     byte[] bla = md5.ComputeHash(InputBin);
                     strRet = BitConverter.ToString(bla).Replace("-", "");
-                    InputBin.Close();
                 }
             }
             return strRet;
@@ -1404,6 +1406,22 @@ namespace MHR_LEIT
         private void m_btnLoka_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void m_btnAIP_Click(object sender, EventArgs e)
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(m_strRoot)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+        }
+
+        private void m_btnFylgiSkjol_Click(object sender, EventArgs e)
+        {
+            frmFylgiskjol fylgi = new frmFylgiskjol(m_strRoot);
+            fylgi.ShowDialog();
         }
     }
 

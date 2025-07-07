@@ -28,225 +28,225 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.m_tboNafn = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.m_tboKennitala = new System.Windows.Forms.MaskedTextBox();
-            this.m_tboHeit_fyrirtaekis = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.m_tboNetfang = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.m_tboSimi = new System.Windows.Forms.TextBox();
-            this.m_tboKennitalFyrirtaekis = new System.Windows.Forms.MaskedTextBox();
-            this.m_chbKenniVantar = new System.Windows.Forms.CheckBox();
-            this.m_chbKenniFyrirVantar = new System.Windows.Forms.CheckBox();
-            this.m_btnVista = new System.Windows.Forms.Button();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            label1 = new Label();
+            m_tboNafn = new TextBox();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            m_tboKennitala = new MaskedTextBox();
+            m_tboHeit_fyrirtaekis = new TextBox();
+            label7 = new Label();
+            m_tboNetfang = new TextBox();
+            label8 = new Label();
+            m_tboSimi = new TextBox();
+            m_tboKennitalFyrirtaekis = new MaskedTextBox();
+            m_chbKenniVantar = new CheckBox();
+            m_chbKenniFyrirVantar = new CheckBox();
+            m_btnVista = new Button();
+            errorProvider1 = new ErrorProvider(components);
+            tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
+            SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_tboNafn, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.m_tboKennitala, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.m_tboHeit_fyrirtaekis, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.m_tboNetfang, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.label8, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.m_tboSimi, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.m_tboKennitalFyrirtaekis, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.m_chbKenniVantar, 2, 1);
-            this.tableLayoutPanel1.Controls.Add(this.m_chbKenniFyrirVantar, 2, 3);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(51, 12);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 6;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1090, 183);
-            this.tableLayoutPanel1.TabIndex = 1;
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.Controls.Add(label1, 0, 0);
+            tableLayoutPanel1.Controls.Add(m_tboNafn, 1, 0);
+            tableLayoutPanel1.Controls.Add(label2, 0, 1);
+            tableLayoutPanel1.Controls.Add(label3, 0, 2);
+            tableLayoutPanel1.Controls.Add(label4, 0, 3);
+            tableLayoutPanel1.Controls.Add(m_tboKennitala, 1, 1);
+            tableLayoutPanel1.Controls.Add(m_tboHeit_fyrirtaekis, 1, 2);
+            tableLayoutPanel1.Controls.Add(label7, 0, 5);
+            tableLayoutPanel1.Controls.Add(m_tboNetfang, 1, 5);
+            tableLayoutPanel1.Controls.Add(label8, 0, 4);
+            tableLayoutPanel1.Controls.Add(m_tboSimi, 1, 4);
+            tableLayoutPanel1.Controls.Add(m_tboKennitalFyrirtaekis, 1, 3);
+            tableLayoutPanel1.Controls.Add(m_chbKenniVantar, 2, 1);
+            tableLayoutPanel1.Controls.Add(m_chbKenniFyrirVantar, 2, 3);
+            tableLayoutPanel1.Location = new Point(51, 12);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 6;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Size = new Size(1090, 183);
+            tableLayoutPanel1.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(212, 30);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Nafn";
+            label1.AutoSize = true;
+            label1.Dock = DockStyle.Fill;
+            label1.Location = new Point(3, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(212, 30);
+            label1.TabIndex = 0;
+            label1.Text = "Nafn";
             // 
             // m_tboNafn
             // 
-            this.m_tboNafn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboNafn.Location = new System.Drawing.Point(221, 3);
-            this.m_tboNafn.Name = "m_tboNafn";
-            this.m_tboNafn.Size = new System.Drawing.Size(757, 23);
-            this.m_tboNafn.TabIndex = 1;
+            m_tboNafn.Dock = DockStyle.Fill;
+            m_tboNafn.Location = new Point(221, 3);
+            m_tboNafn.Name = "m_tboNafn";
+            m_tboNafn.Size = new Size(757, 23);
+            m_tboNafn.TabIndex = 1;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(3, 30);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(212, 30);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Kennitala";
+            label2.AutoSize = true;
+            label2.Dock = DockStyle.Fill;
+            label2.Location = new Point(3, 30);
+            label2.Name = "label2";
+            label2.Size = new Size(212, 30);
+            label2.TabIndex = 2;
+            label2.Text = "Kennitala";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 60);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(86, 15);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Heiti stofnunar";
+            label3.AutoSize = true;
+            label3.Location = new Point(3, 60);
+            label3.Name = "label3";
+            label3.Size = new Size(86, 15);
+            label3.TabIndex = 3;
+            label3.Text = "Heiti stofnunar";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 90);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 15);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Kennitala  stofnunar";
+            label4.AutoSize = true;
+            label4.Location = new Point(3, 90);
+            label4.Name = "label4";
+            label4.Size = new Size(113, 15);
+            label4.TabIndex = 4;
+            label4.Text = "Kennitala  stofnunar";
             // 
             // m_tboKennitala
             // 
-            this.m_tboKennitala.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboKennitala.Location = new System.Drawing.Point(221, 33);
-            this.m_tboKennitala.Mask = "000000-0000";
-            this.m_tboKennitala.Name = "m_tboKennitala";
-            this.m_tboKennitala.Size = new System.Drawing.Size(757, 23);
-            this.m_tboKennitala.TabIndex = 23;
+            m_tboKennitala.Dock = DockStyle.Fill;
+            m_tboKennitala.Location = new Point(221, 33);
+            m_tboKennitala.Mask = "000000-0000";
+            m_tboKennitala.Name = "m_tboKennitala";
+            m_tboKennitala.Size = new Size(757, 23);
+            m_tboKennitala.TabIndex = 23;
             // 
             // m_tboHeit_fyrirtaekis
             // 
-            this.m_tboHeit_fyrirtaekis.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboHeit_fyrirtaekis.Location = new System.Drawing.Point(221, 63);
-            this.m_tboHeit_fyrirtaekis.Name = "m_tboHeit_fyrirtaekis";
-            this.m_tboHeit_fyrirtaekis.Size = new System.Drawing.Size(757, 23);
-            this.m_tboHeit_fyrirtaekis.TabIndex = 24;
+            m_tboHeit_fyrirtaekis.Dock = DockStyle.Fill;
+            m_tboHeit_fyrirtaekis.Location = new Point(221, 63);
+            m_tboHeit_fyrirtaekis.Name = "m_tboHeit_fyrirtaekis";
+            m_tboHeit_fyrirtaekis.Size = new Size(757, 23);
+            m_tboHeit_fyrirtaekis.TabIndex = 24;
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 150);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(50, 15);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "Netfang";
+            label7.AutoSize = true;
+            label7.Location = new Point(3, 150);
+            label7.Name = "label7";
+            label7.Size = new Size(50, 15);
+            label7.TabIndex = 7;
+            label7.Text = "Netfang";
             // 
             // m_tboNetfang
             // 
-            this.m_tboNetfang.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboNetfang.Location = new System.Drawing.Point(221, 153);
-            this.m_tboNetfang.Name = "m_tboNetfang";
-            this.m_tboNetfang.Size = new System.Drawing.Size(757, 23);
-            this.m_tboNetfang.TabIndex = 14;
+            m_tboNetfang.Dock = DockStyle.Fill;
+            m_tboNetfang.Location = new Point(221, 153);
+            m_tboNetfang.Name = "m_tboNetfang";
+            m_tboNetfang.Size = new Size(757, 23);
+            m_tboNetfang.TabIndex = 14;
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 120);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(58, 15);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "Sími/gsm";
+            label8.AutoSize = true;
+            label8.Location = new Point(3, 120);
+            label8.Name = "label8";
+            label8.Size = new Size(58, 15);
+            label8.TabIndex = 8;
+            label8.Text = "Sími/gsm";
             // 
             // m_tboSimi
             // 
-            this.m_tboSimi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboSimi.Location = new System.Drawing.Point(221, 123);
-            this.m_tboSimi.Name = "m_tboSimi";
-            this.m_tboSimi.Size = new System.Drawing.Size(757, 23);
-            this.m_tboSimi.TabIndex = 16;
+            m_tboSimi.Dock = DockStyle.Fill;
+            m_tboSimi.Location = new Point(221, 123);
+            m_tboSimi.Name = "m_tboSimi";
+            m_tboSimi.Size = new Size(757, 23);
+            m_tboSimi.TabIndex = 16;
             // 
             // m_tboKennitalFyrirtaekis
             // 
-            this.m_tboKennitalFyrirtaekis.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_tboKennitalFyrirtaekis.Location = new System.Drawing.Point(221, 93);
-            this.m_tboKennitalFyrirtaekis.Mask = "000000-0000";
-            this.m_tboKennitalFyrirtaekis.Name = "m_tboKennitalFyrirtaekis";
-            this.m_tboKennitalFyrirtaekis.Size = new System.Drawing.Size(757, 23);
-            this.m_tboKennitalFyrirtaekis.TabIndex = 25;
+            m_tboKennitalFyrirtaekis.Dock = DockStyle.Fill;
+            m_tboKennitalFyrirtaekis.Location = new Point(221, 93);
+            m_tboKennitalFyrirtaekis.Mask = "000000-0000";
+            m_tboKennitalFyrirtaekis.Name = "m_tboKennitalFyrirtaekis";
+            m_tboKennitalFyrirtaekis.Size = new Size(757, 23);
+            m_tboKennitalFyrirtaekis.TabIndex = 25;
             // 
             // m_chbKenniVantar
             // 
-            this.m_chbKenniVantar.AutoSize = true;
-            this.m_chbKenniVantar.Location = new System.Drawing.Point(984, 33);
-            this.m_chbKenniVantar.Name = "m_chbKenniVantar";
-            this.m_chbKenniVantar.Size = new System.Drawing.Size(59, 19);
-            this.m_chbKenniVantar.TabIndex = 26;
-            this.m_chbKenniVantar.Text = "Vantar";
-            this.m_chbKenniVantar.UseVisualStyleBackColor = true;
-            this.m_chbKenniVantar.CheckedChanged += new System.EventHandler(this.m_chbKenniVantar_CheckedChanged);
+            m_chbKenniVantar.AutoSize = true;
+            m_chbKenniVantar.Location = new Point(984, 33);
+            m_chbKenniVantar.Name = "m_chbKenniVantar";
+            m_chbKenniVantar.Size = new Size(59, 19);
+            m_chbKenniVantar.TabIndex = 26;
+            m_chbKenniVantar.Text = "Vantar";
+            m_chbKenniVantar.UseVisualStyleBackColor = true;
+            m_chbKenniVantar.CheckedChanged += m_chbKenniVantar_CheckedChanged;
             // 
             // m_chbKenniFyrirVantar
             // 
-            this.m_chbKenniFyrirVantar.AutoSize = true;
-            this.m_chbKenniFyrirVantar.Location = new System.Drawing.Point(984, 93);
-            this.m_chbKenniFyrirVantar.Name = "m_chbKenniFyrirVantar";
-            this.m_chbKenniFyrirVantar.Size = new System.Drawing.Size(59, 19);
-            this.m_chbKenniFyrirVantar.TabIndex = 27;
-            this.m_chbKenniFyrirVantar.Text = "Vantar";
-            this.m_chbKenniFyrirVantar.UseVisualStyleBackColor = true;
-            this.m_chbKenniFyrirVantar.CheckedChanged += new System.EventHandler(this.m_chbKenniFyrirVantar_CheckedChanged);
+            m_chbKenniFyrirVantar.AutoSize = true;
+            m_chbKenniFyrirVantar.Location = new Point(984, 93);
+            m_chbKenniFyrirVantar.Name = "m_chbKenniFyrirVantar";
+            m_chbKenniFyrirVantar.Size = new Size(59, 19);
+            m_chbKenniFyrirVantar.TabIndex = 27;
+            m_chbKenniFyrirVantar.Text = "Vantar";
+            m_chbKenniFyrirVantar.UseVisualStyleBackColor = true;
+            m_chbKenniFyrirVantar.CheckedChanged += m_chbKenniFyrirVantar_CheckedChanged;
             // 
             // m_btnVista
             // 
-            this.m_btnVista.Location = new System.Drawing.Point(1050, 232);
-            this.m_btnVista.Name = "m_btnVista";
-            this.m_btnVista.Size = new System.Drawing.Size(75, 23);
-            this.m_btnVista.TabIndex = 2;
-            this.m_btnVista.Text = "vista";
-            this.m_btnVista.UseVisualStyleBackColor = true;
-            this.m_btnVista.Click += new System.EventHandler(this.m_btnVista_Click);
+            m_btnVista.Location = new Point(1050, 232);
+            m_btnVista.Name = "m_btnVista";
+            m_btnVista.Size = new Size(75, 23);
+            m_btnVista.TabIndex = 2;
+            m_btnVista.Text = "vista";
+            m_btnVista.UseVisualStyleBackColor = true;
+            m_btnVista.Click += m_btnVista_Click;
             // 
             // errorProvider1
             // 
-            this.errorProvider1.ContainerControl = this;
+            errorProvider1.ContainerControl = this;
             // 
             // frmLanthegi
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1171, 512);
-            this.Controls.Add(this.m_btnVista);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "frmLanthegi";
-            this.Text = "frmLanthegi";
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1171, 512);
+            Controls.Add(m_btnVista);
+            Controls.Add(tableLayoutPanel1);
+            Name = "frmLanthegi";
+            Text = "frmLanthegi";
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
+            ResumeLayout(false);
 
         }
 

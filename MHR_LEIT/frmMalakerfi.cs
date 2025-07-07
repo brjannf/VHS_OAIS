@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using cClassOAIS;
 using cClassVHS;
 using DocumentFormat.OpenXml.Office2010.Word;
+using OAIS_ADMIN;
 //using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace MHR_LEIT
@@ -38,6 +39,10 @@ namespace MHR_LEIT
         string m_strMalID = string.Empty;
         string m_strHeitiVorslu = string.Empty;
         string m_strTitillValidMal = string.Empty;
+
+        string m_strVorsluSofnunID = string.Empty;
+        string m_strSkjalamID = string.Empty; //skjalamyndari_audkenni
+        string m_strVorslutgafa = string.Empty; //vorsluutgafa 
         DataRow m_row;
 
         public frmMalakerfi()
@@ -52,6 +57,9 @@ namespace MHR_LEIT
             //vantar að tilgreina hvaða málakerfi
             m_row = row;
             m_strHeitiVorslu = m_row["titill_vorsluutgafu"].ToString();
+            m_strVorsluSofnunID = row["vorslustofnun_audkenni"].ToString();
+            m_strSkjalamID = row["skjalamyndari_audkenni"].ToString();
+            m_strVorslutgafa = row["vorsluutgafa"].ToString();
 
             m_strMalID = row["malID"].ToString();
             m_dtSkra = dtSkra;
@@ -613,7 +621,7 @@ namespace MHR_LEIT
                         }
 
                     }
-//ná í það sem er í attachments 
+                    //ná í það sem er í attachments 
 
 
 ;
@@ -639,15 +647,15 @@ namespace MHR_LEIT
                 string[] strDCollection = Directory.GetDirectories(m_strRoot + "\\Documents");
 
                 int i = 1;
-                foreach(string str in strDCollection)
+                foreach (string str in strDCollection)
                 {
-                    if(Directory.Exists(str + "\\99999992"))
+                    if (Directory.Exists(str + "\\99999992"))
                     {
                         dColl = i;
                     }
                     i++;
                 }
-              
+
             }
             else
             {
@@ -660,8 +668,8 @@ namespace MHR_LEIT
                     dColl = dColl + 1;
                 }
             }
-            
-           
+
+
 
             string strValid = m_strRoot + "\\Documents\\docCollection" + dColl.ToString() + "\\" + m_strIdValinn;
 
@@ -672,12 +680,12 @@ namespace MHR_LEIT
 
             //   Image image = Image.FromFile(m_strFileValinn);
 
-            Image image;
-            using (var bmpTemp = new Bitmap(m_strFileValinn))
-            {
-                image = new Bitmap(bmpTemp);
-            }
-
+            //Image image;
+            //using (var bmpTemp = new Bitmap(m_strFileValinn))
+            //{
+            //    image = new Bitmap(bmpTemp);
+            //}
+            Image image = Image.FromFile(m_strFileValinn);
             FrameDimension dimension;
 
             dimension = FrameDimension.Page;
@@ -1746,7 +1754,7 @@ namespace MHR_LEIT
                 // using (FileStream straumur = File.OpenRead("C:\\AVID.SA.18000.1\\Documents\\docCollection1\\1\\1.tif"))
 
                 {
-                    FileStream InputBin = new FileStream(strFile, FileMode.Open, FileAccess.Read, FileShare.None);
+                    FileStream InputBin = new FileStream(strFile, FileMode.Open, FileAccess.Read, FileShare.Read);
                     byte[] bla = md5.ComputeHash(InputBin);
                     strRet = BitConverter.ToString(bla).Replace("-", "");
                     InputBin.Close();
@@ -1758,6 +1766,50 @@ namespace MHR_LEIT
         private void m_btnLoka_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void m_btnVorslustofnun_Click(object sender, EventArgs e)
+        {
+
+            frmVorslustofnun frmVorslu = new frmVorslustofnun(m_strVorsluSofnunID, virkurnotandi);
+            frmVorslu.ShowDialog();
+        }
+
+        private void m_btnSkjalamyndari_Click(object sender, EventArgs e)
+        {
+            cSkjalamyndari skjalamyndari = new cSkjalamyndari();
+            skjalamyndari.m_bAfrit = virkurnotandi.m_bAfrit;
+            skjalamyndari.getSkjalamyndaraByAuðkenni(m_strSkjalamID);
+            frmSkjalamyndari frmSkjalamyndari = new frmSkjalamyndari(skjalamyndari, virkurnotandi);
+            frmSkjalamyndari.ShowDialog();
+        }
+
+        private void m_btnSkjalaskrá_Click(object sender, EventArgs e)
+        {
+            //string strAuðkenni, string strSlod,string strTegund, cNotandi not, string strVarsla
+            string strAuðkenni = m_strVorslutgafa; // senderGrid.Rows[e.RowIndex].Cells["colAudkenni"].Value.ToString();
+            //string strSlod = senderGrid.Rows[e.RowIndex].Cells["colVarslaSlod"].Value.ToString();
+            string strTegund = "Málakerfi"; // senderGrid.Rows[e.RowIndex].Cells["colTegund"].Value.ToString();
+                                            //string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorsluID"].Value.ToString();
+
+            frmGeymsluskra frmgeymsla = new frmGeymsluskra(m_strVorslutgafa, m_strRoot, strTegund, virkurnotandi, m_strVorsluSofnunID);
+            frmgeymsla.ShowDialog();
+        }
+
+        private void m_btnFylgiSkjol_Click(object sender, EventArgs e)
+        {
+            frmFylgiskjol fylgi = new frmFylgiskjol(m_strRoot);
+            fylgi.ShowDialog();
+        }
+
+        private void m_btnAIP_Click(object sender, EventArgs e)
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(m_strRoot)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
     }
 

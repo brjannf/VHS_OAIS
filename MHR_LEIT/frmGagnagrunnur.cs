@@ -1,4 +1,6 @@
 ﻿using cClassOAIS;
+using OAIS_ADMIN;
+
 //using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,10 @@ namespace MHR_LEIT
         string m_strOrginal = string.Empty;
         string m_strSQLpanta = string.Empty;
         string m_strLeitSkilyrdi = string.Empty;
+        string m_strVorsluSofnunID = string.Empty;
+        string m_strSkjalamID = string.Empty; //notað til að opna skjalamyndara
+        string m_strVorslutgafa = string.Empty;
+        string m_strRoot = string.Empty;
 
         cNotandi virkurnotandi = new cNotandi();
         cSkjalaskra skjal = new cSkjalaskra();
@@ -42,6 +48,13 @@ namespace MHR_LEIT
             skjal.m_bAfrit = virkurnotandi.m_bAfrit;
 
             skjal.getSkraning(strGagnagrunnur.Replace("_", "."));
+            cVorsluutgafur utgafa = new cVorsluutgafur();
+            utgafa.m_bAfrit = virkurnotandi.m_bAfrit;
+            utgafa.getVörsluútgáfu(strGagnagrunnur.Replace("_", "."));
+            m_strVorsluSofnunID = utgafa.vorslustofnun;
+            m_strSkjalamID = utgafa.skjalamyndari;
+            m_strVorslutgafa = utgafa.vorsluutgafa;
+            m_strRoot = utgafa.slod;
 
             m_dtSkra = dtSkrar;
             m_dtMal = dtMal;
@@ -123,7 +136,7 @@ namespace MHR_LEIT
         {
             DataTable dtClone = m_dtFyrirspurnir.Clone();
 
-           
+
 
 
             DataView view = new DataView(m_dtFyrirspurnir);
@@ -559,6 +572,50 @@ namespace MHR_LEIT
         private void m_btnLoka_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void m_btnVorslustofnun_Click(object sender, EventArgs e)
+        {
+            frmVorslustofnun frmVorslu = new frmVorslustofnun(m_strVorsluSofnunID, virkurnotandi);
+            frmVorslu.ShowDialog();
+        }
+
+        private void m_btnSkjalamyndari_Click(object sender, EventArgs e)
+        {
+            cSkjalamyndari skjalamyndari = new cSkjalamyndari();
+            skjalamyndari.m_bAfrit = virkurnotandi.m_bAfrit;
+            skjalamyndari.getSkjalamyndaraByAuðkenni(m_strSkjalamID);
+            frmSkjalamyndari frmSkjalm = new frmSkjalamyndari(skjalamyndari, virkurnotandi);
+            frmSkjalm.ShowDialog();
+        }
+
+        private void m_btnSkjalaskrá_Click(object sender, EventArgs e)
+        {
+
+            //string strAuðkenni, string strSlod,string strTegund, cNotandi not, string strVarsla
+            string strAuðkenni = m_strVorslutgafa; // senderGrid.Rows[e.RowIndex].Cells["colAudkenni"].Value.ToString();
+            //string strSlod = senderGrid.Rows[e.RowIndex].Cells["colVarslaSlod"].Value.ToString();
+            string strTegund = "Gagnagrunnur"; // senderGrid.Rows[e.RowIndex].Cells["colTegund"].Value.ToString();
+                                               //string strVarsla = senderGrid.Rows[e.RowIndex].Cells["colVorsluID"].Value.ToString();
+
+            frmGeymsluskra frmgeymsla = new frmGeymsluskra(m_strVorslutgafa, m_strRoot, strTegund, virkurnotandi, m_strVorsluSofnunID);
+            frmgeymsla.ShowDialog();
+        }
+
+        private void m_btnFylgiSkjol_Click(object sender, EventArgs e)
+        {
+            frmFylgiskjol fylgi = new frmFylgiskjol(m_strRoot);
+            fylgi.ShowDialog();
+        }
+
+        private void m_btnAIP_Click(object sender, EventArgs e)
+        {
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(m_strRoot)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
     }
 }

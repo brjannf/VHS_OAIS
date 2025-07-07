@@ -64,8 +64,8 @@ namespace MHR_LEIT
             }
             if(m_tboSimi.Text == string.Empty && m_tboNetfang.Text == string.Empty)
             {
-                errorProvider1.SetError(m_tboSimi, "Vantar símabúmer eða netfang");
-                errorProvider1.SetError(m_tboNetfang, "Vantar símabúmer eða netfang");
+                errorProvider1.SetError(m_tboSimi, "Vantar símanúmer eða netfang");
+                errorProvider1.SetError(m_tboNetfang, "Vantar símanúmer eða netfang");
             }
 
             if (errorProvider1.HasErrors)

@@ -2045,12 +2045,12 @@ namespace MHR_LEIT
             //laga tímabil í tbMidlun
             DataTable dtTimi = virkurNotandi.getTimabilMidlun();
 
-            foreach(DataRow row in dtTimi.Rows)
+            foreach (DataRow row in dtTimi.Rows)
             {
                 string id = row["id"].ToString();
                 string strCreated = row["doccreated"].ToString();
                 string strChanged = row["doclastwriten"].ToString();
-                if (strCreated.Contains("/")) 
+                if (strCreated.Contains("/"))
                 {
                     DateTime datCreated = Convert.ToDateTime(strCreated);
                     DateTime datChanged = new DateTime();
@@ -2058,7 +2058,7 @@ namespace MHR_LEIT
                     {
                         datChanged = Convert.ToDateTime(strChanged);
                     }
-                    
+
 
                     string strDATECreated = datCreated.Year.ToString() + "-" + datCreated.Month.ToString() + "-" + datCreated.Day.ToString();
                     string strDATECanged = datChanged.Year.ToString() + "-" + datChanged.Month.ToString() + "-" + datChanged.Day.ToString();
@@ -2069,7 +2069,7 @@ namespace MHR_LEIT
 
                     virkurNotandi.upDateTimi(strDATECreated, strDATECanged, id);
                 }
-                
+
             }
             MessageBox.Show("ble");
             return;
@@ -2246,8 +2246,8 @@ namespace MHR_LEIT
             m_tboLykilOrd.Text = string.Empty;
             virkurNotandi.hreinsaHlut();
             m_tomUtskra.Visible = false;
-            m_tomHjalpPDF.Visible = false;  
-            m_tomHjalpCHM.Visible = false;  
+            m_tomHjalpPDF.Visible = false;
+            m_tomHjalpCHM.Visible = false;
 
         }
 
@@ -2503,7 +2503,7 @@ namespace MHR_LEIT
 
                 m_grbDIP.Text = string.Format("Óafgreitt ({0})", iAllsPant);
                 m_tapAfgreidsla.Text = string.Format("Afgreiðsla: ({0}) skrár óafgreiddar", iAllsPant);
-                
+
             }
             else
             {
@@ -2528,7 +2528,7 @@ namespace MHR_LEIT
                 colGagnRemove.Visible = false;
                 colSkraRemove.Visible = false;
                 colGagnRemove.Visible = false;
-               
+
             }
 
 
@@ -2714,6 +2714,24 @@ namespace MHR_LEIT
 
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
+                if (senderGrid.Columns["colbtnFylgiSkjol"].Index == e.ColumnIndex)
+                {
+                    string strSlod = m_dgvVorsluUtgafur.Rows[e.RowIndex].Cells["colUtgafaSlod"].Value.ToString();
+                    frmFylgiskjol fylgi = new frmFylgiskjol(strSlod);
+                    fylgi.ShowDialog();
+                }
+                if (senderGrid.Columns["colbtnAIP"].Index == e.ColumnIndex)
+                {
+                    var p = new Process();
+                    string strSlod = m_dgvVorsluUtgafur.Rows[e.RowIndex].Cells["colUtgafaSlod"].Value.ToString();
+                    p.StartInfo = new ProcessStartInfo(strSlod)
+                    {
+                        UseShellExecute = true
+                    };
+                    p.Start();
+                    // colUtgafaSlod
+                }
+
                 if (senderGrid.Columns["comBtnVörslustofnun"].Index == e.ColumnIndex)
                 {
                     string strVorslustofnID = m_dgvVorsluUtgafur.Rows[e.RowIndex].Cells["colUtgafaVorsluAudkenni"].Value.ToString();
@@ -3144,6 +3162,69 @@ namespace MHR_LEIT
                 UseShellExecute = true
             };
             p.Start();
+
+        }
+
+        private void m_btnExcelAIPut_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "Excel Files (*.xlsx)|*.xlsx|CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
+            DialogResult result = saveFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                DataTable dataTable = (DataTable)m_dgvVorsluUtgafur.DataSource;
+                if (dataTable != null && dataTable.Rows.Count > 0)
+                {
+                    string filePath = saveFileDialog1.FileName;
+                    string ext = Path.GetExtension(filePath).ToLowerInvariant();
+                    try
+                    {
+                        if (ext == ".csv")
+                        {
+                            using (StreamWriter sw = new StreamWriter(filePath))
+                            {
+                                // Write column headers
+                                for (int i = 0; i < dataTable.Columns.Count; i++)
+                                {
+                                    sw.Write(dataTable.Columns[i]);
+                                    if (i < dataTable.Columns.Count - 1)
+                                        sw.Write(",");
+                                }
+                                sw.WriteLine();
+                                // Write rows
+                                foreach (DataRow row in dataTable.Rows)
+                                {
+                                    for (int i = 0; i < dataTable.Columns.Count; i++)
+                                    {
+                                        sw.Write(row[i].ToString());
+                                        if (i < dataTable.Columns.Count - 1)
+                                            sw.Write(",");
+                                    }
+                                    sw.WriteLine();
+                                }
+                            }
+                            MessageBox.Show("CSV skrá vistuð: " + filePath);
+                        }
+                        else if (ext == ".xlsx")
+                        {
+                            // Use exportExell method for real Excel export
+                            exportExell(dataTable, filePath);
+                            MessageBox.Show("Excel skrá vistuð: " + filePath);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Óstudd skráartegund.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Villa við að vista skrá: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Engin gögn til að vista.");
+                }
+            }
         }
     }
 }

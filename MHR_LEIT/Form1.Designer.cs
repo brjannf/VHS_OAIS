@@ -169,6 +169,8 @@
             m_prgImportStatusHeild = new ProgressBar();
             m_btnKeyraVorsluInn = new Button();
             m_tapLysigogn = new TabPage();
+            splitContainer7 = new SplitContainer();
+            m_btnExcelAIPut = new Button();
             m_dgvVorsluUtgafur = new DataGridView();
             colUtgafurAuðkenni = new DataGridViewTextBoxColumn();
             colUtgafaTitill = new DataGridViewTextBoxColumn();
@@ -183,6 +185,8 @@
             colUtgafaHverSkradi = new DataGridViewTextBoxColumn();
             colTegund = new DataGridViewTextBoxColumn();
             colUtgafaSkjalamAudkenni = new DataGridViewTextBoxColumn();
+            colbtnFylgiSkjol = new DataGridViewButtonColumn();
+            colbtnAIP = new DataGridViewButtonColumn();
             comBtnVörslustofnun = new DataGridViewButtonColumn();
             comBtnSkjalamyndari = new DataGridViewButtonColumn();
             colBtnGeymsluskra = new DataGridViewButtonColumn();
@@ -195,6 +199,7 @@
             folderBrowserDialog1 = new FolderBrowserDialog();
             helpProvider1 = new HelpProvider();
             helpProvider2 = new HelpProvider();
+            saveFileDialog1 = new SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -243,6 +248,10 @@
             ((System.ComponentModel.ISupportInitialize)m_dgvUtgafur).BeginInit();
             m_grbInsertStatus.SuspendLayout();
             m_tapLysigogn.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer7).BeginInit();
+            splitContainer7.Panel1.SuspendLayout();
+            splitContainer7.Panel2.SuspendLayout();
+            splitContainer7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)m_dgvVorsluUtgafur).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -535,7 +544,7 @@
             coltitillvorsluUtgafu.HeaderText = "Titill vörsluútgáfu";
             coltitillvorsluUtgafu.Name = "coltitillvorsluUtgafu";
             coltitillvorsluUtgafu.ReadOnly = true;
-            coltitillvorsluUtgafu.Width = 114;
+            coltitillvorsluUtgafu.Width = 115;
             // 
             // colDocTitel
             // 
@@ -570,7 +579,7 @@
             colMal.HeaderText = "Titill máls";
             colMal.Name = "colMal";
             colMal.ReadOnly = true;
-            colMal.Width = 76;
+            colMal.Width = 77;
             // 
             // colInnhaldSkjals
             // 
@@ -631,7 +640,7 @@
             colTegund_gagnagrunns.HeaderText = "Tegund";
             colTegund_gagnagrunns.Name = "colTegund_gagnagrunns";
             colTegund_gagnagrunns.ReadOnly = true;
-            colTegund_gagnagrunns.Width = 71;
+            colTegund_gagnagrunns.Width = 72;
             // 
             // colDocOpnaAfrit
             // 
@@ -1323,7 +1332,7 @@
             colMalTitilMals.HeaderText = "Titill máls";
             colMalTitilMals.Name = "colMalTitilMals";
             colMalTitilMals.ReadOnly = true;
-            colMalTitilMals.Width = 76;
+            colMalTitilMals.Width = 77;
             // 
             // colMalTitillVorslu
             // 
@@ -1698,13 +1707,42 @@
             // 
             // m_tapLysigogn
             // 
-            m_tapLysigogn.Controls.Add(m_dgvVorsluUtgafur);
+            m_tapLysigogn.Controls.Add(splitContainer7);
             m_tapLysigogn.Location = new Point(4, 24);
             m_tapLysigogn.Name = "m_tapLysigogn";
             m_tapLysigogn.Size = new Size(1382, 358);
             m_tapLysigogn.TabIndex = 3;
-            m_tapLysigogn.Text = "Lýsigögn";
+            m_tapLysigogn.Text = "Vörsluútgáfur AIP";
             m_tapLysigogn.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer7
+            // 
+            splitContainer7.Dock = DockStyle.Fill;
+            splitContainer7.Location = new Point(0, 0);
+            splitContainer7.Name = "splitContainer7";
+            splitContainer7.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer7.Panel1
+            // 
+            splitContainer7.Panel1.Controls.Add(m_btnExcelAIPut);
+            // 
+            // splitContainer7.Panel2
+            // 
+            splitContainer7.Panel2.Controls.Add(m_dgvVorsluUtgafur);
+            splitContainer7.Size = new Size(1382, 358);
+            splitContainer7.SplitterDistance = 48;
+            splitContainer7.TabIndex = 3;
+            // 
+            // m_btnExcelAIPut
+            // 
+            m_btnExcelAIPut.Dock = DockStyle.Fill;
+            m_btnExcelAIPut.Location = new Point(0, 0);
+            m_btnExcelAIPut.Name = "m_btnExcelAIPut";
+            m_btnExcelAIPut.Size = new Size(1382, 48);
+            m_btnExcelAIPut.TabIndex = 0;
+            m_btnExcelAIPut.Text = "Flytja út sem excel";
+            m_btnExcelAIPut.UseVisualStyleBackColor = true;
+            m_btnExcelAIPut.Click += m_btnExcelAIPut_Click;
             // 
             // m_dgvVorsluUtgafur
             // 
@@ -1720,7 +1758,7 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             m_dgvVorsluUtgafur.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             m_dgvVorsluUtgafur.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            m_dgvVorsluUtgafur.Columns.AddRange(new DataGridViewColumn[] { colUtgafurAuðkenni, colUtgafaTitill, dataGridViewTextBoxColumn2, colUtgafaVorslustofnun, colUtgafaSkjalam, colUtgafaStaerd, colUtgafaTimabil, colUtgafaAdgangur, colUtgafurFrum, colUtgafaDagsSkraningar, colUtgafaHverSkradi, colTegund, colUtgafaSkjalamAudkenni, comBtnVörslustofnun, comBtnSkjalamyndari, colBtnGeymsluskra, colUtgafaVorsluAudkenni, colUtgafaSlod });
+            m_dgvVorsluUtgafur.Columns.AddRange(new DataGridViewColumn[] { colUtgafurAuðkenni, colUtgafaTitill, dataGridViewTextBoxColumn2, colUtgafaVorslustofnun, colUtgafaSkjalam, colUtgafaStaerd, colUtgafaTimabil, colUtgafaAdgangur, colUtgafurFrum, colUtgafaDagsSkraningar, colUtgafaHverSkradi, colTegund, colUtgafaSkjalamAudkenni, colbtnFylgiSkjol, colbtnAIP, comBtnVörslustofnun, comBtnSkjalamyndari, colBtnGeymsluskra, colUtgafaVorsluAudkenni, colUtgafaSlod });
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
@@ -1737,7 +1775,7 @@
             m_dgvVorsluUtgafur.RowHeadersVisible = false;
             m_dgvVorsluUtgafur.RowTemplate.Height = 25;
             m_dgvVorsluUtgafur.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            m_dgvVorsluUtgafur.Size = new Size(1382, 358);
+            m_dgvVorsluUtgafur.Size = new Size(1382, 306);
             m_dgvVorsluUtgafur.TabIndex = 2;
             m_dgvVorsluUtgafur.CellClick += m_dgvVorsluUtgafur_CellContentClick;
             // 
@@ -1762,10 +1800,10 @@
             // 
             dataGridViewTextBoxColumn2.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dataGridViewTextBoxColumn2.DataPropertyName = "afharnr";
-            dataGridViewTextBoxColumn2.HeaderText = "Afhendingaár og númer vörsluútgáfu";
+            dataGridViewTextBoxColumn2.HeaderText = "Afhár/nr";
             dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             dataGridViewTextBoxColumn2.ReadOnly = true;
-            dataGridViewTextBoxColumn2.Width = 148;
+            dataGridViewTextBoxColumn2.Width = 77;
             // 
             // colUtgafaVorslustofnun
             // 
@@ -1789,19 +1827,19 @@
             // 
             colUtgafaStaerd.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             colUtgafaStaerd.DataPropertyName = "staerd";
-            colUtgafaStaerd.HeaderText = "Stærð vörsluútgáfu";
+            colUtgafaStaerd.HeaderText = "Stærð";
             colUtgafaStaerd.Name = "colUtgafaStaerd";
             colUtgafaStaerd.ReadOnly = true;
-            colUtgafaStaerd.Width = 122;
+            colUtgafaStaerd.Width = 63;
             // 
             // colUtgafaTimabil
             // 
             colUtgafaTimabil.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             colUtgafaTimabil.DataPropertyName = "timabil";
-            colUtgafaTimabil.HeaderText = "Tímabil vörsluútgáfu";
+            colUtgafaTimabil.HeaderText = "Tímabil";
             colUtgafaTimabil.Name = "colUtgafaTimabil";
             colUtgafaTimabil.ReadOnly = true;
-            colUtgafaTimabil.Width = 129;
+            colUtgafaTimabil.Width = 72;
             // 
             // colUtgafaAdgangur
             // 
@@ -1810,7 +1848,6 @@
             colUtgafaAdgangur.HeaderText = "Takmarkanir á aðgengi";
             colUtgafaAdgangur.Name = "colUtgafaAdgangur";
             colUtgafaAdgangur.ReadOnly = true;
-            colUtgafaAdgangur.Width = 99;
             // 
             // colUtgafurFrum
             // 
@@ -1825,19 +1862,19 @@
             // 
             colUtgafaDagsSkraningar.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             colUtgafaDagsSkraningar.DataPropertyName = "dags_skrad";
-            colUtgafaDagsSkraningar.HeaderText = "Dagsetning skráningar";
+            colUtgafaDagsSkraningar.HeaderText = "Skráð";
             colUtgafaDagsSkraningar.Name = "colUtgafaDagsSkraningar";
             colUtgafaDagsSkraningar.ReadOnly = true;
-            colUtgafaDagsSkraningar.Width = 137;
+            colUtgafaDagsSkraningar.Width = 61;
             // 
             // colUtgafaHverSkradi
             // 
             colUtgafaHverSkradi.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             colUtgafaHverSkradi.DataPropertyName = "hver_skradi";
-            colUtgafaHverSkradi.HeaderText = "Hver skráði";
+            colUtgafaHverSkradi.HeaderText = "Skráð af";
             colUtgafaHverSkradi.Name = "colUtgafaHverSkradi";
             colUtgafaHverSkradi.ReadOnly = true;
-            colUtgafaHverSkradi.Width = 84;
+            colUtgafaHverSkradi.Width = 69;
             // 
             // colTegund
             // 
@@ -1846,7 +1883,7 @@
             colTegund.HeaderText = "Tegund";
             colTegund.Name = "colTegund";
             colTegund.ReadOnly = true;
-            colTegund.Width = 71;
+            colTegund.Width = 72;
             // 
             // colUtgafaSkjalamAudkenni
             // 
@@ -1855,6 +1892,22 @@
             colUtgafaSkjalamAudkenni.Name = "colUtgafaSkjalamAudkenni";
             colUtgafaSkjalamAudkenni.ReadOnly = true;
             colUtgafaSkjalamAudkenni.Visible = false;
+            // 
+            // colbtnFylgiSkjol
+            // 
+            colbtnFylgiSkjol.HeaderText = "Sjá fylgiskjöl";
+            colbtnFylgiSkjol.Name = "colbtnFylgiSkjol";
+            colbtnFylgiSkjol.ReadOnly = true;
+            colbtnFylgiSkjol.Text = "Opna";
+            colbtnFylgiSkjol.UseColumnTextForButtonValue = true;
+            // 
+            // colbtnAIP
+            // 
+            colbtnAIP.HeaderText = "Opna AIP";
+            colbtnAIP.Name = "colbtnAIP";
+            colbtnAIP.ReadOnly = true;
+            colbtnAIP.Text = "Opna";
+            colbtnAIP.UseColumnTextForButtonValue = true;
             // 
             // comBtnVörslustofnun
             // 
@@ -2014,6 +2067,10 @@
             m_grbInsertStatus.ResumeLayout(false);
             m_grbInsertStatus.PerformLayout();
             m_tapLysigogn.ResumeLayout(false);
+            splitContainer7.Panel1.ResumeLayout(false);
+            splitContainer7.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer7).EndInit();
+            splitContainer7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)m_dgvVorsluUtgafur).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
@@ -2167,6 +2224,10 @@
         private DataGridViewTextBoxColumn colMalVarslaUtgafaID;
         private DataGridViewButtonColumn colMalPDF;
         private DataGridViewTextBoxColumn colMalGagnGrunnur;
+        private ToolStripMenuItem m_tomHjalpCHM;
+        private ToolStripMenuItem m_tomHjalpPDF;
+        private HelpProvider helpProvider1;
+        private HelpProvider helpProvider2;
         private DataGridViewTextBoxColumn colUtgafurAuðkenni;
         private DataGridViewTextBoxColumn colUtgafaTitill;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
@@ -2180,14 +2241,15 @@
         private DataGridViewTextBoxColumn colUtgafaHverSkradi;
         private DataGridViewTextBoxColumn colTegund;
         private DataGridViewTextBoxColumn colUtgafaSkjalamAudkenni;
+        private DataGridViewButtonColumn colbtnFylgiSkjol;
+        private DataGridViewButtonColumn colbtnAIP;
         private DataGridViewButtonColumn comBtnVörslustofnun;
         private DataGridViewButtonColumn comBtnSkjalamyndari;
         private DataGridViewButtonColumn colBtnGeymsluskra;
         private DataGridViewTextBoxColumn colUtgafaVorsluAudkenni;
         private DataGridViewTextBoxColumn colUtgafaSlod;
-        private ToolStripMenuItem m_tomHjalpCHM;
-        private ToolStripMenuItem m_tomHjalpPDF;
-        private HelpProvider helpProvider1;
-        private HelpProvider helpProvider2;
+        private SplitContainer splitContainer7;
+        private Button m_btnExcelAIPut;
+        private SaveFileDialog saveFileDialog1;
     }
 }

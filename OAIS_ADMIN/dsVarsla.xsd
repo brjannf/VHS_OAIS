@@ -45,108 +45,108 @@
       </DataSource>
     </xs:appinfo>
   </xs:annotation>
-  <xs:element name="dsVarsla" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="dsVarsla" msprop:Generator_DataSetName="dsVarsla">
+  <xs:element name="dsVarsla" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="dsVarsla" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsVarsla">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="DataTable" msprop:Generator_RowEvHandlerName="DataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="DataTableRowDeleted" msprop:Generator_RowDeletingName="DataTableRowDeleting" msprop:Generator_RowEvArgName="DataTableRowChangeEvent" msprop:Generator_TablePropName="DataTable" msprop:Generator_RowChangedName="DataTableRowChanged" msprop:Generator_RowChangingName="DataTableRowChanging" msprop:Generator_TableClassName="DataTableDataTable" msprop:Generator_RowClassName="DataTableRow" msprop:Generator_TableVarName="tableDataTable" msprop:Generator_UserTableName="DataTable">
+        <xs:element name="DataTable" msprop:Generator_RowClassName="DataTableRow" msprop:Generator_RowEvHandlerName="DataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="DataTableRowDeleted" msprop:Generator_RowDeletingName="DataTableRowDeleting" msprop:Generator_RowEvArgName="DataTableRowChangeEvent" msprop:Generator_TablePropName="DataTable" msprop:Generator_RowChangedName="DataTableRowChanged" msprop:Generator_UserTableName="DataTable" msprop:Generator_RowChangingName="DataTableRowChanging" msprop:Generator_TableClassName="DataTableDataTable" msprop:Generator_TableVarName="tableDataTable">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="id" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_UserColumnName="id" type="xs:long" minOccurs="0" />
-              <xs:element name="vorsluutgafa" msprop:Generator_ColumnPropNameInRow="vorsluutgafa" msprop:Generator_ColumnPropNameInTable="vorsluutgafaColumn" msprop:Generator_ColumnVarNameInTable="columnvorsluutgafa" msprop:Generator_UserColumnName="vorsluutgafa">
+              <xs:element name="id" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_UserColumnName="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnVarNameInTable="columnid" type="xs:long" minOccurs="0" />
+              <xs:element name="vorsluutgafa" msprop:Generator_UserColumnName="vorsluutgafa" msprop:Generator_ColumnPropNameInTable="vorsluutgafaColumn" msprop:Generator_ColumnPropNameInRow="vorsluutgafa" msprop:Generator_ColumnVarNameInTable="columnvorsluutgafa">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="180" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="utgafa_titill" msprop:Generator_ColumnPropNameInRow="utgafa_titill" msprop:Generator_ColumnPropNameInTable="utgafa_titillColumn" msprop:Generator_ColumnVarNameInTable="columnutgafa_titill" msprop:Generator_UserColumnName="utgafa_titill">
+              <xs:element name="utgafa_titill" msprop:Generator_UserColumnName="utgafa_titill" msprop:Generator_ColumnPropNameInTable="utgafa_titillColumn" msprop:Generator_ColumnPropNameInRow="utgafa_titill" msprop:Generator_ColumnVarNameInTable="columnutgafa_titill">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="800" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="vorslustofnun" msprop:Generator_ColumnPropNameInRow="vorslustofnun" msprop:Generator_ColumnPropNameInTable="vorslustofnunColumn" msprop:Generator_ColumnVarNameInTable="columnvorslustofnun" msprop:Generator_UserColumnName="vorslustofnun">
+              <xs:element name="vorslustofnun" msprop:Generator_UserColumnName="vorslustofnun" msprop:Generator_ColumnPropNameInTable="vorslustofnunColumn" msprop:Generator_ColumnPropNameInRow="vorslustofnun" msprop:Generator_ColumnVarNameInTable="columnvorslustofnun">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="180" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="varsla_heiti" msprop:Generator_ColumnPropNameInRow="varsla_heiti" msprop:Generator_ColumnPropNameInTable="varsla_heitiColumn" msprop:Generator_ColumnVarNameInTable="columnvarsla_heiti" msprop:Generator_UserColumnName="varsla_heiti">
+              <xs:element name="varsla_heiti" msprop:Generator_UserColumnName="varsla_heiti" msprop:Generator_ColumnPropNameInTable="varsla_heitiColumn" msprop:Generator_ColumnPropNameInRow="varsla_heiti" msprop:Generator_ColumnVarNameInTable="columnvarsla_heiti">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="800" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="skjalamyndari" msprop:Generator_ColumnPropNameInRow="skjalamyndari" msprop:Generator_ColumnPropNameInTable="skjalamyndariColumn" msprop:Generator_ColumnVarNameInTable="columnskjalamyndari" msprop:Generator_UserColumnName="skjalamyndari">
+              <xs:element name="skjalamyndari" msprop:Generator_UserColumnName="skjalamyndari" msprop:Generator_ColumnPropNameInTable="skjalamyndariColumn" msprop:Generator_ColumnPropNameInRow="skjalamyndari" msprop:Generator_ColumnVarNameInTable="columnskjalamyndari">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="180" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="skjalm_heiti" msprop:Generator_ColumnPropNameInRow="skjalm_heiti" msprop:Generator_ColumnPropNameInTable="skjalm_heitiColumn" msprop:Generator_ColumnVarNameInTable="columnskjalm_heiti" msprop:Generator_UserColumnName="skjalm_heiti">
+              <xs:element name="skjalm_heiti" msprop:Generator_UserColumnName="skjalm_heiti" msprop:Generator_ColumnPropNameInTable="skjalm_heitiColumn" msprop:Generator_ColumnPropNameInRow="skjalm_heiti" msprop:Generator_ColumnVarNameInTable="columnskjalm_heiti">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="800" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="staerd" msprop:Generator_ColumnPropNameInRow="staerd" msprop:Generator_ColumnPropNameInTable="staerdColumn" msprop:Generator_ColumnVarNameInTable="columnstaerd" msprop:Generator_UserColumnName="staerd" type="xs:decimal" />
-              <xs:element name="slod" msprop:Generator_ColumnPropNameInRow="slod" msprop:Generator_ColumnPropNameInTable="slodColumn" msprop:Generator_ColumnVarNameInTable="columnslod" msprop:Generator_UserColumnName="slod">
+              <xs:element name="staerd" msprop:Generator_UserColumnName="staerd" msprop:Generator_ColumnPropNameInTable="staerdColumn" msprop:Generator_ColumnPropNameInRow="staerd" msprop:Generator_ColumnVarNameInTable="columnstaerd" type="xs:decimal" />
+              <xs:element name="slod" msprop:Generator_UserColumnName="slod" msprop:Generator_ColumnPropNameInTable="slodColumn" msprop:Generator_ColumnPropNameInRow="slod" msprop:Generator_ColumnVarNameInTable="columnslod">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="1200" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="innihald" msprop:Generator_ColumnPropNameInRow="innihald" msprop:Generator_ColumnPropNameInTable="innihaldColumn" msprop:Generator_ColumnVarNameInTable="columninnihald" msprop:Generator_UserColumnName="innihald">
+              <xs:element name="innihald" msprop:Generator_UserColumnName="innihald" msprop:Generator_ColumnPropNameInTable="innihaldColumn" msprop:Generator_ColumnPropNameInRow="innihald" msprop:Generator_ColumnVarNameInTable="columninnihald">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="44000" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="timabil" msprop:Generator_ColumnPropNameInRow="timabil" msprop:Generator_ColumnPropNameInTable="timabilColumn" msprop:Generator_ColumnVarNameInTable="columntimabil" msprop:Generator_UserColumnName="timabil">
+              <xs:element name="timabil" msprop:Generator_UserColumnName="timabil" msprop:Generator_ColumnPropNameInTable="timabilColumn" msprop:Generator_ColumnPropNameInRow="timabil" msprop:Generator_ColumnVarNameInTable="columntimabil">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="180" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="afharnr" msprop:Generator_ColumnPropNameInRow="afharnr" msprop:Generator_ColumnPropNameInTable="afharnrColumn" msprop:Generator_ColumnVarNameInTable="columnafharnr" msprop:Generator_UserColumnName="afharnr">
+              <xs:element name="afharnr" msprop:Generator_UserColumnName="afharnr" msprop:Generator_ColumnPropNameInTable="afharnrColumn" msprop:Generator_ColumnPropNameInRow="afharnr" msprop:Generator_ColumnVarNameInTable="columnafharnr">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="180" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="MD5" msprop:Generator_ColumnPropNameInRow="MD5" msprop:Generator_ColumnPropNameInTable="MD5Column" msprop:Generator_ColumnVarNameInTable="columnMD5" msprop:Generator_UserColumnName="MD5">
+              <xs:element name="MD5" msprop:Generator_UserColumnName="MD5" msprop:Generator_ColumnPropNameInTable="MD5Column" msprop:Generator_ColumnPropNameInRow="MD5" msprop:Generator_ColumnVarNameInTable="columnMD5">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="128" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="hver_skradi" msprop:Generator_ColumnPropNameInRow="hver_skradi" msprop:Generator_ColumnPropNameInTable="hver_skradiColumn" msprop:Generator_ColumnVarNameInTable="columnhver_skradi" msprop:Generator_UserColumnName="hver_skradi">
+              <xs:element name="hver_skradi" msprop:Generator_UserColumnName="hver_skradi" msprop:Generator_ColumnPropNameInTable="hver_skradiColumn" msprop:Generator_ColumnPropNameInRow="hver_skradi" msprop:Generator_ColumnVarNameInTable="columnhver_skradi">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="180" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="dags_skrad" msprop:Generator_ColumnPropNameInRow="dags_skrad" msprop:Generator_ColumnPropNameInTable="dags_skradColumn" msprop:Generator_ColumnVarNameInTable="columndags_skrad" msprop:Generator_UserColumnName="dags_skrad" type="xs:dateTime" />
-              <xs:element name="adgangstakmarkanir" msprop:Generator_ColumnPropNameInRow="adgangstakmarkanir" msprop:Generator_ColumnPropNameInTable="adgangstakmarkanirColumn" msprop:Generator_ColumnVarNameInTable="columnadgangstakmarkanir" msprop:Generator_UserColumnName="adgangstakmarkanir">
+              <xs:element name="dags_skrad" msprop:Generator_UserColumnName="dags_skrad" msprop:Generator_ColumnPropNameInTable="dags_skradColumn" msprop:Generator_ColumnPropNameInRow="dags_skrad" msprop:Generator_ColumnVarNameInTable="columndags_skrad" type="xs:dateTime" />
+              <xs:element name="adgangstakmarkanir" msprop:Generator_UserColumnName="adgangstakmarkanir" msprop:Generator_ColumnPropNameInTable="adgangstakmarkanirColumn" msprop:Generator_ColumnPropNameInRow="adgangstakmarkanir" msprop:Generator_ColumnVarNameInTable="columnadgangstakmarkanir">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="800" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="heild" msprop:Generator_ColumnPropNameInRow="heild" msprop:Generator_ColumnPropNameInTable="heildColumn" msprop:Generator_ColumnVarNameInTable="columnheild" msprop:Generator_UserColumnName="heild" type="xs:string" />
-              <xs:element name="verd" msprop:Generator_ColumnPropNameInRow="verd" msprop:Generator_ColumnPropNameInTable="verdColumn" msprop:Generator_ColumnVarNameInTable="columnverd" msprop:Generator_UserColumnName="verd" type="xs:string" />
+              <xs:element name="heild" msprop:Generator_UserColumnName="heild" msprop:Generator_ColumnPropNameInTable="heildColumn" msprop:Generator_ColumnPropNameInRow="heild" msprop:Generator_ColumnVarNameInTable="columnheild" type="xs:string" />
+              <xs:element name="verd" msprop:Generator_UserColumnName="verd" msprop:Generator_ColumnPropNameInTable="verdColumn" msprop:Generator_ColumnPropNameInRow="verd" msprop:Generator_ColumnVarNameInTable="columnverd" type="xs:string" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

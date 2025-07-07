@@ -95,6 +95,79 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
+
+        public DataTable getKorfurDIPReportDummy()
+        {
+            sækjaTengistreng();
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, "SELECT karfa, '' lanthegi, '' as vorsluutgafa, '' as skrar, hver_skradi, dags_skrad, athugasemdir FROM dt_karfa_dip d order by karfa desc");
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+
+        public DataTable getKorfurSkrarSkjol(string strKarfa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_item_korfu_dip d where karfa = {0};", strKarfa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public string getKorfurSkrarSkjol(string strKarfa, string strvorsluutgafa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_item_korfu_dip d where karfa = {0} and heitiVorslu = '{1}';", strKarfa, strvorsluutgafa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            string strRet = string.Empty;
+            foreach (DataRow dr in dt.Rows)
+            {
+                strRet += dr["titill"].ToString() + Environment.NewLine;
+            }
+            return strRet;
+        }
+        public string getKorfurMalSkjol(string strKarfa, string strvorsluutgafa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_item_korfu_mal_dip d where karfa = {0} and heitiVorslu = '{1}';", strKarfa, strvorsluutgafa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            string strRet = string.Empty;
+            foreach (DataRow dr in dt.Rows)
+            {
+                strRet += dr["titill"].ToString() + Environment.NewLine;
+            }
+            return strRet;
+        }
+        public string getKorfurGagnSkjol(string strKarfa, string strvorsluutgafa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_karfa_item_gagna_dip d where karfa = {0} and heitiVorslu = '{1}';", strKarfa, strvorsluutgafa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            string strRet = string.Empty;
+            foreach (DataRow dr in dt.Rows)
+            {
+                strRet += dr["leitarskilyrdi"].ToString() + Environment.NewLine;
+            }
+            return strRet;
+        }
+
+        public DataTable getKorfurGagnSkjol(string strKarfa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_karfa_item_gagna_dip d where karfa = {0};", strKarfa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getKorfurMalSkjol(string strKarfa)
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT * FROM dt_item_korfu_mal_dip d where karfa = {0};", strKarfa);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
         public DataTable getKorfuLanthega(string strLan)
         {
             sækjaTengistreng();

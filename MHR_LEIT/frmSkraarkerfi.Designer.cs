@@ -42,6 +42,7 @@
             m_tapLeitNiðutstöður = new TabPage();
             m_trwLeit = new TreeView();
             splitContainer2 = new SplitContainer();
+            m_btnLoka = new Button();
             label5 = new Label();
             m_comExternsion = new ComboBox();
             label4 = new Label();
@@ -54,6 +55,8 @@
             splitContainer3 = new SplitContainer();
             m_btnMD5Stadfesta = new Button();
             m_grbMeta = new GroupBox();
+            m_btnAIP = new Button();
+            m_btnFylgiSkjol = new Button();
             m_btnSkjalamyndari = new Button();
             m_btnSkjalaskrá = new Button();
             m_btnVorslustofnun = new Button();
@@ -91,7 +94,6 @@
             colGagnOpna = new DataGridViewButtonColumn();
             colGagnDelete = new DataGridViewButtonColumn();
             colGagnSQL = new DataGridViewTextBoxColumn();
-            m_btnLoka = new Button();
             ((System.ComponentModel.ISupportInitialize)m_dgvValdarSkrar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -293,6 +295,17 @@
             splitContainer2.SplitterDistance = 164;
             splitContainer2.TabIndex = 0;
             // 
+            // m_btnLoka
+            // 
+            m_btnLoka.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            m_btnLoka.Location = new Point(1402, 3);
+            m_btnLoka.Name = "m_btnLoka";
+            m_btnLoka.Size = new Size(89, 23);
+            m_btnLoka.TabIndex = 21;
+            m_btnLoka.Text = "Loka";
+            m_btnLoka.UseVisualStyleBackColor = true;
+            m_btnLoka.Click += m_btnLoka_Click;
+            // 
             // label5
             // 
             label5.AutoSize = true;
@@ -419,19 +432,41 @@
             // 
             // m_grbMeta
             // 
+            m_grbMeta.Controls.Add(m_btnAIP);
+            m_grbMeta.Controls.Add(m_btnFylgiSkjol);
             m_grbMeta.Controls.Add(m_btnSkjalamyndari);
             m_grbMeta.Controls.Add(m_btnSkjalaskrá);
             m_grbMeta.Controls.Add(m_btnVorslustofnun);
             m_grbMeta.Location = new Point(1122, 10);
             m_grbMeta.Name = "m_grbMeta";
-            m_grbMeta.Size = new Size(239, 101);
+            m_grbMeta.Size = new Size(318, 76);
             m_grbMeta.TabIndex = 9;
             m_grbMeta.TabStop = false;
-            m_grbMeta.Text = "Lýsigögn";
+            m_grbMeta.Text = "Vörsluútgáfa";
+            // 
+            // m_btnAIP
+            // 
+            m_btnAIP.Location = new Point(219, 22);
+            m_btnAIP.Name = "m_btnAIP";
+            m_btnAIP.Size = new Size(75, 23);
+            m_btnAIP.TabIndex = 4;
+            m_btnAIP.Text = "Opna AIP";
+            m_btnAIP.UseVisualStyleBackColor = true;
+            m_btnAIP.Click += m_btnAIP_Click;
+            // 
+            // m_btnFylgiSkjol
+            // 
+            m_btnFylgiSkjol.Location = new Point(138, 48);
+            m_btnFylgiSkjol.Name = "m_btnFylgiSkjol";
+            m_btnFylgiSkjol.Size = new Size(75, 23);
+            m_btnFylgiSkjol.TabIndex = 3;
+            m_btnFylgiSkjol.Text = "Fylgiskjöl";
+            m_btnFylgiSkjol.UseVisualStyleBackColor = true;
+            m_btnFylgiSkjol.Click += m_btnFylgiSkjol_Click;
             // 
             // m_btnSkjalamyndari
             // 
-            m_btnSkjalamyndari.Location = new Point(33, 63);
+            m_btnSkjalamyndari.Location = new Point(33, 48);
             m_btnSkjalamyndari.Name = "m_btnSkjalamyndari";
             m_btnSkjalamyndari.Size = new Size(90, 23);
             m_btnSkjalamyndari.TabIndex = 2;
@@ -441,7 +476,7 @@
             // 
             // m_btnSkjalaskrá
             // 
-            m_btnSkjalaskrá.Location = new Point(138, 22);
+            m_btnSkjalaskrá.Location = new Point(138, 19);
             m_btnSkjalaskrá.Name = "m_btnSkjalaskrá";
             m_btnSkjalaskrá.Size = new Size(75, 23);
             m_btnSkjalaskrá.TabIndex = 1;
@@ -451,7 +486,7 @@
             // 
             // m_btnVorslustofnun
             // 
-            m_btnVorslustofnun.Location = new Point(33, 22);
+            m_btnVorslustofnun.Location = new Point(33, 19);
             m_btnVorslustofnun.Name = "m_btnVorslustofnun";
             m_btnVorslustofnun.Size = new Size(90, 23);
             m_btnVorslustofnun.TabIndex = 0;
@@ -679,7 +714,7 @@
             colMalMalTitill.HeaderText = "Titill máls";
             colMalMalTitill.Name = "colMalMalTitill";
             colMalMalTitill.ReadOnly = true;
-            colMalMalTitill.Width = 76;
+            colMalMalTitill.Width = 77;
             // 
             // colMalHeitiVorslu
             // 
@@ -815,17 +850,6 @@
             colGagnSQL.ReadOnly = true;
             colGagnSQL.Visible = false;
             // 
-            // m_btnLoka
-            // 
-            m_btnLoka.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            m_btnLoka.Location = new Point(1402, 3);
-            m_btnLoka.Name = "m_btnLoka";
-            m_btnLoka.Size = new Size(89, 23);
-            m_btnLoka.TabIndex = 21;
-            m_btnLoka.Text = "Loka";
-            m_btnLoka.UseVisualStyleBackColor = true;
-            m_btnLoka.Click += m_btnLoka_Click;
-            // 
             // frmSkraarkerfi
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -937,5 +961,7 @@
         private Label m_lblMD5;
         private TextBox m_tboMD5;
         private Button m_btnLoka;
+        private Button m_btnAIP;
+        private Button m_btnFylgiSkjol;
     }
 }

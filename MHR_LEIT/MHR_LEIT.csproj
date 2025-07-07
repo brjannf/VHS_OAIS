@@ -32,6 +32,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="dsLan.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsLan.xsd</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,6 +57,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="dsLan.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsLan.Designer.cs</LastGenOutput>
+    </None>
     <None Update="Hjalp\MHR-LEIT.chm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -61,6 +70,9 @@
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="ReportLanthegi.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="video.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

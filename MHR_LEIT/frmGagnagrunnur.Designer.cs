@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             m_dgvFyrirspurnir = new DataGridView();
             colID = new DataGridViewTextBoxColumn();
             colNafn = new DataGridViewTextBoxColumn();
@@ -41,9 +41,16 @@
             splitContainer1 = new SplitContainer();
             splitContainer2 = new SplitContainer();
             splitContainer3 = new SplitContainer();
+            m_grbMeta = new GroupBox();
+            m_btnAIP = new Button();
+            m_btnFylgiSkjol = new Button();
+            m_btnSkjalamyndari = new Button();
+            m_btnSkjalaskrá = new Button();
+            m_btnVorslustofnun = new Button();
             m_btnLjukaPontun = new Button();
             m_btnSetjaIkorfu = new Button();
             m_grbPontun = new GroupBox();
+            m_btnLoka = new Button();
             m_tacPantanir = new TabControl();
             m_tapGagnagrunnar = new TabPage();
             m_dgvPantGagnagrunnar = new DataGridView();
@@ -73,7 +80,6 @@
             colMalGagnagrunnur = new DataGridViewTextBoxColumn();
             m_grbNidurstodur = new GroupBox();
             m_dgvNidurstodur = new DataGridView();
-            m_btnLoka = new Button();
             ((System.ComponentModel.ISupportInitialize)m_dgvFyrirspurnir).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -87,6 +93,7 @@
             splitContainer3.Panel1.SuspendLayout();
             splitContainer3.Panel2.SuspendLayout();
             splitContainer3.SuspendLayout();
+            m_grbMeta.SuspendLayout();
             m_grbPontun.SuspendLayout();
             m_tacPantanir.SuspendLayout();
             m_tapGagnagrunnar.SuspendLayout();
@@ -127,7 +134,7 @@
             colNafn.DataPropertyName = "nafn";
             colNafn.HeaderText = "Titill fyrirspurnar";
             colNafn.Name = "colNafn";
-            colNafn.Width = 108;
+            colNafn.Width = 109;
             // 
             // colLysing
             // 
@@ -200,15 +207,80 @@
             // 
             // splitContainer3.Panel2
             // 
+            splitContainer3.Panel2.Controls.Add(m_grbMeta);
             splitContainer3.Panel2.Controls.Add(m_btnLjukaPontun);
             splitContainer3.Panel2.Controls.Add(m_btnSetjaIkorfu);
             splitContainer3.Size = new Size(924, 287);
             splitContainer3.SplitterDistance = 184;
             splitContainer3.TabIndex = 1;
             // 
+            // m_grbMeta
+            // 
+            m_grbMeta.Controls.Add(m_btnAIP);
+            m_grbMeta.Controls.Add(m_btnFylgiSkjol);
+            m_grbMeta.Controls.Add(m_btnSkjalamyndari);
+            m_grbMeta.Controls.Add(m_btnSkjalaskrá);
+            m_grbMeta.Controls.Add(m_btnVorslustofnun);
+            m_grbMeta.Location = new Point(586, 13);
+            m_grbMeta.Name = "m_grbMeta";
+            m_grbMeta.Size = new Size(318, 76);
+            m_grbMeta.TabIndex = 11;
+            m_grbMeta.TabStop = false;
+            m_grbMeta.Text = "Vörsluútgáfa";
+            // 
+            // m_btnAIP
+            // 
+            m_btnAIP.Location = new Point(219, 22);
+            m_btnAIP.Name = "m_btnAIP";
+            m_btnAIP.Size = new Size(75, 23);
+            m_btnAIP.TabIndex = 4;
+            m_btnAIP.Text = "Opna AIP";
+            m_btnAIP.UseVisualStyleBackColor = true;
+            m_btnAIP.Click += m_btnAIP_Click;
+            // 
+            // m_btnFylgiSkjol
+            // 
+            m_btnFylgiSkjol.Location = new Point(138, 48);
+            m_btnFylgiSkjol.Name = "m_btnFylgiSkjol";
+            m_btnFylgiSkjol.Size = new Size(75, 23);
+            m_btnFylgiSkjol.TabIndex = 3;
+            m_btnFylgiSkjol.Text = "Fylgiskjöl";
+            m_btnFylgiSkjol.UseVisualStyleBackColor = true;
+            m_btnFylgiSkjol.Click += m_btnFylgiSkjol_Click;
+            // 
+            // m_btnSkjalamyndari
+            // 
+            m_btnSkjalamyndari.Location = new Point(33, 48);
+            m_btnSkjalamyndari.Name = "m_btnSkjalamyndari";
+            m_btnSkjalamyndari.Size = new Size(90, 23);
+            m_btnSkjalamyndari.TabIndex = 2;
+            m_btnSkjalamyndari.Text = "Skjalamyndari";
+            m_btnSkjalamyndari.UseVisualStyleBackColor = true;
+            m_btnSkjalamyndari.Click += m_btnSkjalamyndari_Click;
+            // 
+            // m_btnSkjalaskrá
+            // 
+            m_btnSkjalaskrá.Location = new Point(138, 19);
+            m_btnSkjalaskrá.Name = "m_btnSkjalaskrá";
+            m_btnSkjalaskrá.Size = new Size(75, 23);
+            m_btnSkjalaskrá.TabIndex = 1;
+            m_btnSkjalaskrá.Text = "Skjalaskrá";
+            m_btnSkjalaskrá.UseVisualStyleBackColor = true;
+            m_btnSkjalaskrá.Click += m_btnSkjalaskrá_Click;
+            // 
+            // m_btnVorslustofnun
+            // 
+            m_btnVorslustofnun.Location = new Point(33, 19);
+            m_btnVorslustofnun.Name = "m_btnVorslustofnun";
+            m_btnVorslustofnun.Size = new Size(90, 23);
+            m_btnVorslustofnun.TabIndex = 0;
+            m_btnVorslustofnun.Text = "Vörslustofnun";
+            m_btnVorslustofnun.UseVisualStyleBackColor = true;
+            m_btnVorslustofnun.Click += m_btnVorslustofnun_Click;
+            // 
             // m_btnLjukaPontun
             // 
-            m_btnLjukaPontun.Location = new Point(724, 53);
+            m_btnLjukaPontun.Location = new Point(41, 53);
             m_btnLjukaPontun.Name = "m_btnLjukaPontun";
             m_btnLjukaPontun.Size = new Size(147, 23);
             m_btnLjukaPontun.TabIndex = 1;
@@ -219,7 +291,7 @@
             // 
             // m_btnSetjaIkorfu
             // 
-            m_btnSetjaIkorfu.Location = new Point(724, 13);
+            m_btnSetjaIkorfu.Location = new Point(41, 14);
             m_btnSetjaIkorfu.Name = "m_btnSetjaIkorfu";
             m_btnSetjaIkorfu.Size = new Size(147, 23);
             m_btnSetjaIkorfu.TabIndex = 0;
@@ -238,6 +310,17 @@
             m_grbPontun.TabIndex = 2;
             m_grbPontun.TabStop = false;
             m_grbPontun.Text = "Gögn óafgreitt";
+            // 
+            // m_btnLoka
+            // 
+            m_btnLoka.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            m_btnLoka.Location = new Point(354, 12);
+            m_btnLoka.Name = "m_btnLoka";
+            m_btnLoka.Size = new Size(75, 23);
+            m_btnLoka.TabIndex = 2;
+            m_btnLoka.Text = "Loka";
+            m_btnLoka.UseVisualStyleBackColor = true;
+            m_btnLoka.Click += m_btnLoka_Click;
             // 
             // m_tacPantanir
             // 
@@ -446,8 +529,8 @@
             // 
             colMalSkraID.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             colMalSkraID.DataPropertyName = "documentid";
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            colMalSkraID.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            colMalSkraID.DefaultCellStyle = dataGridViewCellStyle1;
             colMalSkraID.HeaderText = "Auðkenni skjals";
             colMalSkraID.Name = "colMalSkraID";
             colMalSkraID.ReadOnly = true;
@@ -457,8 +540,8 @@
             // 
             colMalTitillSkjals.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             colMalTitillSkjals.DataPropertyName = "titill";
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            colMalTitillSkjals.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            colMalTitillSkjals.DefaultCellStyle = dataGridViewCellStyle2;
             colMalTitillSkjals.HeaderText = "Titill skjals";
             colMalTitillSkjals.Name = "colMalTitillSkjals";
             colMalTitillSkjals.ReadOnly = true;
@@ -467,19 +550,19 @@
             // 
             colMalTitillMals.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             colMalTitillMals.DataPropertyName = "maltitill";
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            colMalTitillMals.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            colMalTitillMals.DefaultCellStyle = dataGridViewCellStyle3;
             colMalTitillMals.HeaderText = "Titill máls";
             colMalTitillMals.Name = "colMalTitillMals";
             colMalTitillMals.ReadOnly = true;
-            colMalTitillMals.Width = 76;
+            colMalTitillMals.Width = 77;
             // 
             // colMalHeitiVorslu
             // 
             colMalHeitiVorslu.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             colMalHeitiVorslu.DataPropertyName = "heitivorslu";
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            colMalHeitiVorslu.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            colMalHeitiVorslu.DefaultCellStyle = dataGridViewCellStyle4;
             colMalHeitiVorslu.HeaderText = "Heiti vörsluútgáfu";
             colMalHeitiVorslu.Name = "colMalHeitiVorslu";
             colMalHeitiVorslu.ReadOnly = true;
@@ -550,17 +633,6 @@
             m_dgvNidurstodur.TabIndex = 0;
             m_dgvNidurstodur.CellContentClick += keyrafyrirspurn_CellClick;
             // 
-            // m_btnLoka
-            // 
-            m_btnLoka.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            m_btnLoka.Location = new Point(354, 12);
-            m_btnLoka.Name = "m_btnLoka";
-            m_btnLoka.Size = new Size(75, 23);
-            m_btnLoka.TabIndex = 2;
-            m_btnLoka.Text = "Loka";
-            m_btnLoka.UseVisualStyleBackColor = true;
-            m_btnLoka.Click += m_btnLoka_Click;
-            // 
             // frmGagnagrunnur
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -582,6 +654,7 @@
             splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer3).EndInit();
             splitContainer3.ResumeLayout(false);
+            m_grbMeta.ResumeLayout(false);
             m_grbPontun.ResumeLayout(false);
             m_tacPantanir.ResumeLayout(false);
             m_tapGagnagrunnar.ResumeLayout(false);
@@ -639,5 +712,11 @@
         private DataGridViewTextBoxColumn colMalSlod;
         private DataGridViewTextBoxColumn colMalGagnagrunnur;
         private Button m_btnLoka;
+        private GroupBox m_grbMeta;
+        private Button m_btnAIP;
+        private Button m_btnFylgiSkjol;
+        private Button m_btnSkjalamyndari;
+        private Button m_btnSkjalaskrá;
+        private Button m_btnVorslustofnun;
     }
 }
