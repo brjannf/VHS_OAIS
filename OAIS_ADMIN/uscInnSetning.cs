@@ -468,7 +468,17 @@ namespace OAIS_ADMIN
             skjalamyndari.hreinsaHlut();
             DataSet ds = new DataSet();
             ds.ReadXml(strArchiveIndex);
-            string strNafn = ds.Tables["archiveCreatorList"].Rows[0]["creatorName"].ToString();
+            //datasetið breytist ef fleiri enn einn skjalamyndari
+            string strNafn = string.Empty;
+            if(ds.Tables["archiveCreatorList"].Columns.Contains("creatorName"))
+            {
+                strNafn = ds.Tables["archiveCreatorList"].Rows[0]["creatorName"].ToString();
+            }
+            else
+            {
+                
+            }
+
             skjalamyndari.getSkjalamyndara(strNafn);
 
             
@@ -968,17 +978,26 @@ namespace OAIS_ADMIN
                 {
                     if (fifo.FullName.Contains("VINNUSKJÖL") || fifo.FullName.Contains("Documents"))
                     {
-                        File.Copy(file, Path.Combine(strDest, Path.GetFileName(file)), true);
+                        //tekk try catch á þetta þar sem hugsanlega verðr þetta aldrei notað og er til á diski - frumeintak
+                        try
+                        {
+                            File.Copy(file, Path.Combine(strDest, Path.GetFileName(file)), true);
 
-                        m_MD5.AIP = m_strRotVarsla;
-                        m_MD5.slod = strDest;
-                        m_MD5.file = Path.GetFileName(file); //þyrfti að ná orginal nafninu TODO gera leit í xml fyrri þetta.
-                                                             //DataSet ds = new DataSet();
-                                                             //ds.ReadXml(m_strSlodVarsla+ "\\Tables\\table1\\table1.xml");
-                        FileInfo folo = new FileInfo(file);
-                        m_lStaerdFrum   += folo.Length;
-                        m_MD5.MD5 = md5(Path.Combine(strDest, Path.GetFileName(file)));
-                        m_MD5.vista();
+                            m_MD5.AIP = m_strRotVarsla;
+                            m_MD5.slod = strDest;
+                            m_MD5.file = Path.GetFileName(file); //þyrfti að ná orginal nafninu TODO gera leit í xml fyrri þetta.
+                                                                 //DataSet ds = new DataSet();
+                                                                 //ds.ReadXml(m_strSlodVarsla+ "\\Tables\\table1\\table1.xml");
+                            FileInfo folo = new FileInfo(file);
+                            m_lStaerdFrum += folo.Length;
+                            m_MD5.MD5 = md5(Path.Combine(strDest, Path.GetFileName(file)));
+                            m_MD5.vista();
+                        }
+                        catch (Exception x)
+                        {
+
+                           // throw;
+                        }
                     }
                 }
                 //if()

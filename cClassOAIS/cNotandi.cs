@@ -335,6 +335,28 @@ namespace cClassOAIS
 
         }
 
+        public void breytaFyrirspurnumGOPO()
+        {
+
+            sækjaTengistreng();
+
+            MySqlConnection conn = new MySqlConnection(m_strTenging);
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("", conn);
+            //kennitala, notendanafn, lykilorð, vörslustofnun, nafn, virkur, athugasemdir, síðasta_innskráning, hver_skradi, dags_skráð, hver_breytti, dags_breytt, hlutverk, email, heimilisfang, simi
+            command.Parameters.AddWithValue("@fyrirspurn1", "SELECT distinct j.JournalKeyID as lykillID,  concat(Number,' ', j.Subject) as malalykill, parentid, j.number FROM journalkeys j, cases c where j.journalkeyid=c.journalkeyid and number is not null order by cast(SUBSTRING_INDEX (number, '.', 1) as unsigned),cast(SUBSTRING_INDEX (number, '.', -1) as unsigned);");
+            command.Parameters.AddWithValue("@fyrirspurn2", "SELECT distinct j.JournalKeyID as lykillID,  concat(Number,' ', j.Subject) as malalykill, parentid, number  FROM journalkeys j where number is not null and number like '%.%' order by cast(SUBSTRING_INDEX (number, '.', 1) as unsigned),cast(SUBSTRING_INDEX (number, '.', -1) as unsigned);");
+            command.Parameters.AddWithValue("@fyrirspurn3", "SELECT j.JournalKeyID as lykillID,  concat(Number,' ', j.Subject) as malalykill FROM journalkeys j where number not like '%.%' order by number;");
+
+            command.CommandText = "UPDATE dt_fyrirspurnir d set `fyrirspurn`=@fyrirspurn1  where gagnagrunnur = 'AVID_HARN_2023067_1' and nafn = 'malalykill';";
+            command.ExecuteNonQuery();
+            command.CommandText = "UPDATE dt_fyrirspurnir d set `fyrirspurn`=@fyrirspurn2 where gagnagrunnur = 'AVID_HARN_2023067_1' and nafn = 'malalykill_allt';";
+            command.ExecuteNonQuery();
+            //þarf svo að setja fyrirspurn um yfirlykla inn.
+            command.CommandText = "INSERT INTO dt_fyrirspurnir set nafn='yfirlyklar', `fyrirspurn`=@fyrirspurn3 , lysing = 'yfirlyklar', gagnagrunnur = 'AVID_HARN_2023067_1' ,nr = '0';";
+            command.ExecuteNonQuery();
+        }
+
         public void lengthDataDIPDatabase()
         {
             sækjaTengistreng();
@@ -345,6 +367,14 @@ namespace cClassOAIS
             MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
         }
 
+        public void addAthugasemdumDIP()
+        {
+            sækjaTengistreng();
+            string strSQL = "ALTER TABLE `dt_karfa_dip` ADD COLUMN `athugasemdir` VARCHAR(1000) AFTER `dags_skrad`;";
+            MySqlHelper.ExecuteNonQuery(m_strTenging, strSQL);
+
+            
+        }
         public void skraInnskra(string strKennitala)
         {
             sækjaTengistreng();

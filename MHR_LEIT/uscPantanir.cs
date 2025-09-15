@@ -980,6 +980,8 @@ namespace MHR_LEIT
             {
                 if (e.Node.Text == "Óafgreidd pöntun")
                 {
+                    colMalRemove.Visible = true;
+                    colSkraRemove.Visible = true;
                     m_tboPontunAth.Text = string.Empty;
                     m_btnPantAthUpp.Enabled = false;
                     m_lblKarfaNr.Visible = false;
@@ -992,6 +994,7 @@ namespace MHR_LEIT
                     m_dgvDIPList.AutoGenerateColumns = false;
                     m_dgvDIPList.DataSource = m_dtDIPSkra;
                     m_tapPontunSkra.Text = string.Format("Skráakerfi ({0})", m_dtDIPSkra.Rows.Count);
+                   
 
                     if (m_dsDIPmal.Tables.Count != 0)
                     {
@@ -1022,6 +1025,9 @@ namespace MHR_LEIT
 
                     return;
                 }
+
+                colMalRemove.Visible = false;
+                colSkraRemove.Visible = false;
                 m_btnKlaraPontun.Enabled = false;
                 m_btnOpna.Enabled = true;
                 m_btnTæma.Enabled = false;

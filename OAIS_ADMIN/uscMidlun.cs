@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using cClassOAIS;
 using cClassVHS;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -16,6 +18,7 @@ using Google.Protobuf.WellKnownTypes;
 using MySql.Data.MySqlClient;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using Excel = Microsoft.Office.Interop.Excel;
+using ClosedXML;
 
 namespace OAIS_ADMIN
 {
@@ -448,11 +451,11 @@ namespace OAIS_ADMIN
                         midlun.skjalamyndari_audkenni = skjalamyndari.auðkenni_5_1_6;
                         midlun.skjalamyndari_heiti = skjalamyndari.opinbert_heiti_5_1_2;
                         midlun.tafla_grunns = strTableName;
-                        if(m_strHeitiKerfis == "GoPro" || m_strHeitiKerfis == "OneCRM")
+                        if (m_strHeitiKerfis == "GoPro" || m_strHeitiKerfis == "OneCRM")
                         {
                             midlun.tegund_grunns = "Málakerfi"; //þarf að finna betur úr þessu eða láta notanda velja.
                         }
-                      
+
                         midlun.skjalaskra_adgengi = skrá.skilyrði_aðgengi_3_4_1;
                         midlun.skjalaskra_afharnr = skrá.afhendingar_tilfærslur_3_2_4;
                         midlun.skjalaskra_innihald = skrá.yfirlit_innihald_3_3_1;
@@ -462,7 +465,15 @@ namespace OAIS_ADMIN
                         midlun.insertToTable(strColumn, rd, strDataBase, strTableName, strTime, strMetadataFunc, skrá.auðkenni_3_1_1, strSlod, m_chbOCR.Checked, m_strHeitiKerfis);
                         m_prbGogn.PerformStep();
                         m_lblGognStatus.Text = string.Format("Vista röð {0}/{1}", m_prbGogn.Value, m_prbGogn.Maximum);
-                        Application.DoEvents();
+                        try
+                        {
+                            Application.DoEvents();
+                        }
+                        catch (Exception x)
+                        {
+
+
+                        }
                     }
 
                     //4. skrá í yfirlit_dálkar
@@ -471,7 +482,7 @@ namespace OAIS_ADMIN
                 }
 
             }
-          
+
         }
 
         private void m_dgvFyrirSpurnir_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -524,7 +535,7 @@ namespace OAIS_ADMIN
 
         private void mdlunOneCRM()
         {
-            
+
             cMIdlun midlun = new cMIdlun();
             midlun.m_bAfrit = virkurnotandi.m_bAfrit;
             //1. Eyða því sem er ekki í documents töflunni
@@ -741,7 +752,7 @@ namespace OAIS_ADMIN
                 {
                     midlunGoPro();
                 }
-                if(m_strHeitiKerfis == "OneCRM")
+                if (m_strHeitiKerfis == "OneCRM")
                 {
                     mdlunOneCRM();
                 }
@@ -754,7 +765,7 @@ namespace OAIS_ADMIN
                 }
                 fyllaVorsluUtgafur();
             }
-          
+
             MessageBox.Show("Búið");
             m_grbStatus.Visible = false;
         }
@@ -839,15 +850,15 @@ namespace OAIS_ADMIN
         private void m_dgvUtafurKlasarVarsla_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
-            foreach(DataGridViewColumn col in senderGrid.Columns) 
+            foreach (DataGridViewColumn col in senderGrid.Columns)
             {
-                if(col.Name != "colTaka")
+                if (col.Name != "colTaka")
                 {
                     col.ReadOnly = true;
                 }
             }
             senderGrid.Rows[e.RowIndex].Cells["colTaka"].ReadOnly = false;
-           
+
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
                 if (senderGrid.Columns["colGeymsluskra"].Index == e.ColumnIndex)
@@ -886,7 +897,7 @@ namespace OAIS_ADMIN
                 string strDags = DateTime.Now.Day.ToString() + "_" + DateTime.Now.Month.ToString() + "_" + DateTime.Now.Year.ToString();
                 if (m_trwKlasarVorslustonun.SelectedNode.Level == 0)
                 {
-                    strAfritunarMappa = string.Format(strMappa +"\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
+                    strAfritunarMappa = string.Format(strMappa + "\\Klasi_{0}_{1}", m_trwKlasarVorslustonun.SelectedNode.Text, strDags);
                 }
                 else
                 {
@@ -1087,6 +1098,7 @@ namespace OAIS_ADMIN
                         string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
                         dtGogn = back.getDataFromTable(str, "vorsluutgafa", strID);
                         strSQLTEXT += createInsert(dtGogn, "dt_midlun");
+                       // exportExcellCloseXMl(dtGogn, strSchema.Replace("insert.Sql", "dt_midlun.xlsx"));
                     }
                     if (str == "ds_gagnagrunnar")
                     {
@@ -1434,6 +1446,8 @@ namespace OAIS_ADMIN
                     string strID = strAuðkenni.Replace(".", "_").Remove(strAuðkenni.Length - 1);
                     dtGogn = back.getDataFromTable(str, "gagnagrunnur", strID);
                     strSQLTEXT += createInsert(dtGogn, "dt_fyrirspurnir"); //vantar að laga slaufusviga {}
+                    //skrifa fyrirspurnir í excel
+                    exportExcellCloseXMl(dtGogn, strSchema.Replace("insert.Sql", "dt_fyrirspurnir.xlsx"));
                 }
 
 
@@ -1457,6 +1471,11 @@ namespace OAIS_ADMIN
                     string strID = strAuðkenni.Remove(strAuðkenni.Length - 1);
                     dtGogn = back.getDataFromTable(str, "vorsluutgafa", strID);
                     strSQLTEXT += createInsert(dtGogn, "dt_midlun");
+                    //skrifa í excell til að importa inn í aðalgrunn síðar
+                    exportExcellCloseXMl(dtGogn, strSchema.Replace("insert.Sql", "dt_midlun.xlsx"));
+                    
+                   
+
                 }
                 if (str == "ds_gagnagrunnar")
                 {
@@ -1486,6 +1505,50 @@ namespace OAIS_ADMIN
             //vista innsertið
             //strSchema = strSchema + "\\INSERT.sql";
             File.WriteAllText(strSchema, strSQLTEXT);
+        }
+        private void exportExcellCloseXMl(System.Data.DataTable tbl, string excelFilePath)
+        {
+            // Pseudocode:
+            // 1. Create a new XLWorkbook.
+            // 2. Add a worksheet.
+            // 3. Write DataTable columns as headers.
+            // 4. Write DataTable rows.
+            // 5. Save the workbook to the given path.
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Sheet1");
+
+                // Add column headers
+                for (int col = 0; col < tbl.Columns.Count; col++)
+                {
+                    worksheet.Cell(1, col + 1).Value = tbl.Columns[col].ColumnName;
+                }
+
+                // Add rows
+                for (int row = 0; row < tbl.Rows.Count; row++)
+                {
+                    for (int col = 0; col < tbl.Columns.Count; col++)
+                    {
+                        // Explicitly convert the object to a string before assigning it to the cell
+                        string strGildi = tbl.Rows[row][col]?.ToString();
+                        if(strGildi.Length > 32767)
+                        {
+                            string strLangtGildi = "OF LANGUR TEXTI_" + row + "_" +col; // strGildi.Substring(0, 32766);
+                            worksheet.Cell(row + 2, col + 1).Value = strLangtGildi;
+                            File.Create(excelFilePath.Replace("dt_midlun.xlsx", "OF LANGUR TEXTI_" + row + "_" + col + ".txt")).Close();
+                            File.WriteAllText(excelFilePath.Replace("dt_midlun.xlsx", "OF LANGUR TEXTI_" + row + "_" + col + ".txt"), strGildi);
+                        }
+                        else
+                        {
+                            worksheet.Cell(row + 2, col + 1).Value = tbl.Rows[row][col]?.ToString();
+                        }
+                            
+                    }
+                }
+
+                workbook.SaveAs(excelFilePath);
+            }
         }
         private void exportExell(System.Data.DataTable tbl, string excelFilePath)
         {
@@ -1562,8 +1625,38 @@ namespace OAIS_ADMIN
                 }
                 strRet += strClolumns.Remove(strClolumns.Length - 1) + ");" + Environment.NewLine;
                 strClolumns = string.Empty;
-               
+
             }
+            //if (strTafla == "dt_midlun")
+            //{
+            //    string strInsertALLT = string.Empty;
+            //    foreach (DataRow dr in dt.Rows)
+            //    {
+            //       string strInsert = "INSERT INTO db_oais_admin." + strTafla + " (vorsluutgafa, titill_vorsluutgafu, heiti_gagangrunns, tegund_grunns, tafla_grunns, dalkur_documentid, documentid, dalkur_doctitill, doctitill, dalkur_docCreated, docCreated, dalkur_docLastWriten, docLastWriten, dalkur_malID, malID, dalkur_malTitill, maltitill, docInnihald, extension, vorslustofnun_audkenni, vorslustofnun_heiti, skjalamyndari_audkenni, skjalamyndari_heiti, skjalaskra_timabil, skjalaskra_adgengi, skjalaskra_afharnr, skjalaskra_innihald, hver_skradi, dags_skrad)  VALUES (";
+            //        foreach (DataColumn col in dt.Columns)
+            //        {
+            //            if(col.ColumnName != "id")
+            //            {
+            //                string strBla = mysqlESCAPE(dr[col.ColumnName].ToString());
+            //                strClolumns += "'" + mysqlESCAPE(dr[col.ColumnName].ToString()) + "',";
+            //            }
+            //            if(col.ColumnName == "dags_skrad")
+            //            {
+            //                strClolumns += "NOW(),";
+            //            }
+            //            if(col.ColumnName == "docInnihald")
+            //            {
+            //                strClolumns += "Texti";
+            //            }
+
+            //        }
+            //        strInsert += strClolumns.Remove(strClolumns.Length - 1) + ");" + Environment.NewLine;
+            //        strClolumns = string.Empty;
+            //        strInsertALLT += strInsert;
+            //    }
+            //    File.Create("C:\\temp\\shit.sql").Close();
+            //    File.WriteAllText("C:\\temp\\shit.sql", strInsertALLT);
+            //}
             return strRet;
         }
         private string mysqlESCAPE(string strTexti)
@@ -1637,15 +1730,15 @@ namespace OAIS_ADMIN
             //******************skrá fyrirsprunir úr templet
 
             //DataTable dt = midlun.getFyrirspurnTemplate(m_strHeitiKerfis);
-   
+
             //foreach(DataRow r in dt.Rows)
             //{
-             
+
             //    midlun.vistaFyrirSpurn(r["fyrirspurn"].ToString(), m_strGrunnur, r["nafn"].ToString(), r["lysing"].ToString(),"0");
             //}
             //laga malID í miðlunartöflu fyrir gopro
             DataTable dtMal = midlun.getmalIDfromDocument(m_strGrunnur);
-            foreach(DataRow rr in dtMal.Rows)
+            foreach (DataRow rr in dtMal.Rows)
             {
                 string strMalID = rr["sagid"].ToString();
                 string strDociD = rr["documentID"].ToString();
@@ -1838,7 +1931,255 @@ namespace OAIS_ADMIN
             //    Application.DoEvents();
         }
 
+        private void Restore(string strRestoreFile, string strDataBase)
+        {
+            string file = strRestoreFile;
+            string constring = string.Empty;
+            if (strDataBase != string.Empty)
+            {
+                cMIdlun midlun = new cMIdlun();
+                midlun.m_bAfrit = virkurnotandi.m_bAfrit;
+                midlun.createDatabase(strDataBase);
+                constring = "server = localhost; user id = root; Password = ivarBjarkLind; database = " + strDataBase + ";";
+            }
+            else
+            {
+                constring = "server = localhost; user id = root; Password = ivarBjarkLind;"; // database = db_oais_admin_afrit;";
+            }
+            //  constring = "server = localhost; user id = root; Password = ivarBjarkLind;"; // database = db_oais_admin_afrit;";
+            using (MySqlConnection conn = new MySqlConnection(constring))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        cmd.Connection = conn;
+                        conn.Open();
+                        mb.ImportFromFile(file);
+                        conn.Close();
+                    }
+                }
+            }
+        }
+
+        private void m_btnSQLImport_Click(object sender, EventArgs e)
+        {
+            DialogResult result = openFileDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                //opna sql dump
+                string strFile = openFileDialog1.FileName;
+
+            //1. restora grunn
+                {
+                    FileInfo fifo = new FileInfo(strFile);
+                    m_grbStatus.Visible = true;
+                    m_prbToflur.Maximum = 4;
+                    m_prbToflur.Value= 0;
+                    m_prbToflur.Step = 1;
+                    m_lblToflurStatus.Text = "restora grunn aðgerð: " + string.Format("{0} af {1}", m_prbToflur.Value,m_prbToflur.Maximum);
+                    Application.DoEvents();
+                    m_lblBackupStatus.Text = fifo.Name;
+                    DirectoryInfo di = new DirectoryInfo(fifo.Directory.FullName);
+                    foreach (FileInfo fi in di.GetFiles())
+                    {
+                        if (fi.Extension.ToLower() == ".sql")
+                        {
+                            //import sql
+                            if(fi.Name != "insert.Sql")
+                            {
+                                //keyra grunninn inn
+                               // cBackup back = new cBackup();
+                               Restore(fi.FullName, fi.Name.Replace(".Sql",""));
+
+                            }
+                          //  ImportSQL(strFile, "db_oais_admin");
+                        }
+                    }
+
+                    m_prbToflur.PerformStep();
+                    m_lblToflurStatus.Text = "Flyt inn metagögn aðgerð: " + string.Format("{0} af {1}", m_prbToflur.Value, m_prbToflur.Maximum);
+
+                    //2. keyra inn midlun
+                    if (strFile.ToLower().EndsWith(".xlsx"))
+                    {
+                       
+                        Application.DoEvents();
+                        DataTable dt = ImportExcelToDataTable(strFile);
+                        
+                        m_prbGogn.Maximum = dt.Rows.Count;
+                        m_prbGogn.Value = 0;
+                        m_prbGogn.Step = 1;
+
+                        Application.DoEvents();
+                        if (dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow r in dt.Rows)
+                            {
+                                midlun.id = 0;
+                                midlun.vorsluutgafa = r["vorsluutgafa"].ToString();
+                                midlun.titill_vorsluutgafu = r["titill_vorsluutgafu"].ToString();
+                                midlun.heiti_gagangrunns = r["heiti_gagangrunns"].ToString();
+                                midlun.tegund_grunns = r["tegund_grunns"].ToString();
+                                midlun.tafla_grunns = r["tafla_grunns"].ToString();
+                                midlun.dalkur_documentid = r["dalkur_documentid"].ToString();
+                                midlun.documentid = r["documentid"].ToString();
+                                midlun.dalkur_doctitill = r["dalkur_doctitill"].ToString();
+                                midlun.doctitill = r["doctitill"].ToString();
+                                midlun.dalkur_docCreated = r["dalkur_docCreated"].ToString();
+                                midlun.docCreated = r["docCreated"].ToString();
+                                midlun.dalkur_docLastWriten = r["dalkur_docLastWriten"].ToString();
+                                midlun.docLastWriten = r["docLastWriten"].ToString();
+                                midlun.dalkur_malID = r["dalkur_malID"].ToString();
+                                midlun.malID = r["malID"].ToString();
+                                midlun.dalkur_malTitill = r["dalkur_malTitill"].ToString();
+                                midlun.maltitill = r["maltitill"].ToString();
+
+                                if(r["docInnihald"].ToString().StartsWith("OF LANGUR TEXTI_"))
+                                {
+                                    //opna skrá
+                                    string strFiletxt = strFile.Replace("dt_midlun.xlsx", r["docInnihald"].ToString() + ".txt");
+                                    string strTexti = File.ReadAllText(strFiletxt);
+                                    midlun.docInnihald = strTexti;
+                                }
+                                else
+                                {
+                                    midlun.docInnihald = r["docInnihald"].ToString();
+                                }
+                                   
+                                midlun.extension = r["extension"].ToString();
+                                midlun.vorslustofnun_audkenni = r["vorslustofnun_audkenni"].ToString();
+                                midlun.vorslustofnun_heiti = r["vorslustofnun_heiti"].ToString();
+                                cSkjalamyndari skjalM = new cSkjalamyndari();
+                                skjalM.m_bAfrit = virkurnotandi.m_bAfrit;
+                                skjalM.getSkjalamyndara(r["skjalamyndari_heiti"].ToString());
+                                //þarf að tékka á 
+
+                                midlun.skjalamyndari_audkenni = Convert.ToInt32(skjalM.auðkenni_5_1_6).ToString("00000"); // Convert.ToInt32(r["skjalamyndari_audkenni"]).ToString("00000");//fimm stafa dettur út í excel
+                                midlun.skjalamyndari_heiti = r["skjalamyndari_heiti"].ToString();
+                                midlun.skjalaskra_timabil = r["skjalaskra_timabil"].ToString();
+                                midlun.skjalaskra_adgengi = r["skjalaskra_adgengi"].ToString();
+                                midlun.skjalaskra_afharnr = r["skjalaskra_afharnr"].ToString();
+                                midlun.skjalaskra_innihald = r["skjalaskra_innihald"].ToString();
+                                midlun.hver_skradi = r["hver_skradi"].ToString();
+                                midlun.dags_skrad = r["dags_skrad"].ToString();
+                                midlun.vista();
+                               
+
+                                // documentid	dalkur_doctitill	doctitill	dalkur_docCreated	docCreated	dalkur_docLastWriten	docLastWriten	dalkur_malID	malID	dalkur_malTitill	maltitill	docInnihald	extension	vorslustofnun_audkenni	vorslustofnun_heiti	skjalamyndari_audkenni	skjalamyndari_heiti	skjalaskra_timabil	skjalaskra_adgengi	skjalaskra_afharnr	skjalaskra_innihald	hver_skradi	dags_skrad
+                                m_prbGogn.PerformStep();
+                                m_lblGognStatus.Text = string.Format("{0}/{1}", m_prbGogn.Value, m_prbGogn.Maximum);
+                                Application.DoEvents();
+
+                            }
+
+                        }
+                        //3. setja inn fyrirspurninr
+                        m_prbToflur.PerformStep();
+                        m_lblToflurStatus.Text = "Skrái fyrirspurnir: aðgerð" + string.Format("{0} af {1}", m_prbToflur.Value, m_prbToflur.Maximum);
+                        Application.DoEvents();
+                        strFile =   strFile.Replace("dt_midlun.xlsx", "dt_fyrirspurnir.xlsx");
+                        dt = ImportExcelToDataTable(strFile);
+                        foreach(DataRow r in dt.Rows)
+                        {
+                            midlun.id = 0;
+                            m_strGrunnur = r["gagnagrunnur"].ToString();
+                            string strFyrirspurn = r["fyrirspurn"].ToString();
+                            string strNafn = r["nafn"].ToString();
+                             string strLysing = r["lysing"].ToString();
+                           
+                            midlun.vistaFyrirSpurn(strFyrirspurn, m_strGrunnur, strNafn, strLysing, "0");
+                            //id, nafn, fyrirspurn, lysing, gagnagrunnur, nr
+                        }
+                        //4.merkja miðlað
+                        m_prbToflur.PerformStep();
+                        m_lblToflurStatus.Text = "Skrái miðlað  aðgerð" + string.Format("{0} af {1}", m_prbToflur.Value, m_prbToflur.Maximum);
+                        Application.DoEvents();
+                        cVorsluutgafur varsla = new cVorsluutgafur();
+                        varsla.m_bAfrit = virkurnotandi.m_bAfrit;
+                        varsla.vorsluutgafa = midlun.vorsluutgafa;
+                        varsla.hver_midladi = virkurnotandi.nafn;
+                        varsla.midlun = "1";
+                        varsla.uppFaeraVegnaMidlun();
+                        fyllaVorsluUtgafur();
+                    }
+                    //keyra inn gagnagrunn 
+
+                    
+
+                }   
+            
+
+
+                MessageBox.Show("Búið");
+
+                m_grbStatus.Visible = false;
+                Application.DoEvents();
+            }
+        }
+        private DataTable ImportExcelToDataTable(string filePath)
+        {
+            // Pseudocode:
+            // 1. Create a new DataTable.
+            // 2. Use Microsoft.Office.Interop.Excel to open the Excel file.
+            // 3. Read the first worksheet.
+            // 4. Read the header row to create columns in the DataTable.
+            // 5. Loop through the rows and add them to the DataTable.
+            // 6. Close and release Excel objects.
+            // 7. Return the DataTable.
+
+            DataTable dt = new DataTable();
+            Excel.Application excelApp = null;
+            Excel.Workbook workbook = null;
+            Excel._Worksheet worksheet = null;
+            Excel.Range range = null;
+
+            try
+            {
+                excelApp = new Excel.Application();
+                workbook = excelApp.Workbooks.Open(filePath);
+                worksheet = workbook.Sheets[1];
+                range = worksheet.UsedRange;
+
+                int rowCount = range.Rows.Count;
+                int colCount = range.Columns.Count;
+                m_lblToflurStatus.Text = "Les excell aðgerð" + string.Format("{0} af {1}", m_prbToflur.Value, m_prbToflur.Maximum);
+                m_prbGogn.Maximum = dt.Rows.Count;
+                m_prbGogn.Value = 0;
+                m_prbGogn.Step = 1;
+                // Add columns
+                for (int c = 1; c <= colCount; c++)
+                {
+                    string colName = range.Cells[1, c].Value2 != null ? range.Cells[1, c].Value2.ToString() : $"Column{c}";
+                    dt.Columns.Add(colName);
+                }
+
+                // Add rows
+                for (int r = 2; r <= rowCount; r++)
+                {
+                    DataRow dr = dt.NewRow();
+                    for (int c = 1; c <= colCount; c++)
+                    {
+                        dr[c - 1] = range.Cells[r, c].Value2 != null ? range.Cells[r, c].Value2.ToString() : string.Empty;
+                    }
+                    dt.Rows.Add(dr);
+                    m_prbGogn.PerformStep();
+                    m_lblGognStatus.Text = string.Format("{0}/{1}", m_prbGogn.Value, m_prbGogn.Maximum);
+                    Application.DoEvents();
+                }
+            }
+            finally
+            {
+                if (workbook != null) workbook.Close(false);
+                if (excelApp != null) excelApp.Quit();
+                if (range != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(range);
+                if (worksheet != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
+                if (workbook != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+                if (excelApp != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
+            }
+            return dt;
+        }
         //   MessageBox.Show("Búið");
     }
-   
+
 }

@@ -745,7 +745,11 @@ namespace MHR_LEIT
                         }
                         else
                         {
-                            strSlod = strDRif + "\\" + strVorsluStofnunID + "\\" + strSkjalmyndaraID + "\\" + strVarslaID + "\\Documents"; //docCollection1//4//1.tif";
+                            //sækja þetta frekar úr gagnagrunni
+                            cVorsluutgafur varsla = new cVorsluutgafur();
+                            varsla.m_bAfrit = virkurNotandi.m_bAfrit;
+                            varsla.getVörsluútgáfu(strVarslaID);
+                            strSlod = varsla.slod + "\\Documents";  // strDRif + "\\" + strVorsluStofnunID + "\\" + strSkjalmyndaraID + "\\" + strVarslaID + "\\Documents"; //docCollection1//4//1.tif";
                         }
 
                         double dColl = Convert.ToInt32(strValid) / 10000;
@@ -2040,6 +2044,11 @@ namespace MHR_LEIT
 
         private void m_btnLagaToflur_Click(object sender, EventArgs e)
         {
+            //lagfæra birtinug á gopro
+            //1. Uppfæra þrjár fyrirspurnir í fyrirspurnartöflu 
+             virkurNotandi.breytaFyrirspurnumGOPO();
+            //2. Uppfæra gopro template í fyrirspurnir_template
+
 
 
             //laga tímabil í tbMidlun
@@ -2071,8 +2080,8 @@ namespace MHR_LEIT
                 }
 
             }
-            MessageBox.Show("ble");
-            return;
+            //MessageBox.Show("ble");
+            //return;
 
             string strVillu = string.Empty;
             //nota þetta til að bæta við, breyta eða eyða töflum úr miðlunargrunni
@@ -2156,7 +2165,7 @@ namespace MHR_LEIT
             }
             #endregion
             // 2. bæta við heiti heitiVorslu í dt_pantanir_karfa_item
-            #region Bæta við heiti dákla í dt_pantanir_karfa_item
+            #region Bæta við heiti dálka í dt_pantanir_karfa_item
             try
             {
                 virkurNotandi.addHeitiVarsla();
@@ -2223,6 +2232,17 @@ namespace MHR_LEIT
                 strVillu += x.ToString() + Environment.NewLine;
 
             }
+            //bæta við athugasemdum í dt_karfa_dip  
+            try
+            {
+                virkurNotandi.addAthugasemdumDIP();
+            }
+            catch (Exception x)
+            {
+                strVillu += x.ToString() + Environment.NewLine;
+
+            }
+
 
             if (strVillu != string.Empty)
             {
@@ -2615,6 +2635,7 @@ namespace MHR_LEIT
                 //finna út hvort til sé óafgreidd pöntun
                 fyllaDIPLista();
                 //EF TIL SÉ ÓAFGREIDD PÖNTUN VELJA HANA
+                fyllaLanthega();
                 int iFjoldi = 0;
                 if (m_dsDIPmal.Tables.Count != 0)
                 {
@@ -2699,6 +2720,10 @@ namespace MHR_LEIT
             if (m_tacUmsjon.SelectedTab == m_tapLysigogn)
             {
                 fyllaVorsluUtgafur();
+            }
+            if(m_tacUmsjon.SelectedTab == m_tapLanthegar)
+            {
+                usclanthegar1.fyllaLanthega();
             }
 
         }
@@ -2933,7 +2958,7 @@ namespace MHR_LEIT
             DataRow[] fRow = dt.Select(strExp);
             if (fRow.Length == 0)
             {
-                MessageBox.Show("Vantar að hakka við vörsuútgáfur til að flytja inn");
+                MessageBox.Show("Vantar að haka við vörsuútgáfur til að flytja inn");
                 return;
             }
             m_prgImportStatusHeild.Maximum = fRow.Length;
@@ -3018,6 +3043,8 @@ namespace MHR_LEIT
                                             {
                                                 Restore(strSQLScript[0], strSplit[0]);
                                             }
+                                           
+
 
                                         }
                                         else
@@ -3030,6 +3057,7 @@ namespace MHR_LEIT
                                             cMIdlun midlun = new cMIdlun();
                                             midlun.m_bAfrit = virkurNotandi.m_bAfrit;
                                             midlun.scriptLoad(strSQL);
+                                            
 
                                         }
                                     }
@@ -3039,17 +3067,31 @@ namespace MHR_LEIT
                             }
                         }
 
-
-
-
                     }
                 }
 
 
             }
-
+           
             //refhresha gridið
             fyllaImportLista(m_strRootInsert);
+            //slóð í sql skrá dt_vörslustofnun er vitlaus í afritinu þarf að laga það með handafli (takk Siggi)
+            cVorsluutgafur varsla = new cVorsluutgafur();
+            varsla.m_bAfrit = virkurNotandi.m_bAfrit;
+            DataTable dtVarsla = varsla.getVorsluUtgafurAllt();
+            foreach (DataRow r in dtVarsla.Rows)
+            {
+                //laga slóðina svo hún sé eins og hún á að vera
+                string strEnda = drive.Nafn + "\\" + r["vorsluutgafa"];
+
+                cVorsluutgafur utgafur = new cVorsluutgafur();
+                utgafur.m_bAfrit = virkurNotandi.m_bAfrit;
+
+                utgafur.getVörsluútgáfu(r["vorsluutgafa"].ToString());
+                utgafur.slod = strEnda;
+                utgafur.vista();
+
+            }
             m_grbInsertStatus.Visible = false;
             MessageBox.Show("Búið");
         }
@@ -3143,9 +3185,24 @@ namespace MHR_LEIT
 
         private void m_tomHjalpCHM_Click(object sender, EventArgs e)
         {
-
             var p = new Process();
             string strSlod = helpProvider1.HelpNamespace;
+
+            // Make path relative to the application's startup path after publish
+            if (!string.IsNullOrEmpty(strSlod) && Path.IsPathRooted(strSlod))
+            {
+                try
+                {
+                    string appPath = Application.StartupPath;
+                  //  if (strSlod.StartsWith(appPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // strSlod = "." + strSlod.Substring(appPath.Length);
+                        strSlod = appPath + "//MHR-LEIT.chm";// strSlod.Replace("\\\\", "\\");
+                    }
+                }
+                catch { /* Ignore errors, fallback to original path */ }
+            }
+
             p.StartInfo = new ProcessStartInfo(strSlod)
             {
                 UseShellExecute = true
@@ -3157,6 +3214,23 @@ namespace MHR_LEIT
         {
             var p = new Process();
             string strSlod = helpProvider2.HelpNamespace;
+
+
+            // Make path relative to the application's startup path after publish
+            if (!string.IsNullOrEmpty(strSlod) && Path.IsPathRooted(strSlod))
+            {
+                try
+                {
+                    string appPath = Application.StartupPath;
+                   // if (strSlod.StartsWith(appPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // strSlod = "." + strSlod.Substring(appPath.Length);
+                        strSlod = appPath + "//MHR-LEIT.pdf";// strSlod.Replace("\\\\", "\\");
+                    }
+                }
+                catch { /* Ignore errors, fallback to original path */ }
+            }
+
             p.StartInfo = new ProcessStartInfo(strSlod)
             {
                 UseShellExecute = true
@@ -3225,6 +3299,11 @@ namespace MHR_LEIT
                     MessageBox.Show("Engin gögn til að vista.");
                 }
             }
+        }
+
+        private void usclanthegar1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

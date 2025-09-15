@@ -356,8 +356,8 @@ namespace cClassOAIS
                                             {
 
 
-                                                //  IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
-                                                IronOcr.License.LicenseKey = ConfigurationManager.AppSettings["IronOcr.LicenseKey"];
+                                                IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO250627.4367.68105B-60E8E25D84-DKF6KTP6HTX3IWV-HDL45TBMNW3F-OJG3ETWO6MXG-JBIRWBT6DEAA-2TSBIJEYRUKI-Q5L25K-LE2YLHQ43QKREA-IRONOCR.DOTNET.LITE.SUB-URLPS5.RENEW.SUPPORT.27.JUN.2026";
+                                              //  IronOcr.License.LicenseKey = ConfigurationManager.AppSettings["IronOcr.LicenseKey"];
                                                 // ocrLicense();
                                                 var Ocr = new IronTesseract();
                                                 Ocr.Language = OcrLanguage.Icelandic;
@@ -457,8 +457,8 @@ namespace cClassOAIS
         //}
         public string  ocrCreatePDF(string strTiff, string strPDF)
         {
-            //IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO230628.2127.55150-431588DBF0-BQYYUOVYA37ZXLL-2XEVPPBD5UZV-5FPSQUXAGQFB-OVWEAJBHIFDE-M4Y3UJ23L3DV-AFXORJ-LPM5D7MWKTWMUA-IRONOCR.DOTNET.LITE.SUB-UUZG4I.RENEW.SUPPORT.27.JUN.2024";
-            IronOcr.License.LicenseKey = ConfigurationManager.AppSettings["IronOcr.LicenseKey"];
+            IronOcr.License.LicenseKey = "IRONOCR.HERADSSKJALASAFNARNESINGA.IRO250627.4367.68105B-60E8E25D84-DKF6KTP6HTX3IWV-HDL45TBMNW3F-OJG3ETWO6MXG-JBIRWBT6DEAA-2TSBIJEYRUKI-Q5L25K-LE2YLHQ43QKREA-IRONOCR.DOTNET.LITE.SUB-URLPS5.RENEW.SUPPORT.27.JUN.2026";
+            //IronOcr.License.LicenseKey = ConfigurationManager.AppSettings["IronOcr.LicenseKey"];
             var ocrTesseract = new IronTesseract();
             ocrTesseract.Language = OcrLanguage.Icelandic;
             // var ocrTesseract = new IronTesseract();
@@ -961,7 +961,7 @@ namespace cClassOAIS
             sækjaTengistreng();
             string strRet = string.Empty;
             string strQL = string.Empty;
-           strQL = string.Format("SELECT * FROM dt_fyrirspurnir_templet d where kerfi = '{0}';", strKerfi);
+            strQL = string.Format("SELECT * FROM dt_fyrirspurnir_templet d where kerfi = '{0}';", strKerfi);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTengingOAIS, strQL);
             DataTable dt = ds.Tables[0];
             return dt; 

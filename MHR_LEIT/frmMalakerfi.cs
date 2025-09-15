@@ -43,6 +43,7 @@ namespace MHR_LEIT
         string m_strVorsluSofnunID = string.Empty;
         string m_strSkjalamID = string.Empty; //skjalamyndari_audkenni
         string m_strVorslutgafa = string.Empty; //vorsluutgafa 
+      
         DataRow m_row;
 
         public frmMalakerfi()
@@ -61,10 +62,17 @@ namespace MHR_LEIT
             m_strSkjalamID = row["skjalamyndari_audkenni"].ToString();
             m_strVorslutgafa = row["vorsluutgafa"].ToString();
 
+            this.Text = m_strHeitiVorslu + " (" + m_strVorslutgafa + ")";
             m_strMalID = row["malID"].ToString();
             m_dtSkra = dtSkra;
             m_dtGrunn = dtGrunn;
             m_dsMal = dsMal;
+
+            //finna hvaða málakerfi er verið að birta
+            //DataSet ds = new DataSet(); 
+            //ds.ReadXml(m_strRoot + "\\Indices\\tableIndex.xml");
+
+
 
             // if (dtMalKerfi != null)
             DataColumnCollection columns = m_dtPontunMal.Columns;
@@ -120,8 +128,7 @@ namespace MHR_LEIT
                 m_dtPontunMal.Columns.Add("sqlMal");
             }
 
-
-            fyllaMalalykla();
+           
             if (virkurnotandi.m_bAfrit)
             {
                 m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorsluutgafa"];
@@ -131,7 +138,6 @@ namespace MHR_LEIT
                 m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
             }
             // ná hér heiti kerfis
-
             DataSet ds = new DataSet();
             ds.ReadXml(m_strRoot + "\\Indices\\tableIndex.xml");
             string bla = ds.Tables[0].TableName;
@@ -139,6 +145,8 @@ namespace MHR_LEIT
             {
                 m_strHeitiMalaKerfis = ds.Tables["siardDiark"].Rows[0]["dbName"].ToString();
             }
+            fyllaMalalykla();
+
 
             m_strIdValinn = row["documentid"].ToString();
             string strValin = m_strIdValinn;
@@ -149,6 +157,16 @@ namespace MHR_LEIT
             strSQL = strSQL.Replace("{docID}", m_strIdValinn);
             DataTable dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
             string strMalID = dtMal.Rows[0][0].ToString();
+            if (m_strHeitiMalaKerfis == "GoPro")
+            {
+                m_rdbInnheldlurMal.Visible = true;
+                m_rdbInnheldurAllt.Visible = true;
+            }
+            else
+            {
+                m_rdbInnheldlurMal.Visible = false;
+                m_rdbInnheldurAllt.Visible = false;
+            }
 
             if (m_strHeitiMalaKerfis == "GoPro" || m_strHeitiMalaKerfis == "OneCRM")
             {
@@ -207,35 +225,68 @@ namespace MHR_LEIT
             //ná í lykill máls
             if (dtMal.Rows.Count > 0)
             {
-                string strMalalykill = dtMal.Rows[0]["lykillID"].ToString(); //breyta fyrirspurn kalla þetta lykillID
-
-                foreach (TreeNode n in m_trwMalalykill.Nodes)
+                string strMalalykill = dtMal.Rows[0]["lykillID"].ToString(); 
+                if (m_strHeitiMalaKerfis == "OneCRM")
                 {
-                    if (n.Tag.ToString() == strMalalykill)
+                    foreach (TreeNode n in m_trwMalalykill.Nodes)
                     {
-                        n.BackColor = Color.LightGreen;
-                        string strLykillID = n.Tag.ToString();
-                        strExp = "nafn='mal_lykill'";
-                        fRow = m_dtFyrirspurnir.Select(strExp);
-                        strSQL = fRow[0]["fyrirspurn"].ToString();
-                        strSQL = strSQL.Replace("{lykillID}", strLykillID);
 
-                        dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
-
-                        foreach (DataRow r in dtMal.Rows)
+                        if (n.Tag.ToString() == strMalalykill)
                         {
-                            TreeNode treeNode = new TreeNode(r["Sagstittel"].ToString());
-                            treeNode.Tag = r["SagsID"];
-                            if (strMalID == treeNode.Tag.ToString())
+                            n.BackColor = Color.LightGreen;
+                            string strLykillID = n.Tag.ToString();
+                            strExp = "nafn='mal_lykill'";
+                            fRow = m_dtFyrirspurnir.Select(strExp);
+                            strSQL = fRow[0]["fyrirspurn"].ToString();
+                            strSQL = strSQL.Replace("{lykillID}", strLykillID);
+
+                            dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                            foreach (DataRow r in dtMal.Rows)
                             {
-                                treeNode.BackColor = Color.LightGreen;
-                                m_strTitillValidMal = treeNode.Text;
+                                TreeNode treeNode = new TreeNode(r["Sagstittel"].ToString());
+                                treeNode.Tag = r["SagsID"];
+                                if (strMalID == treeNode.Tag.ToString())
+                                {
+                                    treeNode.BackColor = Color.LightGreen;
+                                    m_strTitillValidMal = treeNode.Text;
+                                }
+                                n.Nodes.Add(treeNode);
+                                n.Expand();
+
                             }
-                            n.Nodes.Add(treeNode);
-                            n.Expand();
 
                         }
-
+                    }
+                }
+                if (m_strHeitiMalaKerfis == "GoPro")
+                {
+                    List<TreeNode> level2Nodes = GetLevel2Nodes(m_trwMalalykill);
+                    foreach (TreeNode n in level2Nodes)
+                    {
+                        if (n.Tag.ToString() == strMalalykill)
+                        {
+                            n.BackColor = Color.LightGreen;
+                            m_strTitillValidMal = n.Text;
+                            string strLykillID = n.Tag.ToString();
+                            strExp = "nafn='mal_lykill'";
+                            fRow = m_dtFyrirspurnir.Select(strExp);
+                            strSQL = fRow[0]["fyrirspurn"].ToString();
+                            strSQL = strSQL.Replace("{lykillID}", strLykillID);
+                            dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+                            foreach (DataRow r in dtMal.Rows)
+                            {
+                                TreeNode treeNode = new TreeNode(r["Sagstittel"].ToString());
+                                treeNode.Tag = r["SagsID"];
+                                if (strMalID == treeNode.Tag.ToString())
+                                {
+                                    treeNode.BackColor = Color.LightGreen;
+                                    m_strTitillValidMal = treeNode.Text;
+                                }
+                                n.Nodes.Add(treeNode);
+                                n.Expand();
+                            }
+                        }
                     }
                 }
             }
@@ -268,31 +319,141 @@ namespace MHR_LEIT
             }
         }
 
+        private List<TreeNode> GetLevel2Nodes(TreeView treeView)
+        {
+            var level2Nodes = new List<TreeNode>();
+            foreach (TreeNode root in treeView.Nodes)
+            {
+                foreach (TreeNode child in root.Nodes)
+                {
+                    
+                        level2Nodes.Add(child);
+                  
+                }
+            }
+            return level2Nodes;
+        }
         private void fyllaMalalykla()
         {
             m_trwMalalykill.Nodes.Clear();
             string strExp = "nafn='malalykill'";
             DataRow[] fRow = m_dtFyrirspurnir.Select(strExp);
             DataTable dtLyklar = midlun.keyraFyrirspurn(fRow[0]["fyrirspurn"].ToString(), m_strGagnagrunnur);
-            foreach (DataRow row in dtLyklar.Rows)
+            //þarf að breyta og skipta eftir hvaða kerfi er verið að leita í GoPRO - finna yfirlykill og svo undirlykill
+            if (m_strHeitiMalaKerfis == "OneCRM")
             {
-                //  malalykill, lykillID //ONESYSTEMS
-                if (m_strHeitiVorslu.Contains("OneCRM") || m_strHeitiVorslu.Contains("OneCrm"))
+                foreach (DataRow row in dtLyklar.Rows)
                 {
+                //  malalykill, lykillID //ONESYSTEMS
+               
                     TreeNode n = new TreeNode(row["malalykill"].ToString());
                     n.Tag = row["malalykill"].ToString();
                     m_trwMalalykill.Nodes.Add(n);
                 }
-                else
+                m_tapMalaLykill.Text = string.Format("Málalyklar ({0})", dtLyklar.Rows.Count);
+            }
+
+            if (m_strHeitiMalaKerfis == "GoPro")
+            {
+                //ná í alla yfirlykla   
+                strExp = "nafn='yfirlyklar'";
+                fRow = m_dtFyrirspurnir.Select(strExp);
+                DataTable dtYfirLyklar = midlun.keyraFyrirspurn(fRow[0]["fyrirspurn"].ToString(), m_strGagnagrunnur);
+
+                //þarf að búa til tré sem er recursive
+                if(m_rdbInnheldlurMal.Checked)
                 {
-                    TreeNode n = new TreeNode(row["malalykill"].ToString());
-                    n.Tag = row["lykillID"].ToString();
-                    m_trwMalalykill.Nodes.Add(n);
+                    fyllaMalaLyklaGoPro(dtYfirLyklar, dtLyklar);
+                }
+                if(m_rdbInnheldurAllt.Checked)
+                {
+                    fyllaMalaLyklaGoProAllt(dtYfirLyklar, dtLyklar);
+                    //fyllaMalalyklaAllt();
+                }
+                
+                //try
+                //{
+                //    //þarf að gera recursive því þetta er í alvöru tré.
+                //    TreeNode n = new TreeNode(row["malalykill"].ToString());
+                //    n.Tag = row["lykillID"].ToString();
+                //    m_trwMalalykill.Nodes.Add(n);
+
+                //}
+                //catch (Exception x)
+                //{
+
+                //    TreeNode n = new TreeNode(row["malalykill"].ToString());
+                //    n.Tag = row["malalykill"].ToString();
+                //    m_trwMalalykill.Nodes.Add(n);
+                //}
+                    
+            }
+          
+        }
+
+        private void fyllaMalaLyklaGoPro(DataTable dtYfir, DataTable dtUndir)
+        {
+            foreach(DataRow r in dtYfir.Rows)
+            {
+                TreeNode n = new TreeNode(r["malalykill"].ToString());
+                n.Tag = r["malalykill"].ToString();
+                m_trwMalalykill.Nodes.Add(n);
+                //finna svo hér alla lykla undir þessu dóti
+                string strExp = "parentid='"+ r["lykillid"] +"'";
+                DataRow[] fRow = dtUndir.Select(strExp);
+                foreach(DataRow rr in fRow)
+                {
+                    TreeNode nn = new TreeNode(rr["malalykill"].ToString());
+                    nn.Tag = rr["lykillid"].ToString();
+                    n.Nodes.Add(nn);
+                    n.Expand();
+                }
+          
+            }
+            m_tapMalaLykill.Text = string.Format("Málalyklar ({0})", dtUndir.Rows.Count);
+        }
+        private void fyllaMalaLyklaGoProAllt(DataTable dtYfir, DataTable dtUndir)
+        {
+            string strExp = "nafn='malalykill_allt'";
+            DataRow[] fRow = m_dtFyrirspurnir.Select(strExp);
+            dtUndir = midlun.keyraFyrirspurn(fRow[0]["fyrirspurn"].ToString(), m_strGagnagrunnur);
+
+            foreach (DataRow r in dtYfir.Rows)
+            {
+                TreeNode n = new TreeNode(r["malalykill"].ToString());
+                n.Tag = r["malalykill"].ToString();
+                m_trwMalalykill.Nodes.Add(n);
+                //finna svo hér alla lykla undir þessu dóti
+                strExp = "parentid='" + r["lykillid"] + "'";
+                fRow = dtUndir.Select(strExp);
+
+                foreach (DataRow rr in fRow)
+                {
+                    TreeNode nn = new TreeNode(rr["malalykill"].ToString());
+                    nn.Tag = rr["lykillid"].ToString();
+                    n.Nodes.Add(nn);
+                    n.Expand();
+                    //sleppa ef yfirlykill
+                    //if (rr["malalykill"].ToString().Contains("."))
+                    {
+                        string strLykillID = nn.Tag.ToString();
+                        strExp = "nafn='mal_lykill'";
+                        fRow = m_dtFyrirspurnir.Select(strExp);
+                        string strSQL = fRow[0]["fyrirspurn"].ToString();
+                        strSQL = strSQL.Replace("{lykillID}", strLykillID);
+                        DataTable dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+                        if (dtMal.Rows.Count == 0)
+                        {
+                            nn.BackColor = Color.LightPink;
+                        }
+                    }
+                    
                 }
 
 
+                m_tapMalaLykill.Text = string.Format("Málalyklar ({0})", dtUndir.Rows.Count);
+
             }
-            m_tapMalaLykill.Text = string.Format("Málalyklar ({0})", dtLyklar.Rows.Count);
         }
         private void fyllaMalalyklaAllt()
         {
@@ -511,125 +672,251 @@ namespace MHR_LEIT
         {
             if (m_trwMalalykill.Focused)
             {
-                if (e.Node.Level == 0)
+                if(m_strHeitiMalaKerfis == "GoPro")
                 {
-                    string strLykillID = e.Node.Tag.ToString();
-                    string strExp = "nafn='mal_lykill'";
-                    DataRow[] fRow = m_dtFyrirspurnir.Select(strExp);
-                    string strSQL = fRow[0]["fyrirspurn"].ToString();
-                    strSQL = strSQL.Replace("{lykillID}", strLykillID);
-
-                    DataTable dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
-
-                    e.Node.Nodes.Clear();
-                    foreach (DataRow r in dtMal.Rows)
+                    if (e.Node.Level == 1)
                     {
-                        TreeNode treeNode = new TreeNode(r["Sagstittel"].ToString());
-                        treeNode.Tag = r["SagsID"];
-                        e.Node.Nodes.Add(treeNode);
-                        e.Node.Expand();
-                    }
-                }
-                if (e.Node.Level == 1)
-                {
-                    splitContainer5.Visible = false;
-                    string strMalID = e.Node.Tag.ToString();
-                    m_strMalID = e.Node.Tag.ToString();
-                    m_strTitillValidMal = e.Node.Text;
+                        string strLykillID = e.Node.Tag.ToString();
+                        string strExp = "nafn='mal_lykill'";
+                        DataRow[] fRow = m_dtFyrirspurnir.Select(strExp);
+                        string strSQL = fRow[0]["fyrirspurn"].ToString();
+                        strSQL = strSQL.Replace("{lykillID}", strLykillID);
 
+                        DataTable dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
 
-                    string strExp = "nafn='mal_malID'";
-                    DataRow[] fRow = m_dtFyrirspurnir.Select(strExp);
-                    string strSQL = fRow[0]["fyrirspurn"].ToString();
-                    strSQL = strSQL.Replace("{malID}", strMalID);
-
-                    DataTable dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
-                    m_strSQLMAL = strSQL;
-                    fyllaInfoMall(dtMal);
-
-                    // ná í document, email og memo
-                    //1 ná í yfirskjal um málið
-                    if (m_strHeitiMalaKerfis == "GoPro")
-                    {
-                        fyllaSkjol(strMalID);
-                        return;
-                    }
-
-
-                    strExp = "nafn='mal_gogn'";
-                    fRow = m_dtFyrirspurnir.Select(strExp);
-                    strSQL = fRow[0]["fyrirspurn"].ToString();
-                    strSQL = strSQL.Replace("{docid}", strMalID);
-                    DataTable dtSkjol = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
-
-                    strExp = "nafn='mal_attachment'";
-                    fRow = m_dtFyrirspurnir.Select(strExp);
-                    if (fRow.Length == 1)
-                    {
-                        strSQL = fRow[0]["fyrirspurn"].ToString();
-                        strSQL = strSQL.Replace("{malID}", strMalID);
-                        DataTable dtAtt = dtSkjol.Clone();
-                        dtAtt = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
-
-                        foreach (DataRow r in dtAtt.Rows)
+                        e.Node.Nodes.Clear();
+                        foreach (DataRow r in dtMal.Rows)
                         {
-                            strExp = "dokumentid='" + r["dokumentid"].ToString() + "'";
-                            fRow = dtSkjol.Select(strExp);
-                            if (fRow.Length == 0)
+                            TreeNode treeNode = new TreeNode(r["Sagstittel"].ToString());
+                            treeNode.Tag = r["SagsID"];
+                            e.Node.Nodes.Add(treeNode);
+                            e.Node.Expand();
+                        }
+                    }
+                    if (e.Node.Level == 2)
+                    {
+                        splitContainer5.Visible = false;
+                        string strMalID = e.Node.Tag.ToString();
+                        m_strMalID = e.Node.Tag.ToString();
+                        m_strTitillValidMal = e.Node.Text;
+
+
+                        string strExp = "nafn='mal_malID'";
+                        DataRow[] fRow = m_dtFyrirspurnir.Select(strExp);
+                        string strSQL = fRow[0]["fyrirspurn"].ToString();
+                        strSQL = strSQL.Replace("{malID}", strMalID);
+
+                        DataTable dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+                        m_strSQLMAL = strSQL;
+                        fyllaInfoMall(dtMal);
+
+                        // ná í document, email og memo
+                        //1 ná í yfirskjal um málið
+                        if (m_strHeitiMalaKerfis == "GoPro")
+                        {
+                            fyllaSkjol(strMalID);
+                            return;
+                        }
+
+
+                        strExp = "nafn='mal_gogn'";
+                        fRow = m_dtFyrirspurnir.Select(strExp);
+                        strSQL = fRow[0]["fyrirspurn"].ToString();
+                        strSQL = strSQL.Replace("{docid}", strMalID);
+                        DataTable dtSkjol = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                        strExp = "nafn='mal_attachment'";
+                        fRow = m_dtFyrirspurnir.Select(strExp);
+                        if (fRow.Length == 1)
+                        {
+                            strSQL = fRow[0]["fyrirspurn"].ToString();
+                            strSQL = strSQL.Replace("{malID}", strMalID);
+                            DataTable dtAtt = dtSkjol.Clone();
+                            dtAtt = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                            foreach (DataRow r in dtAtt.Rows)
                             {
-                                dtSkjol.ImportRow(r);
+                                strExp = "dokumentid='" + r["dokumentid"].ToString() + "'";
+                                fRow = dtSkjol.Select(strExp);
+                                if (fRow.Length == 0)
+                                {
+                                    dtSkjol.ImportRow(r);
+                                }
+
+                            }
+                        }
+                        strExp = "nafn='mal_um'";
+                        fRow = m_dtFyrirspurnir.Select(strExp);
+                        if (fRow.Length == 1)
+                        {
+                            strSQL = fRow[0]["fyrirspurn"].ToString();
+                            strSQL = strSQL.Replace("{malID}", strMalID);
+                            DataTable dtAtt = dtSkjol.Clone();
+                            dtAtt = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                            foreach (DataRow r in dtAtt.Rows)
+                            {
+                                strExp = "dokumentid='" + r["dokumentid"].ToString() + "'";
+                                fRow = dtSkjol.Select(strExp);
+                                if (fRow.Length == 0)
+                                {
+                                    dtSkjol.ImportRow(r);
+                                }
+
+                            }
+                        }
+
+
+                        m_dgvSkjol.DataSource = dtSkjol;
+
+                        m_grbSkjol.Text = string.Format("Skjöl ({0})", dtSkjol.Rows.Count);
+                        m_dgvSkjol.ClearSelection();
+                        foreach (DataGridViewRow r in m_dgvSkjol.Rows)
+                        {
+                            string strBla = r.Cells["colDokumentID"].Value.ToString();
+                            DataTable dt = (DataTable)m_dgvSkjol.DataSource;
+                            if (r.Cells["colDokumentID"].Value.ToString() == m_strIdValinn)
+                            {
+                                r.Selected = true;
+                                r.Cells[0].Selected = true;
+                                r.DefaultCellStyle.BackColor = Color.LightGreen;
+                                m_dgvSkjol.FirstDisplayedScrollingRowIndex = r.Index;
                             }
 
                         }
-                    }
-                    strExp = "nafn='mal_um'";
-                    fRow = m_dtFyrirspurnir.Select(strExp);
-                    if (fRow.Length == 1)
-                    {
-                        strSQL = fRow[0]["fyrirspurn"].ToString();
-                        strSQL = strSQL.Replace("{malID}", strMalID);
-                        DataTable dtAtt = dtSkjol.Clone();
-                        dtAtt = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+                        //ná í það sem er í attachments 
 
-                        foreach (DataRow r in dtAtt.Rows)
+
+   ;
+                        foreach (DataGridViewColumn col in m_dgvSkjol.Columns)
                         {
-                            strExp = "dokumentid='" + r["dokumentid"].ToString() + "'";
-                            fRow = dtSkjol.Select(strExp);
-                            if (fRow.Length == 0)
+                            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                        }
+                    }
+                }
+                if(m_strHeitiMalaKerfis == "OneCRM")
+                {
+                    if (e.Node.Level == 0)
+                    {
+                        string strLykillID = e.Node.Tag.ToString();
+                        string strExp = "nafn='mal_lykill'";
+                        DataRow[] fRow = m_dtFyrirspurnir.Select(strExp);
+                        string strSQL = fRow[0]["fyrirspurn"].ToString();
+                        strSQL = strSQL.Replace("{lykillID}", strLykillID);
+
+                        DataTable dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                        e.Node.Nodes.Clear();
+                        foreach (DataRow r in dtMal.Rows)
+                        {
+                            TreeNode treeNode = new TreeNode(r["Sagstittel"].ToString());
+                            treeNode.Tag = r["SagsID"];
+                            e.Node.Nodes.Add(treeNode);
+                            e.Node.Expand();
+                        }
+                    }
+                    if (e.Node.Level == 1)
+                    {
+                        splitContainer5.Visible = false;
+                        string strMalID = e.Node.Tag.ToString();
+                        m_strMalID = e.Node.Tag.ToString();
+                        m_strTitillValidMal = e.Node.Text;
+
+
+                        string strExp = "nafn='mal_malID'";
+                        DataRow[] fRow = m_dtFyrirspurnir.Select(strExp);
+                        string strSQL = fRow[0]["fyrirspurn"].ToString();
+                        strSQL = strSQL.Replace("{malID}", strMalID);
+
+                        DataTable dtMal = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+                        m_strSQLMAL = strSQL;
+                        fyllaInfoMall(dtMal);
+
+                        // ná í document, email og memo
+                        //1 ná í yfirskjal um málið
+                        if (m_strHeitiMalaKerfis == "GoPro")
+                        {
+                            fyllaSkjol(strMalID);
+                            return;
+                        }
+
+
+                        strExp = "nafn='mal_gogn'";
+                        fRow = m_dtFyrirspurnir.Select(strExp);
+                        strSQL = fRow[0]["fyrirspurn"].ToString();
+                        strSQL = strSQL.Replace("{docid}", strMalID);
+                        DataTable dtSkjol = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                        strExp = "nafn='mal_attachment'";
+                        fRow = m_dtFyrirspurnir.Select(strExp);
+                        if (fRow.Length == 1)
+                        {
+                            strSQL = fRow[0]["fyrirspurn"].ToString();
+                            strSQL = strSQL.Replace("{malID}", strMalID);
+                            DataTable dtAtt = dtSkjol.Clone();
+                            dtAtt = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                            foreach (DataRow r in dtAtt.Rows)
                             {
-                                dtSkjol.ImportRow(r);
+                                strExp = "dokumentid='" + r["dokumentid"].ToString() + "'";
+                                fRow = dtSkjol.Select(strExp);
+                                if (fRow.Length == 0)
+                                {
+                                    dtSkjol.ImportRow(r);
+                                }
+
+                            }
+                        }
+                        strExp = "nafn='mal_um'";
+                        fRow = m_dtFyrirspurnir.Select(strExp);
+                        if (fRow.Length == 1)
+                        {
+                            strSQL = fRow[0]["fyrirspurn"].ToString();
+                            strSQL = strSQL.Replace("{malID}", strMalID);
+                            DataTable dtAtt = dtSkjol.Clone();
+                            dtAtt = midlun.keyraFyrirspurn(strSQL, m_strGagnagrunnur);
+
+                            foreach (DataRow r in dtAtt.Rows)
+                            {
+                                strExp = "dokumentid='" + r["dokumentid"].ToString() + "'";
+                                fRow = dtSkjol.Select(strExp);
+                                if (fRow.Length == 0)
+                                {
+                                    dtSkjol.ImportRow(r);
+                                }
+
+                            }
+                        }
+
+
+                        m_dgvSkjol.DataSource = dtSkjol;
+
+                        m_grbSkjol.Text = string.Format("Skjöl ({0})", dtSkjol.Rows.Count);
+                        m_dgvSkjol.ClearSelection();
+                        foreach (DataGridViewRow r in m_dgvSkjol.Rows)
+                        {
+                            string strBla = r.Cells["colDokumentID"].Value.ToString();
+                            DataTable dt = (DataTable)m_dgvSkjol.DataSource;
+                            if (r.Cells["colDokumentID"].Value.ToString() == m_strIdValinn)
+                            {
+                                r.Selected = true;
+                                r.Cells[0].Selected = true;
+                                r.DefaultCellStyle.BackColor = Color.LightGreen;
+                                m_dgvSkjol.FirstDisplayedScrollingRowIndex = r.Index;
                             }
 
                         }
-                    }
+                        //ná í það sem er í attachments 
 
 
-                    m_dgvSkjol.DataSource = dtSkjol;
-
-                    m_grbSkjol.Text = string.Format("Skjöl ({0})", dtSkjol.Rows.Count);
-                    m_dgvSkjol.ClearSelection();
-                    foreach (DataGridViewRow r in m_dgvSkjol.Rows)
-                    {
-                        string strBla = r.Cells["colDokumentID"].Value.ToString();
-                        DataTable dt = (DataTable)m_dgvSkjol.DataSource;
-                        if (r.Cells["colDokumentID"].Value.ToString() == m_strIdValinn)
+    ;
+                        foreach (DataGridViewColumn col in m_dgvSkjol.Columns)
                         {
-                            r.Selected = true;
-                            r.Cells[0].Selected = true;
-                            r.DefaultCellStyle.BackColor = Color.LightGreen;
-                            m_dgvSkjol.FirstDisplayedScrollingRowIndex = r.Index;
+                            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                         }
-
-                    }
-                    //ná í það sem er í attachments 
-
-
-;
-                    foreach (DataGridViewColumn col in m_dgvSkjol.Columns)
-                    {
-                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     }
                 }
+              
             }
 
 
@@ -1387,14 +1674,16 @@ namespace MHR_LEIT
 
         private void m_rdbInnheldlurMal_CheckedChanged(object sender, EventArgs e)
         {
-            if (m_rdbInnheldlurMal.Checked)
-            {
-                fyllaMalalykla();
-            }
-            if (m_rdbInnheldurAllt.Checked)
-            {
-                fyllaMalalyklaAllt();
-            }
+
+            fyllaMalalykla();
+            //if (m_rdbInnheldlurMal.Checked)
+            //{
+            //    fyllaMalalykla();
+            //}
+            //if (m_rdbInnheldurAllt.Checked)
+            //{
+            //    fyllaMalalyklaAllt();
+            //}
         }
 
         private void m_dgvSkjol_Leave(object sender, EventArgs e)

@@ -49,6 +49,7 @@
             colEytt = new DataGridViewTextBoxColumn();
             colMidlad = new DataGridViewTextBoxColumn();
             splitContainer1 = new SplitContainer();
+            m_btnSQLImport = new Button();
             m_lblTegundVorslu = new Label();
             m_btnUppfæra = new Button();
             m_chbOCR = new CheckBox();
@@ -98,6 +99,7 @@
             colVarslaSlod = new DataGridViewTextBoxColumn();
             colVorsluID = new DataGridViewTextBoxColumn();
             folderBrowserDialog1 = new FolderBrowserDialog();
+            openFileDialog1 = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)m_dgvUtgafur).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -231,7 +233,7 @@
             colTimabil.HeaderText = "Tímabil";
             colTimabil.Name = "colTimabil";
             colTimabil.ReadOnly = true;
-            colTimabil.Width = 71;
+            colTimabil.Width = 72;
             // 
             // colAfhArNR
             // 
@@ -311,6 +313,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(m_btnSQLImport);
             splitContainer1.Panel1.Controls.Add(m_lblTegundVorslu);
             splitContainer1.Panel1.Controls.Add(m_btnUppfæra);
             splitContainer1.Panel1.Controls.Add(m_chbOCR);
@@ -327,6 +330,16 @@
             splitContainer1.Size = new Size(1598, 650);
             splitContainer1.SplitterDistance = 380;
             splitContainer1.TabIndex = 2;
+            // 
+            // m_btnSQLImport
+            // 
+            m_btnSQLImport.Location = new Point(1124, 77);
+            m_btnSQLImport.Name = "m_btnSQLImport";
+            m_btnSQLImport.Size = new Size(127, 23);
+            m_btnSQLImport.TabIndex = 15;
+            m_btnSQLImport.Text = "SQL import";
+            m_btnSQLImport.UseVisualStyleBackColor = true;
+            m_btnSQLImport.Click += m_btnSQLImport_Click;
             // 
             // m_lblTegundVorslu
             // 
@@ -367,7 +380,7 @@
             m_grbStatus.Controls.Add(m_prbGogn);
             m_grbStatus.Controls.Add(m_lblToflurStatus);
             m_grbStatus.Controls.Add(m_lblGognStatus);
-            m_grbStatus.Location = new Point(86, 69);
+            m_grbStatus.Location = new Point(86, 134);
             m_grbStatus.Name = "m_grbStatus";
             m_grbStatus.Size = new Size(1175, 88);
             m_grbStatus.TabIndex = 11;
@@ -488,7 +501,7 @@
             // m_lblValinVorsluutgafa
             // 
             m_lblValinVorsluutgafa.AutoSize = true;
-            m_lblValinVorsluutgafa.Location = new Point(86, 30);
+            m_lblValinVorsluutgafa.Location = new Point(98, 22);
             m_lblValinVorsluutgafa.Name = "m_lblValinVorsluutgafa";
             m_lblValinVorsluutgafa.Size = new Size(38, 15);
             m_lblValinVorsluutgafa.TabIndex = 9;
@@ -498,15 +511,15 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(704, 25);
+            label1.Location = new Point(107, 61);
             label1.Name = "label1";
-            label1.Size = new Size(116, 15);
+            label1.Size = new Size(117, 15);
             label1.TabIndex = 8;
             label1.Text = "Tegund vörlsuútgáfu";
             // 
             // m_btnkeyra
             // 
-            m_btnkeyra.Location = new Point(1186, 22);
+            m_btnkeyra.Location = new Point(1176, 32);
             m_btnkeyra.Name = "m_btnkeyra";
             m_btnkeyra.Size = new Size(75, 23);
             m_btnkeyra.TabIndex = 6;
@@ -768,7 +781,7 @@
             colTegund.DataPropertyName = "tegund";
             colTegund.HeaderText = "Tegund";
             colTegund.Name = "colTegund";
-            colTegund.Width = 71;
+            colTegund.Width = 72;
             // 
             // colTaka
             // 
@@ -798,6 +811,10 @@
             colVorsluID.HeaderText = "Vörslustofnun auðkenni";
             colVorsluID.Name = "colVorsluID";
             colVorsluID.Visible = false;
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
             // 
             // uscMidlun
             // 
@@ -907,5 +924,7 @@
         private DataGridViewTextBoxColumn colVarslaSlod;
         private DataGridViewTextBoxColumn colVorsluID;
         private FolderBrowserDialog folderBrowserDialog1;
+        private Button m_btnSQLImport;
+        private OpenFileDialog openFileDialog1;
     }
 }

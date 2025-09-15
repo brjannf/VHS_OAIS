@@ -55,27 +55,6 @@
             m_tboLeitOrd = new TextBox();
             splitContainer4 = new SplitContainer();
             m_dgvLeit = new DataGridView();
-            coltitillvorsluUtgafu = new DataGridViewTextBoxColumn();
-            colDocTitel = new DataGridViewTextBoxColumn();
-            colExtensions = new DataGridViewTextBoxColumn();
-            colLastWriten = new DataGridViewTextBoxColumn();
-            colMal = new DataGridViewTextBoxColumn();
-            colInnhaldSkjals = new DataGridViewTextBoxColumn();
-            colAdgengi = new DataGridViewTextBoxColumn();
-            colSkjalamyndari = new DataGridViewTextBoxColumn();
-            colVorslustsofnun = new DataGridViewTextBoxColumn();
-            colGagnaGrunnur = new DataGridViewTextBoxColumn();
-            colDocID = new DataGridViewTextBoxColumn();
-            colTegund_gagnagrunns = new DataGridViewTextBoxColumn();
-            colDocOpnaAfrit = new DataGridViewButtonColumn();
-            colDocFrum = new DataGridViewButtonColumn();
-            colDocInnihald = new DataGridViewButtonColumn();
-            colDocPanta = new DataGridViewButtonColumn();
-            colDocVarslaID = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            colVarslaStofnunID = new DataGridViewTextBoxColumn();
-            colSkjalMyndID = new DataGridViewTextBoxColumn();
-            colDocMalID = new DataGridViewTextBoxColumn();
             m_pnlPageing = new Panel();
             m_btnSidasta = new Button();
             m_btnFyrsta = new Button();
@@ -200,6 +179,27 @@
             helpProvider1 = new HelpProvider();
             helpProvider2 = new HelpProvider();
             saveFileDialog1 = new SaveFileDialog();
+            coltitillvorsluUtgafu = new DataGridViewTextBoxColumn();
+            colDocTitel = new DataGridViewTextBoxColumn();
+            colExtensions = new DataGridViewTextBoxColumn();
+            colLastWriten = new DataGridViewTextBoxColumn();
+            colMal = new DataGridViewTextBoxColumn();
+            colInnhaldSkjals = new DataGridViewTextBoxColumn();
+            colAdgengi = new DataGridViewTextBoxColumn();
+            colSkjalamyndari = new DataGridViewTextBoxColumn();
+            colVorslustsofnun = new DataGridViewTextBoxColumn();
+            colGagnaGrunnur = new DataGridViewTextBoxColumn();
+            colDocID = new DataGridViewTextBoxColumn();
+            colTegund_gagnagrunns = new DataGridViewTextBoxColumn();
+            colDocOpnaAfrit = new DataGridViewButtonColumn();
+            colDocFrum = new DataGridViewButtonColumn();
+            colDocInnihald = new DataGridViewButtonColumn();
+            colDocPanta = new DataGridViewButtonColumn();
+            colDocVarslaID = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            colVarslaStofnunID = new DataGridViewTextBoxColumn();
+            colSkjalMyndID = new DataGridViewTextBoxColumn();
+            colDocMalID = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -536,191 +536,6 @@
             m_dgvLeit.Size = new Size(1390, 199);
             m_dgvLeit.TabIndex = 0;
             m_dgvLeit.CellClick += m_dgvLeit_CellClick;
-            // 
-            // coltitillvorsluUtgafu
-            // 
-            coltitillvorsluUtgafu.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            coltitillvorsluUtgafu.DataPropertyName = "titill_vorsluutgafu";
-            coltitillvorsluUtgafu.HeaderText = "Titill vörsluútgáfu";
-            coltitillvorsluUtgafu.Name = "coltitillvorsluUtgafu";
-            coltitillvorsluUtgafu.ReadOnly = true;
-            coltitillvorsluUtgafu.Width = 115;
-            // 
-            // colDocTitel
-            // 
-            colDocTitel.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colDocTitel.DataPropertyName = "doctitill";
-            colDocTitel.HeaderText = "Titill skjals";
-            colDocTitel.Name = "colDocTitel";
-            colDocTitel.ReadOnly = true;
-            // 
-            // colExtensions
-            // 
-            colExtensions.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colExtensions.DataPropertyName = "extension";
-            colExtensions.HeaderText = "Skáaending";
-            colExtensions.Name = "colExtensions";
-            colExtensions.ReadOnly = true;
-            colExtensions.Width = 93;
-            // 
-            // colLastWriten
-            // 
-            colLastWriten.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colLastWriten.DataPropertyName = "docLastWriten";
-            colLastWriten.HeaderText = "Síðast breytt";
-            colLastWriten.Name = "colLastWriten";
-            colLastWriten.ReadOnly = true;
-            colLastWriten.Width = 89;
-            // 
-            // colMal
-            // 
-            colMal.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colMal.DataPropertyName = "maltitill";
-            colMal.HeaderText = "Titill máls";
-            colMal.Name = "colMal";
-            colMal.ReadOnly = true;
-            colMal.Width = 77;
-            // 
-            // colInnhaldSkjals
-            // 
-            colInnhaldSkjals.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colInnhaldSkjals.DataPropertyName = "docInnihald";
-            colInnhaldSkjals.HeaderText = "Innihald skjals";
-            colInnhaldSkjals.Name = "colInnhaldSkjals";
-            colInnhaldSkjals.ReadOnly = true;
-            colInnhaldSkjals.Visible = false;
-            // 
-            // colAdgengi
-            // 
-            colAdgengi.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colAdgengi.DataPropertyName = "skjalaskra_adgengi";
-            colAdgengi.HeaderText = "Aðgengistakmarkanir";
-            colAdgengi.Name = "colAdgengi";
-            colAdgengi.ReadOnly = true;
-            colAdgengi.Width = 145;
-            // 
-            // colSkjalamyndari
-            // 
-            colSkjalamyndari.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colSkjalamyndari.DataPropertyName = "skjalamyndari_heiti";
-            colSkjalamyndari.HeaderText = "Skjalamyndari";
-            colSkjalamyndari.Name = "colSkjalamyndari";
-            colSkjalamyndari.ReadOnly = true;
-            colSkjalamyndari.Width = 106;
-            // 
-            // colVorslustsofnun
-            // 
-            colVorslustsofnun.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colVorslustsofnun.DataPropertyName = "vorslustofnun_heiti";
-            colVorslustsofnun.HeaderText = "Vörslustofnun";
-            colVorslustsofnun.Name = "colVorslustsofnun";
-            colVorslustsofnun.ReadOnly = true;
-            colVorslustsofnun.Width = 105;
-            // 
-            // colGagnaGrunnur
-            // 
-            colGagnaGrunnur.DataPropertyName = "heiti_gagangrunns";
-            colGagnaGrunnur.HeaderText = "Gagnagrunnur";
-            colGagnaGrunnur.Name = "colGagnaGrunnur";
-            colGagnaGrunnur.ReadOnly = true;
-            colGagnaGrunnur.Visible = false;
-            // 
-            // colDocID
-            // 
-            colDocID.DataPropertyName = "documentid";
-            colDocID.HeaderText = "Auðkenni skjals";
-            colDocID.Name = "colDocID";
-            colDocID.ReadOnly = true;
-            colDocID.Visible = false;
-            // 
-            // colTegund_gagnagrunns
-            // 
-            colTegund_gagnagrunns.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colTegund_gagnagrunns.DataPropertyName = "tegund_grunns";
-            colTegund_gagnagrunns.HeaderText = "Tegund";
-            colTegund_gagnagrunns.Name = "colTegund_gagnagrunns";
-            colTegund_gagnagrunns.ReadOnly = true;
-            colTegund_gagnagrunns.Width = 72;
-            // 
-            // colDocOpnaAfrit
-            // 
-            colDocOpnaAfrit.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colDocOpnaAfrit.HeaderText = "Opna afrit (tif)";
-            colDocOpnaAfrit.Name = "colDocOpnaAfrit";
-            colDocOpnaAfrit.ReadOnly = true;
-            colDocOpnaAfrit.Text = "Afrit";
-            colDocOpnaAfrit.UseColumnTextForButtonValue = true;
-            colDocOpnaAfrit.Width = 62;
-            // 
-            // colDocFrum
-            // 
-            colDocFrum.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colDocFrum.HeaderText = "Opna frumrit";
-            colDocFrum.Name = "colDocFrum";
-            colDocFrum.ReadOnly = true;
-            colDocFrum.Text = "Frumrit";
-            colDocFrum.UseColumnTextForButtonValue = true;
-            colDocFrum.Width = 74;
-            // 
-            // colDocInnihald
-            // 
-            colDocInnihald.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colDocInnihald.HeaderText = "Sjá innhald";
-            colDocInnihald.Name = "colDocInnihald";
-            colDocInnihald.ReadOnly = true;
-            colDocInnihald.Text = "Innhald";
-            colDocInnihald.UseColumnTextForButtonValue = true;
-            colDocInnihald.Width = 64;
-            // 
-            // colDocPanta
-            // 
-            colDocPanta.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            colDocPanta.HeaderText = "Setja í körfu";
-            colDocPanta.Name = "colDocPanta";
-            colDocPanta.ReadOnly = true;
-            colDocPanta.Text = "Panta";
-            colDocPanta.UseColumnTextForButtonValue = true;
-            colDocPanta.Width = 68;
-            // 
-            // colDocVarslaID
-            // 
-            colDocVarslaID.DataPropertyName = "vorsluutgafa";
-            colDocVarslaID.HeaderText = "Vörlsuútgáf";
-            colDocVarslaID.Name = "colDocVarslaID";
-            colDocVarslaID.ReadOnly = true;
-            colDocVarslaID.Visible = false;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            dataGridViewTextBoxColumn1.DataPropertyName = "documentid";
-            dataGridViewTextBoxColumn1.HeaderText = "id doc";
-            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            dataGridViewTextBoxColumn1.ReadOnly = true;
-            dataGridViewTextBoxColumn1.Visible = false;
-            // 
-            // colVarslaStofnunID
-            // 
-            colVarslaStofnunID.DataPropertyName = "vorslustofnun_audkenni";
-            colVarslaStofnunID.HeaderText = "varsla auðkenni";
-            colVarslaStofnunID.Name = "colVarslaStofnunID";
-            colVarslaStofnunID.ReadOnly = true;
-            colVarslaStofnunID.Visible = false;
-            // 
-            // colSkjalMyndID
-            // 
-            colSkjalMyndID.DataPropertyName = "skjalamyndari_audkenni";
-            colSkjalMyndID.HeaderText = "Auðkenni skjalamyndara";
-            colSkjalMyndID.Name = "colSkjalMyndID";
-            colSkjalMyndID.ReadOnly = true;
-            colSkjalMyndID.Visible = false;
-            // 
-            // colDocMalID
-            // 
-            colDocMalID.DataPropertyName = "malID";
-            colDocMalID.HeaderText = "MALID";
-            colDocMalID.Name = "colDocMalID";
-            colDocMalID.ReadOnly = true;
-            colDocMalID.Visible = false;
             // 
             // m_pnlPageing
             // 
@@ -2001,6 +1816,191 @@
             // 
             helpProvider2.HelpNamespace = "C:\\Users\\brjann\\source\\repos\\VHS_OAIS\\MHR_LEIT\\Hjalp\\MHR-LEIT.pdf";
             // 
+            // coltitillvorsluUtgafu
+            // 
+            coltitillvorsluUtgafu.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            coltitillvorsluUtgafu.DataPropertyName = "titill_vorsluutgafu";
+            coltitillvorsluUtgafu.HeaderText = "Titill vörsluútgáfu";
+            coltitillvorsluUtgafu.Name = "coltitillvorsluUtgafu";
+            coltitillvorsluUtgafu.ReadOnly = true;
+            coltitillvorsluUtgafu.Width = 115;
+            // 
+            // colDocTitel
+            // 
+            colDocTitel.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colDocTitel.DataPropertyName = "doctitill";
+            colDocTitel.HeaderText = "Titill skjals";
+            colDocTitel.Name = "colDocTitel";
+            colDocTitel.ReadOnly = true;
+            // 
+            // colExtensions
+            // 
+            colExtensions.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colExtensions.DataPropertyName = "extension";
+            colExtensions.HeaderText = "Skráaending";
+            colExtensions.Name = "colExtensions";
+            colExtensions.ReadOnly = true;
+            colExtensions.Width = 97;
+            // 
+            // colLastWriten
+            // 
+            colLastWriten.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colLastWriten.DataPropertyName = "docLastWriten";
+            colLastWriten.HeaderText = "Síðast breytt";
+            colLastWriten.Name = "colLastWriten";
+            colLastWriten.ReadOnly = true;
+            colLastWriten.Width = 89;
+            // 
+            // colMal
+            // 
+            colMal.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colMal.DataPropertyName = "maltitill";
+            colMal.HeaderText = "Titill máls";
+            colMal.Name = "colMal";
+            colMal.ReadOnly = true;
+            colMal.Width = 77;
+            // 
+            // colInnhaldSkjals
+            // 
+            colInnhaldSkjals.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colInnhaldSkjals.DataPropertyName = "docInnihald";
+            colInnhaldSkjals.HeaderText = "Innihald skjals";
+            colInnhaldSkjals.Name = "colInnhaldSkjals";
+            colInnhaldSkjals.ReadOnly = true;
+            colInnhaldSkjals.Visible = false;
+            // 
+            // colAdgengi
+            // 
+            colAdgengi.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colAdgengi.DataPropertyName = "skjalaskra_adgengi";
+            colAdgengi.HeaderText = "Aðgengistakmarkanir";
+            colAdgengi.Name = "colAdgengi";
+            colAdgengi.ReadOnly = true;
+            colAdgengi.Width = 145;
+            // 
+            // colSkjalamyndari
+            // 
+            colSkjalamyndari.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colSkjalamyndari.DataPropertyName = "skjalamyndari_heiti";
+            colSkjalamyndari.HeaderText = "Skjalamyndari";
+            colSkjalamyndari.Name = "colSkjalamyndari";
+            colSkjalamyndari.ReadOnly = true;
+            colSkjalamyndari.Width = 106;
+            // 
+            // colVorslustsofnun
+            // 
+            colVorslustsofnun.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colVorslustsofnun.DataPropertyName = "vorslustofnun_heiti";
+            colVorslustsofnun.HeaderText = "Vörslustofnun";
+            colVorslustsofnun.Name = "colVorslustsofnun";
+            colVorslustsofnun.ReadOnly = true;
+            colVorslustsofnun.Width = 105;
+            // 
+            // colGagnaGrunnur
+            // 
+            colGagnaGrunnur.DataPropertyName = "heiti_gagangrunns";
+            colGagnaGrunnur.HeaderText = "Gagnagrunnur";
+            colGagnaGrunnur.Name = "colGagnaGrunnur";
+            colGagnaGrunnur.ReadOnly = true;
+            colGagnaGrunnur.Visible = false;
+            // 
+            // colDocID
+            // 
+            colDocID.DataPropertyName = "documentid";
+            colDocID.HeaderText = "Auðkenni skjals";
+            colDocID.Name = "colDocID";
+            colDocID.ReadOnly = true;
+            colDocID.Visible = false;
+            // 
+            // colTegund_gagnagrunns
+            // 
+            colTegund_gagnagrunns.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colTegund_gagnagrunns.DataPropertyName = "tegund_grunns";
+            colTegund_gagnagrunns.HeaderText = "Tegund";
+            colTegund_gagnagrunns.Name = "colTegund_gagnagrunns";
+            colTegund_gagnagrunns.ReadOnly = true;
+            colTegund_gagnagrunns.Width = 72;
+            // 
+            // colDocOpnaAfrit
+            // 
+            colDocOpnaAfrit.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colDocOpnaAfrit.HeaderText = "Opna afrit (tif)";
+            colDocOpnaAfrit.Name = "colDocOpnaAfrit";
+            colDocOpnaAfrit.ReadOnly = true;
+            colDocOpnaAfrit.Text = "Afrit";
+            colDocOpnaAfrit.UseColumnTextForButtonValue = true;
+            colDocOpnaAfrit.Width = 62;
+            // 
+            // colDocFrum
+            // 
+            colDocFrum.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colDocFrum.HeaderText = "Opna frumrit";
+            colDocFrum.Name = "colDocFrum";
+            colDocFrum.ReadOnly = true;
+            colDocFrum.Text = "Frumrit";
+            colDocFrum.UseColumnTextForButtonValue = true;
+            colDocFrum.Width = 74;
+            // 
+            // colDocInnihald
+            // 
+            colDocInnihald.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colDocInnihald.HeaderText = "Sjá innhald";
+            colDocInnihald.Name = "colDocInnihald";
+            colDocInnihald.ReadOnly = true;
+            colDocInnihald.Text = "Innhald";
+            colDocInnihald.UseColumnTextForButtonValue = true;
+            colDocInnihald.Width = 64;
+            // 
+            // colDocPanta
+            // 
+            colDocPanta.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colDocPanta.HeaderText = "Setja í körfu";
+            colDocPanta.Name = "colDocPanta";
+            colDocPanta.ReadOnly = true;
+            colDocPanta.Text = "Panta";
+            colDocPanta.UseColumnTextForButtonValue = true;
+            colDocPanta.Width = 68;
+            // 
+            // colDocVarslaID
+            // 
+            colDocVarslaID.DataPropertyName = "vorsluutgafa";
+            colDocVarslaID.HeaderText = "Vörlsuútgáf";
+            colDocVarslaID.Name = "colDocVarslaID";
+            colDocVarslaID.ReadOnly = true;
+            colDocVarslaID.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.DataPropertyName = "documentid";
+            dataGridViewTextBoxColumn1.HeaderText = "id doc";
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            dataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // colVarslaStofnunID
+            // 
+            colVarslaStofnunID.DataPropertyName = "vorslustofnun_audkenni";
+            colVarslaStofnunID.HeaderText = "varsla auðkenni";
+            colVarslaStofnunID.Name = "colVarslaStofnunID";
+            colVarslaStofnunID.ReadOnly = true;
+            colVarslaStofnunID.Visible = false;
+            // 
+            // colSkjalMyndID
+            // 
+            colSkjalMyndID.DataPropertyName = "skjalamyndari_audkenni";
+            colSkjalMyndID.HeaderText = "Auðkenni skjalamyndara";
+            colSkjalMyndID.Name = "colSkjalMyndID";
+            colSkjalMyndID.ReadOnly = true;
+            colSkjalMyndID.Visible = false;
+            // 
+            // colDocMalID
+            // 
+            colDocMalID.DataPropertyName = "malID";
+            colDocMalID.HeaderText = "MALID";
+            colDocMalID.Name = "colDocMalID";
+            colDocMalID.ReadOnly = true;
+            colDocMalID.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -2152,27 +2152,6 @@
         private Label m_lblSida;
         private ComboBox m_comPages;
         private Panel m_pnlPageing;
-        private DataGridViewTextBoxColumn coltitillvorsluUtgafu;
-        private DataGridViewTextBoxColumn colDocTitel;
-        private DataGridViewTextBoxColumn colExtensions;
-        private DataGridViewTextBoxColumn colLastWriten;
-        private DataGridViewTextBoxColumn colMal;
-        private DataGridViewTextBoxColumn colInnhaldSkjals;
-        private DataGridViewTextBoxColumn colAdgengi;
-        private DataGridViewTextBoxColumn colSkjalamyndari;
-        private DataGridViewTextBoxColumn colVorslustsofnun;
-        private DataGridViewTextBoxColumn colGagnaGrunnur;
-        private DataGridViewTextBoxColumn colDocID;
-        private DataGridViewTextBoxColumn colTegund_gagnagrunns;
-        private DataGridViewButtonColumn colDocOpnaAfrit;
-        private DataGridViewButtonColumn colDocFrum;
-        private DataGridViewButtonColumn colDocInnihald;
-        private DataGridViewButtonColumn colDocPanta;
-        private DataGridViewTextBoxColumn colDocVarslaID;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn colVarslaStofnunID;
-        private DataGridViewTextBoxColumn colSkjalMyndID;
-        private DataGridViewTextBoxColumn colDocMalID;
         private TabPage m_tapLysigogn;
         private DataGridView m_dgvVorsluUtgafur;
         private CheckBox m_chbOrdmyndir;
@@ -2251,5 +2230,26 @@
         private SplitContainer splitContainer7;
         private Button m_btnExcelAIPut;
         private SaveFileDialog saveFileDialog1;
+        private DataGridViewTextBoxColumn coltitillvorsluUtgafu;
+        private DataGridViewTextBoxColumn colDocTitel;
+        private DataGridViewTextBoxColumn colExtensions;
+        private DataGridViewTextBoxColumn colLastWriten;
+        private DataGridViewTextBoxColumn colMal;
+        private DataGridViewTextBoxColumn colInnhaldSkjals;
+        private DataGridViewTextBoxColumn colAdgengi;
+        private DataGridViewTextBoxColumn colSkjalamyndari;
+        private DataGridViewTextBoxColumn colVorslustsofnun;
+        private DataGridViewTextBoxColumn colGagnaGrunnur;
+        private DataGridViewTextBoxColumn colDocID;
+        private DataGridViewTextBoxColumn colTegund_gagnagrunns;
+        private DataGridViewButtonColumn colDocOpnaAfrit;
+        private DataGridViewButtonColumn colDocFrum;
+        private DataGridViewButtonColumn colDocInnihald;
+        private DataGridViewButtonColumn colDocPanta;
+        private DataGridViewTextBoxColumn colDocVarslaID;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn colVarslaStofnunID;
+        private DataGridViewTextBoxColumn colSkjalMyndID;
+        private DataGridViewTextBoxColumn colDocMalID;
     }
 }

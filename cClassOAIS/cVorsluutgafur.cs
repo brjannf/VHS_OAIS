@@ -194,7 +194,7 @@ namespace cClassOAIS
         {
             sækjaTengistreng();
            // string strSQL = string.Format("SELECT distinct d.vorsluutgafa, d.utgafa_titill  FROM `dt_vörsluutgafur` d, dt_midlun m where d.vorsluutgafa = m.vorsluutgafa and d.vorsluutgafa like 'AVID%' order by d.utgafa_titill;");
-            string strSQL = string.Format("SELECT distinct d.vorsluutgafa, d.utgafa_titill  FROM `dt_vörsluutgafur` d where d.vorsluutgafa like 'AVID%' order by d.utgafa_titill;");
+            string strSQL = string.Format("SELECT distinct d.vorsluutgafa, d.utgafa_titill  FROM `dt_vörsluutgafur` d where d.vorsluutgafa like 'AVID%' and eytt = 0  order by d.utgafa_titill;");
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -203,7 +203,7 @@ namespace cClassOAIS
         {
             sækjaTengistreng();
            // string strSQL = string.Format("SELECT distinct d.vorsluutgafa, d.utgafa_titill  FROM `dt_vörsluutgafur` d, dt_midlun m where d.vorsluutgafa = m.vorsluutgafa and d.vorsluutgafa like 'AVID%' and skjalamyndari = '{0}' order by d.utgafa_titill;", strSkjalam);
-            string strSQL = string.Format("SELECT distinct d.vorsluutgafa, d.utgafa_titill  FROM `dt_vörsluutgafur` d where d.vorsluutgafa like 'AVID%' and skjalamyndari = '{0}' order by d.utgafa_titill;", strSkjalam);
+            string strSQL = string.Format("SELECT distinct d.vorsluutgafa, d.utgafa_titill  FROM `dt_vörsluutgafur` d where d.vorsluutgafa like 'AVID%' and eytt = 0  and skjalamyndari = '{0}' order by d.utgafa_titill;", strSkjalam);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;
@@ -218,6 +218,13 @@ namespace cClassOAIS
             DataTable dt = ds.Tables[0];
             return dt;
         }
-
+        public DataTable getVorsluUtgafurAllt()
+        {
+            sækjaTengistreng();
+            string strSQL = string.Format("SELECT id, vorsluutgafa, concat(utgafa_titill, ' ', afharnr) as utgafa_titill , vorslustofnun, varsla_heiti, skjalamyndari, skjalm_heiti, staerd, slod, innihald, timabil, afharnr, MD5, hver_skradi, dags_skrad, adgangstakmarkanir, eytt, dags_eytt, hver_eytti, midlun, dags_midlad, hver_midladi, frumeintak, (SELECT distinct tegund_grunns FROM dt_midlun m where m.vorsluutgafa = d.vorsluutgafa) as tegund   FROM `dt_vörsluutgafur` d;");
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
     }
 }

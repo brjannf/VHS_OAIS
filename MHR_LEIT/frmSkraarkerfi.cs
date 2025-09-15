@@ -83,7 +83,7 @@ namespace MHR_LEIT
             m_strSkjalamID = row["skjalamyndari_audkenni"].ToString();
 
             m_strHeitiVarsla = row["titill_vorsluutgafu"].ToString();
-            this.Text = m_strHeitiVarsla;
+          
 
             m_dtExtension.Columns.Add("extension");
             m_lblLeitarNidurstodur.Text = string.Empty;
@@ -149,13 +149,19 @@ namespace MHR_LEIT
             m_strIdValinn = strValdi;
             m_strFileValinn = strValdi;
             m_strVorslutgafa = row["vorsluutgafa"].ToString();
+            this.Text = m_strHeitiVarsla + " (" + m_strVorslutgafa + ")";
+
             if (virkurnotandi.m_bAfrit)
             {
                 m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorsluutgafa"];
             }
             else
             {
-                m_strRoot = drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
+                //taka úr grunni ekki púsla saman
+                cVorsluutgafur varsla = new cVorsluutgafur();
+                varsla.m_bAfrit = virkurnotandi.m_bAfrit;
+                varsla.getVörsluútgáfu(row["vorsluutgafa"].ToString());
+                m_strRoot = varsla.slod; // drive.driveVirkkComputers() + "\\" + row["vorslustofnun_audkenni"].ToString() + "\\" + row["skjalamyndari_audkenni"] + "\\" + row["vorsluutgafa"];
             }
 
             if (Directory.Exists(m_strRoot.Replace("AVID", "FRUM")))

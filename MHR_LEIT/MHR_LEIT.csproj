@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>Resources\MHR-logo-trans.ico</ApplicationIcon>
+    <PackageIcon>MHR-logo-trans.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +20,10 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\MHR-logo-trans.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,6 +85,10 @@
     </None>
     <None Update="ReportLanthegi.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\MHR-logo-trans.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
     <None Update="video.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
