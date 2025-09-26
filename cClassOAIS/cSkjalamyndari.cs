@@ -134,25 +134,35 @@ namespace cClassOAIS
                 string strNewDate = string.Format("Breytt: {0} af {1}", DateTime.Now, this.hver_breytti);
                 string strDagsetningar = this.dagsetningar_5_4_6 + Environment.NewLine + strNewDate;
                 command.Parameters.AddWithValue("@5_4_6_dagsetningar", strDagsetningar);
+               // command.ExecuteNonQuery();
             }
             else
             {
                 string strNewDate = string.Format("Skráð: {0} af {1}", DateTime.Now, this.hver_skráði);
                 command.Parameters.AddWithValue("@5_4_6_dagsetningar", strNewDate);
+               // command.ExecuteNonQuery();
             }
 
             if(this.ID == 0)
             {
                 command.CommandText = "INSERT INTO `dt_isaar_skjalamyndarar` SET  `opinbert_auðkenni`=@opinbert_auðkenni,  `5_1_1_gerð`=@5_1_1_gerð, `5_1_2_opinbert_heiti`=@5_1_2_opinbert_heiti, `5_1_3_erlent_heiti`=@5_1_3_erlent_heiti, `5_1_4_annað_heiti_aðlagað`=@5_1_4_annað_heiti_aðlagað,`5_1_5_annað_heiti`=@5_1_5_annað_heiti,`5_1_6_auðkenni`=@5_1_6_auðkenni,`5_2_1_tímabil`=@5_2_1_tímabil,`5_2_2_saga`=@5_2_2_saga,`5_2_3_staðsetning`=@5_2_3_staðsetning,`5_2_4_lagaleg_staða`=@5_2_4_lagaleg_staða,`5_2_5_hlutverk`=@5_2_5_hlutverk,`5_2_6_tilheyrandi_lög`=@5_2_6_tilheyrandi_lög,`5_2_7_innri_stjórnun`=@5_2_7_innri_stjórnun,`5_2_8_almennt_samhengi`=@5_2_8_almennt_samhengi,`5_4_1_auðkenni_lands`=@5_4_1_auðkenni_lands,`5_4_2_auðkenni_vörslustofnunar`=@5_4_2_auðkenni_vörslustofnunar,`5_4_3_reglur_staðlar`=@5_4_3_reglur_staðlar,`5_4_4_skráningarstaða`=@5_4_4_skráningarstaða,`5_4_5_skráningarstig`=@5_4_5_skráningarstig,`5_4_6_dagsetningar`=@5_4_6_dagsetningar,`5_4_7_tungumál`=@5_4_7_tungumál,`5_4_8_heimildir`=@5_4_8_heimildir,`5_4_9_athugasemdir`=@5_4_9_athugasemdir,`hver_skráði`=@hver_skráði, dags_skráð=Now()";
+                //þarf að uppfræra audkenni í sem er sama og ID nema formattað (óþarfa flækja)
+                command.ExecuteNonQuery();
+                string strID = næstaAUðkenni();
+                command.CommandText = "UPDATE `dt_isaar_skjalamyndarar` SET `5_1_6_auðkenni`='" + strID + "' WHERE id= " + Convert.ToInt32(strID) + ";";
+                command.ExecuteNonQuery();
             }
             else
             {
                 command.CommandText = "UPDATE `dt_isaar_skjalamyndarar` SET  `opinbert_auðkenni`=@opinbert_auðkenni,  `5_1_1_gerð`=@5_1_1_gerð, `5_1_2_opinbert_heiti`=@5_1_2_opinbert_heiti, `5_1_3_erlent_heiti`=@5_1_3_erlent_heiti, `5_1_4_annað_heiti_aðlagað`=@5_1_4_annað_heiti_aðlagað,`5_1_5_annað_heiti`=@5_1_5_annað_heiti,`5_1_6_auðkenni`=@5_1_6_auðkenni,`5_2_1_tímabil`=@5_2_1_tímabil,`5_2_2_saga`=@5_2_2_saga,`5_2_3_staðsetning`=@5_2_3_staðsetning,`5_2_4_lagaleg_staða`=@5_2_4_lagaleg_staða,`5_2_5_hlutverk`=@5_2_5_hlutverk,`5_2_6_tilheyrandi_lög`=@5_2_6_tilheyrandi_lög,`5_2_7_innri_stjórnun`=@5_2_7_innri_stjórnun,`5_2_8_almennt_samhengi`=@5_2_8_almennt_samhengi,`5_4_1_auðkenni_lands`=@5_4_1_auðkenni_lands,`5_4_2_auðkenni_vörslustofnunar`=@5_4_2_auðkenni_vörslustofnunar,`5_4_3_reglur_staðlar`=@5_4_3_reglur_staðlar,`5_4_4_skráningarstaða`=@5_4_4_skráningarstaða,`5_4_5_skráningarstig`=@5_4_5_skráningarstig,`5_4_6_dagsetningar`=@5_4_6_dagsetningar,`5_4_7_tungumál`=@5_4_7_tungumál,`5_4_8_heimildir`=@5_4_8_heimildir,`5_4_9_athugasemdir`=@5_4_9_athugasemdir,`hver_breytti`=@hver_breytti, dags_breytt=Now() WHERE id=" + this.ID + ";";
                 command.ExecuteNonQuery();
                 command.CommandText = "UPDATE `dt_vörsluutgafur` set `skjalm_heiti` = @5_1_2_opinbert_heiti where `skjalamyndari`=@5_1_6_auðkenni;";
+                command.ExecuteNonQuery();
             }
 
-            command.ExecuteNonQuery();
+           
+           
+
             conn.Dispose();
             command.Dispose();
         }
@@ -440,7 +450,7 @@ namespace cClassOAIS
         {
             sækjaTengistreng();
             string strRet = string.Empty;
-            string strSQL = string.Format("SELECT max(id) FROM dt_isaar_skjalamyndarar d;");
+            string strSQL = string.Format("SELECT max(LAST_INSERT_ID(id)) FROM dt_isaar_skjalamyndarar d;");
             var strID = MySqlHelper.ExecuteScalar(m_strTenging, strSQL);
             if(strID == DBNull.Value)
             {
@@ -448,7 +458,7 @@ namespace cClassOAIS
             }
             else
             {
-                int iID = Convert.ToInt32(strID) + 1;
+                int iID = Convert.ToInt32(strID); // + 1;
                 strRet = iID.ToString("00000");
             }
 
