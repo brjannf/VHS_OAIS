@@ -603,7 +603,7 @@ namespace MHR_LEIT
                 m_pibSkjal.Image = image;
  
             }
-            if (fifo.Extension == ".mpg")
+            if (fifo.Extension == ".mpg" || fifo.Extension == ".mp3")
             {
 
                 string strExp = "skjalID='" + m_strIdValinn + "'";

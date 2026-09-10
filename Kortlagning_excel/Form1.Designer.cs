@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            m_btnOpnaExcel = new Button();
+            m_btnExcelGrunnur = new Button();
             openFileDialog1 = new OpenFileDialog();
             m_dgvExcelSkjal = new DataGridView();
             splitContainer1 = new SplitContainer();
+            m_btnVistaIexcell = new Button();
             m_btnOpnaAllt = new Button();
             m_lblPublish = new Label();
             m_prbPublish = new ProgressBar();
@@ -46,7 +47,6 @@
             m_dgvMappaSkjol = new DataGridView();
             colTakkar = new DataGridViewButtonColumn();
             colSlod = new DataGridViewTextBoxColumn();
-            m_btnVistaIexcell = new Button();
             ((System.ComponentModel.ISupportInitialize)m_dgvExcelSkjal).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -59,15 +59,15 @@
             ((System.ComponentModel.ISupportInitialize)m_dgvMappaSkjol).BeginInit();
             SuspendLayout();
             // 
-            // m_btnOpnaExcel
+            // m_btnExcelGrunnur
             // 
-            m_btnOpnaExcel.Location = new Point(876, 37);
-            m_btnOpnaExcel.Name = "m_btnOpnaExcel";
-            m_btnOpnaExcel.Size = new Size(75, 23);
-            m_btnOpnaExcel.TabIndex = 0;
-            m_btnOpnaExcel.Text = "Flytja inn";
-            m_btnOpnaExcel.UseVisualStyleBackColor = true;
-            m_btnOpnaExcel.Click += m_btnOpnaExcel_Click;
+            m_btnExcelGrunnur.Location = new Point(769, 43);
+            m_btnExcelGrunnur.Name = "m_btnExcelGrunnur";
+            m_btnExcelGrunnur.Size = new Size(126, 23);
+            m_btnExcelGrunnur.TabIndex = 0;
+            m_btnExcelGrunnur.Text = "Excel skrár";
+            m_btnExcelGrunnur.UseVisualStyleBackColor = true;
+            m_btnExcelGrunnur.Click += m_btnOpnaExcel_Click;
             // 
             // openFileDialog1
             // 
@@ -76,14 +76,18 @@
             // m_dgvExcelSkjal
             // 
             m_dgvExcelSkjal.AllowUserToAddRows = false;
-            m_dgvExcelSkjal.AllowUserToDeleteRows = false;
+            m_dgvExcelSkjal.AllowUserToOrderColumns = true;
             m_dgvExcelSkjal.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             m_dgvExcelSkjal.Dock = DockStyle.Fill;
             m_dgvExcelSkjal.Location = new Point(0, 0);
             m_dgvExcelSkjal.Name = "m_dgvExcelSkjal";
+            m_dgvExcelSkjal.ReadOnly = true;
             m_dgvExcelSkjal.RowHeadersVisible = false;
+            m_dgvExcelSkjal.SelectionMode = DataGridViewSelectionMode.CellSelect;
             m_dgvExcelSkjal.Size = new Size(976, 392);
             m_dgvExcelSkjal.TabIndex = 1;
+            m_dgvExcelSkjal.CellMouseDoubleClick += m_dgvExcelSkjal_CellMouseDoubleClick;
+            m_dgvExcelSkjal.MouseHover += m_dgvExcelSkjal_MouseHover;
             // 
             // splitContainer1
             // 
@@ -105,7 +109,7 @@
             splitContainer1.Panel1.Controls.Add(m_lblExcell);
             splitContainer1.Panel1.Controls.Add(m_lblUpdate);
             splitContainer1.Panel1.Controls.Add(m_lblHeradsSkjalaSafn);
-            splitContainer1.Panel1.Controls.Add(m_btnOpnaExcel);
+            splitContainer1.Panel1.Controls.Add(m_btnExcelGrunnur);
             // 
             // splitContainer1.Panel2
             // 
@@ -113,6 +117,16 @@
             splitContainer1.Size = new Size(1284, 535);
             splitContainer1.SplitterDistance = 139;
             splitContainer1.TabIndex = 2;
+            // 
+            // m_btnVistaIexcell
+            // 
+            m_btnVistaIexcell.Location = new Point(545, 43);
+            m_btnVistaIexcell.Name = "m_btnVistaIexcell";
+            m_btnVistaIexcell.Size = new Size(95, 23);
+            m_btnVistaIexcell.TabIndex = 11;
+            m_btnVistaIexcell.Text = "Vista í Excell";
+            m_btnVistaIexcell.UseVisualStyleBackColor = true;
+            m_btnVistaIexcell.Click += m_btnVistaIexcell_Click;
             // 
             // m_btnOpnaAllt
             // 
@@ -154,7 +168,7 @@
             // 
             m_btnAthBreytingar.Location = new Point(444, 14);
             m_btnAthBreytingar.Name = "m_btnAthBreytingar";
-            m_btnAthBreytingar.Size = new Size(155, 23);
+            m_btnAthBreytingar.Size = new Size(196, 23);
             m_btnAthBreytingar.TabIndex = 6;
             m_btnAthBreytingar.Text = "Athuga með breytingar";
             m_btnAthBreytingar.UseVisualStyleBackColor = true;
@@ -162,7 +176,7 @@
             // 
             // m_btnVistaIgrunn
             // 
-            m_btnVistaIgrunn.Location = new Point(494, 43);
+            m_btnVistaIgrunn.Location = new Point(444, 43);
             m_btnVistaIgrunn.Name = "m_btnVistaIgrunn";
             m_btnVistaIgrunn.Size = new Size(95, 23);
             m_btnVistaIgrunn.TabIndex = 5;
@@ -254,16 +268,6 @@
             colSlod.ReadOnly = true;
             colSlod.Visible = false;
             // 
-            // m_btnVistaIexcell
-            // 
-            m_btnVistaIexcell.Location = new Point(494, 72);
-            m_btnVistaIexcell.Name = "m_btnVistaIexcell";
-            m_btnVistaIexcell.Size = new Size(95, 23);
-            m_btnVistaIexcell.TabIndex = 11;
-            m_btnVistaIexcell.Text = "Vista í Excell";
-            m_btnVistaIexcell.UseVisualStyleBackColor = true;
-            m_btnVistaIexcell.Click += m_btnVistaIexcell_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -288,7 +292,7 @@
 
         #endregion
 
-        private Button m_btnOpnaExcel;
+        private Button m_btnExcelGrunnur;
         private OpenFileDialog openFileDialog1;
         private DataGridView m_dgvExcelSkjal;
         private SplitContainer splitContainer1;

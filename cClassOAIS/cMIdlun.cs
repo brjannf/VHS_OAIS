@@ -105,6 +105,12 @@ namespace cClassOAIS
             command.Parameters.AddWithValue("@dalkur_documentid", this.dalkur_documentid);
             command.Parameters.AddWithValue("@documentid", this.documentid);
             command.Parameters.AddWithValue("@dalkur_doctitill", this.dalkur_doctitill);
+            if(this.doctitill != null)
+            {
+                this.doctitill = this.doctitill.Replace("🎄", "");
+                this.doctitill = this.doctitill.Replace("🚙", "");
+            }
+          
             command.Parameters.AddWithValue("@doctitill", this.doctitill);
             command.Parameters.AddWithValue("@dalkur_docCreated", this.dalkur_docCreated);
             command.Parameters.AddWithValue("@docCreated", this.docCreated);
@@ -320,7 +326,7 @@ namespace cClassOAIS
 
                                     if (iID == 99999992)
                                     {
-                                        strSlod = "D:\\AIP\\HARN\\00006\\AVID.HARN.2025001.1\\Documents\\docCollection1\\99999992";
+                                        strSlod = strSlod.Replace("docCollection10000", "docCollection1"); // "D:\\AIP\\HARN\\00006\\AVID.HARN.2025001.1\\Documents\\docCollection1\\99999992";
 
                                     }
 

@@ -353,8 +353,6 @@
             splitContainer10 = new SplitContainer();
             m_grbVarslaSkjalamyndarar = new GroupBox();
             m_dgvVarslaSkjalmyndarar = new DataGridView();
-            colVarslaSkjalmAudkenni = new DataGridViewTextBoxColumn();
-            colVarslaSkjalamHeiti = new DataGridViewTextBoxColumn();
             m_grbVarslaUtgafur = new GroupBox();
             m_dgvVarslaUtgafur = new DataGridView();
             colVarslaUtgafaAudkenni = new DataGridViewTextBoxColumn();
@@ -514,6 +512,8 @@
             colMD5Mappa = new DataGridViewTextBoxColumn();
             colMD5Md5 = new DataGridViewTextBoxColumn();
             errorProvider1 = new ErrorProvider(components);
+            colVarslaSkjalmAudkenni = new DataGridViewTextBoxColumn();
+            colVarslaSkjalamHeiti = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
@@ -794,7 +794,7 @@
             dataGridViewTextBoxColumn8.HeaderText = "Tímabil vörsluútgáfu";
             dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             dataGridViewTextBoxColumn8.ReadOnly = true;
-            dataGridViewTextBoxColumn8.Width = 129;
+            dataGridViewTextBoxColumn8.Width = 130;
             // 
             // dataGridViewTextBoxColumn9
             // 
@@ -803,7 +803,6 @@
             dataGridViewTextBoxColumn9.HeaderText = "Takmarkanir á aðgengi";
             dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             dataGridViewTextBoxColumn9.ReadOnly = true;
-            dataGridViewTextBoxColumn9.Width = 99;
             // 
             // dataGridViewCheckBoxColumn1
             // 
@@ -840,7 +839,7 @@
             colArchiveOpnaIndex.ReadOnly = true;
             colArchiveOpnaIndex.Text = "Opna ArchiveIndex";
             colArchiveOpnaIndex.UseColumnTextForButtonValue = true;
-            colArchiveOpnaIndex.Width = 103;
+            colArchiveOpnaIndex.Width = 102;
             // 
             // colArchiveOpnaVorslu
             // 
@@ -3190,7 +3189,7 @@
             colUtgafaTimabil.HeaderText = "Tímabil vörsluútgáfu";
             colUtgafaTimabil.Name = "colUtgafaTimabil";
             colUtgafaTimabil.ReadOnly = true;
-            colUtgafaTimabil.Width = 129;
+            colUtgafaTimabil.Width = 130;
             // 
             // colUtgafaAdgangur
             // 
@@ -3199,7 +3198,6 @@
             colUtgafaAdgangur.HeaderText = "Takmarkanir á aðgengi";
             colUtgafaAdgangur.Name = "colUtgafaAdgangur";
             colUtgafaAdgangur.ReadOnly = true;
-            colUtgafaAdgangur.Width = 99;
             // 
             // colUtgafurFrum
             // 
@@ -4178,21 +4176,6 @@
             m_dgvVarslaSkjalmyndarar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             m_dgvVarslaSkjalmyndarar.Size = new Size(498, 330);
             m_dgvVarslaSkjalmyndarar.TabIndex = 0;
-            // 
-            // colVarslaSkjalmAudkenni
-            // 
-            colVarslaSkjalmAudkenni.DataPropertyName = "skjalamyndari";
-            colVarslaSkjalmAudkenni.HeaderText = "Aiuðkenni skjalamyndara";
-            colVarslaSkjalmAudkenni.Name = "colVarslaSkjalmAudkenni";
-            colVarslaSkjalmAudkenni.ReadOnly = true;
-            // 
-            // colVarslaSkjalamHeiti
-            // 
-            colVarslaSkjalamHeiti.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colVarslaSkjalamHeiti.DataPropertyName = "skjalm_heiti";
-            colVarslaSkjalamHeiti.HeaderText = "Heiti skjalamyndara";
-            colVarslaSkjalamHeiti.Name = "colVarslaSkjalamHeiti";
-            colVarslaSkjalamHeiti.ReadOnly = true;
             // 
             // m_grbVarslaUtgafur
             // 
@@ -5532,7 +5515,7 @@
             dataGridViewTextBoxColumn52.HeaderText = "Tímabil vörsluútgáfu";
             dataGridViewTextBoxColumn52.Name = "dataGridViewTextBoxColumn52";
             dataGridViewTextBoxColumn52.ReadOnly = true;
-            dataGridViewTextBoxColumn52.Width = 129;
+            dataGridViewTextBoxColumn52.Width = 130;
             // 
             // dataGridViewTextBoxColumn53
             // 
@@ -5541,7 +5524,6 @@
             dataGridViewTextBoxColumn53.HeaderText = "Takmarkanir á aðgengi";
             dataGridViewTextBoxColumn53.Name = "dataGridViewTextBoxColumn53";
             dataGridViewTextBoxColumn53.ReadOnly = true;
-            dataGridViewTextBoxColumn53.Width = 99;
             // 
             // dataGridViewCheckBoxColumn3
             // 
@@ -5618,7 +5600,7 @@
             colDocOpna.ReadOnly = true;
             colDocOpna.Text = "Opna documentIndex";
             colDocOpna.UseColumnTextForButtonValue = true;
-            colDocOpna.Width = 116;
+            colDocOpna.Width = 115;
             // 
             // splitContainer14
             // 
@@ -5766,7 +5748,7 @@
             colDocType.HeaderText = "Tegund";
             colDocType.Name = "colDocType";
             colDocType.ReadOnly = true;
-            colDocType.Width = 71;
+            colDocType.Width = 72;
             // 
             // m_tapDanskaMD5
             // 
@@ -5949,6 +5931,21 @@
             // errorProvider1
             // 
             errorProvider1.ContainerControl = this;
+            // 
+            // colVarslaSkjalmAudkenni
+            // 
+            colVarslaSkjalmAudkenni.DataPropertyName = "skjalamyndari";
+            colVarslaSkjalmAudkenni.HeaderText = "Auðkenni skjalamyndara";
+            colVarslaSkjalmAudkenni.Name = "colVarslaSkjalmAudkenni";
+            colVarslaSkjalmAudkenni.ReadOnly = true;
+            // 
+            // colVarslaSkjalamHeiti
+            // 
+            colVarslaSkjalamHeiti.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colVarslaSkjalamHeiti.DataPropertyName = "skjalm_heiti";
+            colVarslaSkjalamHeiti.HeaderText = "Heiti skjalamyndara";
+            colVarslaSkjalamHeiti.Name = "colVarslaSkjalamHeiti";
+            colVarslaSkjalamHeiti.ReadOnly = true;
             // 
             // uscGagnaUmsjon
             // 
@@ -6195,8 +6192,6 @@
         private DataGridView m_dgvVarslaSkjalmyndarar;
         private GroupBox m_grbVarslaUtgafur;
         private DataGridView m_dgvVarslaUtgafur;
-        private DataGridViewTextBoxColumn colVarslaSkjalmAudkenni;
-        private DataGridViewTextBoxColumn colVarslaSkjalamHeiti;
         private DataGridViewTextBoxColumn colVarslaUtgafaAudkenni;
         private DataGridViewTextBoxColumn colVarslaUtgafaTitill;
         private SplitContainer splitContainer11;
@@ -6596,5 +6591,7 @@
         private Button m_btnVistaArkiveIndex;
         private ErrorProvider errorProvider1;
         private Button m_btnPizza;
+        private DataGridViewTextBoxColumn colVarslaSkjalmAudkenni;
+        private DataGridViewTextBoxColumn colVarslaSkjalamHeiti;
     }
 }

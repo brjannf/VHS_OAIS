@@ -37,6 +37,9 @@ namespace OAIS_ADMIN
         private string strDrive = string.Empty;
         long m_lStaerd = 0;
         long m_lStaerdFrum = 0;
+
+        private DateTime m_dtStart;
+        private DateTime m_dtEnd;
         public uscInnSetning()
         {
             InitializeComponent();
@@ -103,6 +106,8 @@ namespace OAIS_ADMIN
 
         private void FyllaForm(string strFileIndex, string strArchiveIndex)
         {
+            //setja tímer hve lengi að keyra inn.
+            m_dtStart = DateTime.Now;
             hreinsaform();
             if (File.Exists(strFileIndex))
             {
@@ -480,10 +485,11 @@ namespace OAIS_ADMIN
             if(ds.Tables["archiveCreatorList"].Columns.Contains("creatorName"))
             {
                 strNafn = ds.Tables["archiveCreatorList"].Rows[0]["creatorName"].ToString();
+                m_dgvSkjalamyndarar.Visible = false;
             }
             else
             {
-
+                m_dgvSkjalamyndarar.Visible = true;
                 DataTable dtSkjalm = new DataTable();
                 dtSkjalm.Columns.Add("5_1_6_auðkenni");
                 dtSkjalm.Columns.Add("5_1_2_opinbert_heiti");
@@ -814,8 +820,30 @@ namespace OAIS_ADMIN
             varsla.utgafa_titill = skrá.titill_3_1_2;
             varsla.vorslustofnun = vörslustofnun.auðkenni_5_1_1;
             varsla.varsla_heiti = vörslustofnun.opinbert_heiti_5_1_2;
-            varsla.skjalamyndari = skjalamyndari.auðkenni_5_1_6;
-            varsla.skjalm_heiti = skjalamyndari.opinbert_heiti_5_1_2;
+            //ef fleiri en einn skjalamyndari þarf að bæta þeim við
+            if (m_dgvSkjalamyndarar.Visible)
+            {
+                foreach (DataGridViewRow row in m_dgvSkjalamyndarar.Rows)
+                {
+                    //if (row.Cells["colAudkenniSkjalam"].Value.ToString() != skjalamyndari.auðkenni_5_1_6)
+                    {
+                      // cSkjalamyndari sk = new cSkjalamyndari();
+                     //   sk.getSkjalamyndaraByAuðkenni(row.Cells["colAudkenniSkjalam"].Value.ToString());
+                       // if (sk.ID != 0)
+                        {
+                            varsla.skjalamyndari += "," + row.Cells["colAudkenniSkjalam"].Value.ToString();
+                            varsla.skjalm_heiti += "," + row.Cells["colHeiti"].Value.ToString();
+                        }
+                    }
+                }
+                varsla.skjalamyndari = varsla.skjalamyndari.TrimStart(',');
+                varsla.skjalm_heiti = varsla.skjalm_heiti.TrimStart(',');
+            }
+            else
+            {
+                varsla.skjalamyndari = skjalamyndari.auðkenni_5_1_6;
+                varsla.skjalm_heiti = skjalamyndari.opinbert_heiti_5_1_2;
+            }
             varsla.staerd = m_lStaerd;
             varsla.slod = "D:\\AIP\\" + vörslustofnun.auðkenni_5_1_1 + "\\" + skjalamyndari.auðkenni_5_1_6 + "\\" + skrá.auðkenni_3_1_1;
             varsla.innihald = skrá.yfirlit_innihald_3_3_1;
@@ -871,6 +899,8 @@ namespace OAIS_ADMIN
                 varsla.utgafa_titill = skrá.titill_3_1_2;
                 varsla.vorslustofnun = vörslustofnun.auðkenni_5_1_1;
                 varsla.varsla_heiti = vörslustofnun.opinbert_heiti_5_1_2;
+             
+
                 varsla.skjalamyndari = skjalamyndari.auðkenni_5_1_6;
                 varsla.skjalm_heiti = skjalamyndari.opinbert_heiti_5_1_2;
                 varsla.staerd = m_lStaerdFrum;
@@ -899,6 +929,15 @@ namespace OAIS_ADMIN
             m_btnFlytjaSIP.Enabled = false;
             m_grbSkyrsla.Enabled = true;
             m_btnKvittun.Enabled = true;
+
+            m_dtEnd = DateTime.Now;
+
+            decimal d2 = (decimal)(m_dtEnd - m_dtStart).TotalSeconds;
+            string strTimi2 = string.Format("Tími: {0} sek", d2);
+            string strTimi3 = string.Format("Tími: {0} mín", Math.Round(d2 / 60, 2));
+            string strTimi4 = string.Format("Tími: {0} klst", Math.Round(d2 / 3600, 2));
+
+            MessageBox.Show("Búið að prófa\n" + strTimi2 + " sekúndur\n" + strTimi3 + " mínútur\n" + strTimi4 + " klst.");
             MessageBox.Show("Búið");
 
 
@@ -911,21 +950,29 @@ namespace OAIS_ADMIN
 
             MD5 md5 = MD5.Create();
 
-            for (int i = 0; i < files.Count; i++)
+            try
             {
-                string file = files[i];
+                for (int i = 0; i < files.Count; i++)
+                {
+                    string file = files[i];
 
-                // hash path
-                string relativePath = file.Substring(path.Length + 1);
-                byte[] pathBytes = Encoding.UTF8.GetBytes(relativePath.ToLower());
-                md5.TransformBlock(pathBytes, 0, pathBytes.Length, pathBytes, 0);
+                    // hash path
+                    string relativePath = file.Substring(path.Length + 1);
+                    byte[] pathBytes = Encoding.UTF8.GetBytes(relativePath.ToLower());
+                    md5.TransformBlock(pathBytes, 0, pathBytes.Length, pathBytes, 0);
 
-                // hash contents
-                byte[] contentBytes = File.ReadAllBytes(file);
-                if (i == files.Count - 1)
-                    md5.TransformFinalBlock(contentBytes, 0, contentBytes.Length);
-                else
-                    md5.TransformBlock(contentBytes, 0, contentBytes.Length, contentBytes, 0);
+                    // hash contents
+                    byte[] contentBytes = File.ReadAllBytes(file);
+                    if (i == files.Count - 1)
+                        md5.TransformFinalBlock(contentBytes, 0, contentBytes.Length);
+                    else
+                        md5.TransformBlock(contentBytes, 0, contentBytes.Length, contentBytes, 0);
+                }
+            }
+            catch (Exception x)
+            {
+
+               // throw;
             }
 
             return BitConverter.ToString(md5.Hash).Replace("-", "").ToLower();
@@ -1107,7 +1154,8 @@ namespace OAIS_ADMIN
                         skjalamyndari.auðkenni_vörslustofnunar_5_4_2 = vörslustofnun.auðkenni_5_1_1;
                         skjalamyndari.skráningarstaða_5_4_4 = "Drög að lýsingu";
                         skjalamyndari.skráningarstig_5_4_5 = "Lágmarks skráning";
-                      //  skjalamyndari.auðkenni_5_1_6 = skjalamyndari.næstaAUðkenni();
+                        skjalamyndari.hver_skráði = virkurnotandi.nafn; 
+                        //  skjalamyndari.auðkenni_5_1_6 = skjalamyndari.næstaAUðkenni();
                         skjalamyndari.vista();
                         skjalamyndari.getSkjalamyndara(skjalamyndari.opinbert_heiti_5_1_2);
                         senderGrid.Rows[e.RowIndex].Cells["colBtnStadfesta"].Value = "Fullskrá";

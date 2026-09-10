@@ -1,5 +1,7 @@
 ﻿using cClassOAIS;
 using DocumentFormat.OpenXml.Bibliography;
+using SixLabors.ImageSharp.Drawing;
+
 //using DocumentFormat.OpenXml.Spreadsheet;
 //using DocumentFormat.OpenXml.Spreadsheet;
 //using Org.BouncyCastle.Bcpg.OpenPgp;
@@ -468,7 +470,7 @@ namespace OAIS_ADMIN
 
                     //fá vörsluútgafur skjalamyndara
                     string strSkjalam = m_dgvSkjalaMyndarar.Rows[m_dgvSkjalaMyndarar.SelectedRows[0].Index].Cells["colSkjalamAuðkenni"].Value.ToString();
-                    string strExp = "skjalamyndari='" + strSkjalam + "'"; ;
+                    string strExp = "skjalamyndari like'%" + strSkjalam + "%'"; ; //like
                     DataRow[] fRow = m_dtUtgáfur.Select(strExp);
                     DataTable dt = m_dtUtgáfur.Clone();
                     foreach (DataRow row in fRow)
@@ -570,15 +572,67 @@ namespace OAIS_ADMIN
 
                     string strExp = "vorslustofnun= '" + strVarsla + "'";
                     DataRow[] fRow = m_dtUtgáfur.Select(strExp);
-                    DataTable dtClone = m_dtUtgáfur.Clone();
+                    DataTable dtCloneSkjalm = m_dtUtgáfur.Clone();
+                    DataTable dtCloneVarsla = m_dtUtgáfur.Clone();
                     foreach (DataRow r in fRow)
                     {
-                        dtClone.ImportRow(r);
+                        if (r["skjalamyndari"].ToString().Contains(","))
+                        {
+                            string[] strSplit = r["skjalamyndari"].ToString().Split(",");
+                            foreach(string str in strSplit)
+                            {
+                                strExp = "skjalamyndari ='" + str + "'";
+                                fRow = dtCloneSkjalm.Select(strExp);
+                                if (fRow.Length == 0)
+                                {
+                                    DataRow rNew = dtCloneSkjalm.NewRow();
+                                    rNew["skjalamyndari"] = str;
+                                    cSkjalamyndari skjalm = new cSkjalamyndari();
+                                    skjalm.m_bAfrit = virkurnotandi.m_bAfrit;
+                                    skjalm.getSkjalamyndaraByAuðkenni(str);
+                                    rNew["skjalm_heiti"] = skjalm.opinbert_heiti_5_1_2;
+                                    rNew["utgafa_titill"] = r["utgafa_titill"];
+                                    rNew["vorsluutgafa"] = r["vorsluutgafa"];
+                                    dtCloneSkjalm.Rows.Add(rNew);
+                                }
+                                strExp = "vorsluutgafa ='" + r["vorsluutgafa"] + "'";
+                                fRow = dtCloneVarsla.Select(strExp);
+                                if (fRow.Length == 0)
+                                {
+                                    DataRow rNew = dtCloneVarsla.NewRow();
+                                    rNew["skjalamyndari"] = str;
+                                    cSkjalamyndari skjalm = new cSkjalamyndari();
+                                    skjalm.m_bAfrit = virkurnotandi.m_bAfrit;
+                                    skjalm.getSkjalamyndaraByAuðkenni(str);
+                                    rNew["skjalm_heiti"] = skjalm.opinbert_heiti_5_1_2;
+                                    rNew["utgafa_titill"] = r["utgafa_titill"];
+                                    rNew["vorsluutgafa"] = r["vorsluutgafa"];
+                                    dtCloneVarsla.Rows.Add(rNew);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            strExp = "skjalamyndari ='" + r["skjalamyndari"] + "'";
+                            fRow = dtCloneSkjalm.Select(strExp);
+                           if(fRow.Length == 0)
+                            {
+                                dtCloneSkjalm.ImportRow(r);
+                            }
+                            strExp = "vorsluutgafa ='" + r["vorsluutgafa"] + "'";
+                            fRow = dtCloneVarsla.Select(strExp);
+                            if (fRow.Length == 0)
+                            {
+                                dtCloneVarsla.ImportRow(r);
+                            }
+                        }
+                          
+                            
                     }
                     m_dgvVarslaSkjalmyndarar.AutoGenerateColumns = false;
-                    m_dgvVarslaSkjalmyndarar.DataSource = dtClone;
+                    m_dgvVarslaSkjalmyndarar.DataSource = dtCloneSkjalm;
                     m_dgvVarslaUtgafur.AutoGenerateColumns = false;
-                    m_dgvVarslaUtgafur.DataSource = dtClone;
+                    m_dgvVarslaUtgafur.DataSource = dtCloneVarsla;
 
 
 

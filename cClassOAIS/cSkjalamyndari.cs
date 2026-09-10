@@ -458,7 +458,7 @@ namespace cClassOAIS
             }
             else
             {
-                int iID = Convert.ToInt32(strID); // + 1;
+                int iID = Convert.ToInt32(strID) + 1; // + 1;
                 strRet = iID.ToString("00000");
             }
 

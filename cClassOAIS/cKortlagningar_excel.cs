@@ -43,7 +43,15 @@ namespace cClassOAIS
         public DataTable getKortHera(string strHeri)
         {
            // string strSQL = string.Format("SELECT * FROM kortlagning_excel.kortlagning2 k where heradsskjalasafn = '{0}';  ", strHeri);
-            string strSQL = string.Format("SELECT * FROM kortlagning2 k where heradsskjalasafn = '{0}';  ", strHeri);
+            string strSQL = string.Format("SELECT * FROM kortlagning2 k where Audkenni = '{0}';  ", strHeri);
+            DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
+            DataTable dt = ds.Tables[0];
+            return dt;
+        }
+        public DataTable getKortHera(int id)
+        {
+            // string strSQL = string.Format("SELECT * FROM kortlagning_excel.kortlagning2 k where heradsskjalasafn = '{0}';  ", strHeri);
+            string strSQL = string.Format("SELECT * FROM kortlagning2 k where id = '{0}';  ", id);
             DataSet ds = MySqlHelper.ExecuteDataset(m_strTenging, strSQL);
             DataTable dt = ds.Tables[0];
             return dt;

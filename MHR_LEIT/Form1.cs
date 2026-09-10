@@ -158,13 +158,36 @@ namespace MHR_LEIT
             DataTable dt = midlun.getGagnagrunna();
             if (dt.Rows.Count > 0)
             {
-                DataRow r = dt.NewRow();
+                DataTable dtAtvik = dt.Clone();
+                DataTable dtGrunnur = dt.Clone();
+                //sortera eftir heiti gagnagrunns
+                foreach (DataRow rr in dt.Rows)
+                {
+                    string strHeiti = rr["orginal_heiti"].ToString();
+                    if (strHeiti.ToLower().Contains("atvik_"))
+                    {
+                        dtAtvik.ImportRow(rr);
+                    }
+                    else
+                    {
+                        dtGrunnur.ImportRow(rr);
+                    }
+
+                }
+                DataRow r = dtGrunnur.NewRow();
                 r["orginal_heiti"] = "Veldu Gagnagrunn";
-                dt.Rows.InsertAt(r, 0);
+                dtGrunnur.Rows.InsertAt(r, 0);
                 //  id, vorsluutgafa, heiti_gagnagrunns, orgina_heiti
                 m_comGagnagrunnar.ValueMember = "heiti_gagnagrunns";
                 m_comGagnagrunnar.DisplayMember = "orginal_heiti";
-                m_comGagnagrunnar.DataSource = dt;
+                m_comGagnagrunnar.DataSource = dtGrunnur;
+
+                DataRow rrr = dtAtvik.NewRow();
+                rrr["orginal_heiti"] = "Veldu Atvik";
+                dtAtvik.Rows.InsertAt(rrr, 0);
+                m_comAtvik.ValueMember = "heiti_gagnagrunns";
+                m_comAtvik.DisplayMember = "orginal_heiti";
+                m_comAtvik.DataSource = dtAtvik;
             }
             else
             {
@@ -284,6 +307,32 @@ namespace MHR_LEIT
 
         private void leita(bool bLeit)
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             cMIdlun midlun = new cMIdlun();
             midlun.m_bAfrit = bAfrit;
             midlun.leitarord = m_tboLeitOrd.Text;
@@ -2046,7 +2095,7 @@ namespace MHR_LEIT
         {
             //lagfæra birtinug á gopro
             //1. Uppfæra þrjár fyrirspurnir í fyrirspurnartöflu 
-             virkurNotandi.breytaFyrirspurnumGOPO();
+            virkurNotandi.breytaFyrirspurnumGOPO();
             //2. Uppfæra gopro template í fyrirspurnir_template
 
 
@@ -2721,7 +2770,7 @@ namespace MHR_LEIT
             {
                 fyllaVorsluUtgafur();
             }
-            if(m_tacUmsjon.SelectedTab == m_tapLanthegar)
+            if (m_tacUmsjon.SelectedTab == m_tapLanthegar)
             {
                 usclanthegar1.fyllaLanthega();
             }
@@ -3043,7 +3092,7 @@ namespace MHR_LEIT
                                             {
                                                 Restore(strSQLScript[0], strSplit[0]);
                                             }
-                                           
+
 
 
                                         }
@@ -3057,7 +3106,7 @@ namespace MHR_LEIT
                                             cMIdlun midlun = new cMIdlun();
                                             midlun.m_bAfrit = virkurNotandi.m_bAfrit;
                                             midlun.scriptLoad(strSQL);
-                                            
+
 
                                         }
                                     }
@@ -3072,7 +3121,7 @@ namespace MHR_LEIT
 
 
             }
-           
+
             //refhresha gridið
             fyllaImportLista(m_strRootInsert);
             //slóð í sql skrá dt_vörslustofnun er vitlaus í afritinu þarf að laga það með handafli (takk Siggi)
@@ -3194,7 +3243,7 @@ namespace MHR_LEIT
                 try
                 {
                     string appPath = Application.StartupPath;
-                  //  if (strSlod.StartsWith(appPath, StringComparison.OrdinalIgnoreCase))
+                    //  if (strSlod.StartsWith(appPath, StringComparison.OrdinalIgnoreCase))
                     {
                         // strSlod = "." + strSlod.Substring(appPath.Length);
                         strSlod = appPath + "//MHR-LEIT.chm";// strSlod.Replace("\\\\", "\\");
@@ -3222,7 +3271,7 @@ namespace MHR_LEIT
                 try
                 {
                     string appPath = Application.StartupPath;
-                   // if (strSlod.StartsWith(appPath, StringComparison.OrdinalIgnoreCase))
+                    // if (strSlod.StartsWith(appPath, StringComparison.OrdinalIgnoreCase))
                     {
                         // strSlod = "." + strSlod.Substring(appPath.Length);
                         strSlod = appPath + "//MHR-LEIT.pdf";// strSlod.Replace("\\\\", "\\");
@@ -3304,6 +3353,31 @@ namespace MHR_LEIT
         private void usclanthegar1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void m_comAtvik_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (m_comAtvik.Focused)
+            {
+                if (m_comAtvik.SelectedIndex != 0)
+                {
+                    string strGrunnur = m_comAtvik.SelectedValue.ToString();
+                    string strHeiti = m_comAtvik.Text.ToString();
+                    frmAtvik frmAtvik= new frmAtvik(strGrunnur, strHeiti, virkurNotandi);
+                    frmAtvik.ShowDialog();
+
+                    //m_dtDIPGrunn = frmGagn.m_dtPantad;
+
+                    //m_dgvDIPGagnagrunnar.AutoGenerateColumns = false;
+                    //m_dgvDIPGagnagrunnar.DataSource = m_dtDIPGrunn;
+
+                    //synaPantanirFjoldi();
+                    //m_tapPontunGagnagrunnar.Text = string.Format("Gagnagrunnar ({0})", m_dtDIPGrunn.Rows.Count);
+                    //int iFjoldi = m_dtDIPGrunn.Rows.Count + m_dtDIPSkra.Rows.Count + m_dtDIPMal.Rows.Count;
+                    //m_grbDIP.Text = string.Format("Óafgreitt ({0})", iFjoldi);
+                    //m_tapAfgreidsla.Text = string.Format("Afgreiðsla: {0} skrár óafgreiddar", iFjoldi);
+                }
+            }
         }
     }
 }
